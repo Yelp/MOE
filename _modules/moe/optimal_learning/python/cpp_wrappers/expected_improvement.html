@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -254,6 +255,8 @@
         <span class="n">ei_optimizer</span><span class="p">,</span>
         <span class="n">num_multistarts</span><span class="p">,</span>
         <span class="n">num_to_sample</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">which_gpu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">randomness</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
         <span class="n">max_num_threads</span><span class="o">=</span><span class="n">DEFAULT_MAX_NUM_THREADS</span><span class="p">,</span>
         <span class="n">status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
@@ -280,12 +283,19 @@
 
 <span class="sd">    If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().</span>
 
+<span class="sd">    The option of using GPU to compute general q,p-EI via MC simulation is also available. To enable it, make sure you have</span>
+<span class="sd">    installed GPU components of MOE, otherwise, it will throw Runtime excpetion.</span>
+
 <span class="sd">    :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain</span>
 <span class="sd">    :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object</span>
 <span class="sd">    :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)</span>
 <span class="sd">    :type num_multistarts: int &gt; 0</span>
 <span class="sd">    :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</span>
 <span class="sd">    :type num_to_sample: int &gt;= 1</span>
+<span class="sd">    :param use_gpu: set to True if user wants to use GPU for MC simulation</span>
+<span class="sd">    :type use_gpu: bool</span>
+<span class="sd">    :param which_gpu: GPU device ID</span>
+<span class="sd">    :type which_gpu: int &gt;= 0</span>
 <span class="sd">    :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used</span>
 <span class="sd">    :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())</span>
 <span class="sd">    :param max_num_threads: maximum number of threads to use, &gt;= 1</span>
@@ -317,6 +327,8 @@
         <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_best_so_far</span><span class="p">,</span>
         <span class="n">ei_optimizer</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">_num_mc_iterations</span><span class="p">,</span>
         <span class="n">max_num_threads</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">,</span>
+        <span class="n">which_gpu</span><span class="p">,</span>
         <span class="n">randomness</span><span class="p">,</span>
         <span class="n">status</span><span class="p">,</span>
     <span class="p">)</span>

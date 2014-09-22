@@ -35,7 +35,7 @@
     <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
         <link rel="up" title="moe package" href="moe.html"/>
         <link rel="next" title="moe.optimal_learning package" href="moe.optimal_learning.html"/>
-        <link rel="prev" title="moe.bandit.interfaces package" href="moe.bandit.interfaces.html"/> 
+        <link rel="prev" title="moe.build package" href="moe.build.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -235,6 +236,17 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.easy_interface.bandit_simple_endpoint">
+<span id="moe-easy-interface-bandit-simple-endpoint-module"></span><h2>moe.easy_interface.bandit_simple_endpoint module<a class="headerlink" href="#module-moe.easy_interface.bandit_simple_endpoint" title="Permalink to this headline">¶</a></h2>
+<p>Simple functions for hitting the REST endpoints of a MOE bandit service.</p>
+<p>See <a class="reference internal" href="bandit.html"><em>Multi-Armed Bandits</em></a> for more details on multi-armed bandits.</p>
+<dl class="function">
+<dt id="moe.easy_interface.bandit_simple_endpoint.bandit">
+<tt class="descclassname">moe.easy_interface.bandit_simple_endpoint.</tt><tt class="descname">bandit</tt><big>(</big><em>historical_info</em>, <em>type='bandit_bla'</em>, <em>rest_host='127.0.0.1'</em>, <em>rest_port=6543</em>, <em>testapp=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/easy_interface/bandit_simple_endpoint.html#bandit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.easy_interface.bandit_simple_endpoint.bandit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hit the rest endpoint for allocating arms of a bandit given arms already sampled (historical info).</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.easy_interface.experiment">
 <span id="moe-easy-interface-experiment-module"></span><h2>moe.easy_interface.experiment module<a class="headerlink" href="#module-moe.easy_interface.experiment" title="Permalink to this headline">¶</a></h2>
 <p>Classes for MOE optimizable experiments.</p>
@@ -286,6 +298,7 @@
 <p>Contains:</p>
 <blockquote>
 <div><ul class="simple">
+<li>bandit_simple_endpoint.py - An example use of the bandit REST interface</li>
 <li>experiment.py - The a class for historic information required to optimize using MOE</li>
 <li>simple_endpoint.py - An example use of the REST interface using python</li>
 </ul>
@@ -302,7 +315,7 @@
         <a href="moe.optimal_learning.html" class="btn btn-neutral float-right" title="moe.optimal_learning package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="moe.bandit.interfaces.html" class="btn btn-neutral" title="moe.bandit.interfaces package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="moe.build.html" class="btn btn-neutral" title="moe.build package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

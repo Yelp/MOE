@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -257,6 +258,209 @@ OptimalLearningCudaException if there is error.</p>
 <blockquote>
 <div><p></p>
 <p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1af6b6abae262111d5f568929e6247b71b"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>CudaComputeOptimalPointsToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a> thread_schedule, double const *restrict start_point_set, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, bool *restrict found_flag, int which_gpu, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function is the same as <tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSampleViaMultistartGradientDescent</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> except that it is
+specifically used for GPU EI evaluators. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed documentation.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">start_point_set[dim][num_to_sample][num_multistarts]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">set of initial guesses for MGD (one block of num_to_sample points per multistart)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points in set of initial guesses</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide
+the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if <tt class="docutils literal"><span class="pre">best_next_point</span></tt> corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">best_next_point[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a4deff169d33d63d88c080a6a5b42b60a"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSampleWithRandomStarts</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function is the same as <tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSampleWithRandomStarts</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> except that it is
+specifically used for GPU EI evaluators. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed documentation.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide
+the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_next_point corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">best_next_point[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a3d654c6908286fc043fb4a9f2b44a34c"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function is the same as <tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSampleViaLatinHypercubeSearch</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> except that it is
+specifically used for GPU EI evaluators. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed documentation.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0).</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of random points to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">device ID of the GPU used for computation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd>found_flag[1]: true if best_next_point corresponds to a nonzero EI
+:uniform_generator[1]: UniformRandomGenerator object will have its state changed due to random draws
+:best_next_point[dim][num_to_sample]: points yielding the best EI according to dumb search</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
 <p><p id="project0structoptimal__learning_1_1_cuda_device_pointer"><em>class</em> <strong>CudaDevicePointer</strong></p>
 <blockquote>
 <div><p></p>
@@ -306,7 +510,7 @@ GPU, its constructor and destructor also take care of memory allocation/dealloca
 <p><p id="project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>class</em> <strong>CudaExpectedImprovementEvaluator</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>This class has the same functionality as ExpectedImprovementEvaluator (see gpp_math.hpp),
+<p><p>This class has the same functionality as <tt class="docutils literal"><span class="pre">ExpectedImprovementEvaluator</span></tt> (see <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt>),
 except that computations are performed on GPU.</p>
  </p>
 <em>Public Type</em><blockquote>
@@ -503,7 +707,7 @@ Refer to: <a class="reference external" href="http://docs.nvidia.com/cuda/cuda-r
 <p><p id="project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>class</em> <strong>CudaExpectedImprovementState</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>This has the same functionality as ExpectedImprovementState (see gpp_math.hpp) except that it is for GPU computing</p>
+<p><p>This has the same functionality as <tt class="docutils literal"><span class="pre">ExpectedImprovementState</span></tt> (see <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt>) except that it is for GPU computing</p>
  </p>
 <em>Public Type</em><blockquote>
 <div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a9315a01badbcec77961ad12f9d647519"></span>typedef <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>CudaExpectedImprovementEvaluator</em></a> <strong>EvaluatorType</strong></p>
@@ -519,20 +723,9 @@ Refer to: <a class="reference external" href="http://docs.nvidia.com/cuda/cuda-r
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Constructs an CudaExpectedImprovementState object with a specified source of randomness for
-the purpose of computing EI(and its gradient) over the specified set of points to sample.
-This establishes properly sized/initialized temporaries for EI computation, including dependent
-state from the associated Gaussian Process (which arrives as part of the ei_evaluator).</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This object is invalidated if the associated ei_evaluator is mutated.  SetupState()</p>
-</div>
-<p>should be called to reset.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Using this object to compute gradients when <tt class="docutils literal"><span class="pre">configure_for_gradients</span></tt> := false results in
-UNDEFINED BEHAVIOR.</p>
-</div>
+<p><p>This struct has same functionality as <tt class="docutils literal"><span class="pre">ExpectedImprovementState</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt>,
+except that it is specifically for GPU EI evaluator. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed
+documentation.</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
@@ -616,8 +809,8 @@ UNDEFINED BEHAVIOR.</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ab4ad0398cf062b13a12c659cf14661b0"></span><div class="line-block">
-<div class="line">void <strong>UpdateCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ad91706fb6219e054e59b676d3899b79b"></span><div class="line-block">
+<div class="line">void <strong>SetCurrentPoint</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>EvaluatorType</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample)</div>
 </div>
 </p>
 <blockquote>
@@ -929,6 +1122,174 @@ CUDA C functions defined in gpu/gpp_cuda_math.cu.</p>
 <blockquote>
 <div><p></p>
 <p></p>
+<em>Functions</em><blockquote>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1ac72bfbc5060fee0806d5a5d9cb661a6b"></span><div class="line-block">
+<div class="line">void <strong>CudaEvaluateEIAtPointList</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, double *restrict function_values, double *restrict best_next_point)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function is same as <tt class="docutils literal"><span class="pre">EvaluateEIAtPointList</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>, except that it is
+specifically used for GPU functions. Refer to <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt> for detailed documentation.</p>
+<p><p>This function is the same as <tt class="docutils literal"><span class="pre">EvaluateEIAtPointList</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> except that it is
+specifically used for GPU EI evaluators. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed documentation.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">initial_guesses[dim][num_to_sample][num_multistarts]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">list of points at which to compute EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_multistarts:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the &#8220;p&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">the device ID of GPU used for computation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">a UniformRandomGenerator object that provide
+the (pesudo)random source for MC integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_next_point corresponds to a nonzero EI</td>
+</tr>
+<tr class="field-even field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">function_values[num_multistarts]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">EI evaluated at each point of <tt class="docutils literal"><span class="pre">initial_guesses</span></tt>, in the same order as
+<tt class="docutils literal"><span class="pre">initial_guesses</span></tt>; never dereferenced if nullptr</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">best_next_point[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points yielding the best EI according to dumb search</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a6ad61ddc353c87d2639162be2aac6606"></span><div class="line-block">
+<div class="line">template &lt; typename DomainType &gt;</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>This function is same as <tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSample</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt>, except that it is
+specifically used for GPU functions. Refer to <tt class="docutils literal"><span class="pre">gpp_math.cpp</span></tt> for detailed documentation.</p>
+<p><p>This function is the same as <tt class="docutils literal"><span class="pre">ComputeOptimalPointsToSample</span></tt> in <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> except that it is
+specifically used for GPU EI evaluators. Refer to <tt class="docutils literal"><span class="pre">gpp_math.hpp</span></tt> for detailed documentation.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gaussian_process:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">GaussianProcess object (holds <tt class="docutils literal"><span class="pre">points_sampled</span></tt>, <tt class="docutils literal"><span class="pre">values</span></tt>, <tt class="docutils literal"><span class="pre">noise_variance</span></tt>, derived quantities)
+that describes the underlying GP</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">optimizer_parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">GradientDescentParameters object that describes the parameters controlling EI optimization
+(e.g., number of iterations, tolerances, learning rate)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">domain:</th><td class="field-body">object specifying the domain to optimize over (see <tt class="docutils literal"><span class="pre">gpp_domain.hpp</span></tt>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">thread_schedule:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">struct instructing OpenMP on how to schedule threads; i.e., (suggestions in parens)
+max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (0).</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrent experiments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the p in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">best_so_far:</th><td class="field-body">value of the best sample so far (must be <tt class="docutils literal"><span class="pre">min(points_sampled_value)</span></tt>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">lhc_search_only:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">whether to ONLY use latin hypercube search (and skip gradient descent EI opt)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_lhc_samples:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of samples to draw if/when doing latin hypercube search</td>
+</tr>
+<tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">device ID of GPU used for computation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if best_points_to_sample corresponds to a nonzero EI if sampled simultaneously</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">best_points_to_sample[num_to_sample*dim]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">point yielding the best EI according to MGD</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1aad156db43b4ff6a3dd430aa0c1030b2c"></span><div class="line-block">
+<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a6f4eea3669e85d400df76d065775ac1d"></span><div class="line-block">
+<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+</div></blockquote>
 </div></blockquote>
 </p>
 </div>

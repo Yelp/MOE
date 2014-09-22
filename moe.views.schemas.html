@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -240,6 +241,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.views.schemas.rest.html">moe.views.schemas.rest package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_bla">moe.views.schemas.rest.bandit_bla module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_epsilon">moe.views.schemas.rest.bandit_epsilon module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_ucb">moe.views.schemas.rest.bandit_ucb module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_ei">moe.views.schemas.rest.gp_ei module</a></li>
@@ -316,7 +318,7 @@ Each allocation is in range [0,1].</p>
 <dl class="method">
 <dt id="moe.views.schemas.bandit_pretty_view.ArmsSampled.validator">
 <tt class="descname">validator</tt><big>(</big><em>node</em>, <em>cstruct</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas/bandit_pretty_view.html#ArmsSampled.validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.bandit_pretty_view.ArmsSampled.validator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, SingleArm) key-value pairs. Default value for variance of an arm is None.</p>
+<dd><p>Raise an exception if the node value (cstruct) is not a valid dictionary of (arm name, SingleArm) key-value pairs. Default value for loss is 0. Default value for variance of an arm is None.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

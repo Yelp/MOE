@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -241,7 +242,7 @@
 
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
 
-<span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EPSILON</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPE_GREEDY</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_EPSILON</span><span class="p">,</span> <span class="n">DEFAULT_EPSILON_SUBTYPE</span>
 <span class="kn">from</span> <span class="nn">moe.bandit.linkers</span> <span class="kn">import</span> <span class="n">EPSILON_SUBTYPES_TO_BANDIT_METHODS</span>
 <span class="kn">from</span> <span class="nn">moe.views.bandit_pretty_view</span> <span class="kn">import</span> <span class="n">BanditPrettyView</span>
 <span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">BANDIT_EPSILON_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_EPSILON_PRETTY_ROUTE_NAME</span>
@@ -262,7 +263,7 @@
     <span class="n">response_schema</span> <span class="o">=</span> <span class="n">BanditResponse</span><span class="p">()</span>
 
     <span class="n">_pretty_default_request</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">&quot;subtype&quot;</span><span class="p">:</span> <span class="n">EPSILON_SUBTYPE_GREEDY</span><span class="p">,</span>
+            <span class="s">&quot;subtype&quot;</span><span class="p">:</span> <span class="n">DEFAULT_EPSILON_SUBTYPE</span><span class="p">,</span>
             <span class="s">&quot;historical_info&quot;</span><span class="p">:</span> <span class="n">BanditPrettyView</span><span class="o">.</span><span class="n">_pretty_default_historical_info</span><span class="p">,</span>
             <span class="s">&quot;hyperparameter_info&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;epsilon&quot;</span><span class="p">:</span> <span class="n">DEFAULT_EPSILON</span><span class="p">},</span>
             <span class="p">}</span>

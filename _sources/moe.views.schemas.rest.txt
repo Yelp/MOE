@@ -4,6 +4,14 @@ moe.views.schemas.rest package
 Submodules
 ----------
 
+moe.views.schemas.rest.bandit_bla module
+----------------------------------------
+
+.. automodule:: moe.views.schemas.rest.bandit_bla
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.views.schemas.rest.bandit_epsilon module
 --------------------------------------------
 

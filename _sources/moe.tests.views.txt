@@ -27,6 +27,14 @@ moe.tests.views.rest_test_case module
     :undoc-members:
     :show-inheritance:
 
+moe.tests.views.utils_test module
+---------------------------------
+
+.. automodule:: moe.tests.views.utils_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

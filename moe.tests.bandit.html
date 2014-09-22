@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -301,49 +302,157 @@ verifying that default values do not throw an error.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.bernoulli_historical_infos_to_test">
+<tt class="descname">bernoulli_historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.bernoulli_historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test">
-<tt class="descname">historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x10e54abb0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54abe8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac20&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac58&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac90&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54acc8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ad00&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ad38&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x1180597c0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597f8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059830&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059868&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x1180598a0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case">
-<tt class="descname">one_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54abb0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">one_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case">
-<tt class="descname">three_arms_float_payoffs_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac90&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_float_payoffs_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597f8&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case">
-<tt class="descname">three_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac58&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597c0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case">
-<tt class="descname">three_arms_two_winners_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ad00&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_two_winners_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059868&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case">
-<tt class="descname">three_arms_two_winners_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54acc8&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_two_winners_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059830&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case">
-<tt class="descname">three_arms_with_variance_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ad38&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_with_variance_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180598a0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case">
-<tt class="descname">two_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54ac20&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">two_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case">
-<tt class="descname">two_unsampled_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x10e54abe8&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">two_unsampled_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.bandit.bla_test">
+<span id="moe-tests-bandit-bla-test-module"></span><h2>moe.tests.bandit.bla_test module<a class="headerlink" href="#module-moe.tests.bandit.bla_test" title="Permalink to this headline">¶</a></h2>
+<p>Test UCB1 bandit implementation.</p>
+<p>Test that the one arm case returns the given arm as the winning arm.
+Test that two-arm cases with specified random seeds return expected results.</p>
+<dl class="class">
+<dt id="moe.tests.bandit.bla_test.BLATest">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bla_test.</tt><tt class="descname">BLATest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
+<p>Verify that different historical infos return correct results.</p>
+<dl class="attribute">
+<dt id="moe.tests.bandit.bla_test.BLATest.bandit_class">
+<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.bandit_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">BLA</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.bla_test.BLATest.test_one_arm">
+<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.test_one_arm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.bla_test.BLATest.test_two_arms_one_winner">
+<tt class="descname">test_two_arms_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest.test_two_arms_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.test_two_arms_one_winner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the two-arms case with random seed 0 always allocate arm1:1.0 and arm2:0.0.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.bandit.data_containers_test">
+<span id="moe-tests-bandit-data-containers-test-module"></span><h2>moe.tests.bandit.data_containers_test module<a class="headerlink" href="#module-moe.tests.bandit.data_containers_test" title="Permalink to this headline">¶</a></h2>
+<p>Tests for functions in SampleArm and HistoricalData.</p>
+<dl class="class">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.data_containers_test.</tt><tt class="descname">DataContainersTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
+<p>Tests functions in <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a> and <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.HistoricalData" title="moe.bandit.data_containers.HistoricalData"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.HistoricalData</span></tt></a>.</p>
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.disable_logging">
+<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable logging (for the duration of this test case).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.enable_logging">
+<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.enable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-enable logging (so other test cases are unaffected).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms">
+<tt class="descname">test_historical_data_append_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that appending arms to HistoricalData updates historical info correctly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms_with_variance_invalid">
+<tt class="descname">test_historical_data_append_arms_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_arms_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that adding arms with variance causes a ValueError.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_unsampled_arm">
+<tt class="descname">test_historical_data_append_unsampled_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_unsampled_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_unsampled_arm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that adding an unsampled arm (already exists in historical info) to HistoricalData does not change anything.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_str">
+<tt class="descname">test_historical_data_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test HistoricalData&#8217;s __str__ overload operator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add">
+<tt class="descname">test_sample_arm_add</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test SampleArm&#8217;s __add__ overload operator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add_arm_with_variance_invalid">
+<tt class="descname">test_sample_arm_add_arm_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_add_arm_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add_arm_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_iadd">
+<tt class="descname">test_sample_arm_iadd</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_iadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_iadd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test SampleArm&#8217;s __iadd__ overload operator.</p>
+<p>Verify that after x += y, x gets the new value x + y and still retains its old id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_str">
+<tt class="descname">test_sample_arm_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test SampleArm&#8217;s __str__ overload operator.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -759,10 +868,7 @@ Test different cases including unsampled arms and multiple winners.</p>
 <li>Test cases/test setup files</li>
 <li>Tests for bandit/epsilon</li>
 <li>Tests for bandit/ucb</li>
-</ul>
-<p><strong>Files in this package</strong></p>
-<ul class="simple">
-<li>bandit_test_case.py: test case with different sampled arm historical info inputs</li>
+<li>Tests for bandit/bla</li>
 </ul>
 <p>This package includes:</p>
 <ul class="simple">
@@ -773,6 +879,7 @@ Test different cases including unsampled arms and multiple winners.</p>
 <ul class="simple">
 <li><a class="reference internal" href="#module-moe.tests.bandit.bandit_interface_test" title="moe.tests.bandit.bandit_interface_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bandit_interface_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface" title="moe.bandit.interfaces.bandit_interface.BanditInterface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface.BanditInterface</span></tt></a></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.bandit_test_case" title="moe.tests.bandit.bandit_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case</span></tt></a>: base test case for bandit tests with a simple integration test case</li>
+<li><a class="reference internal" href="#module-moe.tests.bandit.bla_test" title="moe.tests.bandit.bla_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bla_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.bla.BLA" title="moe.bandit.bla.BLA"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.bla.BLA</span></tt></a></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_first_test" title="moe.tests.bandit.epsilon_first_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_first_test</span></tt></a>: tests for <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.EpsilonFirst</span></tt></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_greedy_test" title="moe.tests.bandit.epsilon_greedy_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_greedy_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy" title="moe.bandit.epsilon_greedy.EpsilonGreedy"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.EpsilonGreedy</span></tt></a></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_test" title="moe.tests.bandit.epsilon_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_test</span></tt></a>: tests for <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.Epsilon</span></tt></li>

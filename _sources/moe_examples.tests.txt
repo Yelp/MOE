@@ -4,6 +4,14 @@ moe_examples.tests package
 Submodules
 ----------
 
+moe_examples.tests.bandit_example_test module
+---------------------------------------------
+
+.. automodule:: moe_examples.tests.bandit_example_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe_examples.tests.combined_example_test module
 -----------------------------------------------
 

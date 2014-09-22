@@ -20,6 +20,22 @@ moe.tests.bandit.bandit_test_case module
     :undoc-members:
     :show-inheritance:
 
+moe.tests.bandit.bla_test module
+--------------------------------
+
+.. automodule:: moe.tests.bandit.bla_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.data_containers_test module
+--------------------------------------------
+
+.. automodule:: moe.tests.bandit.data_containers_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.tests.bandit.epsilon_first_test module
 ------------------------------------------
 

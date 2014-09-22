@@ -4,6 +4,14 @@ moe.easy_interface package
 Submodules
 ----------
 
+moe.easy_interface.bandit_simple_endpoint module
+------------------------------------------------
+
+.. automodule:: moe.easy_interface.bandit_simple_endpoint
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.easy_interface.experiment module
 ------------------------------------
 

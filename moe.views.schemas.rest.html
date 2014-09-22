@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -239,6 +240,64 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.views.schemas.rest.bandit_bla">
+<span id="moe-views-schemas-rest-bandit-bla-module"></span><h2>moe.views.schemas.rest.bandit_bla module<a class="headerlink" href="#module-moe.views.schemas.rest.bandit_bla" title="Permalink to this headline">¶</a></h2>
+<p>Request/response schemas for <tt class="docutils literal"><span class="pre">bandit_bla</span></tt> endpoints.</p>
+<dl class="class">
+<dt id="moe.views.schemas.rest.bandit_bla.BanditBLARequest">
+<em class="property">class </em><tt class="descclassname">moe.views.schemas.rest.bandit_bla.</tt><tt class="descname">BanditBLARequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/schemas/rest/bandit_bla.html#BanditBLARequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.schemas.rest.bandit_bla.BanditBLARequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema" title="moe.views.schemas.base_schemas.StrictMappingSchema"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.base_schemas.StrictMappingSchema</span></tt></a></p>
+<p>A <a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_bla" title="moe.views.rest.bandit_bla"><tt class="xref py py-mod docutils literal"><span class="pre">moe.views.rest.bandit_bla</span></tt></a> request colander schema.</p>
+<p><strong>Required fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>historical_info</strong> &#8211; (<a class="reference internal" href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo" title="moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo</span></tt></a>) object of historical data describing arm performance</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Optional fields</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>subtype</strong> &#8211; (<em>str</em>) subtype of the BLA bandit algorithm (default: BLA)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Minimal Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
+
+{
+    &quot;historical_info&quot;: {
+        &quot;arms_sampled&quot;: {
+            &quot;arm1&quot;: {&quot;win&quot;: 20, &quot;total&quot;: 25},
+            &quot;arm2&quot;: {&quot;win&quot;: 20, &quot;total&quot;: 30},
+            &quot;arm3&quot;: {&quot;win&quot;: 0, &quot;total&quot;: 0},
+            },
+        },
+}
+</pre></div>
+</div>
+<p><strong>Example Full Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre>Content-Type: text/javascript
+
+{
+    &quot;subtype&quot;: &quot;BLA&quot;,
+    &quot;historical_info&quot;: {
+        &quot;arms_sampled&quot;: {
+            &quot;arm1&quot;: {&quot;win&quot;: 20, &quot;loss&quot;: 0, &quot;total&quot;: 25},
+            &quot;arm2&quot;: {&quot;win&quot;: 20, &quot;loss&quot;: 0, &quot;total&quot;: 30},
+            &quot;arm3&quot;: {&quot;win&quot;: 0, &quot;loss&quot;: 0, &quot;total&quot;: 0},
+            },
+        },
+}
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.views.schemas.rest.bandit_epsilon">
 <span id="moe-views-schemas-rest-bandit-epsilon-module"></span><h2>moe.views.schemas.rest.bandit_epsilon module<a class="headerlink" href="#module-moe.views.schemas.rest.bandit_epsilon" title="Permalink to this headline">¶</a></h2>
 <p>Request/response schemas for <tt class="docutils literal"><span class="pre">bandit_epsilon</span></tt> endpoints.</p>
@@ -326,7 +385,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>subtype</strong> &#8211; (<em>str</em>) subtype of the UCB bandit algorithm (default: 1)</td>
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>subtype</strong> &#8211; (<em>str</em>) subtype of the UCB bandit algorithm (default: UCB1)</td>
 </tr>
 </tbody>
 </table>

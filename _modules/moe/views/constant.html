@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -295,6 +296,13 @@
 
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 </div>
+<span class="n">BANDIT_BLA_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;bandit_bla&#39;</span>
+<span class="n">BANDIT_BLA_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/bandit/bla&#39;</span>
+<span class="n">BANDIT_BLA_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">BANDIT_BLA_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_BLA_ENDPOINT</span><span class="p">)</span>
+<span class="n">BANDIT_BLA_PRETTY_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;bandit_bla_pretty&#39;</span>
+<span class="n">BANDIT_BLA_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/bandit/bla/pretty&#39;</span>
+<span class="n">BANDIT_BLA_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">BANDIT_BLA_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_BLA_PRETTY_ENDPOINT</span><span class="p">)</span>
+
 <span class="n">BANDIT_EPSILON_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;bandit_epsilon&#39;</span>
 <span class="n">BANDIT_EPSILON_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/bandit/epsilon&#39;</span>
 <span class="n">BANDIT_EPSILON_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">BANDIT_EPSILON_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_EPSILON_ENDPOINT</span><span class="p">)</span>
@@ -308,6 +316,12 @@
 <span class="n">BANDIT_UCB_PRETTY_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;bandit_ucb_pretty&#39;</span>
 <span class="n">BANDIT_UCB_PRETTY_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/bandit/ucb/pretty&#39;</span>
 <span class="n">BANDIT_UCB_PRETTY_MOE_ROUTE</span> <span class="o">=</span> <span class="n">MoeRoute</span><span class="p">(</span><span class="n">BANDIT_UCB_PRETTY_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_UCB_PRETTY_ENDPOINT</span><span class="p">)</span>
+
+<span class="n">BANDIT_ROUTE_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">BANDIT_BLA_ROUTE_NAME</span><span class="p">,</span>
+        <span class="n">BANDIT_EPSILON_ROUTE_NAME</span><span class="p">,</span>
+        <span class="n">BANDIT_UCB_ROUTE_NAME</span><span class="p">,</span>
+        <span class="p">]</span>
 
 <span class="n">GP_EI_ROUTE_NAME</span> <span class="o">=</span> <span class="s">&#39;gp_ei&#39;</span>
 <span class="n">GP_EI_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;/gp/ei&#39;</span>
@@ -391,6 +405,7 @@
         <span class="p">]</span>
 
 <span class="n">ALL_REST_MOE_ROUTES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">BANDIT_BLA_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">BANDIT_EPSILON_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">BANDIT_UCB_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">GP_EI_MOE_ROUTE</span><span class="p">,</span>
@@ -412,6 +427,7 @@
         <span class="p">]</span>
 
 <span class="n">ALL_PRETTY_MOE_ROUTES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">BANDIT_BLA_PRETTY_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">BANDIT_EPSILON_PRETTY_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">BANDIT_UCB_PRETTY_MOE_ROUTE</span><span class="p">,</span>
         <span class="n">GP_EI_PRETTY_MOE_ROUTE</span><span class="p">,</span>

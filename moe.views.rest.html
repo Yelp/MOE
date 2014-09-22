@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -237,6 +238,74 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.views.rest.bandit_bla">
+<span id="moe-views-rest-bandit-bla-module"></span><h2>moe.views.rest.bandit_bla module<a class="headerlink" href="#module-moe.views.rest.bandit_bla" title="Permalink to this headline">¶</a></h2>
+<p>Classes for <tt class="docutils literal"><span class="pre">bandit_bla</span></tt> endpoints.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>pretty and backend views</li>
+</ol>
+</div></blockquote>
+<dl class="class">
+<dt id="moe.views.rest.bandit_bla.BanditBLAView">
+<em class="property">class </em><tt class="descclassname">moe.views.rest.bandit_bla.</tt><tt class="descname">BanditBLAView</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/views/rest/bandit_bla.html#BanditBLAView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.bandit_bla.BanditBLAView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.views.html#moe.views.bandit_pretty_view.BanditPrettyView" title="moe.views.bandit_pretty_view.BanditPrettyView"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.bandit_pretty_view.BanditPrettyView</span></tt></a></p>
+<p>Views for bandit_bla endpoints.</p>
+<dl class="method">
+<dt id="moe.views.rest.bandit_bla.BanditBLAView.bandit_bla_view">
+<tt class="descname">bandit_bla_view</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/views/rest/bandit_bla.html#BanditBLAView.bandit_bla_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.bandit_bla.BanditBLAView.bandit_bla_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Endpoint for bandit_epsilon POST requests.</p>
+<dl class="post">
+<dt id="post--bandit-bla">
+<tt class="descname">POST </tt><tt class="descname">/bandit/bla</tt><a class="headerlink" href="#post--bandit-bla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the optimal arm from a set of arms, given historical data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Input:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.schemas.rest.html#moe.views.schemas.rest.bandit_bla.BanditBLARequest" title="moe.views.schemas.rest.bandit_bla.BanditBLARequest"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.rest.bandit_bla.BanditBLARequest</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Output:</th><td class="field-body"><p class="first"><a class="reference internal" href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditResponse" title="moe.views.schemas.bandit_pretty_view.BanditResponse"><tt class="xref py py-class docutils literal"><span class="pre">moe.views.schemas.bandit_pretty_view.BanditResponse</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Status Codes:</th><td class="field-body"><ul class="first last simple">
+<li><strong>200</strong> &#8211; returns a response</li>
+<li><strong>500</strong> &#8211; server error</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.views.rest.bandit_bla.BanditBLAView.pretty_view">
+<tt class="descname">pretty_view</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/views/rest/bandit_bla.html#BanditBLAView.pretty_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.rest.bandit_bla.BanditBLAView.pretty_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pretty, browser interactive view for the interface. Includes form request and response.</p>
+<dl class="get">
+<dt id="get--bandit-bla-pretty">
+<tt class="descname">GET </tt><tt class="descname">/bandit/bla/pretty</tt><a class="headerlink" href="#get--bandit-bla-pretty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.rest.bandit_bla.BanditBLAView.request_schema">
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.bandit_bla.BanditBLARequest object at 4741251664 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_bla.BanditBLAView.request_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="moe.views.rest.bandit_bla.BanditBLAView.response_schema">
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.bandit_pretty_view.BanditResponse object at 4741251792 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_bla.BanditBLAView.response_schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.views.rest.bandit_epsilon">
 <span id="moe-views-rest-bandit-epsilon-module"></span><h2>moe.views.rest.bandit_epsilon module<a class="headerlink" href="#module-moe.views.rest.bandit_epsilon" title="Permalink to this headline">¶</a></h2>
 <p>Classes for <tt class="docutils literal"><span class="pre">bandit_epsilon</span></tt> endpoints.</p>
@@ -314,12 +383,12 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.bandit_epsilon.BanditEpsilonView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.bandit_epsilon.BanditEpsilonRequest object at 4493390544 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_epsilon.BanditEpsilonView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.bandit_epsilon.BanditEpsilonRequest object at 4740751184 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_epsilon.BanditEpsilonView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.bandit_epsilon.BanditEpsilonView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.bandit_pretty_view.BanditResponse object at 4493390288 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_epsilon.BanditEpsilonView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.bandit_pretty_view.BanditResponse object at 4740750096 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_epsilon.BanditEpsilonView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -382,12 +451,12 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.bandit_ucb.BanditUCBView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.bandit_ucb.BanditUCBRequest object at 4525262736 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_ucb.BanditUCBView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.bandit_ucb.BanditUCBRequest object at 4741678800 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_ucb.BanditUCBView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.bandit_ucb.BanditUCBView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.bandit_pretty_view.BanditResponse object at 4525262416 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_ucb.BanditUCBView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.bandit_pretty_view.BanditResponse object at 4740944784 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.bandit_ucb.BanditUCBView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -450,12 +519,12 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_ei.GpEiView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_ei.GpEiRequest object at 4543967440 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_ei.GpEiRequest object at 4747345616 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_ei.GpEiView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_ei.GpEiResponse object at 4543967568 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_ei.GpEiResponse object at 4747345744 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_ei.GpEiView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -518,12 +587,12 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest object at 4485270864 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_hyper_opt.GpHyperOptRequest object at 4741049360 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_hyper_opt.GpHyperOptResponse object at 4485270992 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_hyper_opt.GpHyperOptResponse object at 4741047376 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_hyper_opt.GpHyperOptView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -570,7 +639,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest object at 4535586960 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarRequest object at 4740392336 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarBaseView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -623,7 +692,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarDiagResponse object at 4535587280 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarDiagResponse object at 4740392656 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -676,7 +745,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanVarView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarResponse object at 4535587152 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanVarResponse object at 4740392528 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanVarView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -729,7 +798,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpMeanView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanResponse object at 4535588304 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpMeanResponse object at 4740393680 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpMeanView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -782,7 +851,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpVarDiagView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpVarDiagResponse object at 4535588880 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpVarDiagResponse object at 4740394256 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarDiagView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -835,7 +904,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_mean_var.GpVarView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpVarResponse object at 4535588560 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_mean_var.GpVarResponse object at 4740393936 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_mean_var.GpVarView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -912,7 +981,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest object at 4537756432 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_next_points_constant_liar.GpNextPointsConstantLiarRequest object at 4748855952 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1029,7 +1098,7 @@ different subtypes.</p>
 
 <dl class="attribute">
 <dt id="moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_next_points_kriging.GpNextPointsKrigingRequest object at 4523307408 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.rest.gp_next_points_kriging.GpNextPointsKrigingRequest object at 4750201744 (named )&gt;</em><a class="headerlink" href="#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1131,12 +1200,42 @@ different subtypes.</p>
 <div><dl class="post">
 <dt id="post--bandit-epsilon">
 <tt class="descname">POST </tt><tt class="descname">/bandit/epsilon</tt><a class="headerlink" href="#post--bandit-epsilon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the arm allocations and the best arm to pull next, given subtype, historical data, hyperparameters.</p>
+<dd><p>Calculates the arm allocations and the best arm to pull next using Epsilon policy, given subtype, historical data, hyperparameters.</p>
 </dd></dl>
 
 <dl class="get">
 <dt id="get--bandit-epsilon-pretty">
 <tt class="descname">GET </tt><tt class="descname">/bandit/epsilon/pretty</tt><a class="headerlink" href="#get--bandit-epsilon-pretty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="#module-moe.views.rest.bandit_ucb" title="moe.views.rest.bandit_ucb"><tt class="xref py py-mod docutils literal"><span class="pre">bandit_ucb</span></tt></a></p>
+<blockquote>
+<div><dl class="post">
+<dt id="post--bandit-ucb">
+<tt class="descname">POST </tt><tt class="descname">/bandit/ucb</tt><a class="headerlink" href="#post--bandit-ucb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the arm allocations and the best arm to pull next using UCB policy, given subtype, historical data, hyperparameters.</p>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--bandit-ucb-pretty">
+<tt class="descname">GET </tt><tt class="descname">/bandit/ucb/pretty</tt><a class="headerlink" href="#get--bandit-ucb-pretty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="#module-moe.views.rest.bandit_bla" title="moe.views.rest.bandit_bla"><tt class="xref py py-mod docutils literal"><span class="pre">bandit_bla</span></tt></a></p>
+<blockquote>
+<div><dl class="post">
+<dt id="post--bandit-bla">
+<tt class="descname">POST </tt><tt class="descname">/bandit/bla</tt><a class="headerlink" href="#post--bandit-bla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the arm allocations and the best arm to pull next using BLA policy, given subtype, historical data, hyperparameters.</p>
+</dd></dl>
+
+<dl class="get">
+<dt id="get--bandit-bla-pretty">
+<tt class="descname">GET </tt><tt class="descname">/bandit/bla/pretty</tt><a class="headerlink" href="#get--bandit-bla-pretty" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div></blockquote>

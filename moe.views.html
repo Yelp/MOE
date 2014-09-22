@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -238,6 +239,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.views.rest.html">moe.views.rest package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_bla">moe.views.rest.bandit_bla module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_epsilon">moe.views.rest.bandit_epsilon module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.bandit_ucb">moe.views.rest.bandit_ucb module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.views.rest.html#module-moe.views.rest.gp_ei">moe.views.rest.gp_ei module</a></li>
@@ -253,6 +255,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.views.schemas.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="moe.views.schemas.rest.html">moe.views.schemas.rest package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_bla">moe.views.schemas.rest.bandit_bla module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_epsilon">moe.views.schemas.rest.bandit_epsilon module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.bandit_ucb">moe.views.schemas.rest.bandit_ucb module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.views.schemas.rest.html#module-moe.views.schemas.rest.gp_ei">moe.views.schemas.rest.gp_ei module</a></li>
@@ -327,7 +330,7 @@ GP_NEXT_POINTS_&lt;NAME&gt;_PRETTY_MOE_ROUTE = MoeRoute(GP_NEXT_POINTS_&lt;NAME&
 GP_NEXT_POINTS_&lt;NAME&gt;_OPTIMIZER_METHOD_NAME = &lt;method name from <a class="reference internal" href="moe.optimal_learning.python.cpp_wrappers.html#module-moe.optimal_learning.python.cpp_wrappers.expected_improvement" title="moe.optimal_learning.python.cpp_wrappers.expected_improvement"><tt class="xref py py-mod docutils literal"><span class="pre">moe.optimal_learning.python.cpp_wrappers.expected_improvement</span></tt></a>&gt;</div></blockquote>
 <dl class="data">
 <dt id="moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT">
-<tt class="descclassname">moe.views.constant.</tt><tt class="descname">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</tt><em class="property"> = {'gp_hyper_opt': '/gp/hyper_opt', 'gp_var_diag': '/gp/var/diag', 'gp_next_points_kriging': '/gp/next_points/kriging', 'bandit_ucb': '/bandit/ucb', 'bandit_epsilon': '/bandit/epsilon', 'gp_mean': '/gp/mean', 'gp_var': '/gp/var', 'gp_next_points_epi': '/gp/next_points/epi', 'gp_ei': '/gp/ei', 'gp_mean_var_diag': '/gp/mean_var/diag', 'gp_mean_var': '/gp/mean_var', 'gp_next_points_constant_liar': '/gp/next_points/constant_liar'}</em><a class="headerlink" href="#moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moe.views.constant.</tt><tt class="descname">ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT</tt><em class="property"> = {'gp_hyper_opt': '/gp/hyper_opt', 'gp_var_diag': '/gp/var/diag', 'gp_next_points_kriging': '/gp/next_points/kriging', 'bandit_ucb': '/bandit/ucb', 'bandit_epsilon': '/bandit/epsilon', 'gp_mean': '/gp/mean', 'gp_var': '/gp/var', 'gp_next_points_epi': '/gp/next_points/epi', 'bandit_bla': '/bandit/bla', 'gp_ei': '/gp/ei', 'gp_mean_var_diag': '/gp/mean_var/diag', 'gp_mean_var': '/gp/mean_var', 'gp_next_points_constant_liar': '/gp/next_points/constant_liar'}</em><a class="headerlink" href="#moe.views.constant.ALL_REST_ROUTES_ROUTE_NAME_TO_ENDPOINT" title="Permalink to this definition">¶</a></dt>
 <dd><p>dict mapping from MOE route names to MOE endpoint names</p>
 </dd></dl>
 
@@ -500,7 +503,7 @@ These need to match method names in moe/optimal_learning/python/cpp_wrappers/exp
 </dl>
 <dl class="class">
 <dt id="moe.views.gp_hyperparameter_update.GpEiRequest">
-<em class="property">class </em><tt class="descclassname">moe.views.gp_hyperparameter_update.</tt><tt class="descname">GpEiRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="reference internal" href="_modules/moe/views/gp_hyperparameter_update.html#GpEiRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.views.gp_hyperparameter_update.GpEiRequest" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.views.gp_hyperparameter_update.</tt><tt class="descname">GpEiRequest</tt><big>(</big><em>*arg</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#moe.views.gp_hyperparameter_update.GpEiRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">colander.Schema</span></tt></p>
 <p>A gp_ei request colander schema.</p>
 <p><strong>Required fields</strong></p>
@@ -588,12 +591,12 @@ performance. To bootstrap more points try sampling at random, or from a grid.</p
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema">
-<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest object at 4476512400 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">request_schema</tt><em class="property"> = &lt;moe.views.schemas.gp_next_points_pretty_view.GpNextPointsRequest object at 4740391760 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.request_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema">
-<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.gp_next_points_pretty_view.GpNextPointsResponse object at 4476513744 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">response_schema</tt><em class="property"> = &lt;moe.views.schemas.gp_next_points_pretty_view.GpNextPointsResponse object at 4740391632 (named )&gt;</em><a class="headerlink" href="#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.response_schema" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

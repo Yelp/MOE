@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -393,7 +394,7 @@ Newton is also not implemented for any of the GP_NEXT_POINTS_* endpoints.</p>
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.data_containers.</tt><tt class="descname">HistoricalData</tt><big>(</big><em>dim</em>, <em>sample_points=None</em>, <em>validate=False</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/data_containers.html#HistoricalData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.data_containers.HistoricalData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A data container for storing the historical data from an entire experiment in a layout convenient for this library.</p>
-<p>Users will likely find it most convenient to store experiment historical data in &#8220;tuples&#8221; of
+<p>Users will likely find it most convenient to store experiment historical data in tuples of
 (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.
 The <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.SamplePoint</span></tt> class (above) provides a convenient representation of this input format, but users are <em>not</em> required
 to use it.</p>

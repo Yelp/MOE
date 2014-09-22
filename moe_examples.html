@@ -143,6 +143,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -235,6 +236,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.tests.html">moe_examples.tests package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.bandit_example_test">moe_examples.tests.bandit_example_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.combined_example_test">moe_examples.tests.combined_example_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.hyper_opt_of_gp_from_historical_data_test">moe_examples.tests.hyper_opt_of_gp_from_historical_data_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.tests.html#module-moe_examples.tests.mean_and_var_of_gp_from_historic_data_test">moe_examples.tests.mean_and_var_of_gp_from_historic_data_test module</a></li>
@@ -248,6 +250,41 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe_examples.bandit_example">
+<span id="moe-examples-bandit-example-module"></span><h2>moe_examples.bandit_example module<a class="headerlink" href="#module-moe_examples.bandit_example" title="Permalink to this headline">¶</a></h2>
+<p>An example for accessing the all the types in moe/easy_interface/bandit_simple_endpoint.</p>
+<p>The following function is used:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.bandit_simple_endpoint.bandit" title="moe.easy_interface.bandit_simple_endpoint.bandit"><tt class="xref py py-func docutils literal"><span class="pre">moe.easy_interface.bandit_simple_endpoint.bandit()</span></tt></a></li>
+</ol>
+</div></blockquote>
+<p>See <a class="reference internal" href="bandit.html"><em>Multi-Armed Bandits</em></a> for more details on multi-armed bandits.
+The function requires some historical information to inform bandit.</p>
+<p>We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.</p>
+<dl class="function">
+<dt id="moe_examples.bandit_example.run_example">
+<tt class="descclassname">moe_examples.bandit_example.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=True</em>, <em>testapp=None</em>, <em>bandit_bla_kwargs=None</em>, <em>bandit_epsilon_kwargs=None</em>, <em>bandit_ucb_kwargs=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe_examples/bandit_example.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.bandit_example.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the bandit example.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; Whether to print information to the screen [True]</li>
+<li><strong>testapp</strong> (<em>Pyramid test application</em>) &#8211; Whether to use a supplied test pyramid application or a rest server [None]</li>
+<li><strong>bandit_bla_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to bandit_bla endpoint</li>
+<li><strong>bandit_epsilon_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to bandit_epsilon endpoint</li>
+<li><strong>bandit_ucb_kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to bandit_ucb endpoint</li>
+<li><strong>kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to all endpoints</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-moe_examples.combined_example">
 <span id="moe-examples-combined-example-module"></span><h2>moe_examples.combined_example module<a class="headerlink" href="#module-moe_examples.combined_example" title="Permalink to this headline">¶</a></h2>

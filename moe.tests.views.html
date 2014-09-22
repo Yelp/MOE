@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -240,6 +241,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.tests.views.rest.html">moe.tests.views.rest package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.views.rest.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_bla_test">moe.tests.views.rest.bandit_bla_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_epsilon_test">moe.tests.views.rest.bandit_epsilon_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_test">moe.tests.views.rest.bandit_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.views.rest.html#module-moe.tests.views.rest.bandit_ucb_test">moe.tests.views.rest.bandit_ucb_test module</a></li>
@@ -321,6 +323,35 @@
 <dt id="moe.tests.views.rest_test_case.RestTestCase.endpoint">
 <tt class="descname">endpoint</tt><em class="property"> = None</em><a class="headerlink" href="#moe.tests.views.rest_test_case.RestTestCase.endpoint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe.tests.views.utils_test">
+<span id="moe-tests-views-utils-test-module"></span><h2>moe.tests.views.utils_test module<a class="headerlink" href="#module-moe.tests.views.utils_test" title="Permalink to this headline">¶</a></h2>
+<p>Tests for functions in utils.</p>
+<dl class="class">
+<dt id="moe.tests.views.utils_test.UtilsTest">
+<em class="property">class </em><tt class="descclassname">moe.tests.views.utils_test.</tt><tt class="descname">UtilsTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/utils_test.html#UtilsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.utils_test.UtilsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
+<p>Tests <tt class="xref py py-func docutils literal"><span class="pre">moe.bandit.views..utils._make_bandit_historical_info_from_params()</span></tt>.</p>
+<dl class="method">
+<dt id="moe.tests.views.utils_test.UtilsTest.make_params_from_bandit_historical_info">
+<tt class="descname">make_params_from_bandit_historical_info</tt><big>(</big><em>historical_info</em><big>)</big><a class="reference internal" href="_modules/moe/tests/views/utils_test.html#UtilsTest.make_params_from_bandit_historical_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.utils_test.UtilsTest.make_params_from_bandit_historical_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create params from given <tt class="docutils literal"><span class="pre">historical_info</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_make_bernoulli_arms">
+<tt class="descname">test_make_bandit_historical_info_from_params_make_bernoulli_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/utils_test.html#UtilsTest.test_make_bandit_historical_info_from_params_make_bernoulli_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_make_bernoulli_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the function can make historical infos with Bernoulli arms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_variance_passed_through">
+<tt class="descname">test_make_bandit_historical_info_from_params_variance_passed_through</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/views/utils_test.html#UtilsTest.test_make_bandit_historical_info_from_params_variance_passed_through"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_variance_passed_through" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the variance of a given sample arm got passed through.</p>
+</dd></dl>
 
 </dd></dl>
 

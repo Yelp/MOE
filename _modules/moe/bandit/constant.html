@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -233,8 +234,8 @@
 <span class="sd">&quot;&quot;&quot;Some default configuration parameters for bandit components.&quot;&quot;&quot;</span>
 <span class="n">DEFAULT_BANDIT_HISTORICAL_INFO</span> <span class="o">=</span> <span class="p">{</span>
                            <span class="s">&quot;arms_sampled&quot;</span><span class="p">:</span> <span class="p">{</span>
-                                            <span class="s">&quot;arm1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;win&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&quot;loss&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&quot;total&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
-                                            <span class="s">&quot;arm2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;win&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&quot;loss&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&quot;total&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+                                            <span class="s">&quot;arm1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;win&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&quot;loss&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;total&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+                                            <span class="s">&quot;arm2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;win&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&quot;loss&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;total&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
                                             <span class="s">&quot;arm3&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;win&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;loss&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;total&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
                                             <span class="p">}</span>
                            <span class="p">}</span>
@@ -257,6 +258,13 @@
                 <span class="n">UCB_SUBTYPE_1_TUNED</span><span class="p">,</span>
                 <span class="p">]</span>
 
+<span class="c"># BLA subtypes</span>
+<span class="n">BLA_SUBTYPE_BLA</span> <span class="o">=</span> <span class="s">&#39;BLA&#39;</span>
+<span class="n">DEFAULT_BLA_SUBTYPE</span> <span class="o">=</span> <span class="n">BLA_SUBTYPE_BLA</span>
+<span class="n">BLA_SUBTYPES</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">BLA_SUBTYPE_BLA</span><span class="p">,</span>
+                <span class="p">]</span>
+
 <span class="c">#: Used in :func:`moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff`.</span>
 <span class="c">#: 0.25 is the maximum value the variance of a Bernoulli random variable can possibly take.</span>
 <span class="c">#: Because the variance formula is :math:`p(1-p)` where *p* is the probability of success</span>
@@ -273,12 +281,18 @@
         <span class="n">EPSILON_SUBTYPE_GREEDY</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;epsilon&#39;</span><span class="p">:</span> <span class="n">DEFAULT_EPSILON</span><span class="p">},</span>
         <span class="p">}</span>
 
+<span class="c"># Test Hyperparameters</span>
+<span class="n">TEST_EPSILON</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">TEST_TOTAL_SAMPLES</span> <span class="o">=</span> <span class="mi">200</span>
+
 <span class="c"># Bandit Endpoints</span>
+<span class="n">BANDIT_BLA_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;bla_endpoint&#39;</span>
 <span class="n">BANDIT_EPSILON_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;epsilon_endpoint&#39;</span>
 <span class="n">BANDIT_UCB_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;ucb_endpoint&#39;</span>
 <span class="n">BANDIT_ENDPOINTS</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">BANDIT_UCB_ENDPOINT</span><span class="p">,</span>
+                    <span class="n">BANDIT_BLA_ENDPOINT</span><span class="p">,</span>
                     <span class="n">BANDIT_EPSILON_ENDPOINT</span><span class="p">,</span>
+                    <span class="n">BANDIT_UCB_ENDPOINT</span><span class="p">,</span>
                     <span class="p">]</span>
 </pre></div>
 

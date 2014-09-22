@@ -144,6 +144,7 @@
 <li class="toctree-l1"><a class="reference internal" href="moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -248,6 +249,100 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.bandit.bla">
+<span id="moe-bandit-bla-module"></span><h2>moe.bandit.bla module<a class="headerlink" href="#module-moe.bandit.bla" title="Permalink to this headline">¶</a></h2>
+<p>Classes (Python) to compute the Bandit BLA (Bayesian Learning Automaton) arm allocation and choosing the arm to pull next.</p>
+<p>See <a class="reference internal" href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface" title="moe.bandit.interfaces.bandit_interface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface</span></tt></a> for further details on bandit.</p>
+<dl class="class">
+<dt id="moe.bandit.bla.BLA">
+<em class="property">class </em><tt class="descclassname">moe.bandit.bla.</tt><tt class="descname">BLA</tt><big>(</big><em>historical_info</em>, <em>subtype='BLA'</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/bla.html#BLA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.bla.BLA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface" title="moe.bandit.interfaces.bandit_interface.BanditInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface.BanditInterface</span></tt></a></p>
+<p>Implementation of the constructor of BLA (Bayesian Learning Automaton) and method allocate_arms.</p>
+<p>A class to encapsulate the computation of bandit BLA.
+The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.</p>
+<p>See <a class="reference internal" href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface" title="moe.bandit.interfaces.bandit_interface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface</span></tt></a> docs for further details.</p>
+<dl class="method">
+<dt id="moe.bandit.bla.BLA.allocate_arms">
+<tt class="descname">allocate_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/bandit/bla.html#BLA.allocate_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.bla.BLA.allocate_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the allocation to each arm given <tt class="docutils literal"><span class="pre">historical_info</span></tt>, running bandit <tt class="docutils literal"><span class="pre">subtype</span></tt> endpoint.</p>
+<p>Computes the allocation to each arm based on the given subtype, and, historical info.</p>
+<p>Works with k-armed bandits (k &gt;= 1).</p>
+<p>The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.
+The original algorithm handles k = 2. We extended the algorithm naturally to handle k &gt;= 1.</p>
+<p>This method will pull the optimal arm (best BLA payoff).</p>
+<p>See <a class="reference internal" href="#moe.bandit.bla.BLA.get_bla_payoff" title="moe.bandit.bla.BLA.get_bla_payoff"><tt class="xref py py-func docutils literal"><span class="pre">moe.bandit.bla.BLA.get_bla_payoff()</span></tt></a> for details on how to compute the BLA payoff</p>
+<p>In case of a tie, the method will split the allocation among the optimal arms.
+For example, if we have three arms (arm1, arm2, and arm3) with expected BLA payoff 0.5, 0.5, and 0.1 respectively.
+We split the allocation between the optimal arms arm1 and arm2.</p>
+<p><tt class="docutils literal"><span class="pre">{arm1:</span> <span class="pre">0.5,</span> <span class="pre">arm2:</span> <span class="pre">0.5,</span> <span class="pre">arm3:</span> <span class="pre">0.0}</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the dictionary of (arm, allocation) key-value pairs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">a dictionary of (str, float64) pairs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise:</th><td class="field-body">ValueError when <tt class="docutils literal"><span class="pre">sample_arms</span></tt> are empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.bandit.bla.BLA.get_bla_payoff">
+<tt class="descname">get_bla_payoff</tt><big>(</big><em>sampled_arm</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/bla.html#BLA.get_bla_payoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.bla.BLA.get_bla_payoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the BLA payoff using the BLA subtype formula.</p>
+<p>BLA payoff is computed as follows:</p>
+<div class="math">
+\[r_j = Sample(Beta(\alpha_j, \beta_j))\]</div>
+<p>where <span class="math">\(\alpha_j\)</span> is the number of arm <em>j</em> wins + 1 (<tt class="docutils literal"><span class="pre">sampled_arm.win</span></tt> + 1) and
+<span class="math">\(\beta_j\)</span> is the number of arm <em>j</em> losses + 1 (<tt class="docutils literal"><span class="pre">sampled_arm.total</span></tt> - <tt class="docutils literal"><span class="pre">sampled_arm.win</span></tt> + 1).</p>
+<p>In other words, BLA payoff is computed by sampling from a beta distribution <span class="math">\(Beta(\alpha, \beta)\)</span>
+with <span class="math">\(\alpha = number\_wins + 1\)</span> and
+<span class="math">\(\beta = number\_losses + 1 = number\_total - number\_wins + 1\)</span>.</p>
+<p>Note that for an unsampled arm, <span class="math">\(Beta(1, 1)\)</span> is a uniform distribution.
+Learn more about beta distribution at <a class="reference external" href="http://en.wikipedia.org/wiki/Beta_distribution">http://en.wikipedia.org/wiki/Beta_distribution</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampled_arm</strong> (<a class="reference internal" href="#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a>) &#8211; a sampled arm</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bla payoff</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float64</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">ValueError when <tt class="docutils literal"><span class="pre">sampled_arm</span></tt> is empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.bandit.bla.BLA.get_winning_arm_names">
+<tt class="descname">get_winning_arm_names</tt><big>(</big><em>arms_sampled</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/bla.html#BLA.get_winning_arm_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.bla.BLA.get_winning_arm_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the set of winning arm names based on the given <tt class="docutils literal"><span class="pre">arms_sampled</span></tt>..</p>
+<p>Throws an exception when arms_sampled is empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arms_sampled</strong> (<em>dictionary of (str, SampleArm()) pairs</em>) &#8211; a dictionary of arm name to <a class="reference internal" href="#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">set of names of the winning arms</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">frozenset(str)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">ValueError when <tt class="docutils literal"><span class="pre">arms_sampled</span></tt> are empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.bandit.constant">
 <span id="moe-bandit-constant-module"></span><h2>moe.bandit.constant module<a class="headerlink" href="#module-moe.bandit.constant" title="Permalink to this headline">¶</a></h2>
 <p>Some default configuration parameters for bandit components.</p>
@@ -266,12 +361,39 @@ See <a class="reference external" href="http://en.wikipedia.org/wiki/Bernoulli_d
 <span id="moe-bandit-data-containers-module"></span><h2>moe.bandit.data_containers module<a class="headerlink" href="#module-moe.bandit.data_containers" title="Permalink to this headline">¶</a></h2>
 <p>Data containers convenient for/used to interact with bandit members.</p>
 <dl class="class">
+<dt id="moe.bandit.data_containers.BernoulliArm">
+<em class="property">class </em><tt class="descclassname">moe.bandit.data_containers.</tt><tt class="descname">BernoulliArm</tt><big>(</big><em>win=0.0</em>, <em>loss=0.0</em>, <em>total=0</em>, <em>variance=None</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/data_containers.html#BernoulliArm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.data_containers.BernoulliArm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></p>
+<p>A Bernoulli arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.</p>
+<p>A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+See more details on Bernoulli distribution at <a class="reference external" href="http://en.wikipedia.org/wiki/Bernoulli_distribution">http://en.wikipedia.org/wiki/Bernoulli_distribution</a></p>
+<p>See superclass <a class="reference internal" href="#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">SampleArm</span></tt></a> for more details.</p>
+<dl class="method">
+<dt id="moe.bandit.data_containers.BernoulliArm.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/bandit/data_containers.html#BernoulliArm.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.data_containers.BernoulliArm.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check this Bernoulli arm is a valid Bernoulli arm. Also check that this BernoulliArm passes basic validity checks: all values are finite.</p>
+<p>A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+See more details on Bernoulli distribution at <a class="reference external" href="http://en.wikipedia.org/wiki/Bernoulli_distribution">http://en.wikipedia.org/wiki/Bernoulli_distribution</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">if any member data is non-finite or out of range or the arm is not a valid Bernoulli arm</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="moe.bandit.data_containers.HistoricalData">
 <em class="property">class </em><tt class="descclassname">moe.bandit.data_containers.</tt><tt class="descname">HistoricalData</tt><big>(</big><em>sample_arms=None</em>, <em>validate=True</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/data_containers.html#HistoricalData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.data_containers.HistoricalData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A data container for storing the historical data from an entire experiment in a layout convenient for this library.</p>
-<p>Users will likely find it most convenient to store experiment historical data of arms in &#8220;tuples&#8221; of
-(win, loss, total); for example, these could be the columns of a database row, part of an ORM, etc.
+<p>Users will likely find it most convenient to store experiment historical data of arms in tuples of
+(win, loss, total, variance); for example, these could be the columns of a database row, part of an ORM, etc.
 The SampleArm class (above) provides a convenient representation of this input format, but users are <em>not</em> required
 to use it.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -345,7 +467,7 @@ The result of combining two valid arms is always a valid arm.</p>
 <em class="property">class </em><tt class="descclassname">moe.bandit.data_containers.</tt><tt class="descname">SampleArm</tt><big>(</big><em>win=0.0</em>, <em>loss=0.0</em>, <em>total=0</em>, <em>variance=None</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/data_containers.html#SampleArm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.data_containers.SampleArm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.</p>
-<p>This class is a representation of a &#8220;Sample Arm,&#8221; which is defined by the three data members listed here.
+<p>This class is a representation of a &#8220;Sample Arm,&#8221; which is defined by the four data members listed here.
 SampleArm is a convenient way of communicating data to the rest of the bandit library (via the
 HistoricalData container); it also provides a convenient grouping for interactive introspection.</p>
 <p>Users are not required to use SampleArm, iterables with the same data layout will suffice.</p>
@@ -683,13 +805,13 @@ an upper bound on the variance of a Bernoulli random variable.</p>
 </div>
 <div class="section" id="module-moe.bandit.ucb_interface">
 <span id="moe-bandit-ucb-interface-module"></span><h2>moe.bandit.ucb_interface module<a class="headerlink" href="#module-moe.bandit.ucb_interface" title="Permalink to this headline">¶</a></h2>
-<p>Classes (Python) to compute the Bandit UCB arm allocation and choosing the arm to pull next.</p>
+<p>Classes (Python) to compute the Bandit UCB (Upper Confidence Bound) arm allocation and choosing the arm to pull next.</p>
 <p>See <a class="reference internal" href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface" title="moe.bandit.interfaces.bandit_interface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface</span></tt></a> for further details on bandit.</p>
 <dl class="class">
 <dt id="moe.bandit.ucb_interface.UCBInterface">
 <em class="property">class </em><tt class="descclassname">moe.bandit.ucb_interface.</tt><tt class="descname">UCBInterface</tt><big>(</big><em>historical_info</em>, <em>subtype=None</em><big>)</big><a class="reference internal" href="_modules/moe/bandit/ucb_interface.html#UCBInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.bandit.ucb_interface.UCBInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface" title="moe.bandit.interfaces.bandit_interface.BanditInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface.BanditInterface</span></tt></a></p>
-<p>Implementation of the constructor of UCB and method allocate_arms. The method get_ucb_payoff is implemented in subclass.</p>
+<p>Implementation of the constructor of UCB (Upper Confidence Bound) and method allocate_arms. The method get_ucb_payoff is implemented in subclass.</p>
 <p>A class to encapsulate the computation of bandit UCB.
 The Algorithm: <a class="reference external" href="http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf">http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf</a></p>
 <p>To inherit this class, a subclass needs to implement get_ucb_payoff
@@ -853,6 +975,8 @@ We split the allocation between the optimal arms arm1 and arm2.</p>
 <p>Bandit directory containing multi-armed bandit implementation in python.</p>
 <p><strong>Files in this package</strong></p>
 <ul class="simple">
+<li><a class="reference internal" href="#module-moe.bandit.bla" title="moe.bandit.bla"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.bla</span></tt></a>: <a class="reference internal" href="#moe.bandit.bla.BLA" title="moe.bandit.bla.BLA"><tt class="xref py py-class docutils literal"><span class="pre">BLA</span></tt></a>
+object for allocating bandit arms and choosing the winning arm based on BLA policy.</li>
 <li><a class="reference internal" href="#module-moe.bandit.constant" title="moe.bandit.constant"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.constant</span></tt></a>: some default configuration values for <tt class="docutils literal"><span class="pre">optimal_learning</span></tt> components</li>
 <li><a class="reference internal" href="#module-moe.bandit.data_containers" title="moe.bandit.data_containers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.data_containers</span></tt></a>: <a class="reference internal" href="#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">SampleArm</span></tt></a>
 and <a class="reference internal" href="#moe.bandit.data_containers.HistoricalData" title="moe.bandit.data_containers.HistoricalData"><tt class="xref py py-class docutils literal"><span class="pre">HistoricalData</span></tt></a> containers for passing data to the <tt class="docutils literal"><span class="pre">bandit</span></tt> library</li>

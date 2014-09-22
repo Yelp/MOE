@@ -11,6 +11,14 @@ Subpackages
 Submodules
 ----------
 
+moe_examples.bandit_example module
+----------------------------------
+
+.. automodule:: moe_examples.bandit_example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe_examples.combined_example module
 ------------------------------------
 

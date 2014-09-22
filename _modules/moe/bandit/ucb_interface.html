@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -230,7 +231,7 @@
             
   <h1>Source code for moe.bandit.ucb_interface</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Classes (Python) to compute the Bandit UCB arm allocation and choosing the arm to pull next.</span>
+<span class="sd">&quot;&quot;&quot;Classes (Python) to compute the Bandit UCB (Upper Confidence Bound) arm allocation and choosing the arm to pull next.</span>
 
 <span class="sd">See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.</span>
 
@@ -245,7 +246,7 @@
 
 <div class="viewcode-block" id="UCBInterface"><a class="viewcode-back" href="../../../moe.bandit.html#moe.bandit.ucb_interface.UCBInterface">[docs]</a><span class="k">class</span> <span class="nc">UCBInterface</span><span class="p">(</span><span class="n">BanditInterface</span><span class="p">):</span>
 
-    <span class="sd">r&quot;&quot;&quot;Implementation of the constructor of UCB and method allocate_arms. The method get_ucb_payoff is implemented in subclass.</span>
+    <span class="sd">r&quot;&quot;&quot;Implementation of the constructor of UCB (Upper Confidence Bound) and method allocate_arms. The method get_ucb_payoff is implemented in subclass.</span>
 
 <span class="sd">    A class to encapsulate the computation of bandit UCB.</span>
 <span class="sd">    The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf</span>

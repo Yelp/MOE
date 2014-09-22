@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_examples.html">moe_examples package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -238,6 +239,7 @@
 <span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
 
 <span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">BANDIT_EPSILON_ENDPOINT</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPE_FIRST</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPE_GREEDY</span>
+<span class="kn">from</span> <span class="nn">moe.tests.bandit.bandit_test_case</span> <span class="kn">import</span> <span class="n">BanditTestCase</span>
 <span class="kn">from</span> <span class="nn">moe.tests.views.rest.bandit_test</span> <span class="kn">import</span> <span class="n">TestBanditViews</span>
 <span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">BANDIT_EPSILON_MOE_ROUTE</span>
 <span class="kn">from</span> <span class="nn">moe.views.rest.bandit_epsilon</span> <span class="kn">import</span> <span class="n">BanditEpsilonView</span>
@@ -248,6 +250,7 @@
     <span class="sd">&quot;&quot;&quot;Integration test for the /bandit/epsilon endpoint.&quot;&quot;&quot;</span>
 
     <span class="n">_endpoint</span> <span class="o">=</span> <span class="n">BANDIT_EPSILON_ENDPOINT</span>
+    <span class="n">_historical_infos</span> <span class="o">=</span> <span class="n">BanditTestCase</span><span class="o">.</span><span class="n">historical_infos_to_test</span>
     <span class="n">_moe_route</span> <span class="o">=</span> <span class="n">BANDIT_EPSILON_MOE_ROUTE</span>
     <span class="n">_view</span> <span class="o">=</span> <span class="n">BanditEpsilonView</span>
 
