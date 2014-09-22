@@ -132,7 +132,7 @@ def _make_gp_from_params(params):
     return gaussian_process
 
 
-def _make_bandit_historical_info_from_params(params):
+def _make_bandit_historical_info_from_params(params, arm_type=SampleArm):
     """Create and return a bandit historical info from the request params as a dict.
 
     ``params`` has the following form::
@@ -148,7 +148,7 @@ def _make_bandit_historical_info_from_params(params):
     arms_sampled = {}
     # Load up the info
     for arm_name, sampled_arm in params.get("historical_info").get("arms_sampled").iteritems():
-        arms_sampled[arm_name] = SampleArm(win=sampled_arm.get("win"), loss=sampled_arm.get("loss"), total=sampled_arm.get("total"))
+        arms_sampled[arm_name] = arm_type(win=sampled_arm.get("win"), loss=sampled_arm.get("loss", 0), total=sampled_arm.get("total"), variance=sampled_arm.get("variance", None))
 
     bandit_historical_info = BanditHistoricalData(sample_arms=arms_sampled)
 

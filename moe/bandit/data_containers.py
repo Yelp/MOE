@@ -9,7 +9,7 @@ class SampleArm(object):
 
     """An arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
 
-    This class is a representation of a "Sample Arm," which is defined by the three data members listed here.
+    This class is a representation of a "Sample Arm," which is defined by the four data members listed here.
     SampleArm is a convenient way of communicating data to the rest of the bandit library (via the
     HistoricalData container); it also provides a convenient grouping for interactive introspection.
 
@@ -34,21 +34,43 @@ class SampleArm(object):
 
     def __str__(self):
         """Pretty print this object as a dict."""
-        return pprint.pformat(dict(self._asdict()))
+        return pprint.pformat(self.json_payload())
 
-    def __add__(self, arm):
-        """Overload Add operator to add sampled arm results to this arm.
+    def __add__(self, other):
+        """Overload Add operator to add other sampled arm results to this arm.
 
-        :param arm: arm samples to add to this arm
-        :type arm: a SampleArm object
+        :param other: arm samples to add to this arm
+        :type other: a SampleArm object
+        :return: new SampleArm that is a result of adding two arms
+        :rtype: SampleArm
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        self._win += arm.win
-        self._loss += arm.loss
-        self._total += arm.total
-        if self._variance is not None or arm.variance is not None:
+        if self._variance is not None or other.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        out = SampleArm(win=self._win + other.win, loss=self._loss + other.loss, total=self._total + other.total)
+        out.validate()
+        return out
+
+    __radd__ = __add__
+
+    def __iadd__(self, other):
+        """Overload in-place Add operator to add other sampled arm results to this arm in-place.
+
+        :param other: arm samples to add to this arm
+        :type other: a SampleArm object
+        :return: this arm after adding other
+        :rtype: SampleArm
+        :raise: ValueError when ``arm.variance`` or self.variance is not None.
+
+        """
+        if self._variance is not None or other.variance is not None:
+            raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        self._win += other.win
+        self._loss += other.loss
+        self._total += other.total
+        self.validate()
+        return self
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
@@ -100,12 +122,39 @@ class SampleArm(object):
         return self._variance
 
 
+class BernoulliArm(SampleArm):
+
+    """A Bernoulli arm (name, win, loss, total, variance) sampled from the objective function we are modeling/optimizing.
+
+    A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+    See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+    See superclass :class:`~moe.bandit.data_containers.SampleArm` for more details.
+
+    """
+
+    def validate(self):
+        """Check this Bernoulli arm is a valid Bernoulli arm. Also check that this BernoulliArm passes basic validity checks: all values are finite.
+
+        A Bernoulli arm has payoff 1 for a success and 0 for a failure.
+        See more details on Bernoulli distribution at http://en.wikipedia.org/wiki/Bernoulli_distribution
+
+        :raises ValueError: if any member data is non-finite or out of range or the arm is not a valid Bernoulli arm
+
+        """
+        super(BernoulliArm, self).validate()
+        if self.loss != 0.0:
+            raise ValueError('loss = {0} is not zero! This is not a Bernoulli arm'.format(self.loss))
+        if self.win > self.total:
+            raise ValueError('win = {0} > total = {1}! This is not a Bernoulli arm'.format(self.win, self.total))
+
+
 class HistoricalData(object):
 
     """A data container for storing the historical data from an entire experiment in a layout convenient for this library.
 
-    Users will likely find it most convenient to store experiment historical data of arms in "tuples" of
-    (win, loss, total); for example, these could be the columns of a database row, part of an ORM, etc.
+    Users will likely find it most convenient to store experiment historical data of arms in tuples of
+    (win, loss, total, variance); for example, these could be the columns of a database row, part of an ORM, etc.
     The SampleArm class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
 
@@ -146,9 +195,9 @@ class HistoricalData(object):
 
         """
         if pretty_print:
-            return pprint.pformat(self._arms_sampled)
+            return pprint.pformat(self.json_payload())
         else:
-            return repr(self._arms_sampled)
+            return repr(self.json_payload())
 
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
@@ -192,7 +241,7 @@ class HistoricalData(object):
         self._update_historical_data(sample_arms)
 
     def _update_historical_data(self, sample_arms):
-        """Add arm sampled ersults from ``sample_arms`` into this object's data member.
+        """Add arm sampled results from ``sample_arms`` into this object's data member.
 
         :param sample_arms: the already-sampled arms: wins, losses, and totals
         :type sample_arms: dictionary of (arm name, SampleArm) key-value pairs
