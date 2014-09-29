@@ -13,7 +13,7 @@ MAJOR = 0
 #: MINOR: incremented for adding functionality in a backwards-compatible manner
 MINOR = 2
 #: PATCH: incremented for backward-compatible bug fixes and minor capability improvements
-PATCH = 1
+PATCH = 0
 #: Latest release version of MOE
 __version__ = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, PATCH)
 
@@ -52,7 +52,8 @@ def main(global_config, **settings):
     Repo: https://github.com/Yelp/MOE
     Docs: http://yelp.github.io/MOE
 
-    Note: If you installed MOE within a docker container you may need to specify the IP address of the VM. In OSX this is the startup information when you run boot2docker.
+    Note: If you installed MOE within a docker container you may need to specify the IP address of the VM instead of localhost.
+    In OSX and Windows this is the startup information when you run boot2docker, or can be set in $DOCKER_HOST.
     """
 
     return app

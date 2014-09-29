@@ -1,6 +1,6 @@
 * Features
 
-  * Added startup message to REST server including tips for OSX users
+  * Added startup message to REST server including tips for OSX users (#400)
 
 * Changes
 
