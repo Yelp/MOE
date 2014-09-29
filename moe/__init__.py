@@ -40,4 +40,19 @@ def main(global_config, **settings):
                 'moe.tests',
                 ],
             )
-    return config.make_wsgi_app()
+
+    app = config.make_wsgi_app()
+
+    # Message to the user
+    print """
+    Congratulations! MOE is now running.
+
+    You can access the web interface at: http://localhost:6543
+
+    Repo: https://github.com/Yelp/MOE
+    Docs: http://yelp.github.io/MOE
+
+    Note: If you installed MOE within a docker container you may need to specify the IP address of the VM. In OSX this is the startup information when you run boot2docker.
+    """
+
+    return app
