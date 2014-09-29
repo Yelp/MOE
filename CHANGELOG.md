@@ -1,5 +1,7 @@
 * Features
 
+  * Added startup message to REST server including tips for OSX users
+
 * Changes
 
 * Bugs
