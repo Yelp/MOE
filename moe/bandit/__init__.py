@@ -3,6 +3,8 @@
 
 **Files in this package**
 
+* :mod:`moe.bandit.bla`: :class:`~moe.bandit.bla.BLA`
+  object for allocating bandit arms and choosing the winning arm based on BLA policy.
 * :mod:`moe.bandit.constant`: some default configuration values for ``optimal_learning`` components
 * :mod:`moe.bandit.data_containers`: :class:`~moe.bandit.data_containers.SampleArm`
   and :class:`~moe.bandit.data_containers.HistoricalData` containers for passing data to the ``bandit`` library

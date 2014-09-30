@@ -1,8 +1,26 @@
 * Features
 
+  * Added startup message to REST server including tips for OSX users (#400)
+
 * Changes
 
 * Bugs
+
+## v0.2.1 (2014-09-22)
+
+SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
+
+* Features
+
+  * Implemented BLA (Bayesian Learning Automaton). (#373)
+  * Connected GPU functions to multistart gradient descent optimizer. (#270)
+
+* Changes
+
+* Bugs
+
+  * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
+  * SampleArm's __add__ and __str__ were broken. (#387)
 
 ## v0.2.0 (2014-08-15)
 
@@ -12,7 +30,7 @@ SHA: ``8201917e3f9b47b8edd8039ea3278ef8631b0f2a``
 
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
-    * Implemented epsilon-first. (#335) 
+    * Implemented epsilon-first. (#335)
     * Implemented UCB1. (#354)
     * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)

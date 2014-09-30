@@ -10,7 +10,7 @@ import copy
 
 from pyramid.view import view_config
 
-from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY
+from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_EPSILON_SUBTYPE
 from moe.bandit.linkers import EPSILON_SUBTYPES_TO_BANDIT_METHODS
 from moe.views.bandit_pretty_view import BanditPrettyView
 from moe.views.constant import BANDIT_EPSILON_ROUTE_NAME, BANDIT_EPSILON_PRETTY_ROUTE_NAME
@@ -31,7 +31,7 @@ class BanditEpsilonView(BanditPrettyView):
     response_schema = BanditResponse()
 
     _pretty_default_request = {
-            "subtype": EPSILON_SUBTYPE_GREEDY,
+            "subtype": DEFAULT_EPSILON_SUBTYPE,
             "historical_info": BanditPrettyView._pretty_default_historical_info,
             "hyperparameter_info": {"epsilon": DEFAULT_EPSILON},
             }
