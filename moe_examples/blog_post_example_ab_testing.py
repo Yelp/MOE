@@ -5,8 +5,8 @@ Blog post: TODO(sclark): Link to blog post
 ---------
 """
 import numpy
+
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pylab as plt
 
 from moe.bandit.constant import EPSILON_SUBTYPE_GREEDY
@@ -18,6 +18,7 @@ from moe.easy_interface.simple_endpoint import gp_next_points, gp_mean_var
 from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER
 from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, BANDIT_EPSILON_ROUTE_NAME
 
+matplotlib.use('Agg')  # Repress screen output from matplotlib
 STATUS_QUO_PARAMETER = numpy.array([0.2])
 LOCAL_OPTIMAL_PARAMETER = numpy.array([0.14289063])
 GLOBAL_OPTIMAL_PARAMETER = numpy.array([0.71428711])
