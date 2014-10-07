@@ -7,9 +7,7 @@
 * :mod:`moe.bandit.data_containers`: :class:`~moe.bandit.data_containers.SampleArm`
   and :class:`~moe.bandit.data_containers.HistoricalData` containers for passing data to the ``bandit`` library
 * :mod:`moe.bandit.linkers`: linkers connecting ``bandit`` components.
-
-**Interfaces**
-:mod:`moe.bandit.bandit_interface`
+* :mod:`moe.bandit.bandit_interface`: an interface into different ``bandit`` policies
 
 **Bandit packages**
 :mod:`moe.bandit.epsilon`: Epsilon bandit policies
