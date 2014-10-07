@@ -2,7 +2,7 @@
 """Test the C++ implementation of expected improvement against the Python implementation."""
 import numpy
 
-import testify as T
+import pytest
 
 import moe.optimal_learning.python.cpp_wrappers.covariance
 import moe.optimal_learning.python.cpp_wrappers.expected_improvement
@@ -15,7 +15,7 @@ import moe.optimal_learning.python.python_version.gaussian_process
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
-class ExpectedImprovementTest(GaussianProcessTestCase):
+class TestExpectedImprovement(GaussianProcessTestCase):
 
     """Test C++ vs Python implementations of Expected Improvement.
 
@@ -47,7 +47,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
     num_sampled_list = (1, 2, 5, 10, 16, 20, 42, 50)
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Run the standard setup but seed the RNG first (for repeatability).
 
@@ -56,7 +56,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         """
         numpy.random.seed(8794)
-        super(ExpectedImprovementTest, self).base_setup()
+        super(TestExpectedImprovement, self).base_setup()
 
     def test_python_and_cpp_return_same_1d_analytic_ei_and_gradient(self):
         """Compare the 1D analytic EI/grad EI results from Python & C++, checking several random points per test case."""
@@ -88,7 +88,3 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 cpp_grad_ei = cpp_ei_eval.compute_grad_expected_improvement()
                 python_grad_ei = python_ei_eval.compute_grad_expected_improvement()
                 self.assert_vector_within_relative(python_grad_ei, cpp_grad_ei, grad_ei_tolerance)
-
-
-if __name__ == "__main__":
-    T.run()

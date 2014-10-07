@@ -38,7 +38,7 @@ requires = [
     'pyramid',
     'pyramid_mako',
     'WebError',
-    'testify',
+    'pytest',
     'webtest',
     'simplejson',
     'numpy',

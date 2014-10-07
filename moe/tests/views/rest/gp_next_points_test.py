@@ -4,8 +4,6 @@ import pyramid.testing
 
 import simplejson as json
 
-import testify as T
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_LBFGSB_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
@@ -84,15 +82,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        T.assert_equal(
-                optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS,
-                )
-
-        T.assert_equal(
-                optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
-                )
+        assert optimizer_parameters.num_multistarts == TEST_OPTIMIZER_MULTISTARTS
+        assert optimizer_parameters._python_max_num_steps == TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
 
         # Test arbitrary parameters get passed through
         json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS + 5
@@ -107,15 +98,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        T.assert_equal(
-                optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS + 5,
-                )
-
-        T.assert_equal(
-                optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10,
-                )
+        assert optimizer_parameters.num_multistarts == TEST_OPTIMIZER_MULTISTARTS + 5
+        assert optimizer_parameters._python_max_num_steps == TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
 
     def test_all_constant_liar_methods_function(self):
         """Test that each contant liar ``lie_method`` runs to completion. This is an integration test."""
@@ -137,13 +121,13 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                 resp_schema = GpNextPointsResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
 
-                T.assert_in('points_to_sample', resp_dict)
-                T.assert_equal(len(resp_dict['points_to_sample']), 2)  # num_to_sample
-                T.assert_equal(len(resp_dict['points_to_sample'][0]), python_gp.dim)
+                assert 'points_to_sample' in resp_dict
+                assert len(resp_dict['points_to_sample']) == 2  # num_to_sample
+                assert len(resp_dict['points_to_sample'][0]) == python_gp.dim
 
-                T.assert_in('status', resp_dict)
-                T.assert_in('expected_improvement', resp_dict['status'])
-                T.assert_gte(resp_dict['status']['expected_improvement'], 0.0)
+                assert 'status' in resp_dict
+                assert 'expected_improvement' in resp_dict['status']
+                assert resp_dict['status']['expected_improvement'] >= 0.0
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/next_points/* endpoints."""
@@ -164,14 +148,10 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
                     resp_schema = GpNextPointsResponse()
                     resp_dict = resp_schema.deserialize(json.loads(resp.body))
 
-                    T.assert_in('points_to_sample', resp_dict)
-                    T.assert_equal(len(resp_dict['points_to_sample']), num_to_sample)
-                    T.assert_equal(len(resp_dict['points_to_sample'][0]), python_gp.dim)
+                    assert 'points_to_sample' in resp_dict
+                    assert len(resp_dict['points_to_sample']) == num_to_sample
+                    assert len(resp_dict['points_to_sample'][0]) == python_gp.dim
 
-                    T.assert_in('status', resp_dict)
-                    T.assert_in('expected_improvement', resp_dict['status'])
-                    T.assert_gte(resp_dict['status']['expected_improvement'], 0.0)
-
-
-if __name__ == "__main__":
-    T.run()
+                    assert 'status' in resp_dict
+                    assert 'expected_improvement' in resp_dict['status']
+                    assert resp_dict['status']['expected_improvement'] >= 0.0

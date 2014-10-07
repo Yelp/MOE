@@ -4,8 +4,6 @@ import numpy
 
 import simplejson as json
 
-import testify as T
-
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
@@ -144,7 +142,3 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
                 truth_mean=truth_mean,
                 truth_var=numpy.diag(truth_var),
             )
-
-
-if __name__ == "__main__":
-    T.run()

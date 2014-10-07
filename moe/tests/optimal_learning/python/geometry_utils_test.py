@@ -2,14 +2,14 @@
 """Tests for the functions/classes in geometry_utils."""
 import numpy
 
-import testify as T
+import pytest
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval, generate_grid_points, generate_latin_hypercube_points
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
-class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
+class TestLatinHypercubeRandomPointGeneration(OptimalLearningTestCase):
 
     """Test moe.optimal_learning.python.geometry_utils.generate_latin_hypercube_points.
 
@@ -31,7 +31,7 @@ class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Set up parameters for test cases."""
         domain_bounds_to_test = [
@@ -54,14 +54,14 @@ class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
                 points = generate_latin_hypercube_points(num_points, domain._domain_bounds)
 
                 for point in points:
-                    T.assert_equal(domain.check_point_inside(point), True)
+                    assert domain.check_point_inside(point) is True
 
     def test_make_rand_point_within_domain(self):
         """Test that domain.generate_random_point_in_domain returns a point in the domain."""
         for domain in self.domains_to_test:
             for _ in xrange(10):
                 point = domain.generate_random_point_in_domain()
-                T.assert_equal(domain.check_point_inside(point), True)
+                assert domain.check_point_inside(point) is True
 
     def test_latin_hypercube_equally_spaced(self):
         """Test that generate_latin_hypercube_points returns properly spaced points.
@@ -85,11 +85,10 @@ class LatinHypercubeRandomPointGenerationTest(OptimalLearningTestCase):
                         # This point must fall somewhere within the slice
                         min_val = domain_bounds[dim].min + sub_domain_width * i
                         max_val = min_val + sub_domain_width
-                        T.assert_gte(point[dim], min_val)
-                        T.assert_lte(point[dim], max_val)
+                        assert min_val <= point[dim] <= max_val
 
 
-class GridPointGenerationTest(OptimalLearningTestCase):
+class TestGridPointGeneration(OptimalLearningTestCase):
 
     """Test the generation of an evenly spaced, axis-aligned grid on a hypercube."""
 
@@ -128,11 +127,11 @@ class GridPointGenerationTest(OptimalLearningTestCase):
         self.assert_vector_within_relative(grid_test, grid_truth, 0.0)
 
 
-class ClosedIntervalTest(OptimalLearningTestCase):
+class TestClosedInterval(OptimalLearningTestCase):
 
     """Tests for ClosedInterval's member functions."""
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Set up test cases (described inline)."""
         self.test_cases = [
@@ -154,36 +153,32 @@ class ClosedIntervalTest(OptimalLearningTestCase):
         """Check that length works."""
         truth = [0.0, self.test_cases[1].max - self.test_cases[1].min, self.test_cases[2].max - self.test_cases[2].min, numpy.inf]
         for i, case in enumerate(self.test_cases):
-            T.assert_equal(case.length, truth[i])
+            assert case.length == truth[i]
 
     def test_is_inside(self):
         """Check that is_inside works."""
         truth = [True, True, True, False, False]
         case = 0
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            assert self.test_cases[case].is_inside(value) == truth[j]
 
         truth = [True, True, True, False, False]
         case = 1
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            assert self.test_cases[case].is_inside(value) == truth[j]
 
         truth = [False, False, False, False, False]
         case = 2
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            assert self.test_cases[case].is_inside(value) == truth[j]
 
         truth = [True, True, True, False, True]
         case = 3
         for j, value in enumerate(self.points_to_check[case, ...]):
-            T.assert_equal(self.test_cases[case].is_inside(value), truth[j])
+            assert self.test_cases[case].is_inside(value) == truth[j]
 
     def test_is_empty(self):
         """Check that is_empty works."""
         truth = [False, False, True, False]
         for i, case in enumerate(self.test_cases):
-            T.assert_equal(case.is_empty(), truth[i])
-
-
-if __name__ == "__main__":
-    T.run()
+            assert case.is_empty() == truth[i]

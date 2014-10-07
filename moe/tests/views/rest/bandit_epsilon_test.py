@@ -4,8 +4,6 @@ import pyramid.testing
 
 import simplejson as json
 
-import testify as T
-
 from moe.bandit.constant import BANDIT_EPSILON_ENDPOINT, EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS, EPSILON_SUBTYPE_FIRST, EPSILON_SUBTYPE_GREEDY
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 from moe.tests.views.rest.bandit_test import TestBanditViews
@@ -46,7 +44,7 @@ class TestBanditEpsilonViews(TestBanditViews):
         view = BanditEpsilonView(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_info'], json_payload['hyperparameter_info'])
+        assert params['hyperparameter_info'] == json_payload['hyperparameter_info']
 
         # Test arbitrary epsilons get passed through
         json_payload['hyperparameter_info']['epsilon'] = 1.0
@@ -56,7 +54,7 @@ class TestBanditEpsilonViews(TestBanditViews):
         view = BanditEpsilonView(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_info'], json_payload['hyperparameter_info'])
+        assert params['hyperparameter_info'] == json_payload['hyperparameter_info']
 
     def test_epsilon_first_hyperparameters_passed_through(self):
         """Test that the hyperparameters get passed through to the epsilon-first endpoint."""
@@ -70,7 +68,7 @@ class TestBanditEpsilonViews(TestBanditViews):
         view = self._view(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_info'], json_payload['hyperparameter_info'])
+        assert params['hyperparameter_info'] == json_payload['hyperparameter_info']
 
         # Test an arbitrary epsilon and total_tamples get passed through
         json_payload['hyperparameter_info']['epsilon'] = 1.0
@@ -81,7 +79,7 @@ class TestBanditEpsilonViews(TestBanditViews):
         view = self._view(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_info'], json_payload['hyperparameter_info'])
+        assert params['hyperparameter_info'] == json_payload['hyperparameter_info']
 
     def test_historical_info_passed_through(self):
         """Test that the historical info get passed through to the endpoint."""
@@ -90,7 +88,3 @@ class TestBanditEpsilonViews(TestBanditViews):
     def test_interface_returns_as_expected(self):
         """Integration test for the /bandit/epsilon endpoint."""
         self._test_interface_returns_as_expected()
-
-
-if __name__ == "__main__":
-    T.run()

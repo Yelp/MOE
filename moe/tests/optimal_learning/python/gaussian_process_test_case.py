@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Base test case for tests that manipulate Gaussian Process data and supporting structures."""
+import pytest
+
 import collections
 
 import numpy
-
-import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -147,7 +147,7 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
     num_sampled_list = (1, 2, 3, 5, 10, 16, 20, 42)
     num_to_sample_list = (1, 2, 3, 8)
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
 

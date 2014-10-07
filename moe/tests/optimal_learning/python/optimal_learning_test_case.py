@@ -7,10 +7,8 @@ to be more DRY (model after C++ test cases). We can set up one ping tester and j
 """
 import numpy
 
-import testify as T
 
-
-class OptimalLearningTestCase(T.TestCase):
+class OptimalLearningTestCase(object):
 
     """Base test case for the optimal_learning library.
 
@@ -32,11 +30,7 @@ class OptimalLearningTestCase(T.TestCase):
 
         """
         diff = numpy.fabs(value - truth)
-        T.assert_lte(
-            diff,
-            tol,
-            message='value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol),
-        )
+        assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
     def assert_scalar_within_relative(self, value, truth, tol):
         """Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| <= tol``.
@@ -54,11 +48,7 @@ class OptimalLearningTestCase(T.TestCase):
         if denom < numpy.finfo(numpy.float64).tiny:
             denom = 1.0  # do not divide by 0
         diff = numpy.fabs((value - truth) / denom)
-        T.assert_lte(
-            diff,
-            tol,
-            message='value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol),
-        )
+        assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
     def assert_vector_within_relative(self, value, truth, tol):
         """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
@@ -72,11 +62,7 @@ class OptimalLearningTestCase(T.TestCase):
         :raise: AssertionError value[i], truth[i] are not relatively equal for every i
 
         """
-        T.assert_equal(
-            value.shape,
-            truth.shape,
-            message='value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape),
-        )
+        assert value.shape == truth.shape, 'value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape)
         for index in numpy.ndindex(value.shape):
             self.assert_scalar_within_relative(value[index], truth[index], tol)
 

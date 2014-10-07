@@ -4,8 +4,6 @@ import numpy
 
 import simplejson as json
 
-import testify as T
-
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
@@ -71,7 +69,3 @@ class TestGpEiView(GaussianProcessTestCase, RestTestCase):
                     cpp_expected_improvement,
                     tolerance,
                     )
-
-
-if __name__ == "__main__":
-    T.run()

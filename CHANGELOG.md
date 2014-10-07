@@ -4,6 +4,8 @@
 
 * Changes
 
+  * Switched from `testify` to `py.test` (http://pytest.org/)
+
 * Bugs
 
 ## v0.2.1 (2014-09-22)

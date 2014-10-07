@@ -5,13 +5,11 @@ Test default values with one, two, and three arms.
 Test different cases including unsampled arms and multiple winners.
 
 """
-import testify as T
-
 from moe.bandit.ucb1_tuned import UCB1Tuned
 from moe.tests.bandit.ucb_test_case import UCBTestCase
 
 
-class UCB1TunedTest(UCBTestCase):
+class TestUCB1Tuned(UCBTestCase):
 
     """Verify that different historical infos return correct results."""
 
@@ -41,8 +39,4 @@ class UCB1TunedTest(UCBTestCase):
     def test_three_arms_diferent_variance(self):
         """Check that the three-arms cases with different variance (same average payoff) return the expected arm allocations. The highest variance wins."""
         bandit = self.bandit_class(self.three_arms_with_variance_no_unsampled_arm_test_case)
-        T.assert_dicts_equal(bandit.allocate_arms(), {"arm1": 1.0, "arm2": 0.0, "arm3": 0.0})
-
-
-if __name__ == "__main__":
-    T.run()
+        assert bandit.allocate_arms() == {"arm1": 1.0, "arm2": 0.0, "arm3": 0.0}

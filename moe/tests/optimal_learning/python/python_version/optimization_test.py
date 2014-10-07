@@ -2,7 +2,7 @@
 """Tests for the Python optimization module (null, gradient descent, and multistarting) using a simple polynomial objective."""
 import numpy
 
-import testify as T
+import pytest
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -92,7 +92,7 @@ class QuadraticFunction(OptimizableInterface):
         return numpy.diag(numpy.full(self.dim, -2.0))
 
 
-class NullOptimizerTest(OptimalLearningTestCase):
+class TestNullOptimizer(OptimalLearningTestCase):
 
     """Test the NullOptimizer on a simple objective.
 
@@ -101,7 +101,7 @@ class NullOptimizerTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Set up a test case for optimizing a simple quadratic polynomial."""
         self.dim = 3
@@ -139,7 +139,7 @@ class NullOptimizerTest(OptimalLearningTestCase):
         self.assert_vector_within_relative(test_values, truth, 0.0)
 
 
-class GradientDescentOptimizerTest(OptimalLearningTestCase):
+class TestGradientDescentOptimizer(OptimalLearningTestCase):
 
     r"""Test Gradient Descent on a simple quadratic objective.
 
@@ -156,7 +156,7 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
+    @pytest.fixture(autouse=True)
     def base_setup(self):
         """Set up a test case for optimizing a simple quadratic polynomial."""
         self.dim = 3
@@ -239,8 +239,8 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
 
         for i, truth in enumerate(truth_list):
             start, end = GradientDescentOptimizer._get_averaging_range(num_steps_averaged_input_list[i], num_steps_total)
-            T.assert_equal(start, truth[0])
-            T.assert_equal(end, truth[1])
+            assert start == truth[0]
+            assert end == truth[1]
 
     def test_gradient_descent_optimizer_with_averaging(self):
         """Check that gradient descent can find the optimum of the quadratic test objective with averaging on.
@@ -314,7 +314,7 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
 
         # Verify optimized value is better than initial guess
         final_value = self.polynomial.compute_objective_function()
-        T.assert_gt(final_value, initial_value)
+        assert final_value >= initial_value
 
         # Verify derivative: only get 0 derivative if the coordinate lies inside domain boundaries
         gradient = self.polynomial.compute_grad_objective_function()
@@ -343,13 +343,13 @@ class GradientDescentOptimizerTest(OptimalLearningTestCase):
         test_best_point, _ = multistart_optimizer.optimize(random_starts=points)
         # This point set won't include the optimum so multistart GD won't find it.
         for value in (test_best_point - self.polynomial.optimum_point):
-            T.assert_not_equal(value, 0.0)
+            assert value != 0.0
 
         points_with_opt = numpy.append(points, self.polynomial.optimum_point.reshape((1, self.polynomial.dim)), axis=0)
         test_best_point, _ = multistart_optimizer.optimize(random_starts=points_with_opt)
         # This point set will include the optimum so multistart GD will find it.
         for value in (test_best_point - self.polynomial.optimum_point):
-            T.assert_equal(value, 0.0)
+            assert value == 0.0
 
     def test_multistarted_gradient_descent_optimizer(self):
         """Check that multistarted GD can find the optimum in a 'very' large domain."""

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """Base test case class for bandit tests; includes different historical infos (different sampled arms)."""
-import testify as T
-
 from moe.bandit.data_containers import BernoulliArm, HistoricalData, SampleArm
 
 
-class BanditTestCase(T.TestCase):
+class BanditTestCase(object):
 
     """Base test case for the bandit library.
 
@@ -51,5 +49,5 @@ class BanditTestCase(T.TestCase):
         """Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0."""
         bandit = self.bandit_class(self.one_arm_test_case)
         arms_to_allocations = bandit.allocate_arms()
-        T.assert_dicts_equal(arms_to_allocations, {"arm1": 1.0})
-        T.assert_equal(bandit.choose_arm(arms_to_allocations), "arm1")
+        assert arms_to_allocations == {"arm1": 1.0}
+        assert bandit.choose_arm(arms_to_allocations) == "arm1"
