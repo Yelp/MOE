@@ -14,16 +14,17 @@
 namespace optimal_learning {
 
 //! Number of blocks assigned for computing Expected Improvement on GPU
-static unsigned int kEINumBlocks = 32;
+static const unsigned int kEINumBlocks = 32;
 //! Number of threads per block assigned for computing Expected Improvement on GPU
-static unsigned int kEINumThreads = 256;
+static const unsigned int kEINumThreads = 256;
 //! Number of blocks assigned for computing Gradient of Expected Improvement on GPU
-static unsigned int kGradEINumBlocks = 32;
+static const unsigned int kGradEINumBlocks = 32;
 //! Number of threads per block assigned for computing Gradient of Expected Improvement on GPU
-static unsigned int kGradEINumThreads = 256;
+static const unsigned int kGradEINumThreads = 256;
 
 /*!\rst
-  This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp
+  This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp.
+  File/line and function information are empty strings if the error code is cudaSuccess (i.e., no error).
 \endrst*/
 struct CudaError {
   //! error returned by CUDA API functions (basically enum type)
@@ -33,6 +34,9 @@ struct CudaError {
   //! name of the function that returned error
   char const * func_info;
 };
+
+//! CudaError struct encoding a successful CUDA operation.
+static const CudaError kCudaSuccess = {cudaSuccess, "", ""};
 
 /*!\rst
   Compute Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by
@@ -112,23 +116,32 @@ extern "C" CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict
                                    double* __restrict__ gpu_random_number_grad_ei, double * __restrict__ gpu_grad_ei_storage);
 
 /*!\rst
-  Allocate GPU memory for storing an array. This is same as malloc in C, with error handling.
+  Allocate GPU device memory for storing an array; analogous to ``malloc()`` in ``C``.
+  Thin wrapper around ``cudaMalloc()`` that handles errors.
+  See: ``http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__MEMORY.html``
+
+  Do not dereference ``address_of_ptr_to_gpu_memory`` outside the GPU device.
+  Do not dereference ``address_of_ptr_to_gpu_memory`` if the error code (``return_value.err``) is not ``cudaSuccess``.
 
   \param
-    :num_doubles: number of double numbers contained in the array
-    :address_of_ptr_to_gpu_memory: address of the pointer to memory on GPU
+    :size: number of bytes to allocate
+    :address_of_ptr_to_gpu_memory: address of the pointer to alllocated device memory on the GPU
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaAllocateMemForDoubleVector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory);
+extern "C" CudaError CudaMallocDeviceMemory(size_t size, double** __restrict__ address_of_ptr_to_gpu_memory);
 
 /*!\rst
-  Free GPU memory, same as free() in C.
+  Free GPU device memory on the GPU; analogous to ``free()`` in ``C``.
+  Thin wrapper around ``cudaFree()`` that handles errors.
+  See: ``http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__MEMORY.html``
 
   \param
-    :ptr_to_gpu_memory: pointer to memory on GPU to free
+    :ptr_to_gpu_memory: pointer to memory on GPU to free; MUST have been returned by a previous call to ``cudaMalloc()``.
+  \return
+    CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" void CudaFreeMem(double* __restrict__ ptr_to_gpu_memory);
+extern "C" CudaError CudaFreeDeviceMemory(void* __restrict__ ptr_to_gpu_memory);
 
 /*!\rst
   Setup GPU device, and all GPU function calls will be operated on the GPU activated by this function.

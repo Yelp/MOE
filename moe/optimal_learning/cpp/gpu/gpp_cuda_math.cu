@@ -317,15 +317,14 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
 
 }  // end unnamed namespace
 
-CudaError CudaAllocateMemForDoubleVector(int num_doubles, double** __restrict__ address_of_ptr_to_gpu_memory) {
-  int mem_size = num_doubles * sizeof(**address_of_ptr_to_gpu_memory);
-  OL_CUDA_ERROR_RETURN(cudaMalloc(reinterpret_cast<void**>(address_of_ptr_to_gpu_memory), mem_size));
-
-  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
+CudaError CudaMallocDeviceMemory(size_t size, void** __restrict__ address_of_ptr_to_gpu_memory) {
+  OL_CUDA_ERROR_RETURN(cudaMalloc(address_of_ptr_to_gpu_memory, size));
+  return kCudaSuccess;
 }
 
-void CudaFreeMem(double* __restrict__ ptr_to_gpu_memory) {
-  cudaFree(ptr_to_gpu_memory);
+void CudaFreeDeviceMemory(void* __restrict__ ptr_to_gpu_memory) {
+  OL_CUDA_ERROR_RETURN(cudaFree(ptr_to_gpu_memory));
+  return kCudaSuccess;
 }
 
 CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, int num_union, int num_mc,
@@ -366,7 +365,7 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
   }
   *ei_val = ave / static_cast<double>(kEINumThreads*kEINumBlocks);
 
-  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
+  return kCudaSuccess;
 }
 
 CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var, double * __restrict__ grad_mu,
@@ -422,7 +421,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
       grad_ei[i] /= static_cast<double>(kGradEINumThreads*kGradEINumBlocks);
   }
 
-  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
+  return kCudaSuccess;
 }
 
 CudaError CudaSetDevice(int devID) {
@@ -430,7 +429,7 @@ CudaError CudaSetDevice(int devID) {
   // Cuda API to set memory config preference: in our code we prefer to use more shared memory
   OL_CUDA_ERROR_RETURN(cudaDeviceSetCacheConfig(cudaFuncCachePreferShared));
 
-  return {cudaSuccess, OL_CUDA_STRINGIFY_FILE_AND_LINE, __func__};
+  return kCudaSuccess;
 }
 
 }    // end namespace optimal_learning

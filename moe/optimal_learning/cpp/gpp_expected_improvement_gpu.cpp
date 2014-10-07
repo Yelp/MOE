@@ -14,6 +14,7 @@
 #endif
 
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -33,21 +34,41 @@ namespace optimal_learning {
 
 #ifdef OL_GPU_ENABLED
 
-CudaDevicePointer::CudaDevicePointer(int num_doubles_in) : num_doubles(num_doubles_in) {
-  if (num_doubles_in > 0) {
-      CudaError error = CudaAllocateMemForDoubleVector(num_doubles, &ptr);
-      if (error.err != cudaSuccess) {
-          ptr = nullptr;
-          ThrowException(OptimalLearningCudaException(error));
-      }
-  } else {
-      ptr = nullptr;
+CudaDeleter::operator()(void * device_ptr) const noexcept {
+  CudaError error = CudaFreeDeviceMemory(device_ptr);
+  if (unlikely(error.err != cudaSuccess)) {
+    // Throwing an exception out of a destructor is dangerous:
+    // http://stackoverflow.com/questions/130117/throwing-exceptions-out-of-a-destructor
+    // And this deleter functor serves as part of the dtor for std::unique_ptr:
+    // http://en.cppreference.com/w/cpp/memory/unique_ptr/~unique_ptr
+
+    // we want the formatted status message
+    OptimalLearningCudaException cuda_failure(error);
+    OL_ERROR_PRINTF("cudaFree error: %s\n", cuda_failure.what());
   }
 }
 
-CudaDevicePointer::~CudaDevicePointer() {
-    CudaFreeMem(ptr);
+template <typename ValueType>
+CudaDevicePointer<Valuetype>::CudaDevicePointer(int num_values_in) : num_values(0) {
+  if (num_values > 0) {
+    ValueType * ptr;
+    CudaError error = CudaMallocDeviceMemory(num_values_in * sizeof(ValueType), reinterpret_cast<void**>(&ptr));
+    if (unlikely(error.err != cudaSuccess)) {
+      ThrowException(OptimalLearningCudaException(error));
+    } else {
+      // store allocated memory and memory size only after allocation succeeds
+      device_ptr.reset(ptr);
+      num_values = num_values_in;
+    }
+  }
 }
+
+template <typename ValueType>
+CudaDevicePointer<ValueType>::CudaDevicePointer(CudaDevicePointer&& OL_UNUSED(other)) = default;
+
+// template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
+template class CudaDevicePointer<int>;
+template class CudaDevicePointer<double>;
 
 OptimalLearningCudaException::OptimalLearningCudaException(const CudaError& error)
       : OptimalLearningException(error.file_and_line_info, error.func_info, cudaGetErrorString(error.err)) {
@@ -67,9 +88,11 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   uint64_t seed_in = (ei_state->uniform_rng->GetEngine())();
   OL_CUDA_ERROR_THROW(CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
                                 num_union, num_mc_, best_so_far_, seed_in, ei_state->configure_for_test,
-                                ei_state->random_number_ei.data(), &EI_val, ei_state->gpu_mu.ptr,
-                                ei_state->gpu_chol_var.ptr, ei_state->gpu_random_number_ei.ptr,
-                                ei_state->gpu_ei_storage.ptr));
+                                ei_state->random_number_ei.data(), &EI_val,
+                                ei_state->gpu_mu.device_ptr.get(),
+                                ei_state->gpu_chol_var.device_ptr.get(),
+                                ei_state->gpu_random_number_ei.device_ptr.get(),
+                                ei_state->gpu_ei_storage.device_ptr.get()));
   return EI_val;
 }
 
@@ -97,10 +120,15 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
 
   OL_CUDA_ERROR_THROW(CudaGetGradEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
                                     ei_state->grad_mu.data(), ei_state->grad_chol_decomp.data(), num_union,
-                                    num_to_sample, dim_, num_mc_, best_so_far_, seed_in, ei_state->configure_for_test,
-                                    ei_state->random_number_grad_ei.data(), grad_ei, ei_state->gpu_mu.ptr,
-                                    ei_state->gpu_chol_var.ptr, ei_state->gpu_grad_mu.ptr, ei_state->gpu_grad_chol_var.ptr,
-                                    ei_state->gpu_random_number_grad_ei.ptr, ei_state->gpu_grad_ei_storage.ptr));
+                                    num_to_sample, dim_, num_mc_, best_so_far_, seed_in,
+                                    ei_state->configure_for_test,
+                                    ei_state->random_number_grad_ei.data(), grad_ei,
+                                    ei_state->gpu_mu.device_ptr.get(),
+                                    ei_state->gpu_chol_var.device_ptr.get(),
+                                    ei_state->gpu_grad_mu.device_ptr.get(),
+                                    ei_state->gpu_grad_chol_var.device_ptr.get(),
+                                    ei_state->gpu_random_number_grad_ei.device_ptr.get(),
+                                    ei_state->gpu_grad_ei_storage.device_ptr.get()));
 }
 
 void CudaExpectedImprovementEvaluator::SetupGPU(int devID) {
@@ -183,6 +211,8 @@ CudaExpectedImprovementState::CudaExpectedImprovementState(const EvaluatorType& 
       random_number_grad_ei(configure_for_test ? GetVectorSize(ei_evaluator.num_mc(), kGradEINumThreads, kGradEINumBlocks, num_union) : 0) {
 }
 
+CudaExpectedImprovementState::CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;
+
 std::vector<double> CudaExpectedImprovementState::BuildUnionOfPoints(double const * restrict points_to_sample,
                                                                      double const * restrict points_being_sampled,
                                                                      int num_to_sample, int num_being_sampled, int dim) noexcept {
@@ -233,7 +263,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process, const Th
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 
-    std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
+    std::vector<typename CudaExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, initial_guesses, points_being_sampled, num_to_sample,
                                   num_being_sampled, thread_schedule.max_num_threads,
                                   configure_for_gradients, uniform_rng, &ei_state_vector);

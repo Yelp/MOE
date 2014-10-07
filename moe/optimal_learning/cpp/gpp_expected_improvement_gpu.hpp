@@ -12,6 +12,7 @@
 #endif
 
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 #include "gpp_common.hpp"
@@ -26,6 +27,7 @@
 #ifdef OL_GPU_ENABLED
 
 #include "gpu/gpp_cuda_math.hpp"
+
 /*!\rst
   Macro that checks error message (CudaError object) returned by CUDA functions, and throws
   OptimalLearningCudaException if there is error.
@@ -39,21 +41,58 @@ namespace optimal_learning {
 #ifdef OL_GPU_ENABLED
 
 /*!\rst
-  This struct does the same job as C++ smart pointer. It contains pointer to memory location on
-  GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU. 
+  A deleter for std::unique_ptr that are created with memory returned by ``cudaMalloc()``;
+  e.g., the member of ``CudaDevicePointer``.
+
+  For a description of deleters, see:
+  http://en.cppreference.com/w/cpp/memory/unique_ptr
+  http://en.cppreference.com/w/cpp/memory/unique_ptr/~unique_ptr
+
+  The STL-provided default deleter:
+  http://en.cppreference.com/w/cpp/memory/default_delete
 \endrst*/
+struct CudaDeleter final {
+  /*!\rst
+    Free the memory pointed to by ``device_ptr``.
+    Called as part of the dtor for ``std::unique_ptr`` and MUST NOT throw exceptions.
+    Wraps ``cudaFree()``.
+
+    \param
+      :device_ptr: device pointer to memory previously allocated by ``cudaMalloc()``.
+  \endrst*/
+  void operator()(void * device_ptr) const noexcept;
+};
+
+/*!\rst
+  This struct is a smart pointer that wraps ``std::unique_ptr``. It provides a simple
+  interface for device memory (i.e., on a GPU) ownership. It automatically handles
+  ``cudaMalloc()`` and ``cudaFree()`` calls and error checks; the result is stored
+  in a ``std::unique_ptr``.
+\endrst*/
+template <typename ValueType>
 struct CudaDevicePointer final {
-  explicit CudaDevicePointer(int num_doubles_in);
+  /*!\rst
+    Construct a CudaDevicePointer (via ``cudaMalloc()``) that *owns* a block of
+    ``num_values * sizeof(ValueType)`` bytes on the GPU device.
 
-  ~CudaDevicePointer();
+    \param
+      :num_values: number of values allocated at the device memory address held in this object
+  \endrst*/
+  explicit CudaDevicePointer(int num_values_in);
 
+  CudaDevicePointer(CudaDevicePointer&& other);
+
+  //! number of values to allocate on gpu, so the memory size is ``num_values * sizeof(ValueType)``
+  const int num_values;
   //! pointer to the memory location on gpu
-  double* ptr;
-  //! number of doubles to allocate on gpu, so the memory size is num_doubles * sizeof(double)
-  int num_doubles;
+  std::unique_ptr<ValueType, CudaDeleter> device_ptr;
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
-};
+;
+
+// template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
+extern template class CudaDevicePointer<int>;
+extern template class CudaDevicePointer<double>;
 
 /*!\rst
   Exception to handle runtime errors returned by CUDA API functions. This class subclasses
@@ -201,7 +240,7 @@ struct CudaExpectedImprovementState final {
                                int num_being_sampled_in, bool configure_for_gradients,
                                UniformRandomGenerator * uniform_rng_in, bool configure_for_test);
 
-  CudaExpectedImprovementState(CudaExpectedImprovementState&& OL_UNUSED(other)) = default;
+  CudaExpectedImprovementState(CudaExpectedImprovementState&& other);
 
   /*!\rst
     Create a vector with the union of points_to_sample and points_being_sampled (the latter is appended to the former).
@@ -312,17 +351,17 @@ struct CudaExpectedImprovementState final {
   bool configure_for_test;
   //! structs containing pointers to store the memory locations of variables on GPU
   //! input data for GPU computations and GPU should not modify them
-  CudaDevicePointer gpu_mu;
-  CudaDevicePointer gpu_chol_var;
-  CudaDevicePointer gpu_grad_mu;
-  CudaDevicePointer gpu_grad_chol_var;
+  CudaDevicePointer<double> gpu_mu;
+  CudaDevicePointer<double> gpu_chol_var;
+  CudaDevicePointer<double> gpu_grad_mu;
+  CudaDevicePointer<double> gpu_grad_chol_var;
   //! data containing results returned by GPU computations
-  CudaDevicePointer gpu_ei_storage;
-  CudaDevicePointer gpu_grad_ei_storage;
+  CudaDevicePointer<double> gpu_ei_storage;
+  CudaDevicePointer<double> gpu_grad_ei_storage;
   //! data containing random numbers used in GPU computations, which are only
   //! used for testing
-  CudaDevicePointer gpu_random_number_ei;
-  CudaDevicePointer gpu_random_number_grad_ei;
+  CudaDevicePointer<double> gpu_random_number_ei;
+  CudaDevicePointer<double> gpu_random_number_grad_ei;
 
   //! storage for random numbers used in computing EI & grad_ei, this is only used to setup unit test
   std::vector<double> random_number_ei;
@@ -434,7 +473,7 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
   } else {
     CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
 
-    std::vector<typename ExpectedImprovementEvaluator::StateType> ei_state_vector;
+    std::vector<typename CudaExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, start_point_set, points_being_sampled, num_to_sample,
                                   num_being_sampled, thread_schedule.max_num_threads,
                                   configure_for_gradients, uniform_rng, &ei_state_vector);
