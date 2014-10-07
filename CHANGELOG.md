@@ -1,7 +1,19 @@
 * Features
 
-  * ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization`` can use GPUs; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
-  * Implemented  BLA (Bayesian Learning Automaton). (#373)
+  * Added startup message to REST server including tips for OSX users (#400)
+  * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
+
+* Changes
+
+* Bugs
+
+## v0.2.1 (2014-09-22)
+
+SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
+
+* Features
+
+  * Implemented BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
 
 * Changes
