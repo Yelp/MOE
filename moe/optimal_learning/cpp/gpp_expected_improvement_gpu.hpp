@@ -70,10 +70,13 @@ struct CudaDeleter final {
   in a ``std::unique_ptr``.
 \endrst*/
 template <typename ValueType>
-struct CudaDevicePointer final {
+class CudaDevicePointer final {
+ public:
   /*!\rst
     Construct a CudaDevicePointer (via ``cudaMalloc()``) that *owns* a block of
     ``num_values * sizeof(ValueType)`` bytes on the GPU device.
+
+    If allocation fails, device_ptr is nullptr and num_values is 0.
 
     \param
       :num_values: number of values allocated at the device memory address held in this object
@@ -82,13 +85,22 @@ struct CudaDevicePointer final {
 
   CudaDevicePointer(CudaDevicePointer&& other);
 
+  int num_values() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return num_values;
+  }
+
+  ValueType * device_ptr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return device_ptr.get();
+  }
+
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
+
+ private:
   //! number of values to allocate on gpu, so the memory size is ``num_values * sizeof(ValueType)``
   const int num_values;
   //! pointer to the memory location on gpu
   std::unique_ptr<ValueType, CudaDeleter> device_ptr;
-
-  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
-;
+};
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6
 extern template class CudaDevicePointer<int>;

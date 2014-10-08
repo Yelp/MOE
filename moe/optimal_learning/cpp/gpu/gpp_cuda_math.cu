@@ -8,7 +8,7 @@
 
 #include "gpp_cuda_math.hpp"
 
-#include <cstdint>
+#include <stdint.h>
 
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
@@ -242,7 +242,7 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
                                      double const * __restrict__ grad_mu, double const * __restrict__ grad_chol_var,
                                      int num_union, int num_to_sample, int dim, int num_iteration, double best,
                                      uint64_t base_seed,  double * __restrict__ grad_ei_storage,
-                                     double* __restrict__ gpu_random_number_grad_ei, bool configure_for_test) {
+                                     double * __restrict__ gpu_random_number_grad_ei, bool configure_for_test) {
   // copy mu, chol_var, grad_mu, grad_chol_var to shared memory
   extern __shared__ double storage[];
   double * __restrict__ mu_local = storage;
@@ -317,12 +317,12 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
 
 }  // end unnamed namespace
 
-CudaError CudaMallocDeviceMemory(size_t size, void** __restrict__ address_of_ptr_to_gpu_memory) {
+CudaError CudaMallocDeviceMemory(size_t size, void ** __restrict__ address_of_ptr_to_gpu_memory) {
   OL_CUDA_ERROR_RETURN(cudaMalloc(address_of_ptr_to_gpu_memory, size));
   return kCudaSuccess;
 }
 
-void CudaFreeDeviceMemory(void* __restrict__ ptr_to_gpu_memory) {
+CudaError CudaFreeDeviceMemory(void * __restrict__ ptr_to_gpu_memory) {
   OL_CUDA_ERROR_RETURN(cudaFree(ptr_to_gpu_memory));
   return kCudaSuccess;
 }

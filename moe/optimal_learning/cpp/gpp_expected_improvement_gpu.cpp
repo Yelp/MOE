@@ -11,6 +11,7 @@
 
 #ifdef OL_GPU_ENABLED
 #include <driver_types.h>
+#include <cuda_runtime_api.h>
 #endif
 
 #include <algorithm>
@@ -34,7 +35,7 @@ namespace optimal_learning {
 
 #ifdef OL_GPU_ENABLED
 
-CudaDeleter::operator()(void * device_ptr) const noexcept {
+void CudaDeleter::operator()(void * device_ptr) const noexcept {
   CudaError error = CudaFreeDeviceMemory(device_ptr);
   if (unlikely(error.err != cudaSuccess)) {
     // Throwing an exception out of a destructor is dangerous:
@@ -49,8 +50,8 @@ CudaDeleter::operator()(void * device_ptr) const noexcept {
 }
 
 template <typename ValueType>
-CudaDevicePointer<Valuetype>::CudaDevicePointer(int num_values_in) : num_values(0) {
-  if (num_values > 0) {
+CudaDevicePointer<ValueType>::CudaDevicePointer(int num_values_in) : num_values(0) {
+  if (num_values_in > 0) {
     ValueType * ptr;
     CudaError error = CudaMallocDeviceMemory(num_values_in * sizeof(ValueType), reinterpret_cast<void**>(&ptr));
     if (unlikely(error.err != cudaSuccess)) {
@@ -89,10 +90,10 @@ double CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(StateType * 
   OL_CUDA_ERROR_THROW(CudaGetEI(ei_state->to_sample_mean.data(), ei_state->cholesky_to_sample_var.data(),
                                 num_union, num_mc_, best_so_far_, seed_in, ei_state->configure_for_test,
                                 ei_state->random_number_ei.data(), &EI_val,
-                                ei_state->gpu_mu.device_ptr.get(),
-                                ei_state->gpu_chol_var.device_ptr.get(),
-                                ei_state->gpu_random_number_ei.device_ptr.get(),
-                                ei_state->gpu_ei_storage.device_ptr.get()));
+                                ei_state->gpu_mu.device_ptr(),
+                                ei_state->gpu_chol_var.device_ptr(),
+                                ei_state->gpu_random_number_ei.device_ptr(),
+                                ei_state->gpu_ei_storage.device_ptr()));
   return EI_val;
 }
 
@@ -123,12 +124,12 @@ void CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(StateType 
                                     num_to_sample, dim_, num_mc_, best_so_far_, seed_in,
                                     ei_state->configure_for_test,
                                     ei_state->random_number_grad_ei.data(), grad_ei,
-                                    ei_state->gpu_mu.device_ptr.get(),
-                                    ei_state->gpu_chol_var.device_ptr.get(),
-                                    ei_state->gpu_grad_mu.device_ptr.get(),
-                                    ei_state->gpu_grad_chol_var.device_ptr.get(),
-                                    ei_state->gpu_random_number_grad_ei.device_ptr.get(),
-                                    ei_state->gpu_grad_ei_storage.device_ptr.get()));
+                                    ei_state->gpu_mu.device_ptr(),
+                                    ei_state->gpu_chol_var.device_ptr(),
+                                    ei_state->gpu_grad_mu.device_ptr(),
+                                    ei_state->gpu_grad_chol_var.device_ptr(),
+                                    ei_state->gpu_random_number_grad_ei.device_ptr(),
+                                    ei_state->gpu_grad_ei_storage.device_ptr()));
 }
 
 void CudaExpectedImprovementEvaluator::SetupGPU(int devID) {
