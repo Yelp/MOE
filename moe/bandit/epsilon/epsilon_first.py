@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit Epsilon-First arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.epsilon_interface.EpsilonInterface` for further details on bandit.
+See :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for further details on bandit.
 
 """
 from moe.bandit.constant import DEFAULT_EPSILON, DEFAULT_TOTAL_SAMPLES, EPSILON_SUBTYPE_FIRST
-from moe.bandit.epsilon_interface import EpsilonInterface
+from moe.bandit.epsilon.epsilon_interface import EpsilonInterface
 
 from moe.bandit.utils import get_equal_arm_allocations
 
@@ -20,7 +20,7 @@ class EpsilonFirst(EpsilonInterface):
     number sampled is calculated by summing up total from each arm sampled.
     total_samples is T from :doc:`bandit`.
 
-    See superclass :class:`moe.bandit.epsilon_interface.EpsilonInterface` for further details.
+    See superclass :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for further details.
 
     """
 
@@ -30,7 +30,7 @@ class EpsilonFirst(EpsilonInterface):
             epsilon=DEFAULT_EPSILON,
             total_samples=DEFAULT_TOTAL_SAMPLES,
     ):
-        """Construct an EpsilonFirst object. See superclass :class:`moe.bandit.epsilon_interface.EpsilonInterface` for details.
+        """Construct an EpsilonFirst object. See superclass :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for details.
 
         total_samples is the total number of samples (number to sample + number sampled)
         number sampled is calculated by summing up total from each arm sampled.

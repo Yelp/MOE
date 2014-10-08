@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit Epsilon-Greedy arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.epsilon_interface.EpsilonInterface` for further details on this bandit.
+See :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for further details on this bandit.
 
 """
 from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY
-from moe.bandit.epsilon_interface import EpsilonInterface
+from moe.bandit.epsilon.epsilon_interface import EpsilonInterface
 
 
 class EpsilonGreedy(EpsilonInterface):
@@ -14,7 +14,7 @@ class EpsilonGreedy(EpsilonInterface):
 
     A class to encapsulate the computation of bandit epsilon greedy.
 
-    See superclass :class:`moe.bandit.epsilon_interface.EpsilonInterface` for further details.
+    See superclass :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for further details.
 
     """
 
@@ -23,7 +23,7 @@ class EpsilonGreedy(EpsilonInterface):
             historical_info,
             epsilon=DEFAULT_EPSILON,
     ):
-        """Construct an EpsilonGreedy object. See superclass :class:`moe.bandit.epsilon_interface.EpsilonInterface` for details."""
+        """Construct an EpsilonGreedy object. See superclass :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for details."""
         super(EpsilonGreedy, self).__init__(
             historical_info=historical_info,
             subtype=EPSILON_SUBTYPE_GREEDY,

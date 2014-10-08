@@ -4,6 +4,8 @@
 
 * Changes
 
+  * [cleanup] Moved bandits into their own sub directories (#375)
+
 * Bugs
 
 ## v0.2.1 (2014-09-22)

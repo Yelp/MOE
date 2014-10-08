@@ -7,8 +7,8 @@ Test one arm with various epsilon values.
 """
 import testify as T
 
-from moe.bandit.epsilon_greedy import EpsilonGreedy
-from moe.tests.bandit.epsilon_test_case import EpsilonTestCase
+from moe.bandit.epsilon.epsilon_greedy import EpsilonGreedy
+from moe.tests.bandit.epsilon.epsilon_test_case import EpsilonTestCase
 
 
 class EpsilonGreedyTest(EpsilonTestCase):

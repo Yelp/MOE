@@ -7,8 +7,8 @@ Test different cases including unsampled arms and multiple winners.
 """
 import testify as T
 
-from moe.bandit.ucb1_tuned import UCB1Tuned
-from moe.tests.bandit.ucb_test_case import UCBTestCase
+from moe.bandit.ucb.ucb1_tuned import UCB1Tuned
+from moe.tests.bandit.ucb.ucb_test_case import UCBTestCase
 
 
 class UCB1TunedTest(UCBTestCase):

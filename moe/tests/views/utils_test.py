@@ -9,7 +9,7 @@ from moe.tests.bandit.bandit_test_case import BanditTestCase
 
 class UtilsTest(BanditTestCase):
 
-    """Tests :func:`moe.bandit.views..utils._make_bandit_historical_info_from_params`."""
+    """Tests :func:`moe.views.utils._make_bandit_historical_info_from_params`."""
 
     def make_params_from_bandit_historical_info(self, historical_info):
         """Create params from given ``historical_info``."""
