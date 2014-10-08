@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit UCB (Upper Confidence Bound) arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
+See :mod:`moe.bandit.bandit_interface` for further details on bandit.
 
 """
 import copy
 
 from abc import abstractmethod
 
-from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, get_equal_arm_allocations
 
 
@@ -20,9 +20,9 @@ class UCBInterface(BanditInterface):
     The Algorithm: http://moodle.technion.ac.il/pluginfile.php/192340/mod_resource/content/0/UCB.pdf
 
     To inherit this class, a subclass needs to implement get_ucb_payoff
-    (see :func:`moe,bandit.ucb1.UCB1.get_ucb_payoff` for an example), everything else is already implemented.
+    (see :func:`moe.bandit.ucb.ucb1.UCB1.get_ucb_payoff` for an example), everything else is already implemented.
 
-    See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
+    See :mod:`moe.bandit.bandit_interface` docs for further details.
 
     """
 
@@ -92,7 +92,7 @@ class UCBInterface(BanditInterface):
         If all arms are pulled at least once, this method will pull the optimal arm
         (best expected upper confidence bound payoff).
 
-        See :func:`moe.bandit.ucb_interface.UCBInterface.get_ucb_payoff` for details on how to compute the expected upper confidence bound payoff (expected UCB payoff)
+        See :func:`moe.bandit.ucb.ucb_interface.UCBInterface.get_ucb_payoff` for details on how to compute the expected upper confidence bound payoff (expected UCB payoff)
 
         In case of a tie, the method will split the allocation among the optimal arms.
         For example, if we have three arms (arm1, arm2, and arm3) with expected UCB payoff 0.5, 0.5, and 0.1 respectively.

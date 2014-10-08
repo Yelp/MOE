@@ -78,7 +78,7 @@ def run_example(
             print "Running Bandit: {0:s}...".format(type)
         # Each bandit type has different subtypes. If a user does not specify a subtype, we use the default subtype.
         # For example, the bandit type Epsilon has two subtypes: epsilon-first and epsilon-greedy.
-        # See :class:`~moe.bandit.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon_greedy.EpsilonGreedy` for more details.
+        # See :class:`~moe.bandit.epsilon.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy` for more details.
         for subtype in BANDIT_ROUTE_NAMES_TO_SUBTYPES[type]:
             if verbose:
                 print "Running subtype: {0:s}...".format(subtype)
@@ -86,7 +86,7 @@ def run_example(
             # Compute and return arm allocations given the sample history of bandit arms.
             # For example, the allocations {arm1: 0.3, arm2: 0.7} means
             # if we have 10 arm pulls, we should pull arm1 3 times and arm2 7 times.
-            # See :func:`moe.bandit.interfaces.bandit_interface.BanditInterface.allocate_arms` for more details.
+            # See :func:`moe.bandit.bandit_interface.BanditInterface.allocate_arms` for more details.
             arm_allocations = bandit(historical_info, type=type, testapp=testapp, **bandit_kwargs[type])
             if verbose:
                 print "Arm allocations {0:s}".format(str(arm_allocations))

@@ -5,8 +5,8 @@ Test default values with one, two, and three arms.
 Test one arm with various epsilon values.
 
 """
-from moe.bandit.epsilon_first import EpsilonFirst
-from moe.tests.bandit.epsilon_test_case import EpsilonTestCase
+from moe.bandit.epsilon.epsilon_first import EpsilonFirst
+from moe.tests.bandit.epsilon.epsilon_test_case import EpsilonTestCase
 
 
 class TestEpsilonFirst(EpsilonTestCase):
