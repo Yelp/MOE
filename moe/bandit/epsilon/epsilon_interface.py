@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit Epsilon arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
+See :mod:`moe.bandit.bandit_interface` for further details on bandit.
 
 """
 import copy
@@ -9,7 +9,7 @@ import copy
 import numpy
 
 from moe.bandit.constant import DEFAULT_EPSILON
-from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list
 
 
@@ -20,7 +20,7 @@ class EpsilonInterface(BanditInterface):
     A class to encapsulate the computation of bandit epsilon.
     Epsilon is the sole hyperparameter in this class. Subclasses may contain other hyperparameters.
 
-    See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
+    See :mod:`moe.bandit.bandit_interface` docs for further details.
 
     """
 

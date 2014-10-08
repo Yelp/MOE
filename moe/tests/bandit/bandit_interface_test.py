@@ -4,7 +4,7 @@ import logging
 
 import testify as T
 
-from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.bandit_interface import BanditInterface
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 
 

@@ -10,7 +10,7 @@ import numpy
 
 import testify as T
 
-from moe.bandit.bla import BLA
+from moe.bandit.bla.bla import BLA
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 

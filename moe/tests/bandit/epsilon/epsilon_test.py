@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """Test epsilon bandit implementation (functions common to epsilon bandit).
 
-Test functions in :class:`moe.bandit.epsilon_interface.EpsilonInterface`
+Test functions in :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface`
 
 """
 import logging
 
 import testify as T
 
-from moe.bandit.epsilon_interface import EpsilonInterface
-from moe.tests.bandit.epsilon_test_case import EpsilonTestCase
+from moe.bandit.epsilon.epsilon_interface import EpsilonInterface
+from moe.tests.bandit.epsilon.epsilon_test_case import EpsilonTestCase
 
 
 class EpsilonTest(EpsilonTestCase):
