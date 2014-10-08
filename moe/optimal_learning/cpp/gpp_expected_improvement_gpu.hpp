@@ -86,20 +86,20 @@ class CudaDevicePointer final {
   CudaDevicePointer(CudaDevicePointer&& other);
 
   int num_values() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return num_values;
+    return num_values_;
   }
 
   ValueType * device_ptr() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return device_ptr.get();
+    return device_ptr_.get();
   }
 
   OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(CudaDevicePointer);
 
  private:
   //! number of values to allocate on gpu, so the memory size is ``num_values * sizeof(ValueType)``
-  const int num_values;
+  int num_values_;
   //! pointer to the memory location on gpu
-  std::unique_ptr<ValueType, CudaDeleter> device_ptr;
+  std::unique_ptr<ValueType, CudaDeleter> device_ptr_;
 };
 
 // template explicit instantiation declarations, see gpp_common.hpp header comments, item 6

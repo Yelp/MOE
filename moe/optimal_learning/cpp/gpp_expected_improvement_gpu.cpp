@@ -50,7 +50,7 @@ void CudaDeleter::operator()(void * device_ptr) const noexcept {
 }
 
 template <typename ValueType>
-CudaDevicePointer<ValueType>::CudaDevicePointer(int num_values_in) : num_values(0) {
+CudaDevicePointer<ValueType>::CudaDevicePointer(int num_values_in) : num_values_(0) {
   if (num_values_in > 0) {
     ValueType * ptr;
     CudaError error = CudaMallocDeviceMemory(num_values_in * sizeof(ValueType), reinterpret_cast<void**>(&ptr));
@@ -58,8 +58,8 @@ CudaDevicePointer<ValueType>::CudaDevicePointer(int num_values_in) : num_values(
       ThrowException(OptimalLearningCudaException(error));
     } else {
       // store allocated memory and memory size only after allocation succeeds
-      device_ptr.reset(ptr);
-      num_values = num_values_in;
+      device_ptr_.reset(ptr);
+      num_values_ = num_values_in;
     }
   }
 }
