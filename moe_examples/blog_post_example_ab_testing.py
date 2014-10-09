@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """An example of using MOE to optimize a simulated A/B testing framework.
 
-Blog post: TODO(sclark): Link to blog post
+Blog post: http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html
 
 """
 import copy
