@@ -2,7 +2,6 @@
 """An example of using MOE to optimize a simulated A/B testing framework.
 
 Blog post: TODO(sclark): Link to blog post
----------
 """
 import numpy
 
@@ -19,15 +18,28 @@ from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER
 from moe.views.constant import GP_NEXT_POINTS_KRIGING_ROUTE_NAME, BANDIT_EPSILON_ROUTE_NAME
 
 matplotlib.use('Agg')  # Repress screen output from matplotlib
-STATUS_QUO_PARAMETER = numpy.array([0.2])
-LOCAL_OPTIMAL_PARAMETER = numpy.array([0.14289063])
-GLOBAL_OPTIMAL_PARAMETER = numpy.array([0.71428711])
+
+STATUS_QUO_PARAMETER = numpy.array([0.2])  # Initial parameter value
+LOCAL_OPTIMAL_PARAMETER = numpy.array([0.14289063])  # Local optima of CTR function
+GLOBAL_OPTIMAL_PARAMETER = numpy.array([0.71428711])  # Global optima of CTR function
+
+#: Simulated traffic volume
 TRAFFIC_PER_DAY = 1000000  # 1 Million
+
+#: Number of parameters to simulate each day
 NUMBER_OF_ACTIVE_COHORTS = 3
+
+#: Number of times to have MOE update cohorts
 EXPERIMENT_ITERATIONS = 5
+
+#: Set as a constant for clarity of example, see mod:`moe_examples.combined_example` for hyperparameter updating
 COVARIANCE_INFO = {
         'hyperparameters': [0.3, 0.1],
         }
+
+#: Our bandit policy :mod:`moe.bandit.epsilon.epsilon_greedy` requires an epsilon parameter
+#: This is the fraction of allocations that will only explore, the rest will only exploit
+EPSILON_BANDIT_PARAMETER = 0.15
 
 
 def click_through_rate(x):
@@ -35,11 +47,11 @@ def click_through_rate(x):
 
     Higher values are better. There is an local optima at ``LOCAL_OPTIMAL_PARAMETER`` (0.14289063) and a global optima at ``GLOBAL_OPTIMAL_PARAMETER`` (0.71428711).
 
-    ..Note:
+    .. Note:
 
-        The underlying function does not need to be differentiable or even continuous for MOE to be able to optimize it.
+        The underlying function does not need to be convex, differentiable, or even continuous for MOE to be able to optimize it.
 
-    math::
+    .. math::
 
         \texttt{CTR}(x) = \begin{cases}
                 \frac{1}{100}\left( \sin\left( \frac{7\pi}{2} x\right) + 2.5\right) & x \leq 0.6 \\
@@ -55,7 +67,7 @@ def click_through_rate(x):
         return (numpy.sin(x[0] * 3.5 * numpy.pi) + 1.1) / 100.0
 
 
-def bernoulli_mean(observed_clicks, samples):
+def bernoulli_mean_and_var(observed_clicks, samples):
     """Return the mean and variance of the mean of a bernoulli distribution with a given number of successes (clicks) and trials (impressions)."""
     if samples > 0:
         observed_success_rate = observed_clicks / float(samples)
@@ -63,6 +75,7 @@ def bernoulli_mean(observed_clicks, samples):
         observed_success_rate = 0.0
 
     # We use the fact that the Beta distribution is the cojugate prior to the binomial distribution
+    # http://en.wikipedia.org/wiki/Beta_distribution
     alpha = observed_clicks + 1
     beta = samples - observed_clicks + 1
     observed_variance = (alpha * beta) / float((alpha + beta) * (alpha + beta) * (alpha + beta + 1))
@@ -75,15 +88,15 @@ def objective_function(observed_sample_arm, observed_status_quo_sample_arm):
 
     Lower values are better (minimization). Our objective is relative to the CTR of the initial parameter value, ``STATUS_QUO_PARAMETER``.
 
-    math::
+    .. math::
 
         \Phi(\vec{x}) = \frac{\mathtt{CTR}(\vec{x})}{\mathtt{CTR}(\vec{SQ})}
     """
-    sample_ctr, sample_ctr_var = bernoulli_mean(
+    sample_ctr, sample_ctr_var = bernoulli_mean_and_var(
             observed_sample_arm.win,
             observed_sample_arm.total,
             )
-    status_quo_ctr, status_quo_ctr_var = bernoulli_mean(
+    status_quo_ctr, status_quo_ctr_var = bernoulli_mean_and_var(
             observed_status_quo_sample_arm.win,
             observed_status_quo_sample_arm.total,
             )
@@ -133,7 +146,7 @@ def get_allocations(active_arms, sample_arms, verbose=False):
             type=BANDIT_EPSILON_ROUTE_NAME,
             subtype=EPSILON_SUBTYPE_GREEDY,
             hyperparameter_info={
-                'epsilon': 0.10,
+                'epsilon': EPSILON_BANDIT_PARAMETER,
                 },
             )
 
@@ -255,7 +268,7 @@ def plot_sample_arms(active_arms, sample_arms, iteration_number):
             'b--',
             )
     # Plot the variance
-    var_diag = abs(numpy.diag(var))
+    var_diag = numpy.fabs(numpy.diag(var))
     ax.fill_between(
             numpy.arange(0, 1, res),
             mean - var_diag,
