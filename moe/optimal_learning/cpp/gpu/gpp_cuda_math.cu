@@ -15,6 +15,7 @@
 #include <helper_cuda.h>
 #include <helper_functions.h>
 
+#include <algorithm>
 #include <vector>
 
 /*!\rst
@@ -331,8 +332,6 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
                     double best, uint64_t base_seed, bool configure_for_test, double * __restrict__ random_number_ei,
                     double * __restrict__ ei_val, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
                     double* __restrict__ gpu_random_number_ei, double * __restrict__ gpu_ei_storage) {
-  *ei_val = 0.0;
-
   // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are
   // (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
   dim3 threads(kEINumThreads);
@@ -412,6 +411,7 @@ CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var
   // The code block below extracts grad_ei from grad_ei_storage, which is output from the function
   // "CudaGetGradEI" run on gpu. The way to do that is for each component of grad_ei, we find all
   // the threads calculating the corresponding component and average over the threads.
+  std::fill(grad_ei, grad_ei + num_to_sample * dim, 0.0);
   for (int n = 0; n < (kGradEINumThreads*kGradEINumBlocks); ++n) {
       for (int i = 0; i < num_to_sample*dim; ++i) {
           grad_ei[i] += grad_ei_storage[n*num_to_sample*dim + i];
