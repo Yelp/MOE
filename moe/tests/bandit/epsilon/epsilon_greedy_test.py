@@ -5,7 +5,7 @@ Test default values with one, two, and three arms.
 Test one arm with various epsilon values.
 
 """
-from moe.bandit.epsilon_greedy import EpsilonGreedy
+from moe.bandit.epsilon.epsilon_greedy import EpsilonGreedy
 from moe.tests.bandit.epsilon_test_case import EpsilonTestCase
 
 

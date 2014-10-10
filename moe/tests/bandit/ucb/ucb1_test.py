@@ -5,7 +5,7 @@ Test default values with one, two, and three arms.
 Test different cases including unsampled arms and multiple winners.
 
 """
-from moe.bandit.ucb1 import UCB1
+from moe.bandit.ucb.ucb1 import UCB1
 from moe.tests.bandit.ucb_test_case import UCBTestCase
 
 
