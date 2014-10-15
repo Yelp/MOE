@@ -166,6 +166,7 @@ class TestExpectedImprovement(GaussianProcessTestCase):
         :return: None; assertions fail if test conditions are not met
 
         """
+        __tracebackhide__ = True
         for shift in shifts:
             ei_eval.current_point = point_to_sample - shift
             left_ei = ei_eval.compute_expected_improvement()

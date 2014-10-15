@@ -26,14 +26,15 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
 
     """Test that proper errors are thrown when endpoints bad data."""
 
-    @pytest.fixture(autouse=True)
-    def disable_logging(self):
+    @pytest.fixture(autouse=True, scope='class')
+    def disable_logging(self, request):
         """Disable logging (for the duration of this test case)."""
         logging.disable(logging.CRITICAL)
 
-        def fin():
+        def finalize():
             """Re-enable logging (so other test cases are unaffected)."""
             logging.disable(logging.NOTSET)
+        request.addfinalizer(finalize)
 
     def test_empty_json_payload_invalid(self):
         """Test empty json payload causes an AppError."""
@@ -59,12 +60,11 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
 
         # Get the colander exception that arises from processing invalid hyperparameters
         request_schema = GpMeanVarRequest()
-        try:
-            request_schema.deserialize(dict_payload)
-        except colander.Invalid as request_exception:
-            pass
 
-        assert result.body == failed_colander_validation(request_exception, result.request).body
+        with pytest.raises(colander.Invalid) as request_exception:
+            request_schema.deserialize(dict_payload)
+
+        assert result.body == failed_colander_validation(request_exception.value, result.request).body
 
     def test_invalid_points_sampled_input(self):
         """Test that duplicate points_sampled (via GP_NEXT_POINTS_EPI_ENDPOINT) generate expected Response with error message."""
@@ -81,9 +81,8 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
         # Get the exception that arises from processing invalid hyperparameters
         request_schema = GpNextPointsRequest()
         params = request_schema.deserialize(dict_payload)
-        try:
-            _make_gp_from_params(params)
-        except Exception as request_exception:
-            pass
 
-        assert result.body == general_error(request_exception, result.request).body
+        with pytest.raises(Exception) as request_exception:
+            _make_gp_from_params(params)
+
+        assert result.body == general_error(request_exception.value, result.request).body

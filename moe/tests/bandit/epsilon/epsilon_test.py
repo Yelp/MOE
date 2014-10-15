@@ -16,15 +16,17 @@ class TestEpsilon(EpsilonTestCase):
 
     """Verify that different sample_arms return correct results."""
 
-    @pytest.fixture(autouse=True)
-    def disable_logging(self):
+    @pytest.fixture()
+    def disable_logging(self, request):
         """Disable logging (for the duration of this test case)."""
         logging.disable(logging.CRITICAL)
 
-        def fin():
+        def finalize():
             """Re-enable logging (so other test cases are unaffected)."""
             logging.disable(logging.NOTSET)
+        request.addfinalizer(finalize)
 
+    @pytest.mark.usefixtures("disable_logging")
     def test_empty_arm_invalid(self):
         """Test empty ``sample_arms`` causes an ValueError."""
         with pytest.raises(ValueError):

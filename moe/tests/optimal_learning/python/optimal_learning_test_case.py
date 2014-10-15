@@ -29,6 +29,7 @@ class OptimalLearningTestCase(object):
         :raise: AssertionError value, truth are not equal to within tolerance
 
         """
+        __tracebackhide__ = True
         diff = numpy.fabs(value - truth)
         assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
@@ -44,6 +45,7 @@ class OptimalLearningTestCase(object):
         :raise: AssertionError value, truth are not relatively equal
 
         """
+        __tracebackhide__ = True
         denom = numpy.fabs(truth)
         if denom < numpy.finfo(numpy.float64).tiny:
             denom = 1.0  # do not divide by 0
@@ -62,6 +64,7 @@ class OptimalLearningTestCase(object):
         :raise: AssertionError value[i], truth[i] are not relatively equal for every i
 
         """
+        __tracebackhide__ = True
         assert value.shape == truth.shape, 'value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape)
         for index in numpy.ndindex(value.shape):
             self.assert_scalar_within_relative(value[index], truth[index], tol)
@@ -76,6 +79,7 @@ class OptimalLearningTestCase(object):
         :raise: AssertionError when every point is not more than tolerance distance apart
 
         """
+        __tracebackhide__ = True
         for i in xrange(point_list.shape[0]):
             for j in xrange(i + 1, point_list.shape[0]):
                 temp = point_list[i, ...] - point_list[j, ...]

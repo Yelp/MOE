@@ -12,15 +12,17 @@ class TestUtils(BanditTestCase):
 
     """Tests :func:`moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list` and :func:`moe.bandit.utils.get_equal_arm_allocations`."""
 
-    @pytest.fixture(autouse=True)
-    def disable_logging(self):
+    @pytest.fixture()
+    def disable_logging(self, request):
         """Disable logging (for the duration of this test case)."""
         logging.disable(logging.CRITICAL)
 
-        def fin():
+        def finalize():
             """Re-enable logging (so other test cases are unaffected)."""
             logging.disable(logging.NOTSET)
+        request.addfinalizer(finalize)
 
+    @pytest.mark.usefixtures("disable_logging")
     def test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid(self):
         """Test empty ``payoff_arm_name_list`` causes an ValueError."""
         with pytest.raises(ValueError):
@@ -34,6 +36,7 @@ class TestUtils(BanditTestCase):
         """Test winning arm names match the winners."""
         assert get_winning_arm_names_from_payoff_arm_name_list([(0.5, "arm1"), (0.5, "arm2"), (0.4, "arm3")]) == frozenset(["arm1", "arm2"])
 
+    @pytest.mark.usefixtures("disable_logging")
     def test_get_equal_arm_allocations_empty_arm_invalid(self):
         """Test empty ``arms_sampled`` causes an ValueError."""
         with pytest.raises(ValueError):

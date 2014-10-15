@@ -14,14 +14,15 @@ class TestDataContainers(BanditTestCase):
 
     """Tests functions in :class:`moe.bandit.data_containers.SampleArm` and :class:`moe.bandit.data_containers.HistoricalData`."""
 
-    @pytest.fixture(autouse=True)
-    def disable_logging(self):
+    @pytest.fixture()
+    def disable_logging(self, request):
         """Disable logging (for the duration of this test case)."""
         logging.disable(logging.CRITICAL)
 
-        def fin():
+        def finalize():
             """Re-enable logging (so other test cases are unaffected)."""
             logging.disable(logging.NOTSET)
+        request.addfinalizer(finalize)
 
     def test_sample_arm_str(self):
         """Test SampleArm's __str__ overload operator."""
@@ -62,6 +63,7 @@ class TestDataContainers(BanditTestCase):
         assert arm1_old_id == arm1_new_id
         assert arm1.json_payload() == arm3.json_payload()
 
+    @pytest.mark.usefixtures("disable_logging")
     def test_sample_arm_add_arm_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance."""
         with pytest.raises(ValueError):
@@ -96,6 +98,7 @@ class TestDataContainers(BanditTestCase):
                 )
         assert historical_info.json_payload() == expected_historical_info.json_payload()
 
+    @pytest.mark.usefixtures("disable_logging")
     def test_historical_data_append_arms_with_variance_invalid(self):
         """Test that adding arms with variance causes a ValueError."""
         historical_info = copy.deepcopy(self.three_arms_with_variance_no_unsampled_arm_test_case)
