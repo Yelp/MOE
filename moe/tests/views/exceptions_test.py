@@ -22,19 +22,20 @@ from moe.views.schemas.rest.gp_mean_var import GpMeanVarRequest
 from moe.views.utils import _make_gp_from_params
 
 
+@pytest.fixture(autouse=True, scope='module')
+def disable_logging(request):
+    """Disable logging (for the duration of this test case)."""
+    logging.disable(logging.CRITICAL)
+
+    def finalize():
+        """Re-enable logging (so other test cases are unaffected)."""
+        logging.disable(logging.NOTSET)
+    request.addfinalizer(finalize)
+
+
 class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCase):
 
     """Test that proper errors are thrown when endpoints bad data."""
-
-    @pytest.fixture(autouse=True, scope='class')
-    def disable_logging(self, request):
-        """Disable logging (for the duration of this test case)."""
-        logging.disable(logging.CRITICAL)
-
-        def finalize():
-            """Re-enable logging (so other test cases are unaffected)."""
-            logging.disable(logging.NOTSET)
-        request.addfinalizer(finalize)
 
     def test_empty_json_payload_invalid(self):
         """Test empty json payload causes an AppError."""

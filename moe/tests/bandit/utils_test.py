@@ -8,19 +8,20 @@ from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, ge
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 
 
+@pytest.fixture()
+def disable_logging(request):
+    """Disable logging (for the duration of this test case)."""
+    logging.disable(logging.CRITICAL)
+
+    def finalize():
+        """Re-enable logging (so other test cases are unaffected)."""
+        logging.disable(logging.NOTSET)
+    request.addfinalizer(finalize)
+
+
 class TestUtils(BanditTestCase):
 
     """Tests :func:`moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list` and :func:`moe.bandit.utils.get_equal_arm_allocations`."""
-
-    @pytest.fixture()
-    def disable_logging(self, request):
-        """Disable logging (for the duration of this test case)."""
-        logging.disable(logging.CRITICAL)
-
-        def finalize():
-            """Re-enable logging (so other test cases are unaffected)."""
-            logging.disable(logging.NOTSET)
-        request.addfinalizer(finalize)
 
     @pytest.mark.usefixtures("disable_logging")
     def test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid(self):

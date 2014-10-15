@@ -31,8 +31,9 @@ class TestLatinHypercubeRandomPointGeneration(OptimalLearningTestCase):
 
     """
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up parameters for test cases."""
         domain_bounds_to_test = [
             ClosedInterval.build_closed_intervals_from_list([[-1.0, 1.0]]),
@@ -44,8 +45,8 @@ class TestLatinHypercubeRandomPointGeneration(OptimalLearningTestCase):
             ClosedInterval.build_closed_intervals_from_list([[-7000.0, 10000.0], [-8000.0, -7999.0], [10000.06, 10000.0601]]),
         ]
 
-        self.domains_to_test = [TensorProductDomain(domain_bounds) for domain_bounds in domain_bounds_to_test]
-        self.num_points_to_test = (1, 2, 5, 10, 20)
+        cls.domains_to_test = [TensorProductDomain(domain_bounds) for domain_bounds in domain_bounds_to_test]
+        cls.num_points_to_test = (1, 2, 5, 10, 20)
 
     def test_latin_hypercube_within_domain(self):
         """Test that generate_latin_hypercube_points returns points within the domain."""
@@ -131,23 +132,24 @@ class TestClosedInterval(OptimalLearningTestCase):
 
     """Tests for ClosedInterval's member functions."""
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up test cases (described inline)."""
-        self.test_cases = [
+        cls.test_cases = [
             ClosedInterval(9.378, 9.378),    # min == max
             ClosedInterval(-2.71, 3.14),     # min < max
             ClosedInterval(-2.71, -3.14),    # min > max
             ClosedInterval(0.0, numpy.inf),  # infinte range
         ]
 
-        self.points_to_check = numpy.empty((len(self.test_cases), 5))
-        for i, case in enumerate(self.test_cases):
-            self.points_to_check[i, 0] = (case.min + case.max) * 0.5  # midpoint
-            self.points_to_check[i, 1] = case.min                     # left boundary
-            self.points_to_check[i, 2] = case.max                     # right boundary
-            self.points_to_check[i, 3] = case.min - 0.5               # outside on the left
-            self.points_to_check[i, 4] = case.max + 0.5               # outside on the right
+        cls.points_to_check = numpy.empty((len(cls.test_cases), 5))
+        for i, case in enumerate(cls.test_cases):
+            cls.points_to_check[i, 0] = (case.min + case.max) * 0.5  # midpoint
+            cls.points_to_check[i, 1] = case.min                     # left boundary
+            cls.points_to_check[i, 2] = case.max                     # right boundary
+            cls.points_to_check[i, 3] = case.min - 0.5               # outside on the left
+            cls.points_to_check[i, 4] = case.max + 0.5               # outside on the right
 
     def test_length(self):
         """Check that length works."""

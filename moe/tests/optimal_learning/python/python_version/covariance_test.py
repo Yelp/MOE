@@ -28,13 +28,14 @@ class TestSquareExponential(OptimalLearningTestCase):
 
     """
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up parameters for test cases."""
-        self.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
-        self.CovarianceClass = SquareExponential
+        cls.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
+        cls.CovarianceClass = SquareExponential
 
-        self.one_dim_test_sets = numpy.array([
+        cls.one_dim_test_sets = numpy.array([
             [1.0, 0.1],
             [2.0, 0.1],
             [1.0, 1.0],
@@ -43,7 +44,7 @@ class TestSquareExponential(OptimalLearningTestCase):
             [0.1, 10.0],
         ])
 
-        self.three_dim_test_sets = numpy.array([
+        cls.three_dim_test_sets = numpy.array([
             [1.0, 0.1, 0.1, 0.1],
             [1.0, 0.1, 0.2, 0.1],
             [1.0, 0.1, 0.2, 0.3],

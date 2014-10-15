@@ -20,7 +20,8 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
     num_sampled_list = (1, 2, 3, 11, 20)
     endpoint = GP_MEAN_VAR_ENDPOINT
 
-    def _build_json_payload(self, domain, covariance, historical_data, points_to_evaluate):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data, points_to_evaluate):
         """Create a json_payload to POST to the /gp/mean_var endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,

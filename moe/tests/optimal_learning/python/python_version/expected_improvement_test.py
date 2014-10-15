@@ -68,8 +68,9 @@ class TestExpectedImprovement(GaussianProcessTestCase):
         epsilon,
     )
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Run the standard setup but seed the RNG first (for repeatability).
 
         It is easy to stumble into test cases where EI is very small (e.g., < 1.e-20),
@@ -77,7 +78,7 @@ class TestExpectedImprovement(GaussianProcessTestCase):
 
         """
         numpy.random.seed(7859)
-        super(TestExpectedImprovement, self).base_setup()
+        super(TestExpectedImprovement, cls).base_setup()
 
     def test_expected_improvement_and_gradient(self):
         """Test EI by comparing the vectorized and "naive" versions.
@@ -154,7 +155,8 @@ class TestExpectedImprovement(GaussianProcessTestCase):
                 # Restore state
                 numpy.random.set_state(rng_state)
 
-    def _check_ei_symmetry(self, ei_eval, point_to_sample, shifts):
+    @classmethod
+    def _check_ei_symmetry(cls, ei_eval, point_to_sample, shifts):
         """Compute ei at each ``[point_to_sample +/- shift for shift in shifts]`` and check for equality.
 
         :param ei_eval: properly configured ExpectedImprovementEvaluator object
@@ -176,8 +178,8 @@ class TestExpectedImprovement(GaussianProcessTestCase):
             right_ei = ei_eval.compute_expected_improvement()
             right_grad_ei = ei_eval.compute_grad_expected_improvement()
 
-            self.assert_scalar_within_relative(left_ei, right_ei, 0.0)
-            self.assert_vector_within_relative(left_grad_ei, -right_grad_ei, 0.0)
+            cls.assert_scalar_within_relative(left_ei, right_ei, 0.0)
+            cls.assert_vector_within_relative(left_grad_ei, -right_grad_ei, 0.0)
 
     def test_1d_analytic_ei_edge_cases(self):
         """Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds."""

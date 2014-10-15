@@ -101,17 +101,18 @@ class TestNullOptimizer(OptimalLearningTestCase):
 
     """
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up a test case for optimizing a simple quadratic polynomial."""
-        self.dim = 3
-        domain_bounds = [ClosedInterval(-1.0, 1.0)] * self.dim
-        self.domain = TensorProductDomain(domain_bounds)
+        cls.dim = 3
+        domain_bounds = [ClosedInterval(-1.0, 1.0)] * cls.dim
+        cls.domain = TensorProductDomain(domain_bounds)
 
-        maxima_point = numpy.full(self.dim, 0.5)
-        current_point = numpy.zeros(self.dim)
-        self.polynomial = QuadraticFunction(maxima_point, current_point)
-        self.null_optimizer = NullOptimizer(self.domain, self.polynomial)
+        maxima_point = numpy.full(cls.dim, 0.5)
+        current_point = numpy.zeros(cls.dim)
+        cls.polynomial = QuadraticFunction(maxima_point, current_point)
+        cls.null_optimizer = NullOptimizer(cls.domain, cls.polynomial)
 
     def test_null_optimizer(self):
         """Test that null optimizer does not change current_point."""
@@ -156,16 +157,17 @@ class TestGradientDescentOptimizer(OptimalLearningTestCase):
 
     """
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up a test case for optimizing a simple quadratic polynomial."""
-        self.dim = 3
-        domain_bounds = [ClosedInterval(-1.0, 1.0)] * self.dim
-        self.domain = TensorProductDomain(domain_bounds)
+        cls.dim = 3
+        domain_bounds = [ClosedInterval(-1.0, 1.0)] * cls.dim
+        cls.domain = TensorProductDomain(domain_bounds)
 
-        maxima_point = numpy.full(self.dim, 0.5)
-        current_point = numpy.zeros(self.dim)
-        self.polynomial = QuadraticFunction(maxima_point, current_point)
+        maxima_point = numpy.full(cls.dim, 0.5)
+        current_point = numpy.zeros(cls.dim)
+        cls.polynomial = QuadraticFunction(maxima_point, current_point)
 
         max_num_steps = 250
         max_num_restarts = 10
@@ -174,7 +176,7 @@ class TestGradientDescentOptimizer(OptimalLearningTestCase):
         pre_mult = 1.0
         max_relative_change = 0.8
         tolerance = 1.0e-12
-        self.gd_parameters = GradientDescentParameters(
+        cls.gd_parameters = GradientDescentParameters(
             max_num_steps,
             max_num_restarts,
             num_steps_averaged,
@@ -190,7 +192,7 @@ class TestGradientDescentOptimizer(OptimalLearningTestCase):
         factr = 1000.0
         pgtol = 1e-10
         epsilon = 1e-8
-        self.BFGS_parameters = LBFGSBParameters(
+        cls.BFGS_parameters = LBFGSBParameters(
             approx_grad,
             max_func_evals,
             max_metric_correc,

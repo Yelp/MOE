@@ -19,8 +19,9 @@ class TestGaussianProcess(GaussianProcessTestCase):
 
     precompute_gaussian_process_data = True
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Run the standard setup but seed the RNG first (for repeatability).
 
         It is easy to stumble into test cases where mean, var terms are very small (e.g., < 1.e-20),
@@ -28,7 +29,7 @@ class TestGaussianProcess(GaussianProcessTestCase):
 
         """
         numpy.random.seed(8794)
-        super(TestGaussianProcess, self).base_setup()
+        super(TestGaussianProcess, cls).base_setup()
 
     def test_sample_point_from_gp(self):
         """Test that sampling points from the GP works."""

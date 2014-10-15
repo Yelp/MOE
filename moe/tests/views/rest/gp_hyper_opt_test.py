@@ -19,7 +19,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
     precompute_gaussian_process_data = True
 
-    def _build_json_payload(self, domain, covariance, historical_data):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data):
         """Create a json_payload to POST to the /gp/hyper_opt endpoint with all needed info."""
         hyper_dim = domain.dim + 1
         dict_to_dump = {

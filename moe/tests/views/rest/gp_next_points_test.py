@@ -20,7 +20,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
     precompute_gaussian_process_data = True
     num_sampled_list = (1, 2, 10)
 
-    def _build_json_payload(self, domain, covariance, historical_data, num_to_sample, lie_value=None, lie_method=None, l_bfgs_b=False):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data, num_to_sample, lie_value=None, lie_method=None, l_bfgs_b=False):
         """Create a json_payload to POST to the /gp/next_points/* endpoint with all needed info."""
         if l_bfgs_b:
             dict_to_dump = {

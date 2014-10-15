@@ -19,7 +19,8 @@ class TestBanditViews(BanditTestCase, RestTestCase):
     _moe_route = None  # Define in a subclass
     _view = None  # Define in a subclass
 
-    def _build_json_payload(self, subtype, historical_info):
+    @staticmethod
+    def _build_json_payload(subtype, historical_info):
         """Create a json_payload to POST to the /bandit/* endpoint with all needed info."""
         dict_to_dump = {
             'subtype': subtype,

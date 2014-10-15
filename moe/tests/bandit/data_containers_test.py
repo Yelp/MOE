@@ -10,19 +10,20 @@ from moe.bandit.data_containers import HistoricalData, SampleArm
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 
 
+@pytest.fixture()
+def disable_logging(request):
+    """Disable logging (for the duration of this test case)."""
+    logging.disable(logging.CRITICAL)
+
+    def finalize():
+        """Re-enable logging (so other test cases are unaffected)."""
+        logging.disable(logging.NOTSET)
+    request.addfinalizer(finalize)
+
+
 class TestDataContainers(BanditTestCase):
 
     """Tests functions in :class:`moe.bandit.data_containers.SampleArm` and :class:`moe.bandit.data_containers.HistoricalData`."""
-
-    @pytest.fixture()
-    def disable_logging(self, request):
-        """Disable logging (for the duration of this test case)."""
-        logging.disable(logging.CRITICAL)
-
-        def finalize():
-            """Re-enable logging (so other test cases are unaffected)."""
-            logging.disable(logging.NOTSET)
-        request.addfinalizer(finalize)
 
     def test_sample_arm_str(self):
         """Test SampleArm's __str__ overload operator."""

@@ -12,19 +12,20 @@ from moe.bandit.epsilon.epsilon_interface import EpsilonInterface
 from moe.tests.bandit.epsilon.epsilon_test_case import EpsilonTestCase
 
 
+@pytest.fixture()
+def disable_logging(request):
+    """Disable logging (for the duration of this test case)."""
+    logging.disable(logging.CRITICAL)
+
+    def finalize():
+        """Re-enable logging (so other test cases are unaffected)."""
+        logging.disable(logging.NOTSET)
+    request.addfinalizer(finalize)
+
+
 class TestEpsilon(EpsilonTestCase):
 
     """Verify that different sample_arms return correct results."""
-
-    @pytest.fixture()
-    def disable_logging(self, request):
-        """Disable logging (for the duration of this test case)."""
-        logging.disable(logging.CRITICAL)
-
-        def finalize():
-            """Re-enable logging (so other test cases are unaffected)."""
-            logging.disable(logging.NOTSET)
-        request.addfinalizer(finalize)
 
     @pytest.mark.usefixtures("disable_logging")
     def test_empty_arm_invalid(self):

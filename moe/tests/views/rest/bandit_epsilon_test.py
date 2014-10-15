@@ -20,7 +20,8 @@ class TestBanditEpsilonViews(TestBanditViews):
     _moe_route = BANDIT_EPSILON_MOE_ROUTE
     _view = BanditEpsilonView
 
-    def _build_json_payload(self, subtype, historical_info, hyperparameter_info=None):
+    @staticmethod
+    def _build_json_payload(subtype, historical_info, hyperparameter_info=None):
         """Create a json_payload to POST to the /bandit/epsilon endpoint with all needed info."""
         if hyperparameter_info is None:
             hyperparameter_info = EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS[subtype]

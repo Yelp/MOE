@@ -17,7 +17,8 @@ class OptimalLearningTestCase(object):
 
     """
 
-    def assert_scalar_within_absolute(self, value, truth, tol):
+    @staticmethod
+    def assert_scalar_within_absolute(value, truth, tol):
         """Check whether a scalar ``value`` is equal to ``truth``: ``|value - truth| <= tol``.
 
         :param value: scalar to check
@@ -33,7 +34,8 @@ class OptimalLearningTestCase(object):
         diff = numpy.fabs(value - truth)
         assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
-    def assert_scalar_within_relative(self, value, truth, tol):
+    @staticmethod
+    def assert_scalar_within_relative(value, truth, tol):
         """Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| <= tol``.
 
         :param value: scalar to check
@@ -52,7 +54,8 @@ class OptimalLearningTestCase(object):
         diff = numpy.fabs((value - truth) / denom)
         assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
-    def assert_vector_within_relative(self, value, truth, tol):
+    @staticmethod
+    def assert_vector_within_relative(value, truth, tol):
         """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
 
         :param value: scalar to check
@@ -67,9 +70,10 @@ class OptimalLearningTestCase(object):
         __tracebackhide__ = True
         assert value.shape == truth.shape, 'value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape)
         for index in numpy.ndindex(value.shape):
-            self.assert_scalar_within_relative(value[index], truth[index], tol)
+            OptimalLearningTestCase.assert_scalar_within_relative(value[index], truth[index], tol)
 
-    def assert_points_distinct(self, point_list, tol):
+    @staticmethod
+    def assert_points_distinct(point_list, tol):
         """Check whether the distance between every pair of points is larger than tolerance.
 
         :param point_list: points to check
@@ -84,4 +88,4 @@ class OptimalLearningTestCase(object):
             for j in xrange(i + 1, point_list.shape[0]):
                 temp = point_list[i, ...] - point_list[j, ...]
                 dist = numpy.linalg.norm(temp)
-                self.assert_scalar_within_relative(dist, 0.0, tol)
+                OptimalLearningTestCase.assert_scalar_within_relative(dist, 0.0, tol)

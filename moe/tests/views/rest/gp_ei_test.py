@@ -20,7 +20,8 @@ class TestGpEiView(GaussianProcessTestCase, RestTestCase):
     precompute_gaussian_process_data = True
     endpoint = GP_EI_ENDPOINT
 
-    def _build_json_payload(self, domain, covariance, historical_data, points_to_evaluate):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data, points_to_evaluate):
         """Create a json_payload to POST to the /gp/ei endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,

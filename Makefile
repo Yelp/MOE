@@ -8,8 +8,7 @@ production:
 		python setup.py install
 
 test:
-		py.test -v moe/tests
-		py.test -v moe_examples/tests
+		py.test -v moe/tests moe_examples/tests
 
 style-test:
 		pip install flake8 flake8-import-order pep8-naming flake8-docstrings pyflakes

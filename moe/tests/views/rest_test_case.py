@@ -9,10 +9,11 @@ class RestTestCase(object):
 
     endpoint = None
 
-    @pytest.fixture(autouse=True)
-    def create_webapp(self):
-        """Create a mocked webapp and store it in self.testapp."""
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def create_webapp(cls):
+        """Create a mocked webapp and store it in cls.testapp."""
         from moe import main
         app = main({}, use_mongo='false')
         from webtest import TestApp
-        self.testapp = TestApp(app)
+        cls.testapp = TestApp(app)

@@ -47,8 +47,9 @@ class TestExpectedImprovement(GaussianProcessTestCase):
 
     num_sampled_list = (1, 2, 5, 10, 16, 20, 42, 50)
 
-    @pytest.fixture(autouse=True)
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Run the standard setup but seed the RNG first (for repeatability).
 
         It is easy to stumble into test cases where EI is very small (e.g., < 1.e-20),
@@ -56,7 +57,7 @@ class TestExpectedImprovement(GaussianProcessTestCase):
 
         """
         numpy.random.seed(8794)
-        super(TestExpectedImprovement, self).base_setup()
+        super(TestExpectedImprovement, cls).base_setup()
 
     def test_python_and_cpp_return_same_1d_analytic_ei_and_gradient(self):
         """Compare the 1D analytic EI/grad EI results from Python & C++, checking several random points per test case."""
