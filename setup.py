@@ -11,6 +11,11 @@ from moe import __version__
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
+try:
+    import sysconfig
+except ImportError:
+    from distutils import sysconfig
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
@@ -135,8 +140,13 @@ class InstallCppComponents(install):
         # must be passed to subprocess.Popen in separate list elements.
         cmake_options_split = shlex.split(cmake_options)
 
+        includepy,libdir,instsoname = sysconfig.get_config_vars('INCLUDEPY','LIBDIR','INSTSONAME')
+
         # Build the full cmake command using properly tokenized options
-        cmake_full_command = [cmake_path]
+        cmake_full_command = [
+            cmake_path,
+            '-DMOE_PYTHON_INCLUDE_DIR=' + includepy,
+            '-DMOE_PYTHON_LIBRARY=' + os.path.join(libdir,instsoname)]
         cmake_full_command.extend(cmake_options_split)
         cmake_full_command.append(cpp_location)
 
