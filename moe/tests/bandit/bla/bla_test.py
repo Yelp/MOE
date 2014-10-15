@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 """Test UCB1 bandit implementation.
 
 Test that the one arm case returns the given arm as the winning arm.
@@ -8,14 +7,12 @@ Test that two-arm cases with specified random seeds return expected results.
 """
 import numpy
 
-import testify as T
-
 from moe.bandit.bla.bla import BLA
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 
 
-class BLATest(BanditTestCase):
+class TestBLA(BanditTestCase):
 
     """Verify that different historical infos return correct results."""
 
@@ -32,10 +29,6 @@ class BLATest(BanditTestCase):
         numpy.random.seed(0)
         bandit = self.bandit_class(self.two_arms_test_case, DEFAULT_BLA_SUBTYPE)
         arms_to_allocations = bandit.allocate_arms()
-        T.assert_dicts_equal(arms_to_allocations, {"arm1": 1.0, "arm2": 0.0})
-        T.assert_equal(bandit.choose_arm(arms_to_allocations), "arm1")
+        assert arms_to_allocations == {"arm1": 1.0, "arm2": 0.0}
+        assert bandit.choose_arm(arms_to_allocations) == "arm1"
         numpy.random.set_state(old_state)
-
-
-if __name__ == "__main__":
-    T.run()

@@ -159,7 +159,7 @@ MOE uses ``doxygen`` (http://www.stack.nl/~dimitri/doxygen) to extract the C++ d
 Testing
 -------
 
-MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit and integration tests.
+MOE currently uses ``pytest`` (http://pytest.org/) to run all unit and integration tests.
 
 Tests can be run using ``make test``. Continuous integration testing is provided by http://travis-ci.org. All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.
 

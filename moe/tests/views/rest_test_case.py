@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 """Base class for testing the REST interface against the C++ interface."""
-import testify as T
+import pytest
 
 
-class RestTestCase(T.TestCase):
+class RestTestCase(object):
 
     """Base class for testing the REST interface against the C++ interface."""
 
     endpoint = None
 
-    @T.class_setup
-    def create_webapp(self):
-        """Create a mocked webapp and store it in self.testapp."""
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def create_webapp(cls):
+        """Create a mocked webapp and store it in cls.testapp."""
         from moe import main
         app = main({}, use_mongo='false')
         from webtest import TestApp
-        self.testapp = TestApp(app)
+        cls.testapp = TestApp(app)

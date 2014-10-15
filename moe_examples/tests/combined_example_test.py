@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """Integration test for combined_example MOE example."""
-import testify as T
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_GRADIENT_DESCENT_PARAMETERS
 
 from moe_examples.tests.moe_example_test_case import MoeExampleTestCase
 from moe_examples.combined_example import run_example
 
 
-class CombinedExampleTest(MoeExampleTestCase):
+class TestCombinedExample(MoeExampleTestCase):
 
     """Test the combined_example MOE example."""
 
@@ -35,6 +33,3 @@ class CombinedExampleTest(MoeExampleTestCase):
                 gp_mean_var_kwargs={},
                 rest_port=1337,
                 )
-
-if __name__ == "__main__":
-    T.run()

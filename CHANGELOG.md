@@ -4,6 +4,7 @@
 
 * Changes
 
+  * Switched from `testify` to `py.test` - http://pytest.org/ (#36)
   * [cleanup] Moved bandits into their own sub directories (#375)
 
 * Bugs
