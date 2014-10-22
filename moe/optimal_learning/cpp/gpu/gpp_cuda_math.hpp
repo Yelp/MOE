@@ -11,6 +11,14 @@
 
 #include <driver_types.h>
 
+/*!\rst
+  Macro to allow ``restrict`` as a keyword for ``C++`` compilation and ``CUDA/nvcc`` compilation.
+  See related entry in ``gpp_common.hpp`` for more details.
+\endrst*/
+#if defined(__CUDACC__) || defined(__cplusplus)
+#define restrict __restrict__
+#endif
+
 namespace optimal_learning {
 
 //! Number of blocks assigned for computing Expected Improvement on GPU
@@ -67,11 +75,11 @@ static const CudaError kCudaSuccess = {cudaSuccess, "", ""};
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, int num_union,
+extern "C" CudaError CudaGetEI(double * restrict mu, double * restrict chol_var, int num_union,
                                int num_mc, double best, uint64_t base_seed, bool configure_for_test,
-                               double* __restrict__ random_number_ei, double* __restrict__ ei_val,
-                               double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
-                               double* __restrict__ gpu_random_number_ei, double * __restrict__ gpu_ei_storage);
+                               double* restrict random_number_ei, double* restrict ei_val,
+                               double * restrict gpu_mu, double * restrict gpu_chol_var,
+                               double* restrict gpu_random_number_ei, double * restrict gpu_ei_storage);
 
 /*!\rst
   Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by
@@ -108,12 +116,12 @@ extern "C" CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ c
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var, double * __restrict__ grad_mu,
-                                   double * __restrict__ grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
-                                   double best, uint64_t base_seed, bool configure_for_test, double* __restrict__ random_number_grad_ei,
-                                   double * __restrict__ grad_ei, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
-                                   double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_grad_chol_var,
-                                   double * __restrict__ gpu_random_number_grad_ei, double * __restrict__ gpu_grad_ei_storage);
+extern "C" CudaError CudaGetGradEI(double * restrict mu, double * restrict chol_var, double * restrict grad_mu,
+                                   double * restrict grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
+                                   double best, uint64_t base_seed, bool configure_for_test, double* restrict random_number_grad_ei,
+                                   double * restrict grad_ei, double * restrict gpu_mu, double * restrict gpu_chol_var,
+                                   double * restrict gpu_grad_mu, double * restrict gpu_grad_chol_var,
+                                   double * restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage);
 
 /*!\rst
   Allocate GPU device memory for storing an array; analogous to ``malloc()`` in ``C``.
@@ -129,7 +137,7 @@ extern "C" CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaMallocDeviceMemory(size_t size, void ** __restrict__ address_of_ptr_to_gpu_memory);
+extern "C" CudaError CudaMallocDeviceMemory(size_t size, void ** restrict address_of_ptr_to_gpu_memory);
 
 /*!\rst
   Free GPU device memory on the GPU; analogous to ``free()`` in ``C``.
@@ -141,7 +149,7 @@ extern "C" CudaError CudaMallocDeviceMemory(size_t size, void ** __restrict__ ad
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaFreeDeviceMemory(void * __restrict__ ptr_to_gpu_memory);
+extern "C" CudaError CudaFreeDeviceMemory(void * restrict ptr_to_gpu_memory);
 
 /*!\rst
   Setup GPU device, and all GPU function calls will be operated on the GPU activated by this function.

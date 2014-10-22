@@ -61,7 +61,7 @@ namespace {  // functions run on gpu device
   Should be equivalent to BLAS call:
   ``dtrmv('L', trans, 'N', size_m, A, size_m, x, 1);``
 \endrst*/
-__device__ void CudaTriangularMatrixVectorMultiply(double const * __restrict__ A, int size_m, double * __restrict__ x) {
+__device__ void CudaTriangularMatrixVectorMultiply(double const * restrict A, int size_m, double * restrict x) {
   double temp;
   A += size_m * (size_m-1);
   for (int j = size_m-1; j >= 0; --j) {  // i.e., j >= 0
@@ -79,7 +79,7 @@ __device__ void CudaTriangularMatrixVectorMultiply(double const * __restrict__ A
   This is reduced version of GeneralMatrixVectorMultiply(...) in gpp_linear_algebra.cpp, and this function computes
   y = y - A * x (aka alpha = -1.0, beta = 1.0)
 \endrst*/
-__device__ void CudaGeneralMatrixVectorMultiply(double const * __restrict__ A, double const * __restrict__ x, int size_m, int size_n, int lda, double * __restrict__ y) {
+__device__ void CudaGeneralMatrixVectorMultiply(double const * restrict A, double const * restrict x, int size_m, int size_n, int lda, double * restrict y) {
   double temp;
   for (int i = 0; i < size_n; ++i) {
     temp = -1.0 * x[i];
@@ -93,7 +93,7 @@ __device__ void CudaGeneralMatrixVectorMultiply(double const * __restrict__ A, d
 /*!\rst
   This inline function copies [begin, begin+1, ..., end-1] elements from one array to the other, if bound < end, then end = bound
 \endrst*/
-__forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, double const * __restrict__ origin, double * __restrict__ destination) {
+__forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, double const * restrict origin, double * restrict destination) {
     int local_end = end < bound ? end : bound;
     for (int idx = begin; idx < local_end; ++idx) {
         destination[idx] = origin[idx];
@@ -136,17 +136,17 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
     :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
       used for computing EI into the array, for testing purpose only
 \endrst*/
-__global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * __restrict__ chol_var,
+__global__ void CudaComputeEIGpu(double const * restrict mu, double const * restrict chol_var,
                                  int num_union, int num_iteration, double best, uint64_t base_seed,
-                                 double * __restrict__ ei_storage, double * __restrict__ gpu_random_number_ei,
+                                 double * restrict ei_storage, double * restrict gpu_random_number_ei,
                                  bool configure_for_test) {
   // copy mu, chol_var to shared memory mu_local & chol_var_local
   // For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
   // pointers into it to divide it into multiple arrays
   // refer to http://devblogs.nvidia.com/parallelforall/using-shared-memory-cuda-cc/
   extern __shared__ double storage[];
-  double * __restrict__ chol_var_local = storage;
-  double * __restrict__ mu_local = chol_var_local + num_union * num_union;
+  double * restrict chol_var_local = storage;
+  double * restrict mu_local = chol_var_local + num_union * num_union;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   int chunk_size = (num_union * num_union - 1)/ blockDim.x + 1;
@@ -154,7 +154,7 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
   chunk_size = (num_union - 1)/ blockDim.x + 1;
   CudaCopyElements(chunk_size * idx, chunk_size * (idx + 1), num_union,  mu, mu_local);
   __syncthreads();
-  double * __restrict__ normals = mu_local + num_union + idx * num_union;
+  double * restrict normals = mu_local + num_union + idx * num_union;
 
   // MC start
   // RNG setup
@@ -239,17 +239,17 @@ __global__ void CudaComputeEIGpu(double const * __restrict__ mu, double const * 
     :gpu_random_number_grad_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
       used for computing gradEI to the array, for testing purpose only
 \endrst*/
-__global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double const * __restrict__ chol_var,
-                                     double const * __restrict__ grad_mu, double const * __restrict__ grad_chol_var,
+__global__ void CudaComputeGradEIGpu(double const * restrict mu, double const * restrict chol_var,
+                                     double const * restrict grad_mu, double const * restrict grad_chol_var,
                                      int num_union, int num_to_sample, int dim, int num_iteration, double best,
-                                     uint64_t base_seed,  double * __restrict__ grad_ei_storage,
-                                     double * __restrict__ gpu_random_number_grad_ei, bool configure_for_test) {
+                                     uint64_t base_seed,  double * restrict grad_ei_storage,
+                                     double * restrict gpu_random_number_grad_ei, bool configure_for_test) {
   // copy mu, chol_var, grad_mu, grad_chol_var to shared memory
   extern __shared__ double storage[];
-  double * __restrict__ mu_local = storage;
-  double * __restrict__ chol_var_local = mu_local + num_union;
-  double * __restrict__ grad_mu_local = chol_var_local + num_union * num_union;
-  double * __restrict__ grad_chol_var_local = grad_mu_local + num_to_sample * dim;
+  double * restrict mu_local = storage;
+  double * restrict chol_var_local = mu_local + num_union;
+  double * restrict grad_mu_local = chol_var_local + num_union * num_union;
+  double * restrict grad_chol_var_local = grad_mu_local + num_to_sample * dim;
   const int idx = threadIdx.x;
   const int IDX = threadIdx.x + blockDim.x * blockIdx.x;
   int chunk_size = (num_to_sample * num_union * num_union * dim - 1)/ blockDim.x + 1;
@@ -262,8 +262,8 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
   chunk_size = (num_union - 1)/ blockDim.x + 1;
   CudaCopyElements(chunk_size * idx, chunk_size * (idx + 1), num_union, mu, mu_local);
   __syncthreads();
-  double * __restrict__ normals = grad_chol_var_local + num_union * num_union * num_to_sample * dim + idx * num_union * 2;
-  double * __restrict__ normals_copy = normals + num_union;
+  double * restrict normals = grad_chol_var_local + num_union * num_union * num_to_sample * dim + idx * num_union * 2;
+  double * restrict normals_copy = normals + num_union;
 
   int i, k, mc, winner;
   double EI, improvement_this_step;
@@ -318,20 +318,20 @@ __global__ void CudaComputeGradEIGpu(double const * __restrict__ mu, double cons
 
 }  // end unnamed namespace
 
-CudaError CudaMallocDeviceMemory(size_t size, void ** __restrict__ address_of_ptr_to_gpu_memory) {
+CudaError CudaMallocDeviceMemory(size_t size, void ** restrict address_of_ptr_to_gpu_memory) {
   OL_CUDA_ERROR_RETURN(cudaMalloc(address_of_ptr_to_gpu_memory, size));
   return kCudaSuccess;
 }
 
-CudaError CudaFreeDeviceMemory(void * __restrict__ ptr_to_gpu_memory) {
+CudaError CudaFreeDeviceMemory(void * restrict ptr_to_gpu_memory) {
   OL_CUDA_ERROR_RETURN(cudaFree(ptr_to_gpu_memory));
   return kCudaSuccess;
 }
 
-CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, int num_union, int num_mc,
-                    double best, uint64_t base_seed, bool configure_for_test, double * __restrict__ random_number_ei,
-                    double * __restrict__ ei_val, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
-                    double* __restrict__ gpu_random_number_ei, double * __restrict__ gpu_ei_storage) {
+CudaError CudaGetEI(double * restrict mu, double * restrict chol_var, int num_union, int num_mc,
+                    double best, uint64_t base_seed, bool configure_for_test, double * restrict random_number_ei,
+                    double * restrict ei_val, double * restrict gpu_mu, double * restrict gpu_chol_var,
+                    double* restrict gpu_random_number_ei, double * restrict gpu_ei_storage) {
   // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are
   // (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
   dim3 threads(kEINumThreads);
@@ -367,12 +367,12 @@ CudaError CudaGetEI(double * __restrict__ mu, double * __restrict__ chol_var, in
   return kCudaSuccess;
 }
 
-CudaError CudaGetGradEI(double * __restrict__ mu, double * __restrict__ chol_var, double * __restrict__ grad_mu,
-                        double * __restrict__ grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
-                        double best, uint64_t base_seed, bool configure_for_test, double* __restrict__ random_number_grad_ei,
-                        double * __restrict__ grad_ei, double * __restrict__ gpu_mu, double * __restrict__ gpu_chol_var,
-                        double * __restrict__ gpu_grad_mu, double * __restrict__ gpu_grad_chol_var,
-                        double* __restrict__ gpu_random_number_grad_ei, double * __restrict__ gpu_grad_ei_storage) {
+CudaError CudaGetGradEI(double * restrict mu, double * restrict chol_var, double * restrict grad_mu,
+                        double * restrict grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
+                        double best, uint64_t base_seed, bool configure_for_test, double* restrict random_number_grad_ei,
+                        double * restrict grad_ei, double * restrict gpu_mu, double * restrict gpu_chol_var,
+                        double * restrict gpu_grad_mu, double * restrict gpu_grad_chol_var,
+                        double* restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage) {
   std::vector<double> grad_ei_storage(num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks);
 
   // We assign kGradEINumBlocks blocks and kGradEINumThreads threads/block for grad_ei computation,
