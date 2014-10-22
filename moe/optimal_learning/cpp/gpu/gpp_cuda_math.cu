@@ -328,15 +328,18 @@ CudaError CudaFreeDeviceMemory(void * restrict ptr_to_gpu_memory) {
   return kCudaSuccess;
 }
 
-CudaError CudaGetEI(double * restrict mu, double * restrict chol_var, int num_union, int num_mc,
-                    double best, uint64_t base_seed, bool configure_for_test, double * restrict random_number_ei,
-                    double * restrict ei_val, double * restrict gpu_mu, double * restrict gpu_chol_var,
-                    double* restrict gpu_random_number_ei, double * restrict gpu_ei_storage) {
+CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var,
+                    int num_union, int num_mc, double best,
+                    uint64_t base_seed, bool configure_for_test,
+                    double * restrict random_number_ei, double * restrict ei_val,
+                    double * restrict gpu_mu, double * restrict gpu_chol_var,
+                    double * restrict gpu_random_number_ei, double * restrict gpu_ei_storage) {
   // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are
   // (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
   dim3 threads(kEINumThreads);
   dim3 grid(kEINumBlocks);
-  double ei_storage[kEINumThreads * kEINumBlocks];
+  std::vector<double> ei_storage(kEINumThreads * kEINumBlocks);
+
   int num_iteration = num_mc / (kEINumThreads * kEINumBlocks) + 1;   // make sure num_iteration is always >= 1
 
   int mem_size_mu = num_union * sizeof(*mu);
@@ -367,12 +370,14 @@ CudaError CudaGetEI(double * restrict mu, double * restrict chol_var, int num_un
   return kCudaSuccess;
 }
 
-CudaError CudaGetGradEI(double * restrict mu, double * restrict chol_var, double * restrict grad_mu,
-                        double * restrict grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc,
-                        double best, uint64_t base_seed, bool configure_for_test, double* restrict random_number_grad_ei,
-                        double * restrict grad_ei, double * restrict gpu_mu, double * restrict gpu_chol_var,
+CudaError CudaGetGradEI(double const * restrict mu, double const * restrict chol_var,
+                        double const * restrict grad_mu, double const * restrict grad_chol_var,
+                        int num_union, int num_to_sample, int dim, int num_mc,
+                        double best, uint64_t base_seed, bool configure_for_test,
+                        double * restrict random_number_grad_ei, double * restrict grad_ei,
+                        double * restrict gpu_mu, double * restrict gpu_chol_var,
                         double * restrict gpu_grad_mu, double * restrict gpu_grad_chol_var,
-                        double* restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage) {
+                        double * restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage) {
   std::vector<double> grad_ei_storage(num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks);
 
   // We assign kGradEINumBlocks blocks and kGradEINumThreads threads/block for grad_ei computation,
