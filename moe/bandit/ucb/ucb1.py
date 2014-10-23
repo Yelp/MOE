@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Classes (Python) to compute the Bandit UCB1 arm allocation and choosing the arm to pull next.
 
-See :class:`moe.bandit.ucb_interface.UCBInterface` for further details on this bandit.
+See :class:`moe.bandit.ucb.ucb_interface.UCBInterface` for further details on this bandit.
 
 """
 import math
@@ -9,7 +9,7 @@ import math
 import numpy
 
 from moe.bandit.constant import UCB_SUBTYPE_1
-from moe.bandit.ucb_interface import UCBInterface
+from moe.bandit.ucb.ucb_interface import UCBInterface
 
 
 class UCB1(UCBInterface):
@@ -17,9 +17,9 @@ class UCB1(UCBInterface):
     r"""Implementation of UCB1.
 
     A class to encapsulate the computation of bandit UCB1.
-    See :func:`moe.bandit.ucb_interface.UCBInterface.allocate_arms` for more details on how UCB allocates arms.
+    See :func:`moe.bandit.ucb.ucb_interface.UCBInterface.allocate_arms` for more details on how UCB allocates arms.
 
-    See superclass :class:`moe.bandit.ucb_interface.UCBInterface` for further details.
+    See superclass :class:`moe.bandit.ucb.ucb_interface.UCBInterface` for further details.
 
     """
 
@@ -27,7 +27,7 @@ class UCB1(UCBInterface):
             self,
             historical_info,
     ):
-        """Construct an UCB1 object. See superclass :class:`moe.bandit.ucb_interface.UCBInterface` for details."""
+        """Construct an UCB1 object. See superclass :class:`moe.bandit.ucb.ucb_interface.UCBInterface` for details."""
         super(UCB1, self).__init__(
             historical_info=historical_info,
             subtype=UCB_SUBTYPE_1,

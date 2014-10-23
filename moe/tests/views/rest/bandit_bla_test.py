@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """Test class for bandit_bla view."""
-
-import testify as T
-
 from moe.bandit.constant import BANDIT_BLA_ENDPOINT
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 from moe.tests.views.rest.bandit_test import TestBanditViews
@@ -26,7 +23,3 @@ class TestBanditBLAViews(TestBanditViews):
     def test_interface_returns_as_expected(self):
         """Integration test for the /bandit/bla endpoint."""
         self._test_interface_returns_as_expected()
-
-
-if __name__ == "__main__":
-    T.run()

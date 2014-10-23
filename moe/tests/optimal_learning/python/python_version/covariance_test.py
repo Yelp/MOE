@@ -11,7 +11,7 @@ TODO(GH-176): Make test structure general enough to support other covariance fun
 """
 import numpy
 
-import testify as T
+import pytest
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -20,7 +20,7 @@ import moe.tests.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
-class SquareExponentialTest(OptimalLearningTestCase):
+class TestSquareExponential(OptimalLearningTestCase):
 
     """Tests for the computation of the SquareExponential covariance and spatial gradient of covariance.
 
@@ -28,13 +28,14 @@ class SquareExponentialTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up parameters for test cases."""
-        self.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
-        self.CovarianceClass = SquareExponential
+        cls.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
+        cls.CovarianceClass = SquareExponential
 
-        self.one_dim_test_sets = numpy.array([
+        cls.one_dim_test_sets = numpy.array([
             [1.0, 0.1],
             [2.0, 0.1],
             [1.0, 1.0],
@@ -43,7 +44,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
             [0.1, 10.0],
         ])
 
-        self.three_dim_test_sets = numpy.array([
+        cls.three_dim_test_sets = numpy.array([
             [1.0, 0.1, 0.1, 0.1],
             [1.0, 0.1, 0.2, 0.1],
             [1.0, 0.1, 0.2, 0.3],
@@ -162,7 +163,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
             grad_cov2 = covariance.grad_covariance(numpy.array([0.0, 0.0, length[2]]), numpy.array([0.0, 0.0, 0.0]))
             self.assert_vector_within_relative(grad_cov2, truth2, self.epsilon)
 
-            T.assert_equal(grad_cov1[2], -grad_cov2[2])
+            assert grad_cov1[2] == -grad_cov2[2]
 
     def test_hyperparameter_gradient_pings(self):
         """Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters."""
@@ -211,7 +212,3 @@ class SquareExponentialTest(OptimalLearningTestCase):
                 fd_grad = (cov_p - cov_m) / (2.0 * h)
 
                 self.assert_scalar_within_relative(fd_grad, analytic_grad[k], tolerance)
-
-
-if __name__ == "__main__":
-    T.run()
