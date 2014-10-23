@@ -343,7 +343,7 @@ CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var
                     gpu_random_number_ei, gpu_ei_storage);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
   // copy gpu_ei_storage back to CPU
-  OL_CUDA_ERROR_RETURN(cudaMemcpy(ei_storage, gpu_ei_storage, mem_size_ei_storage, cudaMemcpyDeviceToHost));
+  OL_CUDA_ERROR_RETURN(cudaMemcpy(ei_storage.data(), gpu_ei_storage, mem_size_ei_storage, cudaMemcpyDeviceToHost));
   // copy gpu_random_number_ei back to CPU if configure_for_test is on
   if (configure_for_test) {
       int mem_size_random_number_ei = num_iteration * kEINumThreads * kEINumBlocks * num_union * sizeof(*mu);
