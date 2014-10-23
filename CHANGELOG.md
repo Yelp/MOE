@@ -1,6 +1,7 @@
 * Features
 
   * Added startup message to REST server including tips for OSX users (#400)
+  * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
 
 * Changes
 
@@ -23,7 +24,8 @@ SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
 * Bugs
 
   * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
-  * SampleArm's __add__ and __str__ were broken. (#387)
+  * SampleArm's ``__add__`` and ``__str__`` were broken. (#387)
+  * Specifying ``max_num_threads`` on GPU compute paths caused a segfault (#394)
 
 ## v0.2.0 (2014-08-15)
 

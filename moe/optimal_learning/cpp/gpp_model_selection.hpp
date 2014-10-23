@@ -625,7 +625,7 @@ class LeaveOneOutLogLikelihoodEvaluator final {
     \param
       :log_likelihood_state: properly configured state oboject
     \return
-      :natural log of the leave one out cross validation pseudo-likelihood of the GP model
+      natural log of the leave one out cross validation pseudo-likelihood of the GP model
   \endrst*/
   double ComputeLogLikelihood(const StateType& log_likelihood_state) const noexcept OL_WARN_UNUSED_RESULT;
 
