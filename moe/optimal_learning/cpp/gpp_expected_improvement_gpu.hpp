@@ -361,21 +361,24 @@ struct CudaExpectedImprovementState final {
   std::vector<double> grad_chol_decomp;
 
   bool configure_for_test;
-  //! structs containing pointers to store the memory locations of variables on GPU
-  //! input data for GPU computations and GPU should not modify them
+  //! structs wrapping GPU device pointers used to store GP quantities
+  //! temp device space for input data for GPU computations; GPU should not modify these
   CudaDevicePointer<double> gpu_mu;
-  CudaDevicePointer<double> gpu_chol_var;
   CudaDevicePointer<double> gpu_grad_mu;
+  CudaDevicePointer<double> gpu_chol_var;
   CudaDevicePointer<double> gpu_grad_chol_var;
-  //! data containing results returned by GPU computations
+
+  //! temp device space for intermediate results returned by GPU computations
   CudaDevicePointer<double> gpu_ei_storage;
   CudaDevicePointer<double> gpu_grad_ei_storage;
-  //! data containing random numbers used in GPU computations, which are only
-  //! used for testing
+
+  //! device storage for random numbers used by the GPU computing of ei & grad_ei
+  //! only used for testing
   CudaDevicePointer<double> gpu_random_number_ei;
   CudaDevicePointer<double> gpu_random_number_grad_ei;
 
-  //! storage for random numbers used in computing EI & grad_ei, this is only used to setup unit test
+  //! host storage for random numbers used by the GPU in computing ei & grad_ei
+  //! only used for testing
   std::vector<double> random_number_ei;
   std::vector<double> random_number_grad_ei;
 

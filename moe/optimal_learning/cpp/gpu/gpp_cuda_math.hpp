@@ -58,29 +58,26 @@ static const CudaError kCudaSuccess = {cudaSuccess, "", ""};
     :best: best function evaluation obtained so far
     :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
     :configure_for_test: whether record random_number_ei or not
-    :random_number_ei[num_union][num_iteration][num_threads][num_blocks]: random numbers used for
-      computing EI, for testing purpose only
-    :ei_val[1]: pointer to value of Expected Improvement
-    :gpu_mu[num_union]: pointer to memory storing mu on GPU
-    :gpu_chol_var[num_union][num_union]: pointer to memory storing chol_var on GPU
-    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: pointer to memory storing
-      random numbers used for computing EI, for testing purpose only
   \output
-    :ei_val[1]: value of Expected Improvement modified, and equals to computed value of EI
-    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: pointer to memory storing
-      random numbers used for computing EI, for testing purpose only
+    :gpu_mu[num_union]: device pointer to memory storing mu on GPU
+    :gpu_chol_var[num_union][num_union]: device pointer to memory storing chol_var on GPU
     :random_number_ei[num_union][num_iteration][num_threads][num_blocks]: random numbers used for
       computing EI, for testing purpose only
-    :gpu_ei_storage[num_threads][num_blocks]: pointer to memory storing values of EI on GPU
+    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: device pointer to memory storing
+      random numbers used for computing EI, for testing purpose only
+    :gpu_ei_storage[num_threads][num_blocks]: device pointer to memory storing values of EI on GPU
+    :ei_val[1]: pointer to value of Expected Improvement
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
 extern "C" CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var,
                                int num_union, int num_mc, double best,
                                uint64_t base_seed, bool configure_for_test,
-                               double * restrict random_number_ei, double * restrict ei_val,
                                double * restrict gpu_mu, double * restrict gpu_chol_var,
-                               double * restrict gpu_random_number_ei, double * restrict gpu_ei_storage);
+                               double * restrict random_number_ei,
+                               double * restrict gpu_random_number_ei,
+                               double * restrict gpu_ei_storage,
+                               double * restrict ei_val);
 
 /*!\rst
   Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by
@@ -88,8 +85,8 @@ extern "C" CudaError CudaGetEI(double const * restrict mu, double const * restri
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
-    :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :grad_mu[dim][num_to_sample]: the gradient of mean of the GP evaluated at points interested
+    :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :grad_chol_var[dim][num_union][num_union][num_to_sample]: gradient of cholesky factorization of
       the GP variance evaluated at points interested
     :num_union: number of the union of points (aka q+p)
@@ -99,32 +96,29 @@ extern "C" CudaError CudaGetEI(double const * restrict mu, double const * restri
     :best: best function evaluation obtained so far
     :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
     :configure_for_test: whether record random_number_grad_ei or not
-    :random_number_grad_ei[num_union][num_threads][num_blocks]: random numbers used for computing gradEI,
-      for testing purpose only
-    :grad_ei[dim][num_to_sample]: pointer to value of gradient of Expected Improvement
-    :gpu_mu[num_union]: pointer to memory storing mu on GPU
-    :gpu_chol_var[num_union][num_union]: pointer to memory storing chol_var on GPU
-    :gpu_grad_mu[dim][num_to_sample]: pointer to memory storing grad_mu on GPU
-    :gpu_grad_chol_var[dim][num_union][num_union][num_to_sample]: pointer to memory storing grad_chol_var on GPU
-    :gpu_random_number_grad_ei[num_union][num_threads][num_blocks]: pointer to memory storing random
-      numbers used for computing gradEI, for testing purpose only
   \output
+    :gpu_mu[num_union]: device pointer to memory storing mu on GPU
+    :gpu_grad_mu[dim][num_to_sample]: device pointer to memory storing grad_mu on GPU
+    :gpu_chol_var[num_union][num_union]: device pointer to memory storing chol_var on GPU
+    :gpu_grad_chol_var[dim][num_union][num_union][num_to_sample]: device pointer to memory storing grad_chol_var on GPU
     :random_number_grad_ei[num_union][num_threads][num_blocks]: random numbers used for computing gradEI, for testing purpose only
-    :grad_ei[dim][num_to_sample]: pointer to value of gradient of Expected Improvement
-    :gpu_random_number_grad_ei[num_union][num_threads][num_blocks]: pointer to memory storing random
+    :gpu_random_number_grad_ei[num_union][num_threads][num_blocks]: device pointer to memory storing random
       numbers used for computing gradEI, for testing purpose only
-    :gpu_grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: pointer to memory storing values of gradient EI on GPU
+    :gpu_grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: device pointer to memory storing values of gradient EI on GPU
+    :grad_ei[dim][num_to_sample]: pointer to gradient of Expected Improvement
   \return
     CudaError state, which contains error information, file name, line and function name of the function that occurs error
 \endrst*/
-extern "C" CudaError CudaGetGradEI(double const * restrict mu, double const * restrict chol_var,
-                                   double const * restrict grad_mu, double const * restrict grad_chol_var,
+extern "C" CudaError CudaGetGradEI(double const * restrict mu, double const * restrict grad_mu,
+                                   double const * restrict chol_var, double const * restrict grad_chol_var,
                                    int num_union, int num_to_sample, int dim, int num_mc,
                                    double best, uint64_t base_seed, bool configure_for_test,
-                                   double * restrict random_number_grad_ei, double * restrict grad_ei,
-                                   double * restrict gpu_mu, double * restrict gpu_chol_var,
-                                   double * restrict gpu_grad_mu, double * restrict gpu_grad_chol_var,
-                                   double * restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage);
+                                   double * restrict gpu_mu, double * restrict gpu_grad_mu,
+                                   double * restrict gpu_chol_var, double * restrict gpu_grad_chol_var,
+                                   double * restrict random_number_grad_ei,
+                                   double * restrict gpu_random_number_grad_ei,
+                                   double * restrict gpu_grad_ei_storage,
+                                   double * restrict grad_ei);
 
 /*!\rst
   Allocate GPU device memory for storing an array; analogous to ``malloc()`` in ``C``.

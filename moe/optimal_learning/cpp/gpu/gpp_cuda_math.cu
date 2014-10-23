@@ -127,19 +127,17 @@ __forceinline__ __device__ void CudaCopyElements(int begin, int end, int bound, 
     :num_iteration: number of iterations performed on each thread for MC evaluation
     :best: best function evaluation obtained so far
     :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
-    :ei_storage[num_threads][num_blocks]: array storing values of EI on GPU
-    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: array storing random
-      numbers used for computing EI, for testing purpose only
     :configure_for_test: whether record random_number_ei or not
   \output
-    :ei_storage[num_threads][num_blocks]: each thread write result of computed EI to its corresponding position
-    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
-      used for computing EI into the array, for testing purpose only
+    :gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]: array storing random
+      numbers used for computing EI, for testing only
+    :ei_storage[num_threads][num_blocks]: each thread's computed EI component written to its corresponding position
 \endrst*/
 __global__ void CudaComputeEIGpu(double const * restrict mu, double const * restrict chol_var,
-                                 int num_union, int num_iteration, double best, uint64_t base_seed,
-                                 double * restrict ei_storage, double * restrict gpu_random_number_ei,
-                                 bool configure_for_test) {
+                                 int num_union, int num_iteration, double best,
+                                 uint64_t base_seed, bool configure_for_test,
+                                 double * restrict gpu_random_number_ei,
+                                 double * restrict ei_storage) {
   // copy mu, chol_var to shared memory mu_local & chol_var_local
   // For multiple dynamically sized arrays in a single kernel, declare a single extern unsized array, and use
   // pointers into it to divide it into multiple arrays
@@ -173,7 +171,7 @@ __global__ void CudaComputeEIGpu(double const * restrict mu, double const * rest
         normals[i] = curand_normal_double(&random_state);
         // If configure_for_test is true, random numbers used in MC computations will be saved as output.
         // In fact we will let EI compuation on CPU use the same sequence of random numbers saved here,
-        // so that EI compuation on CPU & GPU can be compared directly for unit test purpose.
+        // so that EI compuation on CPU & GPU can be compared directly for unit testing.
         if (configure_for_test) {
             gpu_random_number_ei[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
         }
@@ -219,8 +217,8 @@ __global__ void CudaComputeEIGpu(double const * restrict mu, double const * rest
 
   \param
     :mu[num_union]: the mean of the GP evaluated at points interested
-    :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :grad_mu[dim][num_to_sample]: the gradient of mean of the GP evaluated at points interested
+    :chol_var[num_union][num_union]: cholesky factorization of the GP variance evaluated at points interested
     :grad_chol_var[dim][num_union][num_union][num_to_sample]: gradient of cholesky factorization of the GP variance
       evaluated at points interested
     :num_union: number of the union of points (aka q+p)
@@ -229,21 +227,19 @@ __global__ void CudaComputeEIGpu(double const * restrict mu, double const * rest
     :num_iteration: number of iterations performed on each thread for MC evaluation
     :best: best function evaluation obtained so far
     :base_seed: base seed for the GPU's RNG; will be offset by GPU thread index (see curand)
-    :grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: A vector storing result of grad_ei from each thread
-    :gpu_random_number_grad_ei[num_union][num_itreration][num_threads][num_blocks]: array storing
-      random numbers used for computing gradEI, for testing purpose only
     :configure_for_test: whether record random_number_grad_ei or not
   \output
+    :gpu_random_number_grad_ei[num_union][num_itreration][num_threads][num_blocks]: array storing
+      random numbers used for computing gradEI, for testing only
     :grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]: each thread write result of grad_ei
       to its corresponding positions
-    :gpu_random_number_grad_ei[num_union][num_iteration][num_threads][num_blocks]: write random numbers
-      used for computing gradEI to the array, for testing purpose only
 \endrst*/
-__global__ void CudaComputeGradEIGpu(double const * restrict mu, double const * restrict chol_var,
-                                     double const * restrict grad_mu, double const * restrict grad_chol_var,
+__global__ void CudaComputeGradEIGpu(double const * restrict mu, double const * restrict grad_mu,
+                                     double const * restrict chol_var, double const * restrict grad_chol_var,
                                      int num_union, int num_to_sample, int dim, int num_iteration, double best,
-                                     uint64_t base_seed,  double * restrict grad_ei_storage,
-                                     double * restrict gpu_random_number_grad_ei, bool configure_for_test) {
+                                     uint64_t base_seed, bool configure_for_test,
+                                     double * restrict gpu_random_number_grad_ei,
+                                     double * restrict grad_ei_storage) {
   // copy mu, chol_var, grad_mu, grad_chol_var to shared memory
   extern __shared__ double storage[];
   double * restrict mu_local = storage;
@@ -284,7 +280,7 @@ __global__ void CudaComputeGradEIGpu(double const * restrict mu, double const * 
           normals_copy[i] = normals[i];
             // If configure_for_test is true, random numbers used in MC computations will be saved as output.
             // In fact we will let gradEI compuation on CPU use the same sequence of random numbers saved here,
-            // so that gradEI compuation on CPU & GPU can be compared directly for unit test purpose.
+            // so that gradEI compuation on CPU & GPU can be compared directly for unit testing.
           if (configure_for_test) {
               gpu_random_number_grad_ei[IDX * num_iteration * num_union + mc * num_union + i] = normals[i];
           }
@@ -318,22 +314,14 @@ __global__ void CudaComputeGradEIGpu(double const * restrict mu, double const * 
 
 }  // end unnamed namespace
 
-CudaError CudaMallocDeviceMemory(size_t size, void ** restrict address_of_ptr_to_gpu_memory) {
-  OL_CUDA_ERROR_RETURN(cudaMalloc(address_of_ptr_to_gpu_memory, size));
-  return kCudaSuccess;
-}
-
-CudaError CudaFreeDeviceMemory(void * restrict ptr_to_gpu_memory) {
-  OL_CUDA_ERROR_RETURN(cudaFree(ptr_to_gpu_memory));
-  return kCudaSuccess;
-}
-
 CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var,
                     int num_union, int num_mc, double best,
                     uint64_t base_seed, bool configure_for_test,
-                    double * restrict random_number_ei, double * restrict ei_val,
                     double * restrict gpu_mu, double * restrict gpu_chol_var,
-                    double * restrict gpu_random_number_ei, double * restrict gpu_ei_storage) {
+                    double * restrict random_number_ei,
+                    double * restrict gpu_random_number_ei,
+                    double * restrict gpu_ei_storage,
+                    double * restrict ei_val) {
   // We assign kEINumBlocks blocks and kEINumThreads threads/block for EI computation, so there are
   // (kEINumBlocks * kEINumThreads) threads in total to execute kernel function in parallel
   dim3 threads(kEINumThreads);
@@ -350,8 +338,9 @@ CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var
   OL_CUDA_ERROR_RETURN(cudaMemcpy(gpu_chol_var, chol_var, mem_size_chol_var, cudaMemcpyHostToDevice));
   // execute kernel
   CudaComputeEIGpu <<< grid, threads, num_union*sizeof(*mu)+num_union*num_union*sizeof(*mu)+num_union*kEINumThreads*sizeof(*mu) >>>
-                   (gpu_mu, gpu_chol_var, num_union, num_iteration, best, base_seed, gpu_ei_storage,
-                    gpu_random_number_ei, configure_for_test);
+                   (gpu_mu, gpu_chol_var,
+                    num_union, num_iteration, best, base_seed, configure_for_test,
+                    gpu_random_number_ei, gpu_ei_storage);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
   // copy gpu_ei_storage back to CPU
   OL_CUDA_ERROR_RETURN(cudaMemcpy(ei_storage, gpu_ei_storage, mem_size_ei_storage, cudaMemcpyDeviceToHost));
@@ -370,14 +359,16 @@ CudaError CudaGetEI(double const * restrict mu, double const * restrict chol_var
   return kCudaSuccess;
 }
 
-CudaError CudaGetGradEI(double const * restrict mu, double const * restrict chol_var,
-                        double const * restrict grad_mu, double const * restrict grad_chol_var,
+CudaError CudaGetGradEI(double const * restrict mu, double const * restrict grad_mu,
+                        double const * restrict chol_var, double const * restrict grad_chol_var,
                         int num_union, int num_to_sample, int dim, int num_mc,
                         double best, uint64_t base_seed, bool configure_for_test,
-                        double * restrict random_number_grad_ei, double * restrict grad_ei,
-                        double * restrict gpu_mu, double * restrict gpu_chol_var,
-                        double * restrict gpu_grad_mu, double * restrict gpu_grad_chol_var,
-                        double * restrict gpu_random_number_grad_ei, double * restrict gpu_grad_ei_storage) {
+                        double * restrict gpu_mu, double * restrict gpu_grad_mu,
+                        double * restrict gpu_chol_var, double * restrict gpu_grad_chol_var,
+                        double * restrict random_number_grad_ei,
+                        double * restrict gpu_random_number_grad_ei,
+                        double * restrict gpu_grad_ei_storage,
+                        double * restrict grad_ei) {
   std::vector<double> grad_ei_storage(num_to_sample * dim * kGradEINumThreads * kGradEINumBlocks);
 
   // We assign kGradEINumBlocks blocks and kGradEINumThreads threads/block for grad_ei computation,
@@ -402,8 +393,10 @@ CudaError CudaGetGradEI(double const * restrict mu, double const * restrict chol
   // inputs: gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, best, num_union, num_to_sample, dim, num_iteration, base_seed
   // output: gpu_grad_ei_storage
   CudaComputeGradEIGpu <<< grid, threads, mem_size_mu+mem_size_chol_var+mem_size_grad_mu+mem_size_grad_chol_var+num_union*kGradEINumThreads*2*sizeof(*mu) >>>
-                       (gpu_mu, gpu_chol_var, gpu_grad_mu, gpu_grad_chol_var, num_union, num_to_sample, dim,
-                        num_iteration, best, base_seed, gpu_grad_ei_storage, gpu_random_number_grad_ei, configure_for_test);
+                       (gpu_mu, gpu_grad_mu, gpu_chol_var, gpu_grad_chol_var,
+                        num_union, num_to_sample, dim,
+                        num_iteration, best, base_seed, configure_for_test,
+                        gpu_random_number_grad_ei, gpu_grad_ei_storage);
   OL_CUDA_ERROR_RETURN(cudaPeekAtLastError());
 
   OL_CUDA_ERROR_RETURN(cudaMemcpy(grad_ei_storage.data(), gpu_grad_ei_storage, mem_size_grad_ei_storage, cudaMemcpyDeviceToHost));
@@ -426,6 +419,16 @@ CudaError CudaGetGradEI(double const * restrict mu, double const * restrict chol
       grad_ei[i] /= static_cast<double>(kGradEINumThreads*kGradEINumBlocks);
   }
 
+  return kCudaSuccess;
+}
+
+CudaError CudaMallocDeviceMemory(size_t size, void ** restrict address_of_ptr_to_gpu_memory) {
+  OL_CUDA_ERROR_RETURN(cudaMalloc(address_of_ptr_to_gpu_memory, size));
+  return kCudaSuccess;
+}
+
+CudaError CudaFreeDeviceMemory(void * restrict ptr_to_gpu_memory) {
+  OL_CUDA_ERROR_RETURN(cudaFree(ptr_to_gpu_memory));
   return kCudaSuccess;
 }
 
