@@ -2,7 +2,7 @@
 """Tests for the Python optimization module (null, gradient descent, and multistarting) using a simple polynomial objective."""
 import numpy
 
-import testify as T
+import pytest
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
@@ -92,7 +92,7 @@ class QuadraticFunction(OptimizableInterface):
         return numpy.diag(numpy.full(self.dim, -2.0))
 
 
-class NullOptimizerTest(OptimalLearningTestCase):
+class TestNullOptimizer(OptimalLearningTestCase):
 
     """Test the NullOptimizer on a simple objective.
 
@@ -101,17 +101,18 @@ class NullOptimizerTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up a test case for optimizing a simple quadratic polynomial."""
-        self.dim = 3
-        domain_bounds = [ClosedInterval(-1.0, 1.0)] * self.dim
-        self.domain = TensorProductDomain(domain_bounds)
+        cls.dim = 3
+        domain_bounds = [ClosedInterval(-1.0, 1.0)] * cls.dim
+        cls.domain = TensorProductDomain(domain_bounds)
 
-        maxima_point = numpy.full(self.dim, 0.5)
-        current_point = numpy.zeros(self.dim)
-        self.polynomial = QuadraticFunction(maxima_point, current_point)
-        self.null_optimizer = NullOptimizer(self.domain, self.polynomial)
+        maxima_point = numpy.full(cls.dim, 0.5)
+        current_point = numpy.zeros(cls.dim)
+        cls.polynomial = QuadraticFunction(maxima_point, current_point)
+        cls.null_optimizer = NullOptimizer(cls.domain, cls.polynomial)
 
     def test_null_optimizer(self):
         """Test that null optimizer does not change current_point."""
@@ -139,7 +140,7 @@ class NullOptimizerTest(OptimalLearningTestCase):
         self.assert_vector_within_relative(test_values, truth, 0.0)
 
 
-class OptimizerTest(OptimalLearningTestCase):
+class TestOptimizer(OptimalLearningTestCase):
 
     r"""Test the implemented optimizers on a simple quadratic objective.
 
@@ -157,19 +158,20 @@ class OptimizerTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up a test case for optimizing a simple quadratic polynomial."""
-        self.dim = 3
-        domain_bounds = [ClosedInterval(-1.0, 1.0)] * self.dim
-        self.domain = TensorProductDomain(domain_bounds)
+        cls.dim = 3
+        domain_bounds = [ClosedInterval(-1.0, 1.0)] * cls.dim
+        cls.domain = TensorProductDomain(domain_bounds)
 
-        large_domain_bounds = [ClosedInterval(-1.0, 1.0)] * self.dim
-        self.large_domain = TensorProductDomain(large_domain_bounds)
+        large_domain_bounds = [ClosedInterval(-1.0, 1.0)] * cls.dim
+        cls.large_domain = TensorProductDomain(large_domain_bounds)
 
-        maxima_point = numpy.full(self.dim, 0.5)
-        current_point = numpy.zeros(self.dim)
-        self.polynomial = QuadraticFunction(maxima_point, current_point)
+        maxima_point = numpy.full(cls.dim, 0.5)
+        current_point = numpy.zeros(cls.dim)
+        cls.polynomial = QuadraticFunction(maxima_point, current_point)
 
         max_num_steps = 250
         max_num_restarts = 10
@@ -178,7 +180,7 @@ class OptimizerTest(OptimalLearningTestCase):
         pre_mult = 1.0
         max_relative_change = 0.8
         tolerance = 1.0e-12
-        self.gd_parameters = GradientDescentParameters(
+        cls.gd_parameters = GradientDescentParameters(
             max_num_steps,
             max_num_restarts,
             num_steps_averaged,
@@ -194,7 +196,7 @@ class OptimizerTest(OptimalLearningTestCase):
         factr = 1000.0
         pgtol = 1e-10
         epsilon = 1e-8
-        self.BFGS_parameters = LBFGSBParameters(
+        cls.BFGS_parameters = LBFGSBParameters(
             approx_grad,
             max_func_evals,
             max_metric_correc,
@@ -205,9 +207,9 @@ class OptimizerTest(OptimalLearningTestCase):
 
         maxfun = 1000
         rhobeg = 1.0
-        rhoend = 1.0e-13
+        rhoend = numpy.finfo(numpy.float64).eps
         catol = 2.0e-13
-        self.COBYLA_parameters = ConstrainedDFOParameters(
+        cls.COBYLA_parameters = ConstrainedDFOParameters(
             rhobeg,
             rhoend,
             maxfun,
@@ -223,54 +225,8 @@ class OptimizerTest(OptimalLearningTestCase):
 
         for i, truth in enumerate(truth_list):
             start, end = GradientDescentOptimizer._get_averaging_range(num_steps_averaged_input_list[i], num_steps_total)
-            T.assert_equal(start, truth[0])
-            T.assert_equal(end, truth[1])
-
-    def test_gradient_descent_optimizer_with_averaging(self):
-        """Check that gradient descent can find the optimum of the quadratic test objective with averaging on.
-
-        This test doesn't exercise the purpose of averaging (i.e., this objective isn't stochastic), but it does
-        check that it at least runs.
-
-        """
-        num_steps_averaged = self.gd_parameters.max_num_steps * 3 / 4
-        gd_parameters_averaging = GradientDescentParameters(
-            self.gd_parameters.max_num_steps,
-            self.gd_parameters.max_num_restarts,
-            num_steps_averaged,
-            self.gd_parameters.gamma,
-            self.gd_parameters.pre_mult,
-            self.gd_parameters.max_relative_change,
-            self.gd_parameters.tolerance,
-        )
-        # Check the claimed optima is an optima
-        optimum_point = self.polynomial.optimum_point
-        self.polynomial.current_point = optimum_point
-        gradient = self.polynomial.compute_grad_objective_function()
-        self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), 0.0)
-
-        # Verify that gradient descent does not move from the optima if we start it there.
-        gradient_descent_optimizer = GradientDescentOptimizer(self.domain, self.polynomial, gd_parameters_averaging)
-        gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.current_point
-        self.assert_vector_within_relative(output, optimum_point, 0.0)
-
-        # Start at a wrong point and check optimization
-        tolerance = 2.0e-10
-        initial_guess = numpy.full(self.polynomial.dim, 0.2)
-        gradient_descent_optimizer.objective_function.current_point = initial_guess
-        gradient_descent_optimizer.optimize()
-        output = gradient_descent_optimizer.objective_function.current_point
-        # Verify coordinates
-        self.assert_vector_within_relative(output, optimum_point, tolerance)
-
-        # Verify function value
-        value = self.polynomial.compute_objective_function()
-        self.assert_scalar_within_relative(value, self.polynomial.optimum_value, tolerance)
-
-        # Verify derivative
-        gradient = self.polynomial.compute_grad_objective_function()
-        self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), tolerance)
+            assert start == truth[0]
+            assert end == truth[1]
 
     def test_gradient_descent_optimizer_constrained(self):
         """Check that gradient descent can find the global optimum (in a domain) when the true optimum is outside."""
@@ -298,7 +254,7 @@ class OptimizerTest(OptimalLearningTestCase):
 
         # Verify optimized value is better than initial guess
         final_value = self.polynomial.compute_objective_function()
-        T.assert_gt(final_value, initial_value)
+        assert final_value >= initial_value
 
         # Verify derivative: only get 0 derivative if the coordinate lies inside domain boundaries
         gradient = self.polynomial.compute_grad_objective_function()
@@ -327,15 +283,15 @@ class OptimizerTest(OptimalLearningTestCase):
         test_best_point, _ = multistart_optimizer.optimize(random_starts=points)
         # This point set won't include the optimum so multistart GD won't find it.
         for value in (test_best_point - self.polynomial.optimum_point):
-            T.assert_not_equal(value, 0.0)
+            assert value != 0.0
 
         points_with_opt = numpy.append(points, self.polynomial.optimum_point.reshape((1, self.polynomial.dim)), axis=0)
         test_best_point, _ = multistart_optimizer.optimize(random_starts=points_with_opt)
         # This point set will include the optimum so multistart GD will find it.
         for value in (test_best_point - self.polynomial.optimum_point):
-            T.assert_equal(value, 0.0)
+            assert value == 0.0
 
-    def optimizer_test(self, optimizer):
+    def optimizer_test(self, optimizer, tolerance=2.0e-13):
         """Check that the optimizer can find the optimum of the quadratic test objective."""
         # Check the claimed optima is an optima
         optimum_point = self.polynomial.optimum_point
@@ -344,10 +300,9 @@ class OptimizerTest(OptimalLearningTestCase):
         self.assert_vector_within_relative(gradient, numpy.zeros(self.polynomial.dim), 0.0)
 
         # Verify that the optimizer does not move from the optima if we start it there.
-        tolerance = 2.0e-13
         optimizer.optimize()
         output = optimizer.objective_function.current_point
-        self.assert_vector_within_relative(output, optimum_point, tolerance)
+        self.assert_vector_within_relative(output, optimum_point, 2.0 * numpy.finfo(numpy.float64).eps)
 
         # Start at a wrong point and check optimization
         initial_guess = numpy.full(self.polynomial.dim, 0.2)
@@ -412,3 +367,24 @@ class OptimizerTest(OptimalLearningTestCase):
         """Test if Gradient Descent can optimize a "hard" objective function with multistarts."""
         gradient_descent_optimizer = GradientDescentOptimizer(self.large_domain, self.polynomial, self.gd_parameters)
         self.multistarted_optimizer_test(gradient_descent_optimizer)
+
+    def test_gradient_descent_optimizer_with_averaging(self):
+        """Test if Gradient Descent can optimize a simple objective function.
+
+        This test doesn't exercise the purpose of averaging (i.e., this objective isn't stochastic), but it does
+        check that it at least runs.
+
+        """
+        num_steps_averaged = self.gd_parameters.max_num_steps * 3 / 4
+        gd_parameters_averaging = GradientDescentParameters(
+            self.gd_parameters.max_num_steps,
+            self.gd_parameters.max_num_restarts,
+            num_steps_averaged,
+            self.gd_parameters.gamma,
+            self.gd_parameters.pre_mult,
+            self.gd_parameters.max_relative_change,
+            self.gd_parameters.tolerance,
+        )
+
+        gradient_descent_optimizer = GradientDescentOptimizer(self.domain, self.polynomial, gd_parameters_averaging)
+        self.optimizer_test(gradient_descent_optimizer, tolerance=2.0e-10)

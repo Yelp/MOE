@@ -34,21 +34,43 @@ class SampleArm(object):
 
     def __str__(self):
         """Pretty print this object as a dict."""
-        return pprint.pformat(dict(self._asdict()))
+        return pprint.pformat(self.json_payload())
 
-    def __add__(self, arm):
-        """Overload Add operator to add sampled arm results to this arm.
+    def __add__(self, sample_arm_to_add):
+        """Overload Add operator to add ``sample_arm_to_add`` sampled arm results to this arm.
 
-        :param arm: arm samples to add to this arm
-        :type arm: a SampleArm object
+        :param sample_arm_to_add: arm samples to add to this arm
+        :type sample_arm_to_add: a SampleArm object
+        :return: new SampleArm that is a result of adding two arms
+        :rtype: SampleArm
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        self._win += arm.win
-        self._loss += arm.loss
-        self._total += arm.total
-        if self._variance is not None or arm.variance is not None:
+        if self._variance is not None or sample_arm_to_add.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        result = SampleArm(win=self._win + sample_arm_to_add.win, loss=self._loss + sample_arm_to_add.loss, total=self._total + sample_arm_to_add.total)
+        result.validate()
+        return result
+
+    __radd__ = __add__
+
+    def __iadd__(self, sample_arm_to_add):
+        """Overload in-place Add operator to add ``sample_arm_to_add`` sampled arm results to this arm in-place.
+
+        :param sample_arm_to_add: arm samples to add to this arm
+        :type sample_arm_to_add: a SampleArm object
+        :return: this arm after adding ``sample_arm_to_add``
+        :rtype: SampleArm
+        :raise: ValueError when ``arm.variance`` or self.variance is not None.
+
+        """
+        if self._variance is not None or sample_arm_to_add.variance is not None:
+            raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
+        self._win += sample_arm_to_add.win
+        self._loss += sample_arm_to_add.loss
+        self._total += sample_arm_to_add.total
+        self.validate()
+        return self
 
     def json_payload(self):
         """Convert the sample_arm into a dict to be consumed by json for a REST request."""
@@ -173,9 +195,9 @@ class HistoricalData(object):
 
         """
         if pretty_print:
-            return pprint.pformat(self._arms_sampled)
+            return pprint.pformat(self.json_payload())
         else:
-            return repr(self._arms_sampled)
+            return repr(self.json_payload())
 
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""

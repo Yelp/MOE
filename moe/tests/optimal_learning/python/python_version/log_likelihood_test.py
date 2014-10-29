@@ -8,8 +8,6 @@ comparison with C++ for verification of the Python code.
 """
 import numpy
 
-import testify as T
-
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
@@ -19,7 +17,7 @@ from moe.optimal_learning.python.python_version.optimization import GradientDesc
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
-class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
+class TestGaussianProcessLogMarginalLikelihood(GaussianProcessTestCase):
 
     """Test cases for the Log Marginal Likelihood metric for model fit.
 
@@ -105,7 +103,7 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         for i, value in enumerate(test_values):
             lml.hyperparameters = hyperparameters_to_evaluate[i, ...]
             truth = lml.compute_log_likelihood()
-            T.assert_equal(value, truth)
+            assert value == truth
 
     def test_multistart_hyperparameter_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum hyperparameters."""
@@ -148,10 +146,6 @@ class GaussianProcessLogMarginalLikelihoodTest(GaussianProcessTestCase):
         self.assert_vector_within_relative(gradient, numpy.zeros(self.num_hyperparameters), tolerance)
 
         # Check that output is in the domain
-        T.assert_equal(domain.check_point_inside(best_hyperparameters), True)
+        assert domain.check_point_inside(best_hyperparameters) is True
 
         numpy.random.set_state(random_state)
-
-
-if __name__ == "__main__":
-    T.run()

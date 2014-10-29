@@ -29,7 +29,6 @@
 #include "gpp_linear_algebra.hpp"
 
 #include <cmath>
-#include <cstdio>
 
 #include <algorithm>
 #include <limits>

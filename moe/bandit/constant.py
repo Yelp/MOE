@@ -33,7 +33,7 @@ BLA_SUBTYPES = [
                 BLA_SUBTYPE_BLA,
                 ]
 
-#: Used in :func:`moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff`.
+#: Used in :func:`moe.bandit.ucb.ucb1_tuned.UCB1Tuned.get_ucb_payoff`.
 #: 0.25 is the maximum value the variance of a Bernoulli random variable can possibly take.
 #: Because the variance formula is :math:`p(1-p)` where *p* is the probability of success
 #: and the maximum value is when *p* = 0.5. :math:`p(1-p) = 0.5(1-0.5) = 0.25`.
@@ -48,6 +48,10 @@ EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS = {
                                 'total_samples': DEFAULT_TOTAL_SAMPLES},
         EPSILON_SUBTYPE_GREEDY: {'epsilon': DEFAULT_EPSILON},
         }
+
+# Test Hyperparameters
+TEST_EPSILON = 0.1
+TEST_TOTAL_SAMPLES = 200
 
 # Bandit Endpoints
 BANDIT_BLA_ENDPOINT = 'bla_endpoint'

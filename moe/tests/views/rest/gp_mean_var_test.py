@@ -4,8 +4,6 @@ import numpy
 
 import simplejson as json
 
-import testify as T
-
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
 from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
@@ -22,7 +20,8 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
     num_sampled_list = (1, 2, 3, 11, 20)
     endpoint = GP_MEAN_VAR_ENDPOINT
 
-    def _build_json_payload(self, domain, covariance, historical_data, points_to_evaluate):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data, points_to_evaluate):
         """Create a json_payload to POST to the /gp/mean_var endpoint with all needed info."""
         json_payload = json.dumps({
             'points_to_evaluate': points_to_evaluate,
@@ -144,7 +143,3 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
                 truth_mean=truth_mean,
                 truth_var=numpy.diag(truth_var),
             )
-
-
-if __name__ == "__main__":
-    T.run()

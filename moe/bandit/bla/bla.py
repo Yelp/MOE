@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Classes (Python) to compute the Bandit BLA (Bayesian Learning Automaton) arm allocation and choosing the arm to pull next.
+"""Classes (Python) to compute the Bandit BLA (Bayesian Learning Automaton) arm allocation and choose the arm to pull next.
 
-See :class:`moe.bandit.interfaces.bandit_interface` for further details on bandit.
+See :class:`moe.bandit.bandit_interface` for further details on bandits.
 
 """
 import copy
@@ -10,7 +10,7 @@ import numpy
 
 from moe.bandit.constant import DEFAULT_BLA_SUBTYPE
 from moe.bandit.data_containers import BernoulliArm
-from moe.bandit.interfaces.bandit_interface import BanditInterface
+from moe.bandit.bandit_interface import BanditInterface
 from moe.bandit.utils import get_winning_arm_names_from_payoff_arm_name_list, get_equal_arm_allocations
 
 
@@ -21,7 +21,7 @@ class BLA(BanditInterface):
     A class to encapsulate the computation of bandit BLA.
     The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.
 
-    See :class:`moe.bandit.interfaces.bandit_interface` docs for further details.
+    See :class:`moe.bandit.bandit_interface` docs for further details.
 
     """
 
@@ -51,11 +51,18 @@ class BLA(BanditInterface):
     def get_bla_payoff(self, sampled_arm):
         r"""Compute the BLA payoff using the BLA subtype formula.
 
-        BLA payoff is computed by sampling from a beta distribution :math`Beta(\alpha, \beta)`
+        BLA payoff is computed as follows:
+
+        .. math:: r_j = Sample(Beta(\alpha_j, \beta_j))
+
+        where :math:`\alpha_j` is the number of arm *j* wins + 1 (``sampled_arm.win`` + 1) and
+        :math:`\beta_j` is the number of arm *j* losses + 1 (``sampled_arm.total`` - ``sampled_arm.win`` + 1).
+
+        In other words, BLA payoff is computed by sampling from a beta distribution :math:`Beta(\alpha, \beta)`
         with :math:`\alpha = number\_wins + 1` and
         :math:`\beta = number\_losses + 1 = number\_total - number\_wins + 1`.
 
-        Note that for an unsampled_arm, :math`Beta(1, 1)` is a uniform distribution.
+        Note that for an unsampled arm, :math:`Beta(1, 1)` is a uniform distribution.
         Learn more about beta distribution at http://en.wikipedia.org/wiki/Beta_distribution.
 
         :param sampled_arm: a sampled arm
@@ -81,7 +88,7 @@ class BLA(BanditInterface):
 
         This method will pull the optimal arm (best BLA payoff).
 
-        See :func:`moe.bandit.bla.BLA.get_bla_payoff` for details on how to compute the BLA payoff
+        See :func:`moe.bandit.bla.bla.BLA.get_bla_payoff` for details on how to compute the BLA payoff
 
         In case of a tie, the method will split the allocation among the optimal arms.
         For example, if we have three arms (arm1, arm2, and arm3) with expected BLA payoff 0.5, 0.5, and 0.1 respectively.

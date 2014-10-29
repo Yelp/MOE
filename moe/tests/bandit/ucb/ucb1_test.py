@@ -5,13 +5,11 @@ Test default values with one, two, and three arms.
 Test different cases including unsampled arms and multiple winners.
 
 """
-import testify as T
-
-from moe.bandit.ucb1 import UCB1
-from moe.tests.bandit.ucb_test_case import UCBTestCase
+from moe.bandit.ucb.ucb1 import UCB1
+from moe.tests.bandit.ucb.ucb_test_case import UCBTestCase
 
 
-class UCB1Test(UCBTestCase):
+class TestUCB1(UCBTestCase):
 
     """Verify that different historical infos return correct results."""
 
@@ -37,7 +35,3 @@ class UCB1Test(UCBTestCase):
     def test_three_arms_two_winners(self):
         """Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms > num_winning_arms > 1."""
         self._test_three_arms_two_winners()
-
-
-if __name__ == "__main__":
-    T.run()

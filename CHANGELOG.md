@@ -1,6 +1,22 @@
 * Features
 
-  * Implemented  BLA (Bayesian Learning Automaton). (#373)
+  * Added startup message to REST server including tips for OSX users (#400)
+  * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
+
+* Changes
+
+  * Switched from `testify` to `py.test` - http://pytest.org/ (#36)
+  * [cleanup] Moved bandits into their own sub directories (#375)
+
+* Bugs
+
+## v0.2.1 (2014-09-22)
+
+SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
+
+* Features
+
+  * Implemented BLA (Bayesian Learning Automaton). (#373)
   * Connected GPU functions to multistart gradient descent optimizer. (#270)
   * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
 
@@ -8,7 +24,9 @@
 
 * Bugs
 
-  * variance in a sample arm is dropped in _make_bandit_historical_info_from_params (#385)
+  * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
+  * SampleArm's ``__add__`` and ``__str__`` were broken. (#387)
+  * Specifying ``max_num_threads`` on GPU compute paths caused a segfault (#394)
 
 ## v0.2.0 (2014-08-15)
 
@@ -18,7 +36,7 @@ SHA: ``8201917e3f9b47b8edd8039ea3278ef8631b0f2a``
 
   * Added multi-armed bandit endpoint. (#255)
     * Implemented epsilon-greedy. (#255)
-    * Implemented epsilon-first. (#335) 
+    * Implemented epsilon-first. (#335)
     * Implemented UCB1. (#354)
     * Implemented UCB1-tuned. (#366)
   * Added support for the L-BFGS-B optimizer. (#296)

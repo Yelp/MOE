@@ -23,6 +23,8 @@ def multistart_expected_improvement_optimization(
         ei_optimizer,
         num_multistarts,
         num_to_sample,
+        use_gpu=False,
+        which_gpu=0,
         randomness=None,
         max_num_threads=DEFAULT_MAX_NUM_THREADS,
         status=None,
@@ -49,12 +51,19 @@ def multistart_expected_improvement_optimization(
 
     If ``num_to_sample = 1``, this is the same as ComputeOptimalPointsToSampleWithRandomStarts().
 
+    The option of using GPU to compute general q,p-EI via MC simulation is also available. To enable it, make sure you have
+    installed GPU components of MOE, otherwise, it will throw Runtime excpetion.
+
     :param ei_optimizer: object that optimizes (e.g., gradient descent, newton) EI over a domain
     :type ei_optimizer: cpp_wrappers.optimization.*Optimizer object
     :param num_multistarts: number of times to multistart ``ei_optimizer`` (UNUSED, data is in ei_optimizer.optimizer_parameters)
     :type num_multistarts: int > 0
     :param num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :type num_to_sample: int >= 1
+    :param use_gpu: set to True if user wants to use GPU for MC simulation
+    :type use_gpu: bool
+    :param which_gpu: GPU device ID
+    :type which_gpu: int >= 0
     :param randomness: RNGs used by C++ to generate initial guesses and as the source of normal random numbers when monte-carlo is used
     :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
     :param max_num_threads: maximum number of threads to use, >= 1
@@ -86,6 +95,8 @@ def multistart_expected_improvement_optimization(
         ei_optimizer.objective_function._best_so_far,
         ei_optimizer.objective_function._num_mc_iterations,
         max_num_threads,
+        use_gpu,
+        which_gpu,
         randomness,
         status,
     )
