@@ -139,7 +139,7 @@ This example was refrenced in
 
 .. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
 
-.. _MOE intro slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+.. _MOE intro slides: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 
 When showing advertisements on Yelp we have a fixed size ad unit. There is a tradeoff between showing more reviewer information and other types of information to the user. In general Yelp currently shows 3 lines of dynamic content (distance info, category info, review info, etc)
 

@@ -11,7 +11,7 @@ How does MOE work?
 This section has been given as `a 15 minute talk`_ with `slides`_ as well.
 
 .. _a 15 minute talk: http://www.youtube.com/watch?v=qAN6iyYPbEE
-.. _slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+.. _slides: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 
 This section will use examples generated from the :doc:`demo_tutorial` included with MOE.
 

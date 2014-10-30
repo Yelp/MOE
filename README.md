@@ -178,7 +178,7 @@ MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/lic
 [8]: http://yelp.github.io/MOE/contributing.html
 [9]: http://yelp.github.io/MOE/moe.optimal_learning.python.python_version.html
 [10]: http://www.youtube.com/watch?v=qAN6iyYPbEE
-[11]: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+[11]: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 [12]: http://yelp.github.io/MOE/cpp_tree.html
 [13]: http://yelp.github.io/MOE/examples.html
 [14]: http://yelp.github.io/MOE/objective_functions.html
