@@ -32,14 +32,14 @@ requirements:
     - mock
     - pyyaml
     - sqlalchemy
-    - tornado <2.0.0
+    - tornado
 
   run:
     - python
     - mock
     - pyyaml
     - sqlalchemy
-    - tornado <2.0.0
+    - tornado
 
 test:
   # Python imports

@@ -32,7 +32,7 @@ requirements:
     - six
     - webob >=1.2
     - waitress >=0.8.5
-    - beautifulsoup4
+    - beautiful-soup
 
   run:
     - python
@@ -40,7 +40,7 @@ requirements:
     - six
     - webob >=1.2
     - waitress >=0.8.5
-    - beautifulsoup4
+    - beautiful-soup
 
 test:
   # Python imports

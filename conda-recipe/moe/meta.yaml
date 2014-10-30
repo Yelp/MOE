@@ -33,8 +33,6 @@ requirements:
     - colander
     - weberror
     - libstdcplusplus
-    - sphinx_rtd_theme
-    - sphinxcontrib-httpdomain
     - breathe
     - simplejson
     - webtest
