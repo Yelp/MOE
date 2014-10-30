@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+set -e
+sudo apt-get update
+sudo apt-get install -y python-software-properties
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install -y libgcc-4.7-dev  cpp-4.7 gcc-4.7-base  g++-4.7 make libbz2-1.0 libbz2-dev git-core
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 20
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 20
+
+wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+bash Miniconda-latest-Linux-x86_64.sh -b
+export PATH=$HOME/miniconda/bin/:$PATH
+conda install --yes conda-build binstar jinja2
+
+git clone https://github.com/rmcgibbo/moe.git
+cd moe
+git checkout -b conda-recipe
+git pull origin conda-recipe
+cd conda-recipe
+
+conda build boost
+conda build certifi
+conda build colander
+conda build libstdcplusplus
+conda build mako
+conda build paste
+conda build pyramid_mako
+conda build simplejson
+conda build waitress
+conda build webtest
+conda build moe
+SCRIPT
+
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.provision "shell", inline: $script, run: "always"
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "lucid64"
+  config.vm.define :lucid64 do |t|
+  end
+  
+
+end

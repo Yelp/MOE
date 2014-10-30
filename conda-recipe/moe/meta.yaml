@@ -19,7 +19,6 @@ requirements:
     - cmake
     - boost
     - colander
-    - weberror
 
   run:
     - python
@@ -31,9 +30,7 @@ requirements:
     - pyramid
     - pyramid_mako
     - colander
-    - weberror
     - libstdcplusplus
-    - breathe
     - simplejson
     - webtest
     - pytest
