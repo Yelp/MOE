@@ -34,8 +34,6 @@ requirements:
     - simplejson
     - webtest
     - pytest
-    - sphinx
-    - testify
 
 test:
   # Python imports
