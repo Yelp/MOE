@@ -72,7 +72,7 @@ Video and slidedeck introduction to MOE:
     * `MOE intro slides`_
 
 .. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
-.. _MOE intro slides: http://www.slideshare.net/YelpEngineering/yelp-engineering-open-house-112013-optimally-learning-for-fun-and-profit
+.. _MOE intro slides: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 
 
 MOE does this internally by:
