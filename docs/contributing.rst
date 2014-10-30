@@ -207,6 +207,7 @@ When you are ready to mark a new release (stop and fix any issues encountered):
 2. Tag the release (`Tagging Releases`_).
 3. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes. Be sure to double check the number of warnings is not increasing (see link).
 4. Create and push Docker containers for the new release (`Updating DockerHub`_).
+5. Update the ``version`` field in ``conda-recipe/moe/meta.yaml`` and rebuild the conda binaries (`Updating Conda`_).
 
 Tagging Releases
 ................
@@ -281,3 +282,9 @@ and the short description to be
     Version VERSION of MOE, the Metric Optimization Engine
 
     https://github.com/Yelp/MOE/releases/tag/VERSION
+
+
+Updating Conda
+..............
+
+TODO
