@@ -16,11 +16,8 @@ bash Miniconda-latest-Linux-x86_64.sh -b
 export PATH=$HOME/miniconda/bin/:$PATH
 conda install --yes conda-build binstar jinja2
 
-git clone https://github.com/rmcgibbo/moe.git
-cd moe
-git checkout -b conda-recipe
-git pull origin conda-recipe
-cd conda-recipe
+git clone https://github.com/yelp/moe.git
+cd moe/conda-recipe
 
 conda build boost
 conda build certifi
