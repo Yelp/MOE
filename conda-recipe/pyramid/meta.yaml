@@ -1,0 +1,134 @@
+package:
+  name: pyramid
+  version: !!str 1.5.1
+
+source:
+  fn: pyramid-1.5.1.tar.gz
+  url: https://pypi.python.org/packages/source/p/pyramid/pyramid-1.5.1.tar.gz
+  md5: 8a1ab3b773d8e22437828f7df22852c1
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+build:
+  preserve_egg_dir: True
+  entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - pyramid = pyramid:main
+    #
+    # Would create an entry point called pyramid that calls pyramid.main()
+
+    - pcreate=pyramid.scripts.pcreate:main
+    - pserve=pyramid.scripts.pserve:main
+    - pshell=pyramid.scripts.pshell:main
+    - proutes=pyramid.scripts.proutes:main
+    - pviews=pyramid.scripts.pviews:main
+    - ptweens=pyramid.scripts.ptweens:main
+    - prequest=pyramid.scripts.prequest:main
+    - pdistreport=pyramid.scripts.pdistreport:main
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - setuptools
+    - webob >=1.3.1
+    - repoze.lru >=0.4
+    - zope.interface >=3.8.0
+    - zope.deprecation >=3.5.0
+    - venusian >=1.0a3
+    - translationstring >=0.4
+    - pastedeploy >=1.5.0
+
+  run:
+    - python
+    - setuptools
+    - setuptools
+    - webob >=1.3.1
+    - repoze.lru >=0.4
+    - zope.interface >=3.8.0
+    - zope.deprecation >=3.5.0
+    - venusian >=1.0a3
+    - translationstring >=0.4
+    - pastedeploy >=1.5.0
+
+test:
+  # Python imports
+  imports:
+    - pyramid
+    - pyramid.config
+    - pyramid.scaffolds
+    - pyramid.scripts
+    - pyramid.tests
+    - pyramid.tests.pkgs
+    - pyramid.tests.pkgs.ccbugapp
+    - pyramid.tests.pkgs.conflictapp
+    - pyramid.tests.pkgs.defpermbugapp
+    - pyramid.tests.pkgs.eventonly
+    - pyramid.tests.pkgs.exceptionviewapp
+    - pyramid.tests.pkgs.fixtureapp
+    - pyramid.tests.pkgs.fixtureapp.subpackage
+    - pyramid.tests.pkgs.forbiddenapp
+    - pyramid.tests.pkgs.forbiddenview
+    - pyramid.tests.pkgs.hybridapp
+    - pyramid.tests.pkgs.includeapp1
+    - pyramid.tests.pkgs.localeapp
+    - pyramid.tests.pkgs.notfoundview
+    - pyramid.tests.pkgs.permbugapp
+    - pyramid.tests.pkgs.rendererscanapp
+    - pyramid.tests.pkgs.rendererscanapp.two
+    - pyramid.tests.pkgs.restbugapp
+    - pyramid.tests.pkgs.static_abspath
+    - pyramid.tests.pkgs.static_assetspec
+    - pyramid.tests.pkgs.static_routeprefix
+    - pyramid.tests.pkgs.staticpermapp
+    - pyramid.tests.pkgs.subrequestapp
+    - pyramid.tests.pkgs.viewdecoratorapp
+    - pyramid.tests.pkgs.viewdecoratorapp.views
+    - pyramid.tests.pkgs.wsgiapp2app
+    - pyramid.tests.test_config
+    - pyramid.tests.test_config.pkgs
+    - pyramid.tests.test_config.pkgs.asset
+    - pyramid.tests.test_config.pkgs.asset.subpackage
+    - pyramid.tests.test_config.pkgs.scanextrakw
+    - pyramid.tests.test_config.pkgs.scannable
+    - pyramid.tests.test_config.pkgs.scannable.subpackage
+    - pyramid.tests.test_config.pkgs.scannable.subpackage.subsubpackage
+    - pyramid.tests.test_config.pkgs.selfscan
+    - pyramid.tests.test_scaffolds
+    - pyramid.tests.test_scripts
+
+  commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+    - pcreate --help
+    - pserve --help
+    - pshell --help
+    - proutes --help
+    - pviews --help
+    - ptweens --help
+    - prequest --help
+    - pdistreport --help
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: http://docs.pylonsproject.org/en/latest/docs/pyramid.html
+  license: BSD-derived (http://www.repoze.org/LICENSE.txt)
+  summary: 'The Pyramid Web Framework, a Pylons project'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml

@@ -1,0 +1,60 @@
+package:
+  name: tempita
+  version: !!str 0.5.3dev
+
+source:
+  fn: Tempita-0.5.3dev.tar.gz
+  url: https://pypi.python.org/packages/source/T/Tempita/Tempita-0.5.3dev.tar.gz
+  md5: 365c3b4f36435e2178902d5619301140
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+# build:
+  # preserve_egg_dir: True
+  # entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - tempita = tempita:main
+    #
+    # Would create an entry point called tempita that calls tempita.main()
+
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+
+test:
+  # Python imports
+  imports:
+    - tempita
+
+  # commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: http://pythonpaste.org/tempita/
+  license: MIT License
+  summary: 'A very small text templating language'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
