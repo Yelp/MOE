@@ -7,6 +7,8 @@
 
   * Switched from `testify` to `py.test` - http://pytest.org/ (#36)
   * [cleanup] Moved bandits into their own sub directories (#375)
+  * Supply PYTHON_LIBRARY and PYTHON_INCLUDE_DIR vars to cmake automatically in ``setup.py`` (#412)
+  * Added warning when colander version is out of date (#413)
 
 * Bugs
 
