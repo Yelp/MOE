@@ -82,14 +82,17 @@ class RepeatedDomain(DomainInterface):
     def get_constraint_list(self):
         """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.
 
+        Calls ``self._domain.get_constraint_list()`` for each repeat, writing the results sequentially.
+        So output[0:2*dim] is from the first repeated domain, output[2*dim:4*dim] is from the second, etc.
+
         :return: a list of lambda functions corresponding to constraints
-        :rtype: array of lambda functions with shape (dim * 2)
+        :rtype: array of lambda functions with shape (num_repeats * dim * 2)
 
         """
         constraints = []
         for i in xrange(self.num_repeats):
             # Using start_index, start each domain at the correct index when flattening out points in COBYLA.
-            constraints.extend(self._domain.get_constraint_list(start_index=self._domain.dim * i))
+            constraints.extend(self._domain.get_constraint_list(start_index=self.dim * i))
         return constraints
 
     def generate_random_point_in_domain(self, random_source=None):

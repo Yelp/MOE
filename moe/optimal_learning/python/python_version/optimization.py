@@ -312,7 +312,8 @@ class LBFGSBParameters(_BaseLBFGSBParameters):
 
     r"""Container to hold parameters that specify the behavior of L-BFGS-B.
 
-    Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.
+    Suggested values come from scipy documentation for ``scipy.optimize.fmin_l_bfgs_b``:
+    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
 
     :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient
     :ivar max_func_evals: (*int > 0*) maximum number of objective function calls to make (suggest: 15000)
@@ -325,9 +326,21 @@ class LBFGSBParameters(_BaseLBFGSBParameters):
 
     __slots__ = ()
 
+    def scipy_kwargs(self):
+        """Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_l_bfgs_b``.
 
-# See ConstrainedDFOParameters (below) for docstring.
-_BaseConstrainedDFOParameters = collections.namedtuple('_BaseConstrainedDFOParameters', [
+        :return: kwargs for controlling the behavior of fmin_l_bfgs_b
+        :rtype: dict
+
+        """
+        out_dict = dict(self._asdict())
+        out_dict['m'] = out_dict.pop('max_metric_correc')
+        out_dict['maxfun'] = out_dict.pop('max_func_evals')
+        return out_dict
+
+
+# See COBYLAParameters (below) for docstring.
+_BaseCOBYLAParameters = collections.namedtuple('_BaseCOBYLAParameters', [
     'rhobeg',
     'rhoend',
     'maxfun',
@@ -335,12 +348,12 @@ _BaseConstrainedDFOParameters = collections.namedtuple('_BaseConstrainedDFOParam
 ])
 
 
-class ConstrainedDFOParameters(_BaseConstrainedDFOParameters):
+class COBYLAParameters(_BaseCOBYLAParameters):
 
     r"""Container to hold parameters that specify the behavior of COBYLA.
 
     Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla:
-    http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
+    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_cobyla.html
 
     :ivar rhobeg: (*float64 > 0.0*) reasonable initial changes to the variables (suggest: 1.0)
     :ivar rhoend: (*float64 > 0.0*) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)
@@ -350,6 +363,9 @@ class ConstrainedDFOParameters(_BaseConstrainedDFOParameters):
     """
 
     __slots__ = ()
+
+    # Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_cobyla``.
+    scipy_kwargs = _BaseCOBYLAParameters._asdict
 
 
 class NullOptimizer(OptimizerInterface):
@@ -559,8 +575,8 @@ class MultistartOptimizer(OptimizerInterface):
         reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
         individual multistart run if desired (through function_values).
 
-        :param starting_points: points from which to multistart ``self.optimizer``; if None, points are chosen randomly
-        :type starting_points: array of float64 with shape (num_points, dim) or None
+        :param random_starts: points from which to multistart ``self.optimizer``; if None, points are chosen randomly
+        :type random_starts: array of float64 with shape (num_points, dim) or None
         :return: (best point found, objective function values at the end of each optimization run)
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
@@ -590,9 +606,12 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
 
     """Wrapper class to construct an optimizer from scipy optimization methods.
 
-    Requires the implementation of the :func:`~moe.optimal_learning.python.python_interface.optimization._ScipyOptimizerWrapper.get_scipy_optimizer_unshaped_point` method.
+    Requires the implementation of the :func:`~moe.optimal_learning.python.python_interface.optimization._ScipyOptimizerWrapper._optimize_core` method.
 
     """
+
+    # Type of the optimization_parameters object, specified in subclass
+    optimization_parameters_type = None
 
     def __init__(self, domain, optimizable, optimization_parameters):
         """Construct the optimizer.
@@ -602,12 +621,17 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         :param optimizable: object representing the objective function being optimized
         :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
         :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: ``python_version.optimization.*Parameters`` object
+        :type optimization_parameters: ``python_version.optimization.*Parameters`` object, matching optimization_parameters_type
 
         """
         self.domain = domain
         self.objective_function = optimizable
-        self.optimization_parameters = optimization_parameters
+
+        if not isinstance(optimization_parameters, self.optimization_parameters_type):
+            raise TypeError('optimization_paramters is of type: {0:s}, expected {1:s}'.format(optimization_parameters.__class__, self.optimization_parameters_type))
+        else:
+            self.optimization_parameters = optimization_parameters
+
         self._num_points = 1
         if hasattr(self.domain, 'num_repeats'):
             self._num_points = self.domain.num_repeats
@@ -639,16 +663,14 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         return decorated
 
     def optimize(self, **kwargs):
-        """Shape the point returned by the get_scipy_optimizer_unshaped_point function.
+        """Perform optimization with :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` and shape the output point.
 
-        Calls the get_scipy_optimizer_unshaped_point method.
-        objective_function.current_point will be set to the optimal point found.
+        Calls the :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` method.
+        ``objective_function.current_point`` will be set to the optimal point found.
 
         """
-        unshaped_point = self._get_scipy_optimizer_unshaped_point(**kwargs)
+        unshaped_point = self._optimize_core(**kwargs)
 
-        if not isinstance(unshaped_point, numpy.ndarray):
-            unshaped_point = unshaped_point[0]
         if self._num_points == 1:
             shaped_point = unshaped_point
         else:
@@ -656,14 +678,14 @@ class _ScipyOptimizerWrapper(OptimizerInterface):
         self.objective_function.current_point = shaped_point
 
     @abstractmethod
-    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
+    def _optimize_core(self, **kwargs):
         """Should return an unshaped point corresponding to the output of the optimizer function from scipy.
 
-        See :func:`~moe.optimal_learning.python.python_version.optimization.LBFGSOptimizer.get_scipy_optimizer_unshaped_point` or
-        :func:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOOptimizer.get_scipy_optimizer_unshaped_point` function for examples.
+        See :func:`~moe.optimal_learning.python.python_version.optimization.LBFGSOptimizer._optimize_core` or
+        :func:`~moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer._optimize_core` function for examples.
 
         :return: The unshaped optimal point from calling the scipy optimization method.
-        :rtype: array of float64 with shape (self._num_points, self.domain.dim)
+        :rtype: array of float64 with shape (self._num_points * self.domain.dim, )
 
         """
         pass
@@ -687,6 +709,8 @@ class LBFGSBOptimizer(_ScipyOptimizerWrapper):
 
     """
 
+    optimization_parameters_type = LBFGSBParameters
+
     def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
         """Construct a LBFGSBOptimizer.
 
@@ -700,8 +724,8 @@ class LBFGSBOptimizer(_ScipyOptimizerWrapper):
         """
         super(LBFGSBOptimizer, self).__init__(domain, optimizable, optimization_parameters)
 
-    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
-        """Perform an L-BFGS-B optimization given the parameters in optimization_parameters."""
+    def _optimize_core(self, **kwargs):
+        """Perform an L-BFGS-B optimization given the parameters in ``self.optimization_parameters``."""
         domain_bounding_box = self.domain.get_bounding_box()
         domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
         domain_numpy = numpy.array(domain_list * self._num_points)
@@ -712,16 +736,11 @@ class LBFGSBOptimizer(_ScipyOptimizerWrapper):
             x0=self.objective_function.current_point.flatten(),
             bounds=domain_numpy,
             fprime=self._scipy_decorator(self.objective_function.compute_grad_objective_function, **kwargs),
-            approx_grad=self.optimization_parameters.approx_grad,
-            factr=self.optimization_parameters.factr,
-            maxfun=self.optimization_parameters.max_func_evals,
-            m=self.optimization_parameters.max_metric_correc,
-            pgtol=self.optimization_parameters.pgtol,
-            epsilon=self.optimization_parameters.epsilon,
+            **self.optimization_parameters.scipy_kwargs()
         )[0]
 
 
-class ConstrainedDFOOptimizer(_ScipyOptimizerWrapper):
+class COBYLAOptimizer(_ScipyOptimizerWrapper):
 
     r"""Optimizes an objective function over the specified contraints with the COBYLA method.
 
@@ -731,29 +750,28 @@ class ConstrainedDFOOptimizer(_ScipyOptimizerWrapper):
 
     """
 
+    optimization_parameters_type = COBYLAParameters
+
     def __init__(self, domain, optimizable, optimization_parameters):
-        """Construct a ConstrainedDFOOptimizer.
+        """Construct a COBYLAOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain for now.
         :param optimizable: object representing the objective function being optimized
         :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
         :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOParameters` object
+        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` object
 
         """
-        super(ConstrainedDFOOptimizer, self).__init__(domain, optimizable, optimization_parameters)
+        super(COBYLAOptimizer, self).__init__(domain, optimizable, optimization_parameters)
 
-    def _get_scipy_optimizer_unshaped_point(self, **kwargs):
-        """Perform a COBYLA optimization given the parameters in optimization_parameters."""
-        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.ConstrainedDFOParameters` class.
+    def _optimize_core(self, **kwargs):
+        """Perform a COBYLA optimization given the parameters in ``self.optimization_parameters``."""
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` class.
         return scipy.optimize.fmin_cobyla(
             func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
             x0=self.objective_function.current_point.flatten(),
             cons=self.domain.get_constraint_list(),
-            rhobeg=self.optimization_parameters.rhobeg,
-            rhoend=self.optimization_parameters.rhoend,
-            maxfun=self.optimization_parameters.maxfun,
-            catol=self.optimization_parameters.catol,
             disp=0,  # Suppresses output from the routine.
+            **self.optimization_parameters.scipy_kwargs()
         )

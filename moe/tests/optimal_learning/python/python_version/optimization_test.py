@@ -7,7 +7,7 @@ import pytest
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizableInterface
 from moe.optimal_learning.python.python_version.domain import TensorProductDomain
-from moe.optimal_learning.python.python_version.optimization import multistart_optimize, LBFGSBParameters, GradientDescentParameters, NullOptimizer, GradientDescentOptimizer, MultistartOptimizer, LBFGSBOptimizer, ConstrainedDFOOptimizer, ConstrainedDFOParameters
+from moe.optimal_learning.python.python_version.optimization import multistart_optimize, LBFGSBParameters, GradientDescentParameters, NullOptimizer, GradientDescentOptimizer, MultistartOptimizer, LBFGSBOptimizer, COBYLAOptimizer, COBYLAParameters
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
@@ -209,7 +209,7 @@ class TestOptimizer(OptimalLearningTestCase):
         rhobeg = 1.0
         rhoend = numpy.finfo(numpy.float64).eps
         catol = 2.0e-13
-        cls.COBYLA_parameters = ConstrainedDFOParameters(
+        cls.COBYLA_parameters = COBYLAParameters(
             rhobeg,
             rhoend,
             maxfun,
@@ -265,15 +265,14 @@ class TestOptimizer(OptimalLearningTestCase):
     def test_multistarted_gradient_descent_optimizer_crippled_start(self):
         """Check that multistarted GD is finding the best result from GD."""
         # Only allow 1 GD iteration.
-        gd_parameters_crippled = GradientDescentParameters(
-            1,
-            1,
-            self.gd_parameters.num_steps_averaged,
-            self.gd_parameters.gamma,
-            self.gd_parameters.pre_mult,
-            self.gd_parameters.max_relative_change,
-            self.gd_parameters.tolerance,
-        )
+        max_num_steps = 1
+        max_num_restarts = 1
+
+        param_dict = self.gd_parameters._asdict()
+        param_dict['max_num_steps'] = max_num_steps
+        param_dict['max_num_restarts'] = max_num_restarts
+        gd_parameters_crippled = GradientDescentParameters(**param_dict)
+
         gradient_descent_optimizer_crippled = GradientDescentOptimizer(self.domain, self.polynomial, gd_parameters_crippled)
 
         num_points = 15
@@ -340,7 +339,7 @@ class TestOptimizer(OptimalLearningTestCase):
 
     def test_cobyla_optimizer(self):
         """Test if COBYLA can optimize a simple objective function."""
-        constrained_optimizer = ConstrainedDFOOptimizer(self.domain, self.polynomial, self.COBYLA_parameters)
+        constrained_optimizer = COBYLAOptimizer(self.domain, self.polynomial, self.COBYLA_parameters)
         self.optimizer_test(constrained_optimizer)
 
     def test_bfgs_optimizer(self):
@@ -355,7 +354,7 @@ class TestOptimizer(OptimalLearningTestCase):
 
     def test_cobyla_multistarted_optimizer(self):
         """Test if COBYLA can optimize a "hard" objective function with multistarts."""
-        constrained_optimizer = ConstrainedDFOOptimizer(self.large_domain, self.polynomial, self.COBYLA_parameters)
+        constrained_optimizer = COBYLAOptimizer(self.large_domain, self.polynomial, self.COBYLA_parameters)
         self.multistarted_optimizer_test(constrained_optimizer)
 
     def test_bfgs_multistarted_optimizer(self):
@@ -376,15 +375,9 @@ class TestOptimizer(OptimalLearningTestCase):
 
         """
         num_steps_averaged = self.gd_parameters.max_num_steps * 3 / 4
-        gd_parameters_averaging = GradientDescentParameters(
-            self.gd_parameters.max_num_steps,
-            self.gd_parameters.max_num_restarts,
-            num_steps_averaged,
-            self.gd_parameters.gamma,
-            self.gd_parameters.pre_mult,
-            self.gd_parameters.max_relative_change,
-            self.gd_parameters.tolerance,
-        )
+        param_dict = self.gd_parameters._asdict()
+        param_dict['num_steps_averaged'] = num_steps_averaged
+        gd_parameters_averaging = GradientDescentParameters(**param_dict)
 
         gradient_descent_optimizer = GradientDescentOptimizer(self.domain, self.polynomial, gd_parameters_averaging)
         self.optimizer_test(gradient_descent_optimizer, tolerance=2.0e-10)

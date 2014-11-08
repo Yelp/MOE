@@ -152,7 +152,7 @@ class ObjectiveEstimationPolicyInterface {
 
 /*!\rst
   The "Constant Liar" objective function estimation policy is the simplest: it always returns the same value
-  (Ginsbourger 2008). We call this the "lie. This object also allows users to associate a noise variance to
+  (Ginsbourger 2008). We call this the "lie". This object also allows users to associate a noise variance to
   the lie value.
 
   In Ginsbourger's work, the most common lie values have been the min and max of all previously observed objective
