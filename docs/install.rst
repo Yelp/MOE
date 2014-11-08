@@ -73,54 +73,9 @@ Requires:
       $ pip install -r requirements.txt
       $ python setup.py install
 
-   .. Note:: MOE's ``setup.py`` invokes cmake. Users can pass command line arguments to cmake via the ``MOE_CMAKE_OPTS`` environment variable. Other sections (e.g., `Python Tips`_, `CMake Tips`_) detail additional environment variables that may be needed to customize cmake's behavior.
+   .. Note:: MOE's ``setup.py`` invokes cmake. ``setup.py`` installs MOE with the python installation used to run it; so be sure to invoke ``setup.py`` with the Python that you want to use to run MOE. If this fails, then consult `Python Tips`_. Users can pass command line arguments to cmake via the ``MOE_CMAKE_OPTS`` environment variable. Other sections (e.g., `Python Tips`_, `CMake Tips`_) detail additional environment variables that may be needed to customize cmake's behavior.
 
    .. Warning:: Boost, MOE, and the virtualenv must be built with the same python. (OS X users: we recommend using the MacPorts Python: ``/opt/local/bin/python``.)
-
-Python Tips
-^^^^^^^^^^^
-
-Sometimes cmake will fail to find your Python installation or you will want to specify an alternate Python. To specify Python, add:
-
-::
-
-   -D MOE_PYTHON_INCLUDE_DIR=/path/to/where/Python.h/is/found
-   -D MOE_PYTHON_LIBRARY=/path/to/python/shared/library/object
-
-to the ``MOE_CMAKE_OPTS`` environment variable. For example, an OS X user might have:
-
-::
-
-   export MOE_CMAKE_OPTS='-D CMAKE_FIND_ROOT_PATH=/opt/local -D MOE_PYTHON_INCLUDE_DIR=/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/ -D MOE_PYTHON_LIBRARY=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib'
-
-In OS X, the python dynamic library will be a ``.dylib`` file; in Linux, it will be a ``.so`` file.
-
-.. WARNING:: Mis-matched Python versions between your virtual environment, Boost, and/or MOE's installer can lead to a plethora of strange bugs. Anywhere from ``Fatal Python error: PyThreadState_Get: no current thread`` to segmentation faults and beyond. (You are hitting a binary incompatibility so it is hard to predict the specific error.)  You may need to instruct your package manager to build Boost against a particular version of Python, indicate a different Python to MOE, etc. to make these versions line up.
-
-Here are some ways to check/ensure that Python was found and linked correctly:
-
-1. You can verify that cmake found the correct version by checking the values of ``PYTHON_INCLUDE_DIR`` and ``PYTHON_LIBRARY`` in ``moe/build/CMakeCache.txt``.
-2. In `General MacPorts Tips`_, *notice* that Boost is built against ``python27``. Checking ``port installed "python*"``, you should see (amongst others) ``python27 @2.7.6_0 (active)``.
-3. ``python --version`` will show you what version of Python is called by default.
-4. Outside of a virtual environment, running ``which python`` (and tracking through the symlinks; the first level should be in ``/opt/local/...`` if you are using MacPorts in OS X) will show you specifically which Python is being used.
-5. Inside of a virtual environment, ``yolk -l`` will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running ``which python`` still works here if you trace through the symlinks.) Get ``yolk`` via ``pip install yolk``.
-6. Check binary shared library dependencies (only works if you are not linking statically). ``locate libboost_python`` and run ``ldd`` (Linux) or ``otool -L`` (OS X) on the dynamic library.  (Note: ``ldd`` in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on ``moe/build/GPP.so`` should show you the same Python as above; for example:
-
-   ::
-
-      LINUX:
-      $ ldd moe/build/GPP.so
-      yields lines like:
-      libpython2.7.so.1.0 => /usr/lib/libpython2.7.so.1.0 (0x00007f7d7a9fc000)
-
-      OS X:
-      $ otool -L moe/build/GPP.so
-      yields:
-      /opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python (compatibility version 2.7.0, current version 2.7.0)
-
-   This should be the same Python that you see in the other steps.
-
-   If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.
 
 OSX Tips
 --------
@@ -158,7 +113,7 @@ OS X 10.9 users beware: do not install boost with MacPorts. You *must* install i
    The previous assumes that you want to use ``gcc 4.7`` and ``Python 2.7``; modify the ``install`` and ``set`` invocations if you want other versions.
 
 7. Using ``port select --list``, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see ``python27 (active)``, not ``python27-apple (active)``. See `port select information`_.
-8. If you are having strange errors (no current thread, segfault, etc.), check `Python Tips`_.
+8. Continue with the installation instructions. If you are having strange errors (no current thread, segfault, etc.), check `Python Tips`_.
 
 General MacPorts Tips
 ^^^^^^^^^^^^^^^^^^^^^
@@ -285,3 +240,50 @@ CMake Tips
 1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: ``export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/your/dependencies ...`` (OS X users with MacPorts should set ``/opt/local``.) This can be used to set any number of cmake arguments.
 2. Have you checked `Connecting Boost to MOE`_ and `Python Tips`_?
 3. Are you using the right compiler? e.g., for ``gcc``, run ``export MOE_CC_PATH=/path/to/your/gcc && export MOE_CXX_PATH=/path/to/your/g++`` (OS X users need to explicitly set this.)
+
+Python Tips
+-----------
+
+.. Note:: This is an advanced-user section. ``setup.py`` should be able to identify the correct Python automatically (i.e., it tries to find the Python it was launched with). Examples of why you might need to keep reading: 1) ``setup.py`` failed to find the correct Python paths; 2) you building manually and not using ``setup.py``; 3) you are doing something "weird" like building MOE with a different version of Python than the one you intend to run MOE with.
+
+Sometimes cmake and/or ``setup.py`` will fail to find your Python installation or you will want to specify an alternate Python. To specify Python, add:
+
+::
+
+   -D MOE_PYTHON_INCLUDE_DIR=/path/to/where/Python.h/is/found
+   -D MOE_PYTHON_LIBRARY=/path/to/python/shared/library/object
+
+to the ``MOE_CMAKE_OPTS`` environment variable. Note that options added to this environment variable *supersede* options set by ``setup.py``; so if ``setup.py`` failed, manually specifying the right paths will solve the problem. For example, an OS X user might have:
+
+::
+
+   export MOE_CMAKE_OPTS='-D CMAKE_FIND_ROOT_PATH=/opt/local -D MOE_PYTHON_INCLUDE_DIR=/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/ -D MOE_PYTHON_LIBRARY=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib'
+
+In OS X, the python dynamic library will be a ``.dylib`` file; in Linux, it will be a ``.so`` file.
+
+.. WARNING:: Mis-matched Python versions between your virtual environment, Boost, and/or MOE's installer can lead to a plethora of strange bugs. Anywhere from ``Fatal Python error: PyThreadState_Get: no current thread`` to segmentation faults and beyond. (You are hitting a binary incompatibility so it is hard to predict the specific error.)  You may need to instruct your package manager to build Boost against a particular version of Python, indicate a different Python to MOE, etc. to make these versions line up.
+
+Here are some ways to check/ensure that Python was found and linked correctly:
+
+1. You can verify that cmake found the correct version by checking the values of ``PYTHON_INCLUDE_DIR`` and ``PYTHON_LIBRARY`` in ``moe/build/CMakeCache.txt``.
+2. In `General MacPorts Tips`_, *notice* that Boost is built against ``python27``. Checking ``port installed "python*"``, you should see (amongst others) ``python27 @2.7.6_0 (active)``.
+3. ``python --version`` will show you what version of Python is called by default.
+4. Outside of a virtual environment, running ``which python`` (and tracking through the symlinks; the first level should be in ``/opt/local/...`` if you are using MacPorts in OS X) will show you specifically which Python is being used.
+5. Inside of a virtual environment, ``yolk -l`` will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running ``which python`` still works here if you trace through the symlinks.) Get ``yolk`` via ``pip install yolk``.
+6. Check binary shared library dependencies (only works if you are not linking statically). ``locate libboost_python`` and run ``ldd`` (Linux) or ``otool -L`` (OS X) on the dynamic library.  (Note: ``ldd`` in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on ``moe/build/GPP.so`` should show you the same Python as above; for example:
+
+   ::
+
+      LINUX:
+      $ ldd moe/build/GPP.so
+      yields lines like:
+      libpython2.7.so.1.0 => /usr/lib/libpython2.7.so.1.0 (0x00007f7d7a9fc000)
+
+      OS X:
+      $ otool -L moe/build/GPP.so
+      yields:
+      /opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python (compatibility version 2.7.0, current version 2.7.0)
+
+   This should be the same Python that you see in the other steps.
+
+   If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.
