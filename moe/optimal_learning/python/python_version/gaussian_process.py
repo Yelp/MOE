@@ -254,7 +254,7 @@ class GaussianProcess(GaussianProcessInterface):
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
-        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
+        :type var_of_grad: int in {0, .. ``num_to_sample``-1}
         :return: grad_var: gradient of the variance matrix of this GP
         :rtype: array of float64 with shape (num_to_sample, num_to_sample, dim)
 
@@ -322,7 +322,7 @@ class GaussianProcess(GaussianProcessInterface):
         :param chol_var: the cholesky factorization (L) of the variance matrix; only the lower triangle is accessed
         :type chol_var: array of float64 with shape (num_to_sample, num_to_sample)
         :param var_of_grad: index of ``points_to_sample`` to be differentiated against
-        :type var_of_grad: integer in {0, .. ``num_to_sample``-1}
+        :type var_of_grad: int in {0, .. ``num_to_sample``-1}
         :return: grad_chol: gradient of the cholesky factorization of the variance matrix of this GP.
           ``grad_chol[j][i][d]`` is actually the gradients of ``var_{j,i}`` with
           respect to ``x_{k,d}``, the d-th dimension of the k-th entry of ``points_to_sample``, where

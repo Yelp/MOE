@@ -85,6 +85,30 @@ class TensorProductDomain(DomainInterface):
         """Return a list of ClosedIntervals representing a bounding box for this domain."""
         return copy.copy(self._domain_bounds)
 
+    def get_constraint_list(self, start_index=0):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.
+
+        Since COBYLA in scipy only optimizes arrays, we flatten out our points while doing multipoint EI optimization.
+        But in order for the constraints to access the correct index, the RepeatedDomain class has to signal which index
+        the TensorProductDomain should start from, using the start_index optional parameter.
+
+        That is, RepeatedDomain deals with N d-dimensional points at once. Thus we need N*d constraints (one per
+        dimension, once per repeat). Additionally, instead of receiving points with shape (num_repeats, dim), COBYLA
+        requires that the points are flattened: (num_repeats*dim, ). Thus this method must know *where* in the
+        flattened-list it is writing to and reading from: signaled via ``start_index``.
+
+        :param start_index: the dimension this tensor product domain should start indexing from
+        :type start_index: int >= 0
+        :return: a list of lambda functions corresponding to constraints
+        :rtype: array of lambda functions with shape (dim * 2)
+
+        """
+        constraints = []
+        for i, interval in enumerate(self._domain_bounds):
+            constraints.append((lambda x: x[i + start_index] - interval.min))
+            constraints.append((lambda x: interval.max - x[i + start_index]))
+        return constraints
+
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 
@@ -105,7 +129,7 @@ class TensorProductDomain(DomainInterface):
         See python.geometry_utils.generate_latin_hypercube_points for more details.
 
         :param num_points: max number of points to generate
-        :type num_points: integer >= 0
+        :type num_points: int >= 0
         :param random_source: random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)
         :type random_source: callable yielding uniform random numbers in [0,1]
         :return: uniform random sampling of points from the domain
