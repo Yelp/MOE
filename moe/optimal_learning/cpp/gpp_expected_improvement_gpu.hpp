@@ -139,8 +139,8 @@ class CudaExpectedImprovementEvaluator final {
   /*!\rst
     Constructor that also specify which gpu you want to use (for multi-gpu system)
   \endrst*/
-  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in,
-                                   int num_mc_in, double best_so_far, int devID_in);
+  CudaExpectedImprovementEvaluator(const GaussianProcess& gaussian_process_in, int num_mc_ei_in,
+                                   int num_mc_grad_in, double best_so_far, int devID_in);
 
   ~CudaExpectedImprovementEvaluator();
 
@@ -148,10 +148,13 @@ class CudaExpectedImprovementEvaluator final {
     return dim_;
   }
 
-  int num_mc() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
-    return num_mc_;
+  int num_mc_ei() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return num_mc_ei_;
   }
 
+  int num_mc_grad() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return num_mc_grad_;
+  }
   const GaussianProcess * gaussian_process() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return gaussian_process_;
   }
@@ -209,8 +212,10 @@ class CudaExpectedImprovementEvaluator final {
  private:
   //! spatial dimension (e.g., entries per point of points_sampled)
   const int dim_;
-  //! number of mc iterations
-  int num_mc_;
+  //! number of mc iterations for estimation of EI
+  int num_mc_ei_;
+  //! number of mc iterations for estimation of gradEI
+  int num_mc_grad_;
   //! best (minimum) objective function value (in points_sampled_value)
   double best_so_far_;
   //! pointer to gaussian process used in EI computations
@@ -449,7 +454,8 @@ inline OL_NONNULL_POINTERS void SetupExpectedImprovementState(
     :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations for computing EI
+    :num_mc_grad: maximum number of MC iterations for computing gradEI
     :which_gpu: the device ID of GPU used for computation
     :uniform_rng[1]: UniformRandomGenerator object used to seed the GPU PRNG(s)
   \output
@@ -469,7 +475,8 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
     int num_to_sample,
     int num_being_sampled,
     double best_so_far,
-    int max_int_steps,
+    int num_mc_ei,
+    int num_mc_grad,
     int which_gpu,
     UniformRandomGenerator * uniform_rng,
     bool * restrict found_flag,
@@ -483,10 +490,10 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
     // special analytic case when we are not using (or not accounting for) multiple, simultaneous experiments
     ComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain, thread_schedule,
                                                              start_point_set, points_being_sampled, num_multistarts, num_to_sample,
-                                                             num_being_sampled, best_so_far, max_int_steps, nullptr, found_flag,
+                                                             num_being_sampled, best_so_far, 0, nullptr, found_flag,
                                                              best_next_point);
   } else {
-    CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+    CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, num_mc_ei, num_mc_grad, best_so_far, which_gpu);
 
     std::vector<typename CudaExpectedImprovementEvaluator::StateType> ei_state_vector;
     SetupExpectedImprovementState(ei_evaluator, start_point_set, points_being_sampled, num_to_sample,
@@ -525,7 +532,8 @@ OL_NONNULL_POINTERS void CudaComputeOptimalPointsToSampleViaMultistartGradientDe
     :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations for computing EI
+    :num_mc_grad: maximum number of MC iterations for computing gradEI
     :which_gpu: the device ID of GPU used for computation
     :uniform_generator[1]: UniformRandomGenerator object used to seed the GPU PRNG(s)
   \output
@@ -539,7 +547,7 @@ void CudaComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gau
                                                       const DomainType& domain, const ThreadSchedule& thread_schedule,
                                                       double const * restrict points_being_sampled,
                                                       int num_to_sample, int num_being_sampled, double best_so_far,
-                                                      int max_int_steps, int which_gpu, bool * restrict found_flag,
+                                                      int num_mc_ei, int num_mc_grad, int which_gpu, bool * restrict found_flag,
                                                       UniformRandomGenerator * uniform_generator,
                                                       double * restrict best_next_point) {
   std::vector<double> starting_points(gaussian_process.dim()*optimizer_parameters.num_multistarts*num_to_sample);
@@ -552,7 +560,7 @@ void CudaComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gau
   CudaComputeOptimalPointsToSampleViaMultistartGradientDescent(gaussian_process, optimizer_parameters, domain,
                                                                thread_schedule, starting_points.data(),
                                                                points_being_sampled, num_multistarts, num_to_sample,
-                                                               num_being_sampled, best_so_far, max_int_steps, which_gpu,
+                                                               num_being_sampled, best_so_far, num_mc_ei, num_mc_grad, which_gpu,
                                                                uniform_generator, found_flag, best_next_point);
 #ifdef OL_WARNING_PRINT
   if (false == *found_flag) {
@@ -578,7 +586,7 @@ void CudaComputeOptimalPointsToSampleWithRandomStarts(const GaussianProcess& gau
     :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations
     :which_gpu: the device ID of GPU used for computation
     :uniform_rng[1]: UniformRandomGenerator object used to seed the GPU PRNG(s)
   \output
@@ -594,7 +602,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process,
                                double const * restrict points_being_sampled,
                                int num_multistarts, int num_to_sample,
                                int num_being_sampled, double best_so_far,
-                               int max_int_steps, int which_gpu, bool * restrict found_flag,
+                               int num_mc_ei, int which_gpu, bool * restrict found_flag,
                                UniformRandomGenerator * uniform_rng,
                                double * restrict function_values,
                                double * restrict best_next_point);
@@ -614,7 +622,7 @@ void CudaEvaluateEIAtPointList(const GaussianProcess& gaussian_process,
     :num_to_sample: number of potential future samples; gradients are evaluated wrt these points (i.e., the "q" in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the "p" in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations
     :which_gpu: device ID of the GPU used for computation
     :uniform_generator[1]: a UniformRandomGenerator object providing the random engine for uniform random numbers
   \output
@@ -629,7 +637,7 @@ void CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProce
                                                              double const * restrict points_being_sampled,
                                                              int num_multistarts, int num_to_sample,
                                                              int num_being_sampled, double best_so_far,
-                                                             int max_int_steps, int which_gpu, bool * restrict found_flag,
+                                                             int num_mc_ei, int which_gpu, bool * restrict found_flag,
                                                              UniformRandomGenerator * uniform_generator,
                                                              double * restrict best_next_point) {
   std::vector<double> initial_guesses(gaussian_process.dim()*num_multistarts*num_to_sample);
@@ -639,7 +647,7 @@ void CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProce
 
   CudaEvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses.data(),
                             points_being_sampled, num_multistarts, num_to_sample,
-                            num_being_sampled, best_so_far, max_int_steps, which_gpu,
+                            num_being_sampled, best_so_far, num_mc_ei, which_gpu,
                             found_flag, uniform_generator, nullptr, best_next_point);
 }
 
@@ -659,7 +667,8 @@ void CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch(const GaussianProce
     :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :num_being_sampled: number of points being sampled concurrently (i.e., the p in q,p-EI)
     :best_so_far: value of the best sample so far (must be ``min(points_sampled_value)``)
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations for computing EI
+    :num_mc_grad: maximum number of MC iterations for computing gradEI
     :lhc_search_only: whether to ONLY use latin hypercube search (and skip gradient descent EI opt)
     :num_lhc_samples: number of samples to draw if/when doing latin hypercube search
     :which_gpu: device ID of GPU used for computation
@@ -675,7 +684,7 @@ void CudaComputeOptimalPointsToSample(const GaussianProcess& gaussian_process,
                                       const DomainType& domain, const ThreadSchedule& thread_schedule,
                                       double const * restrict points_being_sampled,
                                       int num_to_sample, int num_being_sampled, double best_so_far,
-                                      int max_int_steps, bool lhc_search_only,
+                                      int num_mc_ei, int num_mc_grad, bool lhc_search_only,
                                       int num_lhc_samples, int which_gpu, bool * restrict found_flag,
                                       UniformRandomGenerator * uniform_generator,
                                       double * restrict best_points_to_sample);
@@ -685,14 +694,14 @@ extern template void CudaComputeOptimalPointsToSample(
     const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const TensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled, int num_to_sample,
-    int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only,
+    int num_being_sampled, double best_so_far, int num_mc_ei, int num_mc_grad, bool lhc_search_only,
     int num_lhc_samples, int which_gpu, bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 extern template void CudaComputeOptimalPointsToSample(
     const GaussianProcess& gaussian_process, const GradientDescentParameters& optimizer_parameters,
     const SimplexIntersectTensorProductDomain& domain, const ThreadSchedule& thread_schedule,
     double const * restrict points_being_sampled,
-    int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps,
+    int num_to_sample, int num_being_sampled, double best_so_far, int num_mc_ei, int num_mc_grad,
     bool lhc_search_only, int num_lhc_samples, int which_gpu, bool * restrict found_flag,
     UniformRandomGenerator * uniform_generator, double * restrict best_points_to_sample);
 

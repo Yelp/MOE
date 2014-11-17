@@ -119,7 +119,8 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
     :optimizer_type: type of optimization to use (e.g., null, gradient descent)
     :num_to_sample: how many simultaneous experiments you would like to run (i.e., the q in q,p-EI)
     :best_so_far: value of the best sample so far (must be min(points_sampled_value))
-    :max_int_steps: maximum number of MC iterations
+    :num_mc_ei: maximum number of MC iterations for computing EI
+    :num_mc_grad: maximum number of MC iterations for computing gradEI
     :max_num_threads: maximum number of threads for use by OpenMP (generally should be <= # cores)
     :randomness_source: object containing randomness sources (sufficient for multithreading) used in EI computation
     :status: pydict object; cannot be None
@@ -135,7 +136,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                              const DomainType& domain,
                                              OptimizerTypes optimizer_type,
                                              int num_to_sample, double best_so_far,
-                                             int max_int_steps, int max_num_threads,
+                                             int num_mc_ei, int num_mc_grad, int max_num_threads,
                                              bool use_gpu, int which_gpu,
                                              RandomnessSourceContainer& randomness_source,
                                              boost::python::dict& status,
@@ -157,7 +158,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                                                 input_container.points_being_sampled.data(),
                                                                 num_random_samples, num_to_sample,
                                                                 input_container.num_being_sampled,
-                                                                best_so_far, max_int_steps, which_gpu, &found_flag,
+                                                                best_so_far, num_mc_ei, which_gpu, &found_flag,
                                                                 &randomness_source.uniform_generator,
                                                                 best_points_to_sample);
 #else
@@ -168,7 +169,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
                                                             input_container.points_being_sampled.data(),
                                                             num_random_samples, num_to_sample,
                                                             input_container.num_being_sampled,
-                                                            best_so_far, max_int_steps,
+                                                            best_so_far, num_mc_ei,
                                                             &found_flag, &randomness_source.uniform_generator,
                                                             randomness_source.normal_rng_vec.data(),
                                                             best_points_to_sample);
@@ -188,7 +189,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
 #ifdef OL_GPU_ENABLED
         CudaComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
                                          input_container.points_being_sampled.data(), num_to_sample,
-                                         input_container.num_being_sampled, best_so_far, max_int_steps,
+                                         input_container.num_being_sampled, best_so_far, num_mc_ei, num_mc_grad,
                                          random_search_only, num_random_samples, which_gpu, &found_flag,
                                          &randomness_source.uniform_generator, best_points_to_sample);
 #else
@@ -197,7 +198,7 @@ void DispatchExpectedImprovementOptimization(const boost::python::object& optimi
       } else {
         ComputeOptimalPointsToSample(gaussian_process, gradient_descent_parameters, domain, thread_schedule,
                                      input_container.points_being_sampled.data(), num_to_sample,
-                                     input_container.num_being_sampled, best_so_far, max_int_steps,
+                                     input_container.num_being_sampled, best_so_far, num_mc_ei,
                                      random_search_only, num_random_samples, &found_flag,
                                      &randomness_source.uniform_generator,
                                      randomness_source.normal_rng_vec.data(), best_points_to_sample);
@@ -218,7 +219,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
                                                                      const boost::python::list& domain_bounds,
                                                                      const boost::python::list& points_being_sampled,
                                                                      int num_to_sample, int num_being_sampled,
-                                                                     double best_so_far, int max_int_steps,
+                                                                     double best_so_far, int num_mc_ei, int num_mc_grad,
                                                                      int max_num_threads, bool use_gpu, int which_gpu,
                                                                      RandomnessSourceContainer& randomness_source,
                                                                      boost::python::dict& status) {
@@ -246,7 +247,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
 
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
-                                              max_int_steps, max_num_threads, use_gpu, which_gpu,
+                                              num_mc_ei, num_mc_grad, max_num_threads, use_gpu, which_gpu,
                                               randomness_source,
                                               status, best_points_to_sample_C.data());
       break;
@@ -256,7 +257,7 @@ boost::python::list MultistartExpectedImprovementOptimizationWrapper(const boost
 
       DispatchExpectedImprovementOptimization(optimizer_parameters, gaussian_process, input_container,
                                               domain, optimizer_type, num_to_sample, best_so_far,
-                                              max_int_steps, max_num_threads, use_gpu, which_gpu,
+                                              num_mc_ei, num_mc_grad, max_num_threads, use_gpu, which_gpu,
                                               randomness_source,
                                               status, best_points_to_sample_C.data());
       break;
@@ -398,7 +399,7 @@ boost::python::list EvaluateEIAtPointListWrapper(const GaussianProcess& gaussian
                                                  const boost::python::list& points_being_sampled,
                                                  int num_multistarts, int num_to_sample,
                                                  int num_being_sampled, double best_so_far,
-                                                 int max_int_steps, int max_num_threads,
+                                                 int num_mc_ei, int max_num_threads,
                                                  RandomnessSourceContainer& randomness_source,
                                                  boost::python::dict& status) {
   // abort if we do not have enough sources of randomness to run with max_num_threads
@@ -421,7 +422,7 @@ boost::python::list EvaluateEIAtPointListWrapper(const GaussianProcess& gaussian
   EvaluateEIAtPointList(gaussian_process, thread_schedule, initial_guesses_C.data(),
                         input_container.points_being_sampled.data(), num_multistarts,
                         num_to_sample, input_container.num_being_sampled, best_so_far,
-                        max_int_steps, &found_flag, randomness_source.normal_rng_vec.data(),
+                        num_mc_ei, &found_flag, randomness_source.normal_rng_vec.data(),
                         result_function_values_C.data(), result_point_C.data());
 
   status["evaluate_EI_at_point_list"] = found_flag;
@@ -572,8 +573,10 @@ void ExportExpectedImprovementFunctions() {
     :type num_being_sampled: int >= 0
     :param best_so_far: best known value of objective so far
     :type best_so_far: float64
-    :param max_int_steps: number of MC integration points in EI
-    :type max_int_steps: int >= 0
+    :param num_mc_ei: number of MC integration points in EI
+    :type num_mc_ei: int >= 0
+    :param num_mc_grad: number of MC integration points in gradEI
+    :type num_mc_grad: int >= 0
     :param max_num_threads: max number of threads to use during EI optimization
     :type max_num_threads: int >= 1
     :param use_gpu: set to 1 if user wants to use GPU for MC computation
@@ -680,8 +683,10 @@ void ExportExpectedImprovementFunctions() {
     :type num_being_sampled: int >= 0
     :param best_so_far: best known value of objective so far
     :type best_so_far: float64
-    :param max_int_steps: number of MC integration points in EI
-    :type max_int_steps: int >= 0
+    :param num_mc_ei: number of MC integration points in EI
+    :type num_mc_ei: int >= 0
+    :param num_mc_grad: number of MC integration points in gradEI
+    :type num_mc_grad: int >= 0
     :param max_num_threads: max number of threads to use during EI optimization
     :type max_num_threads: int >= 1
     :param randomness_source: object containing randomness sources; only thread 0's source is used

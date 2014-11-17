@@ -93,7 +93,8 @@ def multistart_expected_improvement_optimization(
         num_to_sample,
         ei_optimizer.objective_function.num_being_sampled,
         ei_optimizer.objective_function._best_so_far,
-        ei_optimizer.objective_function._num_mc_iterations,
+        ei_optimizer.objective_function._num_mc_ei,
+        ei_optimizer.objective_function._num_mc_grad,
         max_num_threads,
         use_gpu,
         which_gpu,
@@ -363,7 +364,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             gaussian_process,
             points_to_sample=None,
             points_being_sampled=None,
-            num_mc_iterations=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            num_mc_ei=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
+            num_mc_grad=DEFAULT_EXPECTED_IMPROVEMENT_MC_ITERATIONS,
             randomness=None
     ):
         """Construct an ExpectedImprovement object that knows how to call C++ for evaluation of member functions.
@@ -380,7 +382,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         :type randomness: RandomnessSourceContainer (C++ object; e.g., from C_GP.RandomnessSourceContainer())
 
         """
-        self._num_mc_iterations = num_mc_iterations
+        self._num_mc_ei= num_mc_ei
+        self._num_mc_grad= num_mc_grad
         self._gaussian_process = gaussian_process
         if gaussian_process._historical_data.points_sampled_value.size > 0:
             self._best_so_far = numpy.amin(gaussian_process._historical_data.points_sampled_value)
@@ -496,7 +499,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             num_to_sample,
             self.num_being_sampled,
             self._best_so_far,
-            self._num_mc_iterations,
+            self._num_mc_ei,
             max_num_threads,
             randomness,
             status,
@@ -546,7 +549,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             cpp_utils.cppify(self._points_being_sampled),
             self.num_to_sample,
             self.num_being_sampled,
-            self._num_mc_iterations,
+            self._num_mc_ei,
             self._best_so_far,
             force_monte_carlo,
             self._randomness,
@@ -587,7 +590,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             cpp_utils.cppify(self._points_being_sampled),
             self.num_to_sample,
             self.num_being_sampled,
-            self._num_mc_iterations,
+            self._num_mc_grad,
             self._best_so_far,
             force_monte_carlo,
             self._randomness,

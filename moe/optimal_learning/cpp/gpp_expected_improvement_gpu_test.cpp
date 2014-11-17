@@ -81,7 +81,7 @@ int RunCudaEIConsistencyTests() {
     OnePotentialSampleExpectedImprovementEvaluator one_potential_sample_ei_evaluator(gaussian_process, best_so_far);
     OnePotentialSampleExpectedImprovementEvaluator::StateType one_potential_sample_ei_state(one_potential_sample_ei_evaluator, ei_environment.points_to_sample(), configure_for_gradients);
 
-    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
+    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, num_mc_iter, best_so_far, which_gpu);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator);
 
     ei_cuda = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
@@ -171,7 +171,7 @@ int RunCudaEIvsCpuEITests() {
     SquareExponential sqexp_covariance(dim, alpha, lengths);
     GaussianProcess gaussian_process(sqexp_covariance, ei_environment.points_sampled(), ei_environment.points_sampled_value(), noise_variance.data(), dim, num_sampled);
 
-    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, best_so_far, which_gpu);
+    CudaExpectedImprovementEvaluator cuda_ei_evaluator(gaussian_process, num_mc_iter, num_mc_iter, best_so_far, which_gpu);
     CudaExpectedImprovementEvaluator::StateType cuda_ei_state(cuda_ei_evaluator, ei_environment.points_to_sample(), ei_environment.points_being_sampled(), num_to_sample, num_being_sampled, configure_for_gradients, &uniform_generator, configure_for_test);
 
     ei_gpu = cuda_ei_evaluator.ComputeObjectiveFunction(&cuda_ei_state);
@@ -302,7 +302,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
   CudaComputeOptimalPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain,
                                    thread_schedule, points_being_sampled.data(),
                                    num_to_sample, num_being_sampled, mock_gp_data.best_so_far,
-                                   max_int_steps, lhc_search_only,
+                                   max_int_steps, max_int_steps, lhc_search_only,
                                    num_grid_search_points, which_gpu, &found_flag,
                                    &uniform_generator, best_points_to_sample.data());
   if (!found_flag) {
@@ -347,7 +347,7 @@ int CudaExpectedImprovementOptimizationMultipleSamplesTest() {
     // while still having this test run in a reasonable amt of time
     bool configure_for_gradients = true;
     CudaExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
-                                                  max_int_steps, mock_gp_data.best_so_far, which_gpu);
+                                                  max_int_steps, max_int_steps, mock_gp_data.best_so_far, which_gpu);
     CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data(),
                                                          points_being_sampled.data(), num_to_sample,
                                                          num_being_sampled, configure_for_gradients,
@@ -458,7 +458,7 @@ int CudaExpectedImprovementOptimizationAnalyticTest() {
   CudaComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params,
                                                    domain, thread_schedule, points_being_sampled.data(),
                                                    num_to_sample, num_being_sampled,
-                                                   mock_gp_data.best_so_far, max_int_steps,
+                                                   mock_gp_data.best_so_far, max_int_steps, max_int_steps,
                                                    which_gpu, &found_flag,
                                                    &uniform_generator, next_point.data());
   if (!found_flag) {
