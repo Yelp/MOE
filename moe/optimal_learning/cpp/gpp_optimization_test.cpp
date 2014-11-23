@@ -214,7 +214,10 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentOptimizationTestCore() {
   const double tolerance = 1.0e-12;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
-  GradientDescentParameters gd_parameters(1, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  const int num_steps_averaged = 0;
+  GradientDescentParameters gd_parameters(1, max_gradient_descent_steps, max_num_restarts,
+                                          num_steps_averaged, gamma, pre_mult,
+                                          max_relative_change, tolerance);
 
   int total_errors = 0;
   int current_errors = 0;
@@ -341,7 +344,10 @@ OL_WARN_UNUSED_RESULT int MockObjectiveGradientDescentConstrainedOptimizationTes
   const double tolerance = 1.0e-12;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
-  GradientDescentParameters gd_parameters(1, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  const int num_steps_averaged = 0;
+  GradientDescentParameters gd_parameters(1, max_gradient_descent_steps, max_num_restarts,
+                                          num_steps_averaged, gamma, pre_mult,
+                                          max_relative_change, tolerance);
 
   int total_errors = 0;
   int current_errors = 0;

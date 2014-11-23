@@ -1051,7 +1051,10 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
 
   const int max_gradient_descent_steps = 250;
   const int max_num_restarts = 3;
-  GradientDescentParameters gd_params(0, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  const int num_steps_averaged = 0;
+  GradientDescentParameters gd_params(0, max_gradient_descent_steps, max_num_restarts,
+                                      num_steps_averaged, gamma, pre_mult,
+                                      max_relative_change, tolerance);
 
   int max_mc_iterations = 967;
 
@@ -1259,8 +1262,10 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   const double tolerance = 1.0e-7;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
-  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts,
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
+                                      max_num_restarts, num_steps_averaged,
                                       gamma, pre_mult, max_relative_change, tolerance);
 
   // grid search parameters
@@ -1459,9 +1464,10 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   const double tolerance = 1.0e-7;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
-                                      max_num_restarts, gamma, pre_mult,
+                                      max_num_restarts, num_steps_averaged, gamma, pre_mult,
                                       max_relative_change, tolerance);
 
   // grid search parameters
@@ -1673,9 +1679,10 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   const double tolerance = 1.0e-5;
   const int max_gradient_descent_steps = 250;
   const int max_num_restarts = 3;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
-                                      max_num_restarts, gamma, pre_mult,
+                                      max_num_restarts, num_steps_averaged, gamma, pre_mult,
                                       max_relative_change, tolerance);
 
   // grid search parameters

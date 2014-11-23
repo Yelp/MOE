@@ -3,6 +3,8 @@
   * Added startup message to REST server including tips for OSX users (#400)
   * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
   * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
+  * OptimizerParameter struct members now directly readable/writeable from Python; added EqualityComparisonMixin (#138)
+  * C++ GradientDescentParameters object now stores ``num_steps_averaged`` (but does not use it yet) (#391)
 
 * Changes
 

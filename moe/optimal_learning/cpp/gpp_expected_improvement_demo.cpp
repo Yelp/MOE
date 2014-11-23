@@ -199,7 +199,9 @@ int main() {
   int num_multistarts = 30;  // max number of multistarted locations
   int max_num_steps = 500;  // maximum number of GD iterations per restart
   int max_num_restarts = 20;  // number of restarts to run with GD
-  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts, gamma,
+  int num_steps_averaged = 0;  // number of steps to use in polyak-ruppert averaging
+  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts,
+                                      num_steps_averaged, gamma,
                                       pre_mult, max_relative_change, tolerance);
   // so the total number of GD iterations is at most:
   // num_multistarts * max_num_restarts * max_num_steps

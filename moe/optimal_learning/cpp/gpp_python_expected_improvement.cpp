@@ -313,7 +313,7 @@ void DispatchHeuristicExpectedImprovementOptimization(const boost::python::objec
       int num_random_samples = boost::python::extract<int>(optimizer_parameters.attr("num_random_samples"));
 
       bool random_search_only = true;
-      GradientDescentParameters gradient_descent_parameters(0, 0, 0, 1.0, 1.0, 1.0, 0.0);  // dummy struct; we aren't using gradient descent
+      GradientDescentParameters gradient_descent_parameters(0, 0, 0, 0, 1.0, 1.0, 1.0, 0.0);  // dummy struct; we aren't using gradient descent
       ComputeHeuristicPointsToSample(gaussian_process, gradient_descent_parameters, domain,
                                      estimation_policy, thread_schedule, best_so_far,
                                      random_search_only, num_random_samples, num_to_sample,

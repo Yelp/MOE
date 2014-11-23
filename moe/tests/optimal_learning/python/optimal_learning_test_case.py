@@ -58,10 +58,10 @@ class OptimalLearningTestCase(object):
     def assert_vector_within_relative(value, truth, tol):
         """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
 
-        :param value: scalar to check
-        :type value: float64
-        :param truth: exact/desired result
-        :type value: float64
+        :param value: vector to check
+        :type value: array of float64 with arbitrary shape
+        :param truth: exact/desired vector result
+        :type value: array of float64 with shape matching ``value``
         :param tol: max permissible relative difference
         :type tol: float64
         :raise: AssertionError value[i], truth[i] are not relatively equal for every i
