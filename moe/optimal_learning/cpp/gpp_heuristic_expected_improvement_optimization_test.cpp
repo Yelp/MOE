@@ -306,9 +306,10 @@ int HeuristicExpectedImprovementOptimizationTestCore(EstimationPolicyTypes polic
   const double tolerance = 1.0e-12;
   const int max_gradient_descent_steps = 300;
   const int max_num_restarts = 5;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
   GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
-                                      max_num_restarts, gamma, pre_mult,
+                                      max_num_restarts, num_steps_averaged, gamma, pre_mult,
                                       max_relative_change, tolerance);
 
   static const int kMaxNumThreads = 4;

@@ -186,9 +186,8 @@ fail, we commonly fall back to 'dumb' search.
 """
 import collections
 
-import numpy
-
 import moe.build.GPP as C_GP
+from moe.optimal_learning.python.comparison import EqualityComparisonMixin
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
 
@@ -200,23 +199,17 @@ class NullParameters(collections.namedtuple('NullParameters', ['num_multistarts'
     __slots__ = ()
 
 
-class NewtonParameters(object):
+class NewtonParameters(C_GP.NewtonParameters, EqualityComparisonMixin):
 
     """Container to hold parameters that specify the behavior of Newton in a C++-readable form.
 
-    See __init__ docstring for more information.
+    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters.__init__` docstring for more information.
 
     """
 
-    def __init__(
-            self,
-            num_multistarts,
-            max_num_steps,
-            gamma,
-            time_factor,
-            max_relative_change,
-            tolerance,
-    ):
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
         r"""Build a NewtonParameters (C++ object) via its ctor; this object specifies multistarted Newton behavior and is required by C++ Newton optimization.
 
         .. Note:: See gpp_optimizer_parameters.hpp for more details.
@@ -250,36 +243,20 @@ class NewtonParameters(object):
         :type tolerance: float64 >= 0.0
 
         """
-        self.num_multistarts = num_multistarts
-        self.parameters = C_GP.NewtonParameters(
-            num_multistarts,
-            max_num_steps,
-            numpy.float64(gamma),
-            numpy.float64(time_factor),
-            numpy.float64(max_relative_change),
-            numpy.float64(tolerance),
-        )
+        super(NewtonParameters, self).__init__(*args, **kwargs)
 
 
-class GradientDescentParameters(object):
+class GradientDescentParameters(C_GP.GradientDescentParameters, EqualityComparisonMixin):
 
     """Container to hold parameters that specify the behavior of Gradient Descent in a C++-readable form.
 
-    See __init__ docstring for more information.
+    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters.__init__` docstring for more information.
 
     """
 
-    def __init__(
-            self,
-            num_multistarts,
-            max_num_steps,
-            max_num_restarts,
-            num_steps_averaged,
-            gamma,
-            pre_mult,
-            max_relative_change,
-            tolerance,
-    ):
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
         r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
         .. Note:: See gpp_optimizer_parameters.hpp for more details.
@@ -338,18 +315,7 @@ class GradientDescentParameters(object):
         :type tolerance: float64 >= 0.0
 
         """
-        self.num_multistarts = num_multistarts
-        self.parameters = C_GP.GradientDescentParameters(
-            num_multistarts,
-            max_num_steps,
-            max_num_restarts,
-            numpy.float64(gamma),
-            numpy.float64(pre_mult),
-            numpy.float64(max_relative_change),
-            numpy.float64(tolerance),
-        )
-        # TODO(eliu GH-138) Expose the internal data from the above object for testing in python
-        self._python_max_num_steps = max_num_steps
+        super(GradientDescentParameters, self).__init__(*args, **kwargs)
 
 
 class _CppOptimizerParameters(object):
@@ -396,7 +362,7 @@ class _CppOptimizerParameters(object):
         self.optimizer_type = optimizer_type
         self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
         if optimizer_parameters:
-            self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+            self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
         else:
             self.optimizer_parameters = None
 

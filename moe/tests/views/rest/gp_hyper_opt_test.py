@@ -95,12 +95,17 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        assert optimizer_parameters.num_multistarts == TEST_OPTIMIZER_MULTISTARTS
-        assert optimizer_parameters._python_max_num_steps == TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps
+        test_param_dict = TEST_GRADIENT_DESCENT_PARAMETERS._asdict()
+        test_param_dict['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS
+        assert optimizer_parameters._get_member_dict() == test_param_dict
 
         # Test arbitrary parameters get passed through
-        json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS + 5
-        json_payload['optimizer_info']['optimizer_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+        for i, key in enumerate(test_param_dict.iterkeys()):
+            test_param_dict[key] /= 2
+        test_num_multistarts = test_param_dict.pop('num_multistarts')
+
+        json_payload['optimizer_info']['num_multistarts'] = test_num_multistarts
+        json_payload['optimizer_info']['optimizer_parameters'] = test_param_dict
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -108,9 +113,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        assert optimizer_parameters.num_multistarts == TEST_OPTIMIZER_MULTISTARTS + 5
-
-        assert optimizer_parameters._python_max_num_steps == TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+        test_param_dict['num_multistarts'] = test_num_multistarts
+        assert optimizer_parameters._get_member_dict() == test_param_dict
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/hyper_opt endpoint."""

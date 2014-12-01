@@ -328,9 +328,9 @@ void ExportGaussianProcessFunctions() {
         Forces recomputation of all derived quantities for GP to remain consistent.
 
         :param new_points: coordinates of each new point to add
-        :param new_points: list of float64 with shape (num_new_points, dim)
+        :type new_points: list of float64 with shape (num_new_points, dim)
         :param new_points_value: function value at each new point
-        :param new_points_value: list of float64 with shape (num_new_points, )
+        :type new_points_value: list of float64 with shape (num_new_points, )
         :param new_points_noise_variance: \sigma_n^2 corresponding to the signal noise in measuring new_points_value
         :type new_points_noise_variance: list of float64 with shape (num_new_points, )
         :param num_new_points: number of new points to add to the GP
