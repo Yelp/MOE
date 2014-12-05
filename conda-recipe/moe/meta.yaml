@@ -1,10 +1,10 @@
 package:
   name: moe
-  version: !!str 0.2.1
+  version: !!str 0.2.2
 
 source:
   git_url: https://github.com/Yelp/MOE.git
-  git_tag: v0.2.1
+  git_tag: v0.2.2
 
 build:
   preserve_egg_dir: yes
