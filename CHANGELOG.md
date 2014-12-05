@@ -1,5 +1,15 @@
 * Features
 
+* Changes
+
+* Bugs
+
+## v0.2.2 (2014-12-5)
+
+SHA: ``83a71512e6a4aa553866e4301ef11f172d485e23``
+
+* Features
+
   * Added startup message to REST server including tips for OSX users (#400)
   * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
   * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
