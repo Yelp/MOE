@@ -13,7 +13,7 @@ MAJOR = 0
 #: MINOR: incremented for adding functionality in a backwards-compatible manner
 MINOR = 2
 #: PATCH: incremented for backward-compatible bug fixes and minor capability improvements
-PATCH = 1
+PATCH = 2
 #: Latest release version of MOE
 __version__ = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, PATCH)
 

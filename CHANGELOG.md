@@ -5,6 +5,7 @@
   * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
   * OptimizerParameter struct members now directly readable/writeable from Python; added EqualityComparisonMixin (#138)
   * C++ GradientDescentParameters object now stores ``num_steps_averaged`` (but does not use it yet) (#391)
+  * conda build system for MOE (#417)
 
 * Changes
 
