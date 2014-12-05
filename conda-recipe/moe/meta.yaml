@@ -1,0 +1,54 @@
+package:
+  name: moe
+  version: !!str 0.2.1
+
+source:
+  git_url: https://github.com/Yelp/MOE.git
+  git_tag: v0.2.1
+
+build:
+  preserve_egg_dir: yes
+  number: 2
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - pyramid
+    - pyramid_mako
+    - cmake
+    - boost
+    - colander
+
+  run:
+    - python
+    - boost
+    - setuptools
+    - numpy
+    - nose
+    - scipy
+    - pyramid
+    - pyramid_mako
+    - colander
+    - libstdcplusplus
+    - simplejson
+    - webtest
+    - pytest
+
+test:
+  # Python imports
+  imports:
+    - moe
+
+  # commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+

@@ -1,0 +1,67 @@
+package:
+  name: waitress
+  version: !!str 0.8.9
+
+source:
+  fn: waitress-0.8.9.tar.gz
+  url: https://pypi.python.org/packages/source/w/waitress/waitress-0.8.9.tar.gz
+  md5: da3f2e62b3676be5dd630703a68e2a04
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+build:
+  preserve_egg_dir: True
+  entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - waitress = waitress:main
+    #
+    # Would create an entry point called waitress that calls waitress.main()
+
+    - waitress-serve=waitress.runner:run
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - setuptools
+
+  run:
+    - python
+    - setuptools
+    - setuptools
+
+test:
+  # Python imports
+  imports:
+    - waitress
+    - waitress.tests
+    - waitress.tests.fixtureapps
+
+  commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+    - waitress-serve --help
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: https://github.com/Pylons/waitress
+  license: Zope Public License
+  summary: 'Waitress WSGI server'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
