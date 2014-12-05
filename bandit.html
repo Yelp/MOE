@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Multi-Armed Bandits &mdash; MOE 0.2.0 documentation</title>
+  <title>Multi-Armed Bandits &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="next" title="Examples" href="examples.html"/>
         <link rel="prev" title="Objective Functions" href="objective_functions.html"/> 
 
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -144,6 +145,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -279,11 +281,11 @@ and limit how often bad solutions are chosen.</p>
 <p>There are many different policies for this problem:</p>
 <p>We have implemented the following policies in our package:</p>
 <ul class="simple">
-<li><a class="reference internal" href="moe.bandit.html#moe.bandit.epsilon_first.EpsilonFirst" title="moe.bandit.epsilon_first.EpsilonFirst"><tt class="xref py py-mod docutils literal"><span class="pre">EpsilonFirst</span></tt></a></li>
-<li><a class="reference internal" href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy" title="moe.bandit.epsilon_greedy.EpsilonGreedy"><tt class="xref py py-mod docutils literal"><span class="pre">EpsilonGreedy</span></tt></a></li>
-<li><a class="reference internal" href="moe.bandit.html#moe.bandit.ucb1.UCB1" title="moe.bandit.ucb1.UCB1"><tt class="xref py py-mod docutils literal"><span class="pre">UCB1</span></tt></a></li>
-<li><a class="reference internal" href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned" title="moe.bandit.ucb1_tuned.UCB1Tuned"><tt class="xref py py-mod docutils literal"><span class="pre">UCB1Tuned</span></tt></a></li>
-<li><a class="reference internal" href="moe.bandit.html#moe.bandit.bla.BLA" title="moe.bandit.bla.BLA"><tt class="xref py py-mod docutils literal"><span class="pre">BLA</span></tt></a></li>
+<li><a class="reference internal" href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_first.EpsilonFirst" title="moe.bandit.epsilon.epsilon_first.EpsilonFirst"><tt class="xref py py-mod docutils literal"><span class="pre">EpsilonFirst</span></tt></a></li>
+<li><a class="reference internal" href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy" title="moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy"><tt class="xref py py-mod docutils literal"><span class="pre">EpsilonGreedy</span></tt></a></li>
+<li><a class="reference internal" href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1.UCB1" title="moe.bandit.ucb.ucb1.UCB1"><tt class="xref py py-mod docutils literal"><span class="pre">UCB1</span></tt></a></li>
+<li><a class="reference internal" href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1_tuned.UCB1Tuned" title="moe.bandit.ucb.ucb1_tuned.UCB1Tuned"><tt class="xref py py-mod docutils literal"><span class="pre">UCB1Tuned</span></tt></a></li>
+<li><a class="reference internal" href="moe.bandit.bla.html#moe.bandit.bla.bla.BLA" title="moe.bandit.bla.bla.BLA"><tt class="xref py py-mod docutils literal"><span class="pre">BLA</span></tt></a></li>
 </ul>
 <p>Other policies include:</p>
 <ul class="simple">
@@ -339,7 +341,7 @@ and limit how often bad solutions are chosen.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

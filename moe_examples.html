@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe_examples package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe_examples package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="next" title="moe_examples.tests package" href="moe_examples.tests.html"/>
         <link rel="prev" title="moe.views.schemas.rest package" href="moe.views.schemas.rest.html"/> 
 
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -144,6 +145,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -280,6 +282,443 @@ The function requires some historical information to inform bandit.</p>
 <li><strong>kwargs</strong> (<em>dict</em>) &#8211; Optional kwargs to pass to all endpoints</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moe_examples.blog_post_example_ab_testing">
+<span id="moe-examples-blog-post-example-ab-testing-module"></span><h2>moe_examples.blog_post_example_ab_testing module<a class="headerlink" href="#module-moe_examples.blog_post_example_ab_testing" title="Permalink to this headline">¶</a></h2>
+<p>An example of using MOE to optimize a simulated A/B testing framework.</p>
+<p>Blog post: <a class="reference external" href="http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html">http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html</a></p>
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.COVARIANCE_INFO">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">COVARIANCE_INFO</tt><em class="property"> = {'hyperparameters': [0.3, 0.1]}</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.COVARIANCE_INFO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set as a constant for clarity of example, see mod:<cite>moe_examples.combined_example</cite> for hyperparameter updating</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.EPSILON_BANDIT_PARAMETER">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">EPSILON_BANDIT_PARAMETER</tt><em class="property"> = 0.15</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.EPSILON_BANDIT_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our bandit policy <a class="reference internal" href="moe.bandit.epsilon.html#module-moe.bandit.epsilon.epsilon_greedy" title="moe.bandit.epsilon.epsilon_greedy"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon.epsilon_greedy</span></tt></a> requires an epsilon parameter
+This is the fraction of allocations that will only explore, the rest will only exploit</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.EXPERIMENT_DOMAIN">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">EXPERIMENT_DOMAIN</tt><em class="property"> = [[0.0, 1.0]]</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.EXPERIMENT_DOMAIN" title="Permalink to this definition">¶</a></dt>
+<dd><p>domain over which our parameter <tt class="docutils literal"><span class="pre">x</span></tt> can vary in optimizing <tt class="docutils literal"><span class="pre">CTR(x)</span></tt></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.EXPERIMENT_ITERATIONS">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">EXPERIMENT_ITERATIONS</tt><em class="property"> = 5</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.EXPERIMENT_ITERATIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of times to have MOE update cohorts</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.GLOBAL_OPTIMAL_PARAMETER">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">GLOBAL_OPTIMAL_PARAMETER</tt><em class="property"> = array([ 0.71428711])</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.GLOBAL_OPTIMAL_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Global optima of CTR function</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.LOCAL_OPTIMAL_PARAMETER">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">LOCAL_OPTIMAL_PARAMETER</tt><em class="property"> = array([ 0.14289063])</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.LOCAL_OPTIMAL_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Local optima of CTR function</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.NUMBER_OF_ACTIVE_COHORTS">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">NUMBER_OF_ACTIVE_COHORTS</tt><em class="property"> = 3</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.NUMBER_OF_ACTIVE_COHORTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of parameters to simulate each day</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.STATUS_QUO_PARAMETER">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">STATUS_QUO_PARAMETER</tt><em class="property"> = array([ 0.2])</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.STATUS_QUO_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial parameter value</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="moe_examples.blog_post_example_ab_testing.TRAFFIC_PER_DAY">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">TRAFFIC_PER_DAY</tt><em class="property"> = 1000000</em><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.TRAFFIC_PER_DAY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulated traffic volume</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.bernoulli_mean_and_var">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">bernoulli_mean_and_var</tt><big>(</big><em>observed_clicks</em>, <em>samples</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#bernoulli_mean_and_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.bernoulli_mean_and_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the mean and variance of a Bernoulli Distribution with a given number of successes (clicks) and trials (impressions).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>observed_clicks</strong> (<em>int &gt;= 0</em>) &#8211; number of successes aka clicks</li>
+<li><strong>samples</strong> &#8211; number of trials aka impressions</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(mean, variance) of the Bernoulli Distribution producing the observed clicks/samples</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.calculate_system_ctr">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">calculate_system_ctr</tt><big>(</big><em>arms</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#calculate_system_ctr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.calculate_system_ctr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the average CTR for the entire system, given a set of arms.</p>
+<p>This is different than :func:~`moe_examples.blog_post_example_ab_testing.objective_function`
+which computes observed mean and variance for a single arm.
+This function is a summary statistic for the entire experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arms</strong> (list of <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a>) &#8211; arms currently being evaluated in the system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">calculated system-wide CTR</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.find_new_points_to_sample">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">find_new_points_to_sample</tt><big>(</big><em>experiment</em>, <em>num_points=1</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#find_new_points_to_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.find_new_points_to_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the optimal next point(s) to sample using expected improvement (via MOE).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>experiment</strong> (<a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.experiment.Experiment" title="moe.easy_interface.experiment.Experiment"><tt class="xref py py-class docutils literal"><span class="pre">moe.easy_interface.experiment.Experiment</span></tt></a>) &#8211; an Experiment object containing the historical data and metadata MOE
+needs to optimize</li>
+<li><strong>num_points</strong> (<em>int &gt;= 1</em>) &#8211; number of new points (experiments) that we want MOE to suggest</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the next point(s) to sample</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of length <tt class="docutils literal"><span class="pre">num_points</span></tt> of coordinates (list of length <tt class="docutils literal"><span class="pre">dim</span></tt>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.generate_initial_traffic">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">generate_initial_traffic</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#generate_initial_traffic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.generate_initial_traffic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate initial traffic allocations.</p>
+<p><tt class="docutils literal"><span class="pre">active_arms</span></tt>: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</p>
+<p><tt class="docutils literal"><span class="pre">sample_arms</span></tt>: all arms from prev and current cohorts, keyed by coordinate-tuples.</p>
+<p>Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(active_arms, sample_arms) tuple as described above</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.generate_new_arms">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">generate_new_arms</tt><big>(</big><em>active_arms</em>, <em>sample_arms</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#generate_new_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.generate_new_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find optimal new parameters to sample to get <tt class="docutils literal"><span class="pre">active_arms</span></tt> up to <tt class="docutils literal"><span class="pre">NUMBER_OF_ACTIVE_COHORTS</span></tt>.</p>
+<dl class="docutils">
+<dt>This is done in the following way:</dt>
+<dd><ol class="first last arabic simple">
+<li>Find the initial allocations of all active parameters</li>
+<li>MOE suggests new, optimal arms/parameters to sample, given all previous samples, using Bayesian Global Optimization</li>
+<li>The new parameters are allocated traffic according to a Multi-Armed Bandit policy for all <tt class="docutils literal"><span class="pre">active_arms</span></tt></li>
+<li>If the objective function for a given parameter is too low (with high statistical significance), it is turned off</li>
+<li>Steps 2-4 are repeated until there are <tt class="docutils literal"><span class="pre">NUMBER_OF_ACTIVE_COHORTS</span></tt> parameters being sampled with non-zero traffic</li>
+</ol>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>active_arms</strong> (<em>list of tuple</em>) &#8211; list of coordinate-tuples corresponding to arms/cohorts currently being sampled</li>
+<li><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>(allocations, active_arms, sample_arms) describing the next round of experiments to run</p>
+<p><tt class="docutils literal"><span class="pre">allocations</span></tt>: dict of traffic allocations, indexed by the <tt class="docutils literal"><span class="pre">active_arms</span></tt> return value</p>
+<p><tt class="docutils literal"><span class="pre">active_arms</span></tt>: new active arms to run in the next round of our experiment; same format as the input</p>
+<p><tt class="docutils literal"><span class="pre">sample_arms</span></tt>: the sample arms input updated with the newly generated active arms; same format as the input</p>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.get_allocations">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">get_allocations</tt><big>(</big><em>active_arms</em>, <em>sample_arms</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#get_allocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.get_allocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the allocation for each of <tt class="docutils literal"><span class="pre">active_arms</span></tt> using the epsilon greedy multi-armed bandit strategy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>active_arms</strong> (<em>list of tuple</em>) &#8211; list of coordinate-tuples corresponding to arms/cohorts currently being sampled</li>
+<li><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">traffic allocations for the <tt class="docutils literal"><span class="pre">active_arms</span></tt>, one for each tuple in <tt class="docutils literal"><span class="pre">active_arms</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.moe_experiment_from_sample_arms">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">moe_experiment_from_sample_arms</tt><big>(</big><em>sample_arms</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#moe_experiment_from_sample_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.moe_experiment_from_sample_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a MOE experiment with all historical data (i.e., parameter value, CTR, noise variance triples).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">MOE Experiment object usable with GP endpoints like <tt class="docutils literal"><span class="pre">gp_mean_var</span></tt> and <tt class="docutils literal"><span class="pre">gp_next_points</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="moe.easy_interface.html#moe.easy_interface.experiment.Experiment" title="moe.easy_interface.experiment.Experiment"><tt class="xref py py-class docutils literal"><span class="pre">moe.easy_interface.experiment.Experiment</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.objective_function">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">objective_function</tt><big>(</big><em>observed_sample_arm</em>, <em>observed_status_quo_sample_arm</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#objective_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.objective_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The observed objective function MOE is attempting to maximize; returns the mean (relative to status quo) and variance.</p>
+<p>Lower values are better (minimization). Our objective is relative to the CTR of the initial
+parameter value, <tt class="docutils literal"><span class="pre">STATUS_QUO_PARAMETER</span></tt>.</p>
+<div class="math">
+\[\Phi(\vec{x}) = \frac{\mathtt{CTR}(\vec{x})}{\mathtt{CTR}(\vec{SQ})}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>observed_sample_arm</strong> (<a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a>) &#8211; a bandit arm corresponding to the cohort
+currently behing evaluated; i.e., the cohort whose objective we want</li>
+<li><strong>observed_status_quo_sample_arm</strong> (<a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a>) &#8211; the bandit arm containing the data for the
+status quo cohort. The objective is defined relative to status quo.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(relative CTR, variance) <em>observed</em> mean and variance of the objective function</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.plot_sample_arms">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">plot_sample_arms</tt><big>(</big><em>active_arms</em>, <em>sample_arms</em>, <em>iteration_number</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#plot_sample_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.plot_sample_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the underlying Gaussian Process, showing samples, GP mean/variance, and the true CTR.</p>
+<p>Plot is written to <tt class="docutils literal"><span class="pre">ab_plot_%.2d.pdf</span></tt> where <tt class="docutils literal"><span class="pre">%.2d</span></tt> is the two-digit <tt class="docutils literal"><span class="pre">iteration_number</span></tt>.
+This makes it convenient to sequence the plots later for animation.</p>
+<p>The shows the current state of the Gaussian Process. Arms currently being sampled are highlighted
+with red Xs and previous arms are marked with blue Xs. The GP mean line is drawn and the variance
+region is shaded. The true CTR curve (that the GP approximates) is also shown.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>active_arms</strong> (<em>list of tuple</em>) &#8211; list of coordinate-tuples corresponding to arms/cohorts currently being sampled</li>
+<li><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></li>
+<li><strong>iteration_number</strong> (<em>int &gt;= 0</em>) &#8211; the index of the current iteration/round being tested in our experiment</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.plot_system_ctr">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">plot_system_ctr</tt><big>(</big><em>system_ctr</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#plot_system_ctr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.plot_system_ctr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the system ctr time series and write it to <tt class="docutils literal"><span class="pre">ctr_plot.pdf</span></tt>.</p>
+<p>Time is &#8220;fake&#8221; so we index it 0, 1, .. len(system_ctr) - 1; i.e.,
+time is just iteration/round number in our experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>system_ctr</strong> (<em>list of float</em>) &#8211; ctr values to plot, ordered by &#8220;time&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.prune_arms">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">prune_arms</tt><big>(</big><em>active_arms</em>, <em>sample_arms</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#prune_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.prune_arms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all arms from <tt class="docutils literal"><span class="pre">active_arms</span></tt> that have an allocation less than two standard deviations below the current best arm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>active_arms</strong> (<em>list of tuple</em>) &#8211; list of coordinate-tuples corresponding to arms/cohorts currently being sampled</li>
+<li><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of coordinate-tuples that are the <em>well-performing</em> members of <tt class="docutils literal"><span class="pre">active_arms</span></tt>
+length is at least 1 and at most <tt class="docutils literal"><span class="pre">len(active_arms)</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.run_example">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">run_example</tt><big>(</big><em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#run_example"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.run_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the example experiment framework.</p>
+<dl class="docutils">
+<dt>This is done in the following way:</dt>
+<dd><ol class="first last arabic">
+<li><p class="first">Generate initial data</p>
+</li>
+<li><dl class="first docutils">
+<dt>Run the experiment <tt class="docutils literal"><span class="pre">EXPERIMENT_ITERATIONS</span></tt> times</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Removing underperforming arms/parameters</li>
+<li>Generate new parameters to sample (aka new arms to replace those removed)</li>
+<li>Sample the new arms/parameters</li>
+<li>Plot the updated GP from the new parameters</li>
+<li>Repeat</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Plot out summary metrics</p>
+</li>
+</ol>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Below, <tt class="docutils literal"><span class="pre">active_arms</span></tt> is a list of tuples. The tuples are the coordinates of the point
+represented by <tt class="docutils literal"><span class="pre">active_arms</span></tt>. This is so that members of <tt class="docutils literal"><span class="pre">active_arms</span></tt> can be used
+as keys. In turn, <tt class="docutils literal"><span class="pre">sample_arms</span></tt> is a dict keyed on those same coordinate tuples.
+The tuples make it convenient to switch between serializable types and lists/arrays.</p>
+<p class="last">In practice, users would likely give their cohorts str names. These names could key
+both <tt class="docutils literal"><span class="pre">active_arms</span></tt> (which becomes a dict mapping name to coordinates) and
+<tt class="docutils literal"><span class="pre">sample_arms</span></tt>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.run_time_consuming_experiment">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">run_time_consuming_experiment</tt><big>(</big><em>allocations</em>, <em>sample_arms</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#run_time_consuming_experiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.run_time_consuming_experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the time consuming or expensive experiment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Obtaining the value of the objective function is assmumed to be either time consuming or expensive,
+where every evaluation is precious and we want to find the optimal set of parameters with as few calls as possible.</p>
+</div>
+<p>This experiment runs a simulation of user traffic over various parameters and users.
+It simulates an A/B testing experiment framework.</p>
+<p>For each arm/cohort, we compute the true CTR. From bandits, we know the allocation of
+traffic for that arm. So the simulation involves running (TRAFFIC_PER_DAY * allocation)
+Bernoulli trials each with probability = true CTR. Then since we cannot know the true CTR,
+we only work with the observed CTR and variance (as computed in
+:func:~`moe_examples.blog_post_example_ab_testing.objective_function`).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>allocations</strong> (<em>dict</em>) &#8211; traffic allocations for the <tt class="docutils literal"><span class="pre">active_arms</span></tt>, one for each tuple in <tt class="docutils literal"><span class="pre">active_arms</span></tt>.
+These are the cohorts for the experiment round&#8211;the parameters being tested and on what portion of traffic.</li>
+<li><strong>sample_arms</strong> (<em>dict</em>) &#8211; all arms from prev and current cohorts, keyed by coordinate-tuples
+Arm refers specifically to a <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a></li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211; whether to print status messages to stdout</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moe_examples.blog_post_example_ab_testing.true_click_through_rate">
+<tt class="descclassname">moe_examples.blog_post_example_ab_testing.</tt><tt class="descname">true_click_through_rate</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="_modules/moe_examples/blog_post_example_ab_testing.html#true_click_through_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe_examples.blog_post_example_ab_testing.true_click_through_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <em>true</em> underlying Click Through Rate (CTR) with respect to the parameter <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<p>Higher values are better. There is an local optima at <tt class="docutils literal"><span class="pre">LOCAL_OPTIMAL_PARAMETER</span></tt> (0.14289063) and a global optima at <tt class="docutils literal"><span class="pre">GLOBAL_OPTIMAL_PARAMETER</span></tt> (0.71428711).</p>
+<div class="math">
+\[\begin{split}\texttt{CTR}(x) = \begin{cases}
+        \frac{1}{100}\left( \sin\left( \frac{7\pi}{2} x\right) + 2.5\right) &amp; x \leq 0.6 \\
+        \frac{1}{100}\left( \sin\left( \frac{7\pi}{2} x\right) + 1.1\right) &amp; x &gt; 0.6
+    \end{cases}\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>array of float64 with shape (1, )</em>) &#8211; The parameter that we are optimizing</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">CTR evaluated at <tt class="docutils literal"><span class="pre">x</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of float64 with shape (1, )</td>
 </tr>
 </tbody>
 </table>
@@ -428,7 +867,7 @@ and a set of points to calculate the posterior mean and variance at.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.optimal_learning_test_case &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.optimal_learning_test_case &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -239,10 +241,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
 
-
-<div class="viewcode-block" id="OptimalLearningTestCase"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase">[docs]</a><span class="k">class</span> <span class="nc">OptimalLearningTestCase</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="OptimalLearningTestCase"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase">[docs]</a><span class="k">class</span> <span class="nc">OptimalLearningTestCase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Base test case for the optimal_learning library.</span>
 
@@ -251,7 +251,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OptimalLearningTestCase.assert_scalar_within_absolute"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">[docs]</a>    <span class="k">def</span> <span class="nf">assert_scalar_within_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="OptimalLearningTestCase.assert_scalar_within_absolute"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">[docs]</a>    <span class="k">def</span> <span class="nf">assert_scalar_within_absolute</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether a scalar ``value`` is equal to ``truth``: ``|value - truth| &lt;= tol``.</span>
 
 <span class="sd">        :param value: scalar to check</span>
@@ -263,14 +264,12 @@
 <span class="sd">        :raise: AssertionError value, truth are not equal to within tolerance</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">truth</span><span class="p">)</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
-            <span class="n">diff</span><span class="p">,</span>
-            <span class="n">tol</span><span class="p">,</span>
-            <span class="n">message</span><span class="o">=</span><span class="s">&#39;value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">tol</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">diff</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">,</span> <span class="s">&#39;value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="OptimalLearningTestCase.assert_scalar_within_relative"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative">[docs]</a>    <span class="k">def</span> <span class="nf">assert_scalar_within_relative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="OptimalLearningTestCase.assert_scalar_within_relative"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative">[docs]</a>    <span class="k">def</span> <span class="nf">assert_scalar_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| &lt;= tol``.</span>
 
 <span class="sd">        :param value: scalar to check</span>
@@ -282,37 +281,33 @@
 <span class="sd">        :raise: AssertionError value, truth are not relatively equal</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">denom</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">denom</span> <span class="o">&lt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span><span class="p">:</span>
             <span class="n">denom</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c"># do not divide by 0</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">((</span><span class="n">value</span> <span class="o">-</span> <span class="n">truth</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span><span class="p">)</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_lte</span><span class="p">(</span>
-            <span class="n">diff</span><span class="p">,</span>
-            <span class="n">tol</span><span class="p">,</span>
-            <span class="n">message</span><span class="o">=</span><span class="s">&#39;value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">tol</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">diff</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">,</span> <span class="s">&#39;value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="OptimalLearningTestCase.assert_vector_within_relative"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative">[docs]</a>    <span class="k">def</span> <span class="nf">assert_vector_within_relative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="OptimalLearningTestCase.assert_vector_within_relative"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative">[docs]</a>    <span class="k">def</span> <span class="nf">assert_vector_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| &lt;= tol``.</span>
 
-<span class="sd">        :param value: scalar to check</span>
-<span class="sd">        :type value: float64</span>
-<span class="sd">        :param truth: exact/desired result</span>
-<span class="sd">        :type value: float64</span>
+<span class="sd">        :param value: vector to check</span>
+<span class="sd">        :type value: array of float64 with arbitrary shape</span>
+<span class="sd">        :param truth: exact/desired vector result</span>
+<span class="sd">        :type value: array of float64 with shape matching ``value``</span>
 <span class="sd">        :param tol: max permissible relative difference</span>
 <span class="sd">        :type tol: float64</span>
 <span class="sd">        :raise: AssertionError value[i], truth[i] are not relatively equal for every i</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-            <span class="n">truth</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-            <span class="n">message</span><span class="o">=</span><span class="s">&#39;value.shape = {0} != truth.shape = {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">truth</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s">&#39;value.shape = {0} != truth.shape = {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">truth</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">truth</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">tol</span><span class="p">)</span>
+            <span class="n">OptimalLearningTestCase</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">truth</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">tol</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="OptimalLearningTestCase.assert_points_distinct"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">[docs]</a>    <span class="k">def</span> <span class="nf">assert_points_distinct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_list</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="OptimalLearningTestCase.assert_points_distinct"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">[docs]</a>    <span class="k">def</span> <span class="nf">assert_points_distinct</span><span class="p">(</span><span class="n">point_list</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check whether the distance between every pair of points is larger than tolerance.</span>
 
 <span class="sd">        :param point_list: points to check</span>
@@ -322,11 +317,12 @@
 <span class="sd">        :raise: AssertionError when every point is not more than tolerance distance apart</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">point_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">point_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                 <span class="n">temp</span> <span class="o">=</span> <span class="n">point_list</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-</span> <span class="n">point_list</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
                 <span class="n">dist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span></div></div>
+                <span class="n">OptimalLearningTestCase</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -357,7 +353,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_cuda_math &mdash; MOE 0.2.0 documentation</title>
+  <title>gpp_cuda_math &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_python_model_selection" href="gpp_python_model_selection.html"/>
         <link rel="prev" title="gpp_math_test" href="gpp_math_test.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -248,33 +250,41 @@
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Variables</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1af09722b36e3f033c1e2c00f7881b4634"></span>unsigned int <strong>kEINumBlocks</strong></p>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a419c6cbba36fc1531a0c3d4ff66743bc"></span>const unsigned int <strong>kEINumBlocks</strong></p>
 <blockquote>
 <div><p>Number of blocks assigned for computing Expected Improvement on GPU. </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a46daa52d86fb5b013a77f3b3c6b4b8c9"></span>unsigned int <strong>kEINumThreads</strong></p>
+<p><span class="target" id="project0namespaceoptimal__learning_1ac57a3b1b44a14f46fbf7847acd3b0941"></span>const unsigned int <strong>kEINumThreads</strong></p>
 <blockquote>
 <div><p>Number of threads per block assigned for computing Expected Improvement on GPU. </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1adec192c626554553159beecde923439e"></span>unsigned int <strong>kGradEINumBlocks</strong></p>
+<p><span class="target" id="project0namespaceoptimal__learning_1a12dc28b200388ed12e2703cdc476d4b0"></span>const unsigned int <strong>kGradEINumBlocks</strong></p>
 <blockquote>
 <div><p>Number of blocks assigned for computing Gradient of Expected Improvement on GPU. </p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1ad50f5ecaf0cf646defded5f728056d5e"></span>unsigned int <strong>kGradEINumThreads</strong></p>
+<p><span class="target" id="project0namespaceoptimal__learning_1ab89dfd81f9a231f23b9eec59dac8d907"></span>const unsigned int <strong>kGradEINumThreads</strong></p>
 <blockquote>
 <div><p>Number of threads per block assigned for computing Gradient of Expected Improvement on GPU. </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1ae79b1b3edb99ff4b1a85db883e3a0ec8"></span>const  <a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>kCudaSuccess</strong></p>
+<blockquote>
+<div><p><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> struct encoding a successful CUDA operation. </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
 <p><p id="project0structoptimal__learning_1_1_cuda_error"><em>class</em> <strong>CudaError</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp</p>
+<p><p>This C struct contains error information that are used by exception handling in gpp_expected_improvement_gpu.hpp/cpp.
+File/line and function information are empty strings if the error code is cudaSuccess (i.e., no error).</p>
  </p>
 <em>Public Members</em><blockquote>
 <div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_error_1a076ae0fd3c28a77c9bc6a1145cd18523"></span>cudaError_t <strong>err</strong></p>
@@ -338,7 +348,7 @@ this macro produces the compile-time string-constant:
 <blockquote>
 <div><p></p>
 <p><p>Macro that checks error message (with type cudaError_t) returned by CUDA API functions, and if there is error occurred,
-the macro produces a C struct containing error message, function name where error occured, file name and line info, and 
+the macro produces a C struct containing error message, function name where error occured, file name and line info, and
 then terminate the function.</p>
  </p>
 </div></blockquote>
@@ -346,58 +356,12 @@ then terminate the function.</p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Functions</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1a2a0bdbe7a8f861c0734c7bc081e00dc8"></span><div class="line-block">
-<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaAllocateMemForDoubleVector</strong>(int num_doubles, double **__restrict__ address_of_ptr_to_gpu_memory)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Allocate GPU memory for storing an array. This is same as malloc in C, with error handling.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">num_doubles:</th><td class="field-body">number of double numbers contained in the array</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">address_of_ptr_to_gpu_memory:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">address of the pointer to memory on GPU</td>
-</tr>
-</tbody>
-</table>
-</dd>
-<dt><strong>Returns</strong>:</dt>
-<dd>CudaError state, which contains error information, file name, line and function name of the function that occurs error</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1ac061ec648eac4f5e094f516539c51112"></span><div class="line-block">
-<div class="line">void <strong>CudaFreeMem</strong>(double *__restrict__ ptr_to_gpu_memory)</div>
-</div>
-</p>
-<blockquote>
-<div><p></p>
-<p><p>Free GPU memory, same as free() in C.</p>
-<dl class="docutils">
-<dt><strong>Parameters</strong>:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">ptr_to_gpu_memory:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory on GPU to free</td>
-</tr>
-</tbody>
-</table>
-</dd>
-</dl>
- </p>
-</div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1ab293049a299ec5bc104001c37fee8408"></span><div class="line-block">
-<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaGetEI</strong>(double *__restrict__ mu, double *__restrict__ chol_var, int num_union, int num_mc, uint64_t seed, double best, bool configure_for_test, double *__restrict__ random_number_ei, double *__restrict__ ei_val, double *__restrict__ gpu_mu, double *__restrict__ gpu_chol_var, double *__restrict__ gpu_random_number_ei, double *__restrict__ gpu_ei_storage)</div>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a3558d3ae4f9dfc9491070744e17a8190"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaGetEI</strong>(double const *restrict mu, double const *restrict chol_var, int num_union, int num_mc, double best, uint64_t base_seed, bool configure_for_test, double *restrict gpu_mu, double *restrict gpu_chol_var, double *restrict random_number_ei, double *restrict gpu_random_number_ei, double *restrict gpu_ei_storage, double *restrict ei_val)</div>
 </div>
 </p>
 <blockquote>
@@ -419,31 +383,12 @@ CudaExpectedImprovementEvaluator::ComputeExpectedImprovement(...) in gpp_expecte
 </tr>
 <tr class="field-even field"><th class="field-name">num_mc:</th><td class="field-body">number of iterations for Monte-Carlo simulation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">seed for RNG</td>
+<tr class="field-odd field"><th class="field-name">best:</th><td class="field-body">best function evaluation obtained so far</td>
 </tr>
-<tr class="field-even field"><th class="field-name">best:</th><td class="field-body">best function evaluation obtained so far</td>
+<tr class="field-even field"><th class="field-name">base_seed:</th><td class="field-body">base seed for the GPU&#8217;s RNG; will be offset by GPU thread index (see curand)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">configure_for_test:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">whether record random_number_ei or not</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_number_ei[num_union][num_iteration][num_threads][num_blocks]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">random numbers used for
-computing EI, for testing purpose only</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">ei_val[1]:</th><td class="field-body">pointer to value of Expected Improvement</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_mu[num_union]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing mu on GPU</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_chol_var[num_union][num_union]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing chol_var on GPU</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing
-random numbers used for computing EI, for testing purpose only</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_ei_storage[num_threads][num_blocks]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing values of EI on GPU</td>
 </tr>
 </tbody>
 </table>
@@ -453,15 +398,24 @@ random numbers used for computing EI, for testing purpose only</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">ei_val[1]:</th><td class="field-body">value of Expected Improvement modified, and equals to computed value of EI</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">gpu_mu[num_union]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing mu on GPU</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing
-random numbers used for computing EI, for testing purpose only</td>
+<tr class="field-even field"><th class="field-name" colspan="2">gpu_chol_var[num_union][num_union]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing chol_var on GPU</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">random_number_ei[num_union][num_iteration][num_threads][num_blocks]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">random numbers used for
 computing EI, for testing purpose only</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">gpu_random_number_ei[num_union][num_iteration][num_threads][num_blocks]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing
+random numbers used for computing EI, for testing purpose only</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">gpu_ei_storage[num_threads][num_blocks]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing values of EI on GPU</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ei_val[1]:</th><td class="field-body">pointer to value of Expected Improvement</td>
 </tr>
 </tbody>
 </table>
@@ -471,13 +425,13 @@ computing EI, for testing purpose only</td>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1ac30608d9b81afd2ca6f044ec303424be"></span><div class="line-block">
-<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaGetGradEI</strong>(double *__restrict__ mu, double *__restrict__ chol_var, double *__restrict__ grad_mu, double *__restrict__ grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc, uint64_t seed, double best, bool configure_for_test, double *__restrict__ random_number_grad_ei, double *__restrict__ grad_ei, double *__restrict__ gpu_mu, double *__restrict__ gpu_chol_var, double *__restrict__ gpu_grad_mu, double *__restrict__ gpu_grad_chol_var, double *__restrict__ gpu_random_number_grad_ei, double *__restrict__ gpu_grad_ei_storage)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1abdfbbb1cdd68617553a364b2d590e23c"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaGetGradEI</strong>(double const *restrict mu, double const *restrict grad_mu, double const *restrict chol_var, double const *restrict grad_chol_var, int num_union, int num_to_sample, int dim, int num_mc, double best, uint64_t base_seed, bool configure_for_test, double *restrict gpu_mu, double *restrict gpu_grad_mu, double *restrict gpu_chol_var, double *restrict gpu_grad_chol_var, double *restrict random_number_grad_ei, double *restrict gpu_random_number_grad_ei, double *restrict gpu_grad_ei_storage, double *restrict grad_ei)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
-<p><p>Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by 
+<p><p>Compute Gradient of Expected Improvement by Monte-Carlo using GPU, and this function is only meant to be used by
 CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(...) in gpp_expected_improvement_gpu.hpp/cpp</p>
 <dl class="docutils">
 <dt><strong>Parameters</strong>:</dt>
@@ -487,11 +441,11 @@ CudaExpectedImprovementEvaluator::ComputeGradExpectedImprovement(...) in gpp_exp
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">mu[num_union]:</th><td class="field-body">the mean of the GP evaluated at points interested</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">chol_var[num_union][num_union]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">cholesky factorization of the GP variance evaluated at points interested</td>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_mu[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">the gradient of mean of the GP evaluated at points interested</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">grad_mu[dim][num_to_sample]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">the gradient of mean of the GP evaluated at points interested</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">chol_var[num_union][num_union]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">cholesky factorization of the GP variance evaluated at points interested</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">grad_chol_var[dim][num_union][num_union][num_to_sample]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">gradient of cholesky factorization of
@@ -505,38 +459,12 @@ the GP variance evaluated at points interested</td>
 </tr>
 <tr class="field-even field"><th class="field-name">num_mc:</th><td class="field-body">number of iterations for Monte-Carlo simulation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">seed:</th><td class="field-body">seed for RNG</td>
+<tr class="field-odd field"><th class="field-name">best:</th><td class="field-body">best function evaluation obtained so far</td>
 </tr>
-<tr class="field-even field"><th class="field-name">best:</th><td class="field-body">best function evaluation obtained so far</td>
+<tr class="field-even field"><th class="field-name">base_seed:</th><td class="field-body">base seed for the GPU&#8217;s RNG; will be offset by GPU thread index (see curand)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">configure_for_test:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">whether record random_number_grad_ei or not</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">random_number_grad_ei[num_union][num_threads][num_blocks]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">random numbers used for computing gradEI,
-for testing purpose only</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">grad_ei[dim][num_to_sample]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to value of gradient of Expected Improvement</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_mu[num_union]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing mu on GPU</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_chol_var[num_union][num_union]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing chol_var on GPU</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_grad_mu[dim][num_to_sample]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing grad_mu on GPU</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_grad_chol_var[dim][num_union][num_union][num_to_sample]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing grad_chol_var on GPU</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">gpu_random_number_grad_ei[num_union][num_threads][num_blocks]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to memory storing random
-numbers used for computing gradEI, for testing purpose only</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing values of gradient EI on GPU</td>
 </tr>
 </tbody>
 </table>
@@ -546,15 +474,86 @@ numbers used for computing gradEI, for testing purpose only</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">gpu_mu[num_union]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing mu on GPU</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">gpu_grad_mu[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing grad_mu on GPU</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">gpu_chol_var[num_union][num_union]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing chol_var on GPU</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">gpu_grad_chol_var[dim][num_union][num_union][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing grad_chol_var on GPU</td>
+</tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">random_number_grad_ei[num_union][num_threads][num_blocks]:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">random numbers used for computing gradEI, for testing purpose only</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">grad_ei[dim][num_to_sample]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to value of gradient of Expected Improvement</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">gpu_random_number_grad_ei[num_union][num_threads][num_blocks]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory storing random
+<tr class="field-even field"><th class="field-name" colspan="2">gpu_random_number_grad_ei[num_union][num_threads][num_blocks]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing random
 numbers used for computing gradEI, for testing purpose only</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">gpu_grad_ei_storage[dim][num_to_sample][num_threads][num_blocks]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">device pointer to memory storing values of gradient EI on GPU</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">grad_ei[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">pointer to gradient of Expected Improvement</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>CudaError state, which contains error information, file name, line and function name of the function that occurs error</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a8f16adfc6b9900f9fa9b9e2976512341"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaMallocDeviceMemory</strong>(size_t size, void **restrict address_of_ptr_to_gpu_memory)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Allocate GPU device memory for storing an array; analogous to <tt class="docutils literal"><span class="pre">malloc()</span></tt> in <tt class="docutils literal"><span class="pre">C</span></tt>.
+Thin wrapper around <tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt> that handles errors.
+See: <tt class="docutils literal"><span class="pre">http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__MEMORY.html</span></tt></p>
+<p>Do not dereference <tt class="docutils literal"><span class="pre">address_of_ptr_to_gpu_memory</span></tt> outside the GPU device.
+Do not dereference <tt class="docutils literal"><span class="pre">address_of_ptr_to_gpu_memory</span></tt> if the error code (<tt class="docutils literal"><span class="pre">return_value.err</span></tt>) is not <tt class="docutils literal"><span class="pre">cudaSuccess</span></tt>.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">size:</th><td class="field-body">number of bytes to allocate</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">address_of_ptr_to_gpu_memory:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">address of the pointer to alllocated device memory on the GPU</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Returns</strong>:</dt>
+<dd>CudaError state, which contains error information, file name, line and function name of the function that occurs error</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a3fb0d2c3a73ade0329fb33d9faac658e"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_error"><em>CudaError</em></a> <strong>CudaFreeDeviceMemory</strong>(void *restrict ptr_to_gpu_memory)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Free GPU device memory on the GPU; analogous to <tt class="docutils literal"><span class="pre">free()</span></tt> in <tt class="docutils literal"><span class="pre">C</span></tt>.
+Thin wrapper around <tt class="docutils literal"><span class="pre">cudaFree()</span></tt> that handles errors.
+See: <tt class="docutils literal"><span class="pre">http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__MEMORY.html</span></tt></p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">ptr_to_gpu_memory:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">pointer to memory on GPU to free; MUST have been returned by a previous call to <tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt>.</td>
 </tr>
 </tbody>
 </table>
@@ -631,7 +630,7 @@ numbers used for computing gradEI, for testing purpose only</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

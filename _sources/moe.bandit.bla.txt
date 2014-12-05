@@ -1,0 +1,22 @@
+moe.bandit.bla package
+======================
+
+Submodules
+----------
+
+moe.bandit.bla.bla module
+-------------------------
+
+.. automodule:: moe.bandit.bla.bla
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.bandit.bla
+    :members:
+    :undoc-members:
+    :show-inheritance:

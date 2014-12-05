@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.views.rest.gp_mean_var_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.views.rest.gp_mean_var_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -236,8 +238,6 @@
 
 <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.cpp_wrappers.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcess</span>
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span>
@@ -254,7 +254,8 @@
     <span class="n">num_sampled_list</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
     <span class="n">endpoint</span> <span class="o">=</span> <span class="n">GP_MEAN_VAR_ENDPOINT</span>
 
-    <span class="k">def</span> <span class="nf">_build_json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">covariance</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">,</span> <span class="n">points_to_evaluate</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_json_payload</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">covariance</span><span class="p">,</span> <span class="n">historical_data</span><span class="p">,</span> <span class="n">points_to_evaluate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a json_payload to POST to the /gp/mean_var endpoint with all needed info.&quot;&quot;&quot;</span>
         <span class="n">json_payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
             <span class="s">&#39;points_to_evaluate&#39;</span><span class="p">:</span> <span class="n">points_to_evaluate</span><span class="p">,</span>
@@ -375,11 +376,7 @@
                 <span class="n">tolerance</span><span class="p">,</span>
                 <span class="n">truth_mean</span><span class="o">=</span><span class="n">truth_mean</span><span class="p">,</span>
                 <span class="n">truth_var</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">truth_var</span><span class="p">),</span>
-            <span class="p">)</span>
-
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -410,7 +407,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

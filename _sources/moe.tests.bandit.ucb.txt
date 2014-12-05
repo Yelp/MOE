@@ -1,0 +1,38 @@
+moe.tests.bandit.ucb package
+============================
+
+Submodules
+----------
+
+moe.tests.bandit.ucb.ucb1_test module
+-------------------------------------
+
+.. automodule:: moe.tests.bandit.ucb.ucb1_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.ucb.ucb1_tuned_test module
+-------------------------------------------
+
+.. automodule:: moe.tests.bandit.ucb.ucb1_tuned_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.ucb.ucb_test_case module
+-----------------------------------------
+
+.. automodule:: moe.tests.bandit.ucb.ucb_test_case
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.bandit.ucb
+    :members:
+    :undoc-members:
+    :show-inheritance:

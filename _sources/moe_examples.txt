@@ -19,6 +19,14 @@ moe_examples.bandit_example module
     :undoc-members:
     :show-inheritance:
 
+moe_examples.blog_post_example_ab_testing module
+------------------------------------------------
+
+.. automodule:: moe_examples.blog_post_example_ab_testing
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe_examples.combined_example module
 ------------------------------------
 

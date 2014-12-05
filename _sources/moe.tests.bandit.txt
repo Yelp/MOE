@@ -1,6 +1,15 @@
 moe.tests.bandit package
 ========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    moe.tests.bandit.bla
+    moe.tests.bandit.epsilon
+    moe.tests.bandit.ucb
+
 Submodules
 ----------
 
@@ -20,14 +29,6 @@ moe.tests.bandit.bandit_test_case module
     :undoc-members:
     :show-inheritance:
 
-moe.tests.bandit.bla_test module
---------------------------------
-
-.. automodule:: moe.tests.bandit.bla_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 moe.tests.bandit.data_containers_test module
 --------------------------------------------
 
@@ -36,66 +37,10 @@ moe.tests.bandit.data_containers_test module
     :undoc-members:
     :show-inheritance:
 
-moe.tests.bandit.epsilon_first_test module
-------------------------------------------
-
-.. automodule:: moe.tests.bandit.epsilon_first_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.epsilon_greedy_test module
--------------------------------------------
-
-.. automodule:: moe.tests.bandit.epsilon_greedy_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.epsilon_test module
-------------------------------------
-
-.. automodule:: moe.tests.bandit.epsilon_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.epsilon_test_case module
------------------------------------------
-
-.. automodule:: moe.tests.bandit.epsilon_test_case
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 moe.tests.bandit.linkers_test module
 ------------------------------------
 
 .. automodule:: moe.tests.bandit.linkers_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.ucb1_test module
----------------------------------
-
-.. automodule:: moe.tests.bandit.ucb1_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.ucb1_tuned_test module
----------------------------------------
-
-.. automodule:: moe.tests.bandit.ucb1_tuned_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-moe.tests.bandit.ucb_test_case module
--------------------------------------
-
-.. automodule:: moe.tests.bandit.ucb_test_case
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe_examples.blog_post_example_ab_testing &mdash; MOE 0.2.2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#python-tips">Python Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>moe_examples.blog_post_example_ab_testing</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe_examples.blog_post_example_ab_testing</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;An example of using MOE to optimize a simulated A/B testing framework.</span>
+
+<span class="sd">Blog post: http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">EPSILON_SUBTYPE_GREEDY</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.data_containers</span> <span class="kn">import</span> <span class="n">HistoricalData</span> <span class="k">as</span> <span class="n">BanditHistoricalData</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.data_containers</span> <span class="kn">import</span> <span class="n">SampleArm</span>
+<span class="kn">from</span> <span class="nn">moe.easy_interface.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">moe.easy_interface.bandit_simple_endpoint</span> <span class="kn">import</span> <span class="n">bandit</span> <span class="k">as</span> <span class="n">bandit_endpoint</span>
+<span class="kn">from</span> <span class="nn">moe.easy_interface.simple_endpoint</span> <span class="kn">import</span> <span class="n">gp_next_points</span><span class="p">,</span> <span class="n">gp_mean_var</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span>
+<span class="kn">from</span> <span class="nn">moe.views.constant</span> <span class="kn">import</span> <span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">,</span> <span class="n">BANDIT_EPSILON_ROUTE_NAME</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">&#39;Agg&#39;</span><span class="p">)</span>  <span class="c"># Repress screen output from matplotlib</span>
+
+<span class="c">#: Initial parameter value</span>
+<span class="n">STATUS_QUO_PARAMETER</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">])</span>
+<span class="c">#: Local optima of CTR function</span>
+<span class="n">LOCAL_OPTIMAL_PARAMETER</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.14289063</span><span class="p">])</span>
+<span class="c">#: Global optima of CTR function</span>
+<span class="n">GLOBAL_OPTIMAL_PARAMETER</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.71428711</span><span class="p">])</span>
+
+<span class="c">#: domain over which our parameter ``x`` can vary in optimizing ``CTR(x)``</span>
+<span class="n">EXPERIMENT_DOMAIN</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+
+<span class="c">#: Simulated traffic volume</span>
+<span class="n">TRAFFIC_PER_DAY</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c"># 1 Million</span>
+
+<span class="c">#: Number of parameters to simulate each day</span>
+<span class="n">NUMBER_OF_ACTIVE_COHORTS</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c">#: Number of times to have MOE update cohorts</span>
+<span class="n">EXPERIMENT_ITERATIONS</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c">#: Set as a constant for clarity of example, see mod:`moe_examples.combined_example` for hyperparameter updating</span>
+<span class="n">COVARIANCE_INFO</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;hyperparameters&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+        <span class="p">}</span>
+
+<span class="c">#: Our bandit policy :mod:`moe.bandit.epsilon.epsilon_greedy` requires an epsilon parameter</span>
+<span class="c">#: This is the fraction of allocations that will only explore, the rest will only exploit</span>
+<span class="n">EPSILON_BANDIT_PARAMETER</span> <span class="o">=</span> <span class="mf">0.15</span>
+
+
+<div class="viewcode-block" id="true_click_through_rate"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.true_click_through_rate">[docs]</a><span class="k">def</span> <span class="nf">true_click_through_rate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;Return the *true* underlying Click Through Rate (CTR) with respect to the parameter ``x``.</span>
+
+<span class="sd">    Higher values are better. There is an local optima at ``LOCAL_OPTIMAL_PARAMETER`` (0.14289063) and a global optima at ``GLOBAL_OPTIMAL_PARAMETER`` (0.71428711).</span>
+
+<span class="sd">    .. Note:</span>
+
+<span class="sd">        The underlying function does not need to be convex, differentiable, or even continuous for MOE to be able to optimize it.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \texttt{CTR}(x) = \begin{cases}</span>
+<span class="sd">                \frac{1}{100}\left( \sin\left( \frac{7\pi}{2} x\right) + 2.5\right) &amp; x \leq 0.6 \\</span>
+<span class="sd">                \frac{1}{100}\left( \sin\left( \frac{7\pi}{2} x\right) + 1.1\right) &amp; x &gt; 0.6</span>
+<span class="sd">            \end{cases}</span>
+
+<span class="sd">    :param x: The parameter that we are optimizing</span>
+<span class="sd">    :type x: array of float64 with shape (1, )</span>
+<span class="sd">    :return: CTR evaluated at ``x``</span>
+<span class="sd">    :rtype: array of float64 with shape (1, )</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">3.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.5</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">3.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+
+</div>
+<div class="viewcode-block" id="bernoulli_mean_and_var"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.bernoulli_mean_and_var">[docs]</a><span class="k">def</span> <span class="nf">bernoulli_mean_and_var</span><span class="p">(</span><span class="n">observed_clicks</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the mean and variance of a Bernoulli Distribution with a given number of successes (clicks) and trials (impressions).</span>
+
+<span class="sd">    :param observed_clicks: number of successes aka clicks</span>
+<span class="sd">    :type observed_clicks: int &gt;= 0</span>
+<span class="sd">    :param samples: number of trials aka impressions</span>
+<span class="sd">    :type sampels: int &gt;= 0</span>
+<span class="sd">    :return: (mean, variance) of the Bernoulli Distribution producing the observed clicks/samples</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">observed_success_rate</span> <span class="o">=</span> <span class="n">observed_clicks</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">observed_success_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c"># We use the fact that the Beta distribution is the cojugate prior to the binomial distribution</span>
+    <span class="c"># http://en.wikipedia.org/wiki/Beta_distribution</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">observed_clicks</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">samples</span> <span class="o">-</span> <span class="n">observed_clicks</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">observed_variance</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">observed_success_rate</span><span class="p">,</span> <span class="n">observed_variance</span>
+
+</div>
+<div class="viewcode-block" id="objective_function"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.objective_function">[docs]</a><span class="k">def</span> <span class="nf">objective_function</span><span class="p">(</span><span class="n">observed_sample_arm</span><span class="p">,</span> <span class="n">observed_status_quo_sample_arm</span><span class="p">):</span>
+    <span class="sd">r&quot;&quot;&quot;The observed objective function MOE is attempting to maximize; returns the mean (relative to status quo) and variance.</span>
+
+<span class="sd">    Lower values are better (minimization). Our objective is relative to the CTR of the initial</span>
+<span class="sd">    parameter value, ``STATUS_QUO_PARAMETER``.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Phi(\vec{x}) = \frac{\mathtt{CTR}(\vec{x})}{\mathtt{CTR}(\vec{SQ})}</span>
+
+<span class="sd">    :param observed_sample_arm: a bandit arm corresponding to the cohort</span>
+<span class="sd">      currently behing evaluated; i.e., the cohort whose objective we want</span>
+<span class="sd">    :type observed_sample_arm: :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :param observed_status_quo_sample_arm: the bandit arm containing the data for the</span>
+<span class="sd">      status quo cohort. The objective is defined relative to status quo.</span>
+<span class="sd">    :type observed_status_quo_sample_arm: :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :return: (relative CTR, variance) *observed* mean and variance of the objective function</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample_ctr</span><span class="p">,</span> <span class="n">sample_ctr_var</span> <span class="o">=</span> <span class="n">bernoulli_mean_and_var</span><span class="p">(</span>
+            <span class="n">observed_sample_arm</span><span class="o">.</span><span class="n">win</span><span class="p">,</span>
+            <span class="n">observed_sample_arm</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">status_quo_ctr</span><span class="p">,</span> <span class="n">status_quo_ctr_var</span> <span class="o">=</span> <span class="n">bernoulli_mean_and_var</span><span class="p">(</span>
+            <span class="n">observed_status_quo_sample_arm</span><span class="o">.</span><span class="n">win</span><span class="p">,</span>
+            <span class="n">observed_status_quo_sample_arm</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># Now compute the mean and variance of a quotient of random variables.</span>
+    <span class="c"># Formulas come from 1st order taylor expansion.</span>
+    <span class="c"># See: http://www.stat.cmu.edu/~hseltman/files/ratio.pdf</span>
+    <span class="c"># Subtract 1.0 from the mean so that it is centered at 0.0; no effect on variance</span>
+    <span class="n">mean_ctr_ratio</span> <span class="o">=</span> <span class="n">sample_ctr</span> <span class="o">/</span> <span class="n">status_quo_ctr</span> <span class="o">-</span> <span class="mf">1.0</span>
+    <span class="c"># Note: We take an upper bound of the variance (by ignoring the correlation between the two random variables)</span>
+    <span class="n">variance_ctr_ratio</span> <span class="o">=</span> <span class="n">sample_ctr_var</span> <span class="o">/</span> <span class="n">status_quo_ctr</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">status_quo_ctr_var</span> <span class="o">*</span> <span class="n">sample_ctr</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">status_quo_ctr</span> <span class="o">**</span> <span class="mi">4</span>
+    <span class="k">return</span> <span class="n">mean_ctr_ratio</span><span class="p">,</span> <span class="n">variance_ctr_ratio</span>
+
+</div>
+<div class="viewcode-block" id="find_new_points_to_sample"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.find_new_points_to_sample">[docs]</a><span class="k">def</span> <span class="nf">find_new_points_to_sample</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find the optimal next point(s) to sample using expected improvement (via MOE).</span>
+
+<span class="sd">    :param experiment: an Experiment object containing the historical data and metadata MOE</span>
+<span class="sd">      needs to optimize</span>
+<span class="sd">    :type experiment: :class:`moe.easy_interface.experiment.Experiment`</span>
+<span class="sd">    :param num_points: number of new points (experiments) that we want MOE to suggest</span>
+<span class="sd">    :type num_points: int &gt;= 1</span>
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+<span class="sd">    :return: the next point(s) to sample</span>
+<span class="sd">    :rtype: list of length ``num_points`` of coordinates (list of length ``dim``)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Getting {0} new suggested point(s) to sample from MOE...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_points</span><span class="p">)</span>
+
+    <span class="c"># Query MOE for the next points to sample</span>
+    <span class="n">next_points_to_sample</span> <span class="o">=</span> <span class="n">gp_next_points</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="p">,</span>
+            <span class="n">method_route_name</span><span class="o">=</span><span class="n">GP_NEXT_POINTS_KRIGING_ROUTE_NAME</span><span class="p">,</span>
+            <span class="n">covariance_info</span><span class="o">=</span><span class="n">COVARIANCE_INFO</span><span class="p">,</span>
+            <span class="n">num_to_sample</span><span class="o">=</span><span class="n">num_points</span><span class="p">,</span>
+            <span class="n">optimizer_info</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">&#39;optimizer_type&#39;</span><span class="p">:</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Optimal points to sample next: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">next_points_to_sample</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">next_points_to_sample</span>
+
+</div>
+<div class="viewcode-block" id="get_allocations"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.get_allocations">[docs]</a><span class="k">def</span> <span class="nf">get_allocations</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the allocation for each of ``active_arms`` using the epsilon greedy multi-armed bandit strategy.</span>
+
+<span class="sd">    :param active_arms: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</span>
+<span class="sd">    :type active_arms: list of tuple</span>
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+<span class="sd">    :return: traffic allocations for the ``active_arms``, one for each tuple in ``active_arms``</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Find all active sample arms</span>
+    <span class="n">active_sample_arms</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">active_arm</span> <span class="ow">in</span> <span class="n">active_arms</span><span class="p">:</span>
+        <span class="c"># json wants all arm names to be strings</span>
+        <span class="c"># so convert our 1D point coordinate tuple to str</span>
+        <span class="n">active_sample_arms</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">active_arm</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">sample_arms</span><span class="p">[</span><span class="n">active_arm</span><span class="p">]</span>
+
+    <span class="c"># Bundle up the arm information</span>
+    <span class="n">bandit_data</span> <span class="o">=</span> <span class="n">BanditHistoricalData</span><span class="p">(</span>
+            <span class="n">sample_arms</span><span class="o">=</span><span class="n">active_sample_arms</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># Query the MOE bandit endpoint for optimal traffic allocation</span>
+    <span class="n">bandit_allocation</span> <span class="o">=</span> <span class="n">bandit_endpoint</span><span class="p">(</span>
+            <span class="n">bandit_data</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="n">BANDIT_EPSILON_ROUTE_NAME</span><span class="p">,</span>
+            <span class="n">subtype</span><span class="o">=</span><span class="n">EPSILON_SUBTYPE_GREEDY</span><span class="p">,</span>
+            <span class="n">hyperparameter_info</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">&#39;epsilon&#39;</span><span class="p">:</span> <span class="n">EPSILON_BANDIT_PARAMETER</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="n">arm_allocations</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">arm_name_as_string</span><span class="p">,</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">bandit_allocation</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="c"># json produced keys as str</span>
+        <span class="c"># convert str back to 1D coordinate-tuple</span>
+        <span class="n">arm_allocations</span><span class="p">[</span><span class="nb">tuple</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">arm_name_as_string</span><span class="p">)])]</span> <span class="o">=</span> <span class="n">allocation</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Optimal arm allocations: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arm_allocations</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">arm_allocations</span>
+
+</div>
+<div class="viewcode-block" id="prune_arms"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.prune_arms">[docs]</a><span class="k">def</span> <span class="nf">prune_arms</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove all arms from ``active_arms`` that have an allocation less than two standard deviations below the current best arm.</span>
+
+<span class="sd">    :param active_arms: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</span>
+<span class="sd">    :type active_arms: list of tuple</span>
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+<span class="sd">    :return: list of coordinate-tuples that are the *well-performing* members of ``active_arms``</span>
+<span class="sd">      length is at least 1 and at most ``len(active_arms)``</span>
+<span class="sd">    :rtype: list of tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Find all active sample arms</span>
+    <span class="n">active_sample_arms</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">active_arm</span> <span class="ow">in</span> <span class="n">active_arms</span><span class="p">:</span>
+        <span class="n">active_sample_arms</span><span class="p">[</span><span class="n">active_arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_arms</span><span class="p">[</span><span class="n">active_arm</span><span class="p">]</span>
+
+    <span class="c"># Find the best arm</span>
+    <span class="c"># Our objective is a relative CTR, so status_quo is 0.0; we</span>
+    <span class="c"># know that the best arm cannot be worse than status_quo</span>
+    <span class="n">best_arm_val</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">sample_arm_point</span><span class="p">,</span> <span class="n">sample_arm</span> <span class="ow">in</span> <span class="n">active_sample_arms</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">arm_value</span><span class="p">,</span> <span class="n">arm_variance</span> <span class="o">=</span> <span class="n">objective_function</span><span class="p">(</span>
+                <span class="n">sample_arm</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)],</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">arm_value</span> <span class="o">&gt;</span> <span class="n">best_arm_val</span><span class="p">:</span>
+            <span class="n">best_arm_val</span> <span class="o">=</span> <span class="n">arm_value</span>
+
+    <span class="c"># Remove all arms that are more than two standard deviations worse than the best arm</span>
+    <span class="n">pruned_arms</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">active_arms</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sample_arm_point</span><span class="p">,</span> <span class="n">sample_arm</span> <span class="ow">in</span> <span class="n">active_sample_arms</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">arm_value</span><span class="p">,</span> <span class="n">arm_variance</span> <span class="o">=</span> <span class="n">objective_function</span><span class="p">(</span>
+                <span class="n">sample_arm</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)],</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sample_arm</span><span class="o">.</span><span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">arm_value</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">arm_variance</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">best_arm_val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Removing underperforming arm: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_arm_point</span><span class="p">)</span>
+            <span class="n">pruned_arms</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sample_arm_point</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pruned_arms</span>
+
+</div>
+<div class="viewcode-block" id="moe_experiment_from_sample_arms"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.moe_experiment_from_sample_arms">[docs]</a><span class="k">def</span> <span class="nf">moe_experiment_from_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a MOE experiment with all historical data (i.e., parameter value, CTR, noise variance triples).</span>
+
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :return: MOE Experiment object usable with GP endpoints like ``gp_mean_var`` and ``gp_next_points``</span>
+<span class="sd">    :rtype: :class:`moe.easy_interface.experiment.Experiment`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">EXPERIMENT_DOMAIN</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sample_arm_point</span><span class="p">,</span> <span class="n">sample_arm</span> <span class="ow">in</span> <span class="n">sample_arms</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">arm_value</span><span class="p">,</span> <span class="n">arm_variance</span> <span class="o">=</span> <span class="n">objective_function</span><span class="p">(</span>
+                <span class="n">sample_arm</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)],</span>
+                <span class="p">)</span>
+        <span class="c"># MOE *minimizes* and we want to *maximize* CTR so</span>
+        <span class="c"># we multiply the objetive (``arm_value``) by -1.0</span>
+        <span class="n">experiment</span><span class="o">.</span><span class="n">historical_data</span><span class="o">.</span><span class="n">append_sample_points</span><span class="p">([</span>
+            <span class="p">[</span>
+                <span class="n">sample_arm_point</span><span class="p">,</span>
+                <span class="o">-</span><span class="n">arm_value</span><span class="p">,</span>
+                <span class="n">arm_variance</span><span class="p">,</span>
+            <span class="p">]])</span>
+
+    <span class="k">return</span> <span class="n">experiment</span>
+
+</div>
+<div class="viewcode-block" id="plot_system_ctr"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.plot_system_ctr">[docs]</a><span class="k">def</span> <span class="nf">plot_system_ctr</span><span class="p">(</span><span class="n">system_ctr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot the system ctr time series and write it to ``ctr_plot.pdf``.</span>
+
+<span class="sd">    Time is &quot;fake&quot; so we index it 0, 1, .. len(system_ctr) - 1; i.e.,</span>
+<span class="sd">    time is just iteration/round number in our experiment.</span>
+
+<span class="sd">    :param system_ctr: ctr values to plot, ordered by &quot;time&quot;</span>
+<span class="sd">    :type system_ctr: list of float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+    <span class="c"># The total CTR of the system at each experiment interval</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">system_ctr</span><span class="p">,</span>
+            <span class="s">&#39;bo&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># status quo ctr as a dashed line, this is no optimization</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">system_ctr</span><span class="p">)],</span>
+            <span class="p">[</span><span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">),</span> <span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)],</span>
+            <span class="s">&#39;k--&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># local max ctr as a dashed line, this is local optimization</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">system_ctr</span><span class="p">)],</span>
+            <span class="p">[</span><span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">LOCAL_OPTIMAL_PARAMETER</span><span class="p">),</span> <span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">LOCAL_OPTIMAL_PARAMETER</span><span class="p">)],</span>
+            <span class="s">&#39;k--&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">EXPERIMENT_ITERATIONS</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Experiment Iteration&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;System CTR&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;System CTR vs Experiment Iteration&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;ctr_plot.pdf&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="plot_sample_arms"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.plot_sample_arms">[docs]</a><span class="k">def</span> <span class="nf">plot_sample_arms</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">iteration_number</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot the underlying Gaussian Process, showing samples, GP mean/variance, and the true CTR.</span>
+
+<span class="sd">    Plot is written to ``ab_plot_%.2d.pdf`` where ``%.2d`` is the two-digit ``iteration_number``.</span>
+<span class="sd">    This makes it convenient to sequence the plots later for animation.</span>
+
+<span class="sd">    The shows the current state of the Gaussian Process. Arms currently being sampled are highlighted</span>
+<span class="sd">    with red Xs and previous arms are marked with blue Xs. The GP mean line is drawn and the variance</span>
+<span class="sd">    region is shaded. The true CTR curve (that the GP approximates) is also shown.</span>
+
+<span class="sd">    :param active_arms: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</span>
+<span class="sd">    :type active_arms: list of tuple</span>
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :param iteration_number: the index of the current iteration/round being tested in our experiment</span>
+<span class="sd">    :type iteration_number: int &gt;= 0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">moe_experiment_from_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">)</span>
+
+    <span class="n">resolution</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">x_vals</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)]</span>  <span class="c"># uniform grid of points</span>
+
+    <span class="c"># Calculate the mean and variance of the underlying Gaussian Proccess</span>
+    <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">gp_mean_var</span><span class="p">(</span>
+            <span class="n">experiment</span><span class="o">.</span><span class="n">historical_data</span><span class="o">.</span><span class="n">to_list_of_sample_points</span><span class="p">(),</span>
+            <span class="n">x_vals</span><span class="p">,</span>
+            <span class="n">covariance_info</span><span class="o">=</span><span class="n">COVARIANCE_INFO</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+
+    <span class="c"># Plot the mean line</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">mean</span><span class="p">,</span>
+            <span class="s">&#39;b--&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="c"># Plot the variance</span>
+    <span class="n">var_diag</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">mean</span> <span class="o">-</span> <span class="n">var_diag</span><span class="p">,</span>
+            <span class="n">mean</span> <span class="o">+</span> <span class="n">var_diag</span><span class="p">,</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;green&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># Plot the true, underlying CTR of the system wrt the parameter</span>
+    <span class="n">true_vals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_vals</span><span class="p">])</span> <span class="o">/</span> <span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+            <span class="n">true_vals</span><span class="p">,</span>
+            <span class="s">&#39;k--&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># Plot the observed CTR of the simulated system at sampled parameter values</span>
+    <span class="n">sample_points</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">historical_data</span><span class="o">.</span><span class="n">to_list_of_sample_points</span><span class="p">(),</span>
+    <span class="k">for</span> <span class="n">sample_point</span> <span class="ow">in</span> <span class="n">sample_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sample_point</span><span class="o">.</span><span class="n">point</span><span class="p">)</span> <span class="ow">in</span> <span class="n">active_arms</span><span class="p">:</span>
+            <span class="c"># New points are plotted as red x&#39;s</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;rx&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Previously sampled points are plotted as blue x&#39;s</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;bx&#39;</span>
+        <span class="c"># These are simulated samples, include error bars</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span>
+                <span class="n">sample_point</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">sample_point</span><span class="o">.</span><span class="n">value</span><span class="p">],</span>
+                <span class="n">yerr</span><span class="o">=</span><span class="n">sample_point</span><span class="o">.</span><span class="n">noise_variance</span><span class="p">,</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+                <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Underlying Parameter&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;Relative CTR Gain vs Status Quo&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Relative CTR Gain and Gaussian Process&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;ab_plot_</span><span class="si">%.2d</span><span class="s">.pdf&quot;</span> <span class="o">%</span> <span class="n">iteration_number</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="generate_initial_traffic"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.generate_initial_traffic">[docs]</a><span class="k">def</span> <span class="nf">generate_initial_traffic</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Generate initial traffic allocations.</span>
+
+<span class="sd">    ``active_arms``: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</span>
+
+<span class="sd">    ``sample_arms``: all arms from prev and current cohorts, keyed by coordinate-tuples.</span>
+
+<span class="sd">    Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+
+<span class="sd">    :return: (active_arms, sample_arms) tuple as described above</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctr_at_status_quo</span> <span class="o">=</span> <span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)</span>
+
+    <span class="c"># We draw the clicks from a binomial distribution</span>
+    <span class="n">clicks</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">TRAFFIC_PER_DAY</span><span class="p">,</span> <span class="n">ctr_at_status_quo</span><span class="p">)</span>
+    <span class="n">status_quo_sample_arm</span> <span class="o">=</span> <span class="n">SampleArm</span><span class="p">(</span>
+            <span class="n">win</span><span class="o">=</span><span class="n">clicks</span><span class="p">,</span>
+            <span class="n">total</span><span class="o">=</span><span class="n">TRAFFIC_PER_DAY</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c"># We start with the only active arm being the status quo</span>
+    <span class="n">active_arms</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">)]</span>
+    <span class="n">sample_arms</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">STATUS_QUO_PARAMETER</span><span class="p">):</span> <span class="n">status_quo_sample_arm</span><span class="p">,</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span>
+
+</div>
+<div class="viewcode-block" id="generate_new_arms"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.generate_new_arms">[docs]</a><span class="k">def</span> <span class="nf">generate_new_arms</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find optimal new parameters to sample to get ``active_arms`` up to ``NUMBER_OF_ACTIVE_COHORTS``.</span>
+
+<span class="sd">    This is done in the following way:</span>
+<span class="sd">        1) Find the initial allocations of all active parameters</span>
+<span class="sd">        2) MOE suggests new, optimal arms/parameters to sample, given all previous samples, using Bayesian Global Optimization</span>
+<span class="sd">        3) The new parameters are allocated traffic according to a Multi-Armed Bandit policy for all ``active_arms``</span>
+<span class="sd">        4) If the objective function for a given parameter is too low (with high statistical significance), it is turned off</span>
+<span class="sd">        5) Steps 2-4 are repeated until there are ``NUMBER_OF_ACTIVE_COHORTS`` parameters being sampled with non-zero traffic</span>
+
+<span class="sd">    :param active_arms: list of coordinate-tuples corresponding to arms/cohorts currently being sampled</span>
+<span class="sd">    :type active_arms: list of tuple</span>
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+<span class="sd">    :return: (allocations, active_arms, sample_arms) describing the next round of experiments to run</span>
+
+<span class="sd">      ``allocations``: dict of traffic allocations, indexed by the ``active_arms`` return value</span>
+
+<span class="sd">      ``active_arms``: new active arms to run in the next round of our experiment; same format as the input</span>
+
+<span class="sd">      ``sample_arms``: the sample arms input updated with the newly generated active arms; same format as the input</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># 1) Find initial allocations of all active parameters</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">moe_experiment_from_sample_arms</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">)</span>
+    <span class="n">allocations</span> <span class="o">=</span> <span class="n">get_allocations</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">)</span>
+
+    <span class="c"># Loop while we have too few arms</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">active_arms</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_ACTIVE_COHORTS</span><span class="p">:</span>
+        <span class="c"># 2) MOE suggests new, optimal arms/parameters to sample, given all previous samples, using Bayesian Global Optimization</span>
+        <span class="n">new_points_to_sample</span> <span class="o">=</span> <span class="n">find_new_points_to_sample</span><span class="p">(</span>
+                <span class="n">experiment</span><span class="p">,</span>
+                <span class="n">num_points</span><span class="o">=</span><span class="n">NUMBER_OF_ACTIVE_COHORTS</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">active_arms</span><span class="p">),</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># Add the new points to the list of active_arms</span>
+        <span class="k">for</span> <span class="n">new_point_to_sample</span> <span class="ow">in</span> <span class="n">new_points_to_sample</span><span class="p">:</span>
+            <span class="n">sample_arms</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">new_point_to_sample</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SampleArm</span><span class="p">()</span>
+            <span class="n">active_arms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">new_point_to_sample</span><span class="p">))</span>
+
+        <span class="c"># 3) The new parameters are allocated traffic according to a Multi-Armed Bandit policy for all ``active_arms``</span>
+        <span class="n">allocations</span> <span class="o">=</span> <span class="n">get_allocations</span><span class="p">(</span>
+                <span class="n">active_arms</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># 4) If the objective function for a given parameter is too low (with high statistical significance), it is turned off</span>
+        <span class="c"># Remove arms that have no traffic from active_arms</span>
+        <span class="n">active_arms</span> <span class="o">=</span> <span class="n">prune_arms</span><span class="p">(</span>
+                <span class="n">active_arms</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">allocations</span><span class="p">,</span> <span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span>
+
+</div>
+<div class="viewcode-block" id="run_time_consuming_experiment"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.run_time_consuming_experiment">[docs]</a><span class="k">def</span> <span class="nf">run_time_consuming_experiment</span><span class="p">(</span><span class="n">allocations</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the time consuming or expensive experiment.</span>
+
+<span class="sd">    .. Note::</span>
+
+<span class="sd">        Obtaining the value of the objective function is assmumed to be either time consuming or expensive,</span>
+<span class="sd">        where every evaluation is precious and we want to find the optimal set of parameters with as few calls as possible.</span>
+
+<span class="sd">    This experiment runs a simulation of user traffic over various parameters and users.</span>
+<span class="sd">    It simulates an A/B testing experiment framework.</span>
+
+<span class="sd">    For each arm/cohort, we compute the true CTR. From bandits, we know the allocation of</span>
+<span class="sd">    traffic for that arm. So the simulation involves running (TRAFFIC_PER_DAY * allocation)</span>
+<span class="sd">    Bernoulli trials each with probability = true CTR. Then since we cannot know the true CTR,</span>
+<span class="sd">    we only work with the observed CTR and variance (as computed in</span>
+<span class="sd">    :func:~`moe_examples.blog_post_example_ab_testing.objective_function`).</span>
+
+<span class="sd">    :param allocations: traffic allocations for the ``active_arms``, one for each tuple in ``active_arms``.</span>
+<span class="sd">      These are the cohorts for the experiment round--the parameters being tested and on what portion of traffic.</span>
+<span class="sd">    :type allocations: dict</span>
+<span class="sd">    :param sample_arms: all arms from prev and current cohorts, keyed by coordinate-tuples</span>
+<span class="sd">      Arm refers specifically to a :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :type sample_arms: dict</span>
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arm_updates</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">arm_point</span><span class="p">,</span> <span class="n">arm_allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="c"># Find the true, underlying CTR at the point</span>
+        <span class="n">ctr_at_point</span> <span class="o">=</span> <span class="n">true_click_through_rate</span><span class="p">(</span><span class="n">arm_point</span><span class="p">)</span>
+        <span class="c"># Calculate how much user traffic is allocated to this point</span>
+        <span class="n">traffic_for_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">TRAFFIC_PER_DAY</span> <span class="o">*</span> <span class="n">arm_allocation</span><span class="p">)</span>
+        <span class="c"># Simulate the number of clicks this point will garner</span>
+        <span class="n">clicks</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span>
+                <span class="n">traffic_for_point</span><span class="p">,</span>
+                <span class="n">ctr_at_point</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="c"># Create a SampleArm with the assoicated simulated data</span>
+        <span class="n">sample_arm_for_day</span> <span class="o">=</span> <span class="n">SampleArm</span><span class="p">(</span>
+                <span class="n">win</span><span class="o">=</span><span class="n">clicks</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">traffic_for_point</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="c"># Store the information about the simulated experiment</span>
+        <span class="n">arm_updates</span><span class="p">[</span><span class="n">arm_point</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_arm_for_day</span>
+        <span class="n">sample_arms</span><span class="p">[</span><span class="n">arm_point</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_arms</span><span class="p">[</span><span class="n">arm_point</span><span class="p">]</span> <span class="o">+</span> <span class="n">sample_arm_for_day</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Updated the samples with:&quot;</span>
+        <span class="k">for</span> <span class="n">arm_name</span><span class="p">,</span> <span class="n">sample_arm</span> <span class="ow">in</span> <span class="n">arm_updates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">print</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">{0}: {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arm_name</span><span class="p">,</span> <span class="n">sample_arm</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">arm_updates</span>
+
+</div>
+<div class="viewcode-block" id="calculate_system_ctr"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.calculate_system_ctr">[docs]</a><span class="k">def</span> <span class="nf">calculate_system_ctr</span><span class="p">(</span><span class="n">arms</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the average CTR for the entire system, given a set of arms.</span>
+
+<span class="sd">    This is different than :func:~`moe_examples.blog_post_example_ab_testing.objective_function`</span>
+<span class="sd">    which computes observed mean and variance for a single arm.</span>
+<span class="sd">    This function is a summary statistic for the entire experiment.</span>
+
+<span class="sd">    :param arms: arms currently being evaluated in the system</span>
+<span class="sd">    :type arms: list of :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">    :return: calculated system-wide CTR</span>
+<span class="sd">    :type: float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clicks</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">impressions</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">sample_arm</span> <span class="ow">in</span> <span class="n">arms</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+        <span class="n">clicks</span> <span class="o">+=</span> <span class="n">sample_arm</span><span class="o">.</span><span class="n">win</span>
+        <span class="n">impressions</span> <span class="o">+=</span> <span class="n">sample_arm</span><span class="o">.</span><span class="n">total</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">clicks</span><span class="p">)</span> <span class="o">/</span> <span class="n">impressions</span>
+
+</div>
+<div class="viewcode-block" id="run_example"><a class="viewcode-back" href="../../moe_examples.html#moe_examples.blog_post_example_ab_testing.run_example">[docs]</a><span class="k">def</span> <span class="nf">run_example</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the example experiment framework.</span>
+
+<span class="sd">    This is done in the following way:</span>
+<span class="sd">        1) Generate initial data</span>
+<span class="sd">        2) Run the experiment ``EXPERIMENT_ITERATIONS`` times</span>
+<span class="sd">            a) Removing underperforming arms/parameters</span>
+<span class="sd">            b) Generate new parameters to sample (aka new arms to replace those removed)</span>
+<span class="sd">            c) Sample the new arms/parameters</span>
+<span class="sd">            d) Plot the updated GP from the new parameters</span>
+<span class="sd">            e) Repeat</span>
+<span class="sd">        3) Plot out summary metrics</span>
+
+<span class="sd">    .. Note::</span>
+
+<span class="sd">        Below, ``active_arms`` is a list of tuples. The tuples are the coordinates of the point</span>
+<span class="sd">        represented by ``active_arms``. This is so that members of ``active_arms`` can be used</span>
+<span class="sd">        as keys. In turn, ``sample_arms`` is a dict keyed on those same coordinate tuples.</span>
+<span class="sd">        The tuples make it convenient to switch between serializable types and lists/arrays.</span>
+
+<span class="sd">        In practice, users would likely give their cohorts str names. These names could key</span>
+<span class="sd">        both ``active_arms`` (which becomes a dict mapping name to coordinates) and</span>
+<span class="sd">        ``sample_arms``.</span>
+
+<span class="sd">    :param verbose: whether to print status messages to stdout</span>
+<span class="sd">    :type verbose: bool</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># 1) Generate initial data</span>
+    <span class="c"># Initialize the experiment with the status quo values</span>
+    <span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span> <span class="o">=</span> <span class="n">generate_initial_traffic</span><span class="p">()</span>
+    <span class="n">system_ctr</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">calculate_system_ctr</span><span class="p">(</span><span class="n">sample_arms</span><span class="p">),</span>
+            <span class="p">]</span>
+
+    <span class="c"># status_quo is iteration 0</span>
+    <span class="n">plot_sample_arms</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># start indexing from 1, but we want EXPERIMENT_ITERATIONS total runs</span>
+    <span class="k">for</span> <span class="n">iteration_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">EXPERIMENT_ITERATIONS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c"># 2a) Remove underperforming arms/parameters</span>
+        <span class="n">active_arms</span> <span class="o">=</span> <span class="n">prune_arms</span><span class="p">(</span>
+                <span class="n">active_arms</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># 2b) Generate new parameters to sample (aka new arms to replace those removed)</span>
+        <span class="n">allocations</span><span class="p">,</span> <span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span> <span class="o">=</span> <span class="n">generate_new_arms</span><span class="p">(</span>
+                <span class="n">active_arms</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># 2c) Sample the new parameters/arms</span>
+        <span class="n">sample_arms</span><span class="p">,</span> <span class="n">arm_updates</span> <span class="o">=</span> <span class="n">run_time_consuming_experiment</span><span class="p">(</span>
+                <span class="n">allocations</span><span class="p">,</span>
+                <span class="n">sample_arms</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c"># save the current system CTR for the final summary plot</span>
+        <span class="n">system_ctr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">calculate_system_ctr</span><span class="p">(</span><span class="n">arm_updates</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="c"># 2d) Plot the updated GP from the new parameters</span>
+        <span class="n">plot_sample_arms</span><span class="p">(</span><span class="n">active_arms</span><span class="p">,</span> <span class="n">sample_arms</span><span class="p">,</span> <span class="n">iteration_number</span><span class="p">)</span>
+
+    <span class="c"># 3) Plot out summary metrics</span>
+    <span class="c"># plot the CTR time series (i.e., vs iteration number)</span>
+    <span class="n">plot_system_ctr</span><span class="p">(</span><span class="n">system_ctr</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># Run the example from the blog post</span>
+    <span class="n">run_example</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

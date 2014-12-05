@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.views.rest_test_case &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.views.rest_test_case &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../index.html"/>
         <link rel="up" title="moe" href="../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -232,22 +234,23 @@
   <h1>Source code for moe.tests.views.rest_test_case</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Base class for testing the REST interface against the C++ interface.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
 
-<div class="viewcode-block" id="RestTestCase"><a class="viewcode-back" href="../../../../moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase">[docs]</a><span class="k">class</span> <span class="nc">RestTestCase</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="RestTestCase"><a class="viewcode-back" href="../../../../moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase">[docs]</a><span class="k">class</span> <span class="nc">RestTestCase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Base class for testing the REST interface against the C++ interface.&quot;&quot;&quot;</span>
 
     <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="nd">@T.class_setup</span>
-<div class="viewcode-block" id="RestTestCase.create_webapp"><a class="viewcode-back" href="../../../../moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.create_webapp">[docs]</a>    <span class="k">def</span> <span class="nf">create_webapp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a mocked webapp and store it in self.testapp.&quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+    <span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="RestTestCase.create_webapp"><a class="viewcode-back" href="../../../../moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.create_webapp">[docs]</a>    <span class="k">def</span> <span class="nf">create_webapp</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a mocked webapp and store it in cls.testapp.&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">moe</span> <span class="kn">import</span> <span class="n">main</span>
         <span class="n">app</span> <span class="o">=</span> <span class="n">main</span><span class="p">({},</span> <span class="n">use_mongo</span><span class="o">=</span><span class="s">&#39;false&#39;</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">webtest</span> <span class="kn">import</span> <span class="n">TestApp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">testapp</span> <span class="o">=</span> <span class="n">TestApp</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div></div>
+        <span class="n">cls</span><span class="o">.</span><span class="n">testapp</span> <span class="o">=</span> <span class="n">TestApp</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -278,7 +281,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

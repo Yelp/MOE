@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.python_version.covariance_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.python_version.covariance_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -243,7 +245,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
@@ -252,7 +254,7 @@
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.optimal_learning_test_case</span> <span class="kn">import</span> <span class="n">OptimalLearningTestCase</span>
 
 
-<div class="viewcode-block" id="SquareExponentialTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest">[docs]</a><span class="k">class</span> <span class="nc">SquareExponentialTest</span><span class="p">(</span><span class="n">OptimalLearningTestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSquareExponential"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential">[docs]</a><span class="k">class</span> <span class="nc">TestSquareExponential</span><span class="p">(</span><span class="n">OptimalLearningTestCase</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Tests for the computation of the SquareExponential covariance and spatial gradient of covariance.</span>
 
@@ -260,13 +262,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="nd">@T.class_setup</span>
-<div class="viewcode-block" id="SquareExponentialTest.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestSquareExponential.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set up parameters for test cases.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">CovarianceClass</span> <span class="o">=</span> <span class="n">SquareExponential</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">CovarianceClass</span> <span class="o">=</span> <span class="n">SquareExponential</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">one_dim_test_sets</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">one_dim_test_sets</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
             <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
             <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
             <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
@@ -275,7 +278,7 @@
             <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span>
         <span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">three_dim_test_sets</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">three_dim_test_sets</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
             <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
             <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
             <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
@@ -290,7 +293,7 @@
             <span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
         <span class="p">])</span>
 </div>
-<div class="viewcode-block" id="SquareExponentialTest.test_square_exponential_covariance_one_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_one_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_covariance_one_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSquareExponential.test_square_exponential_covariance_one_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_covariance_one_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_covariance_one_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test the SquareExponential covariance function against correct values for different sets of hyperparameters in 1D.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">hyperparameters</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_dim_test_sets</span><span class="p">:</span>
             <span class="n">signal_variance</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -319,7 +322,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
             <span class="p">)</span>
 </div>
-<div class="viewcode-block" id="SquareExponentialTest.test_square_exponential_covariance_three_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_three_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_covariance_three_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSquareExponential.test_square_exponential_covariance_three_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_covariance_three_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_covariance_three_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test the SquareExponential covariance function against correct values for different sets of hyperparameters in 3D.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">hyperparameters</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">three_dim_test_sets</span><span class="p">:</span>
             <span class="n">signal_variance</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -368,7 +371,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
             <span class="p">)</span>
 </div>
-<div class="viewcode-block" id="SquareExponentialTest.test_square_exponential_grad_covariance_three_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_grad_covariance_three_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_grad_covariance_three_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSquareExponential.test_square_exponential_grad_covariance_three_dim"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_grad_covariance_three_dim">[docs]</a>    <span class="k">def</span> <span class="nf">test_square_exponential_grad_covariance_three_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test the SquareExponential grad_covariance function against correct values for different sets of hyperparameters in 3D.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">hyperparameters</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">three_dim_test_sets</span><span class="p">:</span>
             <span class="n">length</span> <span class="o">=</span> <span class="n">hyperparameters</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -394,9 +397,9 @@
             <span class="n">grad_cov2</span> <span class="o">=</span> <span class="n">covariance</span><span class="o">.</span><span class="n">grad_covariance</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">length</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grad_cov2</span><span class="p">,</span> <span class="n">truth2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">)</span>
 
-            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">grad_cov1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="n">grad_cov2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">assert</span> <span class="n">grad_cov1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="n">grad_cov2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="SquareExponentialTest.test_hyperparameter_gradient_pings"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_hyperparameter_gradient_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_hyperparameter_gradient_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestSquareExponential.test_hyperparameter_gradient_pings"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_hyperparameter_gradient_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_hyperparameter_gradient_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters.&quot;&quot;&quot;</span>
         <span class="n">h</span> <span class="o">=</span> <span class="mf">2.0e-3</span>
         <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">4.0e-5</span>
@@ -442,11 +445,7 @@
                 <span class="c"># calculate finite diff</span>
                 <span class="n">fd_grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">cov_p</span> <span class="o">-</span> <span class="n">cov_m</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">fd_grad</span><span class="p">,</span> <span class="n">analytic_grad</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tolerance</span><span class="p">)</span>
-
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">fd_grad</span><span class="p">,</span> <span class="n">analytic_grad</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tolerance</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -477,7 +476,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.python_version.optimization &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.optimal_learning.python.python_version.optimization &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -405,6 +407,8 @@
 <span class="sd">fail, we commonly fall back to &#39;dumb&#39; search.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+
 <span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -542,7 +546,8 @@
 
     <span class="sd">r&quot;&quot;&quot;Container to hold parameters that specify the behavior of L-BFGS-B.</span>
 
-<span class="sd">    Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.</span>
+<span class="sd">    Suggested values come from scipy documentation for ``scipy.optimize.fmin_l_bfgs_b``:</span>
+<span class="sd">    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</span>
 
 <span class="sd">    :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient</span>
 <span class="sd">    :ivar max_func_evals: (*int &gt; 0*) maximum number of objective function calls to make (suggest: 15000)</span>
@@ -554,6 +559,47 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+<div class="viewcode-block" id="LBFGSBParameters.scipy_kwargs"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters.scipy_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">scipy_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_l_bfgs_b``.</span>
+
+<span class="sd">        :return: kwargs for controlling the behavior of fmin_l_bfgs_b</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+        <span class="n">out_dict</span><span class="p">[</span><span class="s">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;max_metric_correc&#39;</span><span class="p">)</span>
+        <span class="n">out_dict</span><span class="p">[</span><span class="s">&#39;maxfun&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;max_func_evals&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_dict</span>
+
+
+<span class="c"># See COBYLAParameters (below) for docstring.</span></div></div>
+<span class="n">_BaseCOBYLAParameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_BaseCOBYLAParameters&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&#39;rhobeg&#39;</span><span class="p">,</span>
+    <span class="s">&#39;rhoend&#39;</span><span class="p">,</span>
+    <span class="s">&#39;maxfun&#39;</span><span class="p">,</span>
+    <span class="s">&#39;catol&#39;</span><span class="p">,</span>
+<span class="p">])</span>
+
+
+<div class="viewcode-block" id="COBYLAParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAParameters">[docs]</a><span class="k">class</span> <span class="nc">COBYLAParameters</span><span class="p">(</span><span class="n">_BaseCOBYLAParameters</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Container to hold parameters that specify the behavior of COBYLA.</span>
+
+<span class="sd">    Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla:</span>
+<span class="sd">    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_cobyla.html</span>
+
+<span class="sd">    :ivar rhobeg: (*float64 &gt; 0.0*) reasonable initial changes to the variables (suggest: 1.0)</span>
+<span class="sd">    :ivar rhoend: (*float64 &gt; 0.0*) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)</span>
+<span class="sd">    :ivar maxfun: (*int &gt; 0*) maximum number of objective function calls to make (suggest: 1000)</span>
+<span class="sd">    :ivar catol: (*float64 &gt; 0.0*) absolute tolerance for constraint violations (suggest: 2.0e-4)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="c"># Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_cobyla``.</span>
+    <span class="n">scipy_kwargs</span> <span class="o">=</span> <span class="n">_BaseCOBYLAParameters</span><span class="o">.</span><span class="n">_asdict</span>
 
 </div>
 <div class="viewcode-block" id="NullOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.NullOptimizer">[docs]</a><span class="k">class</span> <span class="nc">NullOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
@@ -763,8 +809,8 @@
 <span class="sd">        reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every</span>
 <span class="sd">        individual multistart run if desired (through function_values).</span>
 
-<span class="sd">        :param starting_points: points from which to multistart ``self.optimizer``; if None, points are chosen randomly</span>
-<span class="sd">        :type starting_points: array of float64 with shape (num_points, dim) or None</span>
+<span class="sd">        :param random_starts: points from which to multistart ``self.optimizer``; if None, points are chosen randomly</span>
+<span class="sd">        :type random_starts: array of float64 with shape (num_points, dim) or None</span>
 <span class="sd">        :return: (best point found, objective function values at the end of each optimization run)</span>
 <span class="sd">        :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))</span>
 
@@ -790,56 +836,55 @@
         <span class="k">return</span> <span class="n">best_point</span><span class="p">,</span> <span class="n">function_value_list</span>
 
 </div></div>
-<div class="viewcode-block" id="LBFGSBOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">[docs]</a><span class="k">class</span> <span class="nc">LBFGSBOptimizer</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_ScipyOptimizerWrapper</span><span class="p">(</span><span class="n">OptimizerInterface</span><span class="p">):</span>
 
-    <span class="sd">r&quot;&quot;&quot;Optimizes an objective function over the specified domain with the L-BFGS-B method.</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper class to construct an optimizer from scipy optimization methods.</span>
 
-<span class="sd">    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can</span>
-<span class="sd">    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for</span>
-<span class="sd">    the analytic qEI algorithm.</span>
-
-<span class="sd">    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.</span>
-<span class="sd">    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for</span>
-<span class="sd">    these types of problems.</span>
-
-<span class="sd">    For more information:</span>
-<span class="sd">    http://en.wikipedia.org/wiki/Limited-memory_BFGS</span>
-<span class="sd">    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</span>
-
-<span class="sd">    .. Note:: See optimize() docstring for more details.</span>
+<span class="sd">    Requires the implementation of the :func:`~moe.optimal_learning.python.python_interface.optimization._ScipyOptimizerWrapper._optimize_core` method.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">,</span> <span class="n">num_random_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a LBFGSBOptimizer.</span>
+    <span class="c"># Type of the optimization_parameters object, specified in subclass</span>
+    <span class="n">optimization_parameters_type</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct the optimizer.</span>
 
 <span class="sd">        :param domain: the domain that this optimizer operates over</span>
-<span class="sd">        :type domain: interfaces.domain_interface.DomainInterface subclass. Only supports TensorProductDomain.</span>
+<span class="sd">        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass.</span>
 <span class="sd">        :param optimizable: object representing the objective function being optimized</span>
-<span class="sd">        :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass</span>
+<span class="sd">        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass</span>
 <span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
-<span class="sd">        :type optimization_parameters: python_version.optimization.LBFGSBParameters object</span>
+<span class="sd">        :type optimization_parameters: ``python_version.optimization.*Parameters`` object, matching optimization_parameters_type</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span> <span class="o">=</span> <span class="n">optimizable</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span> <span class="o">=</span> <span class="n">optimization_parameters</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimization_parameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;optimization_paramters is of type: {0:s}, expected {1:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters_type</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span> <span class="o">=</span> <span class="n">optimization_parameters</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="s">&#39;num_repeats&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">num_repeats</span>
 
     <span class="k">def</span> <span class="nf">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper function for expected improvement calculation to feed into BFGS.</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper function for expected improvement calculation to feed into the optimizer function.</span>
 
-<span class="sd">        func should be of the form compute_* in interfaces.optimization_interface.OptimizableInterface.</span>
+<span class="sd">        func should be of the form ``compute_*`` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.</span>
 
-<span class="sd">            Converts the point to proper format and sets the current point before calling the compute function.</span>
+<span class="sd">            Converts the point to proper format (array with dim (self._num_points, self.domain.dim) instead of flat array)</span>
+<span class="sd">            and sets the current point before calling the compute function.</span>
 
 <span class="sd">            :param point: the point on which to do the calculation</span>
-<span class="sd">            :type point: array of float64 with shape (self._num_points * self.domain.dim)</span>
+<span class="sd">            :type point: array of float64 with shape (self._num_points * self.domain.dim, )</span>
+
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">shaped_point</span>
@@ -851,33 +896,119 @@
 
         <span class="k">return</span> <span class="n">decorated</span>
 
-<div class="viewcode-block" id="LBFGSBOptimizer.optimize"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform an L-BFGS-B optimization given the parameters in optimization_parameters.</span>
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform optimization with :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` and shape the output point.</span>
 
-<span class="sd">        objective_function.current_point will be set to the optimal point found.</span>
+<span class="sd">        Calls the :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` method.</span>
+<span class="sd">        ``objective_function.current_point`` will be set to the optimal point found.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">domain_bounding_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">get_bounding_box</span><span class="p">()</span>
-        <span class="n">domain_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">domain_bounding_box</span><span class="p">]</span>
-        <span class="n">domain_numpy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">domain_list</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">)</span>
+        <span class="n">unshaped_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_core</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="c"># Parameters defined above in LBFGSBParameters class.</span>
-        <span class="n">unshaped_point</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_l_bfgs_b</span><span class="p">(</span>
-            <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
-            <span class="n">x0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
-            <span class="n">bounds</span><span class="o">=</span><span class="n">domain_numpy</span><span class="p">,</span>
-            <span class="n">fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
-            <span class="n">approx_grad</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">approx_grad</span><span class="p">,</span>
-            <span class="n">factr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">factr</span><span class="p">,</span>
-            <span class="n">maxfun</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_func_evals</span><span class="p">,</span>
-            <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">max_metric_correc</span><span class="p">,</span>
-            <span class="n">pgtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">pgtol</span><span class="p">,</span>
-            <span class="n">epsilon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
-        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">unshaped_point</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">shaped_point</span> <span class="o">=</span> <span class="n">unshaped_point</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">shaped_point</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">shaped_point</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_optimize_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Should return an unshaped point corresponding to the output of the optimizer function from scipy.</span>
+
+<span class="sd">        See :func:`~moe.optimal_learning.python.python_version.optimization.LBFGSOptimizer._optimize_core` or</span>
+<span class="sd">        :func:`~moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer._optimize_core` function for examples.</span>
+
+<span class="sd">        :return: The unshaped optimal point from calling the scipy optimization method.</span>
+<span class="sd">        :rtype: array of float64 with shape (self._num_points * self.domain.dim, )</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="LBFGSBOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">[docs]</a><span class="k">class</span> <span class="nc">LBFGSBOptimizer</span><span class="p">(</span><span class="n">_ScipyOptimizerWrapper</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Optimizes an objective function over the specified domain with the L-BFGS-B method.</span>
+
+<span class="sd">    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can</span>
+<span class="sd">    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for</span>
+<span class="sd">    the analytic qEI algorithm.</span>
+
+<span class="sd">    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.</span>
+<span class="sd">    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for</span>
+<span class="sd">    these types of problems.</span>
+
+<span class="sd">    For more information, visit the scipy docs and the wikipedia page on BFGS:</span>
+<span class="sd">    http://en.wikipedia.org/wiki/Limited-memory_BFGS</span>
+<span class="sd">    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optimization_parameters_type</span> <span class="o">=</span> <span class="n">LBFGSBParameters</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">,</span> <span class="n">num_random_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a LBFGSBOptimizer.</span>
+
+<span class="sd">        :param domain: the domain that this optimizer operates over</span>
+<span class="sd">        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain.</span>
+<span class="sd">        :param optimizable: object representing the objective function being optimized</span>
+<span class="sd">        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass</span>
+<span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
+<span class="sd">        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LBFGSBOptimizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_optimize_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform an L-BFGS-B optimization given the parameters in ``self.optimization_parameters``.&quot;&quot;&quot;</span>
+        <span class="n">domain_bounding_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">get_bounding_box</span><span class="p">()</span>
+        <span class="n">domain_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">interval</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">interval</span><span class="o">.</span><span class="n">max</span><span class="p">)</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">domain_bounding_box</span><span class="p">]</span>
+        <span class="n">domain_numpy</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">domain_list</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">)</span>
+
+        <span class="c"># Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_l_bfgs_b</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="n">bounds</span><span class="o">=</span><span class="n">domain_numpy</span><span class="p">,</span>
+            <span class="n">fprime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_grad_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">scipy_kwargs</span><span class="p">()</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="COBYLAOptimizer"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer">[docs]</a><span class="k">class</span> <span class="nc">COBYLAOptimizer</span><span class="p">(</span><span class="n">_ScipyOptimizerWrapper</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Optimizes an objective function over the specified contraints with the COBYLA method.</span>
+
+<span class="sd">    For more information, visit the scipy docs page and the original paper by Powell:</span>
+<span class="sd">    http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html</span>
+<span class="sd">    http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">optimization_parameters_type</span> <span class="o">=</span> <span class="n">COBYLAParameters</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a COBYLAOptimizer.</span>
+
+<span class="sd">        :param domain: the domain that this optimizer operates over</span>
+<span class="sd">        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain for now.</span>
+<span class="sd">        :param optimizable: object representing the objective function being optimized</span>
+<span class="sd">        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass</span>
+<span class="sd">        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)</span>
+<span class="sd">        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">COBYLAOptimizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">optimizable</span><span class="p">,</span> <span class="n">optimization_parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_optimize_core</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a COBYLA optimization given the parameters in ``self.optimization_parameters``.&quot;&quot;&quot;</span>
+        <span class="c"># Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` class.</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_cobyla</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_scipy_decorator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">compute_objective_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_function</span><span class="o">.</span><span class="n">current_point</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="n">cons</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">get_constraint_list</span><span class="p">(),</span>
+            <span class="n">disp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c"># Suppresses output from the routine.</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_parameters</span><span class="o">.</span><span class="n">scipy_kwargs</span><span class="p">()</span>
+        <span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -908,7 +1039,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

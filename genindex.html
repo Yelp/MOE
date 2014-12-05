@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; MOE 0.2.0 documentation</title>
+  <title>Index &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/> 
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -276,24 +278,24 @@
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.bla.BLA.allocate_arms">allocate_arms() (moe.bandit.bla.BLA method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.bandit_interface.BanditInterface.allocate_arms">allocate_arms() (moe.bandit.bandit_interface.BanditInterface method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_first.EpsilonFirst.allocate_arms">(moe.bandit.epsilon_first.EpsilonFirst method)</a>
+  <dt><a href="moe.bandit.bla.html#moe.bandit.bla.bla.BLA.allocate_arms">(moe.bandit.bla.bla.BLA method)</a>
   </dt>
 
         
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy.allocate_arms">(moe.bandit.epsilon_greedy.EpsilonGreedy method)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_first.EpsilonFirst.allocate_arms">(moe.bandit.epsilon.epsilon_first.EpsilonFirst method)</a>
   </dt>
 
         
-  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface.allocate_arms">(moe.bandit.interfaces.bandit_interface.BanditInterface method)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy.allocate_arms">(moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy method)</a>
   </dt>
 
         
-  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.allocate_arms">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb_interface.UCBInterface.allocate_arms">(moe.bandit.ucb.ucb_interface.UCBInterface method)</a>
   </dt>
 
       </dl></dd>
@@ -310,7 +312,7 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.approx_grad">approx_grad (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.approx_grad">approx_grad (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
   </dl></td>
@@ -328,19 +330,19 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">assert_points_distinct() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">assert_points_distinct() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase static method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">assert_scalar_within_absolute() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">assert_scalar_within_absolute() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase static method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative">assert_scalar_within_relative() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative">assert_scalar_within_relative() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase static method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative">assert_vector_within_relative() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative">assert_vector_within_relative() (moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase static method)</a>
   </dt>
 
   </dl></td>
@@ -367,23 +369,23 @@
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bla_test.BLATest.bandit_class">(moe.tests.bandit.bla_test.BLATest attribute)</a>
+  <dt><a href="moe.tests.bandit.bla.html#moe.tests.bandit.bla.bla_test.TestBLA.bandit_class">(moe.tests.bandit.bla.bla_test.TestBLA attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.bandit_class">(moe.tests.bandit.epsilon_first_test.EpsilonFirstTest attribute)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.bandit_class">(moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.bandit_class">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest attribute)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.bandit_class">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.bandit_class">(moe.tests.bandit.ucb1_test.UCB1Test attribute)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.bandit_class">(moe.tests.bandit.ucb.ucb1_test.TestUCB1 attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.bandit_class">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest attribute)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.bandit_class">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned attribute)</a>
   </dt>
 
       </dl></dd>
@@ -424,19 +426,11 @@
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.bandit_example_test.BanditExampleTest">BanditExampleTest (class in moe_examples.tests.bandit_example_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditHistoricalInfo">BanditHistoricalInfo (class in moe.views.schemas.bandit_pretty_view)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface">BanditInterface (class in moe.bandit.interfaces.bandit_interface)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest">BanditInterfaceTest (class in moe.tests.bandit.bandit_interface_test)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.bandit_interface.BanditInterface">BanditInterface (class in moe.bandit.bandit_interface)</a>
   </dt>
 
       
@@ -447,12 +441,12 @@
   <dt><a href="moe.views.html#moe.views.bandit_pretty_view.BanditPrettyView">BanditPrettyView (class in moe.views.bandit_pretty_view)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.bandit_pretty_view.BanditResponse">BanditResponse (class in moe.views.schemas.bandit_pretty_view)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase">BanditTestCase (class in moe.tests.bandit.bandit_test_case)</a>
   </dt>
@@ -466,40 +460,48 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.base_setup">base_setup() (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.base_setup">base_setup() (moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin class method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.base_setup">(moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.base_setup">(moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup">(moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.base_setup">(moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.base_setup">(moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters.base_setup">(moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.base_setup">(moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup">(moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.base_setup">(moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.base_setup">(moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.base_setup">(moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.base_setup">(moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.base_setup">(moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential class method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.base_setup">(moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.base_setup">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement class method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer.base_setup">(moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer class method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.base_setup">(moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer class method)</a>
   </dt>
 
       </dl></dd>
@@ -508,19 +510,19 @@
   </dt>
 
       
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.bernoulli_mean_and_var">bernoulli_mean_and_var() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
   <dt><a href="moe.bandit.html#moe.bandit.data_containers.BernoulliArm">BernoulliArm (class in moe.bandit.data_containers)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.BFGS_parameters">BFGS_parameters (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.BFGS_parameters">BFGS_parameters (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.bla.BLA">BLA (class in moe.bandit.bla)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bla_test.BLATest">BLATest (class in moe.tests.bandit.bla_test)</a>
+  <dt><a href="moe.bandit.bla.html#moe.bandit.bla.bla.BLA">BLA (class in moe.bandit.bla.bla)</a>
   </dt>
 
       
@@ -558,6 +560,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.calculate_system_ctr">calculate_system_ctr() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
   <dt><a href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.call_endpoint_with_payload">call_endpoint_with_payload() (in module moe.easy_interface.simple_endpoint)</a>
   </dt>
 
@@ -584,7 +590,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface.choose_arm">choose_arm() (moe.bandit.interfaces.bandit_interface.BanditInterface static method)</a>
+  <dt><a href="moe.bandit.html#moe.bandit.bandit_interface.BanditInterface.choose_arm">choose_arm() (moe.bandit.bandit_interface.BanditInterface static method)</a>
   </dt>
 
       
@@ -592,11 +598,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest">ClosedIntervalTest (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer">COBYLAOptimizer (class in moe.optimal_learning.python.python_version.optimization)</a>
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.CombinedExampleTest">CombinedExampleTest (class in moe_examples.tests.combined_example_test)</a>
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAParameters">COBYLAParameters (class in moe.optimal_learning.python.python_version.optimization)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject">ComparableTestObject (class in moe.tests.optimal_learning.python.comparison_test)</a>
   </dt>
 
       
@@ -799,6 +809,8 @@
   <dt><a href="moe.views.html#moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView.compute_next_points_to_sample_response">compute_next_points_to_sample_response() (moe.views.gp_next_points_pretty_view.GpNextPointsPrettyView method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.compute_objective_function">compute_objective_function() (moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement method)</a>
   </dt>
@@ -825,8 +837,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain.compute_update_restricted_to_domain">compute_update_restricted_to_domain() (moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain method)</a>
   </dt>
@@ -886,6 +896,10 @@
 
       </dl></dd>
       
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.COVARIANCE_INFO">COVARIANCE_INFO (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.covariance_type">covariance_type (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential attribute)</a>
   </dt>
 
@@ -936,16 +950,12 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.CppUnitTestWrapperTest">CppUnitTestWrapperTest (class in moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.create_webapp">create_webapp() (moe.tests.views.rest_test_case.RestTestCase method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase.create_webapp">create_webapp() (moe.tests.views.rest_test_case.RestTestCase class method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.moe_example_test_case.MoeExampleTestCase.create_webapp">(moe_examples.tests.moe_example_test_case.MoeExampleTestCase method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.moe_example_test_case.MoeExampleTestCase.create_webapp">(moe_examples.tests.moe_example_test_case.MoeExampleTestCase class method)</a>
   </dt>
 
       </dl></dd>
@@ -981,10 +991,6 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest">DataContainersTest (class in moe.tests.bandit.data_containers_test)</a>
-  </dt>
-
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.DEFAULT_MAX_NUM_THREADS">DEFAULT_MAX_NUM_THREADS (in module moe.optimal_learning.python.constant)</a>
   </dt>
@@ -1055,11 +1061,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.dim">(moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.dim">(moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.dim">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.dim">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -1067,11 +1073,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.dim">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.dim">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.dim">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.dim">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
         
@@ -1080,24 +1086,24 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.disable_logging">disable_logging() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.disable_logging">disable_logging() (in module moe.tests.bandit.bandit_interface_test)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.disable_logging">(moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.disable_logging">(in module moe.tests.bandit.data_containers_test)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.disable_logging">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test.disable_logging">(in module moe.tests.bandit.epsilon.epsilon_test)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.disable_logging">(moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.disable_logging">(in module moe.tests.bandit.utils_test)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.disable_logging">(moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.disable_logging">(in module moe.tests.views.exceptions_test)</a>
   </dt>
 
       </dl></dd>
@@ -1158,28 +1164,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.enable_logging">enable_logging() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.enable_logging">(moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
-  </dt>
-
-        
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.enable_logging">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
-  </dt>
-
-        
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.enable_logging">(moe.tests.bandit.utils_test.UtilsTest method)</a>
-  </dt>
-
-        
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.enable_logging">(moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
-  </dt>
-
-      </dl></dd>
-      
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_ei_test.TestGpEiView.endpoint">endpoint (moe.tests.views.rest.gp_ei_test.TestGpEiView attribute)</a>
   </dt>
 
@@ -1198,41 +1182,37 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.epsilon">epsilon (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.epsilon">epsilon (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_first.EpsilonFirst">EpsilonFirst (class in moe.bandit.epsilon_first)</a>
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.EPSILON_BANDIT_PARAMETER">EPSILON_BANDIT_PARAMETER (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest">EpsilonFirstTest (class in moe.tests.bandit.epsilon_first_test)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_first.EpsilonFirst">EpsilonFirst (class in moe.bandit.epsilon.epsilon_first)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy">EpsilonGreedy (class in moe.bandit.epsilon_greedy)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy">EpsilonGreedy (class in moe.bandit.epsilon.epsilon_greedy)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest">EpsilonGreedyTest (class in moe.tests.bandit.epsilon_greedy_test)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_interface.EpsilonInterface">EpsilonInterface (class in moe.bandit.epsilon.epsilon_interface)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_interface.EpsilonInterface">EpsilonInterface (class in moe.bandit.epsilon_interface)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test_case.EpsilonTestCase.epsilons_to_test">epsilons_to_test (moe.tests.bandit.epsilon.epsilon_test_case.EpsilonTestCase attribute)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test_case.EpsilonTestCase.epsilons_to_test">epsilons_to_test (moe.tests.bandit.epsilon_test_case.EpsilonTestCase attribute)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test_case.EpsilonTestCase">EpsilonTestCase (class in moe.tests.bandit.epsilon.epsilon_test_case)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest">EpsilonTest (class in moe.tests.bandit.epsilon_test)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test_case.EpsilonTestCase">EpsilonTestCase (class in moe.tests.bandit.epsilon_test_case)</a>
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.comparison.EqualityComparisonMixin">EqualityComparisonMixin (class in moe.optimal_learning.python.comparison)</a>
   </dt>
 
       
@@ -1256,10 +1236,6 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest">ExceptionStructureTest (class in moe.tests.optimal_learning.python.cpp_wrappers.exception_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement">ExpectedImprovement (class in moe.optimal_learning.python.cpp_wrappers.expected_improvement)</a>
   </dt>
 
@@ -1274,17 +1250,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest">ExpectedImprovementTest (class in moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest">(class in moe.tests.optimal_learning.python.python_version.expected_improvement_test)</a>
-  </dt>
-
-      </dl></dd>
-      
   <dt><a href="moe.easy_interface.html#moe.easy_interface.experiment.Experiment">Experiment (class in moe.easy_interface.experiment)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.EXPERIMENT_DOMAIN">EXPERIMENT_DOMAIN (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.EXPERIMENT_ITERATIONS">EXPERIMENT_ITERATIONS (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
   </dl></td>
@@ -1294,7 +1268,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.factr">factr (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.factr">factr (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
@@ -1305,10 +1279,14 @@
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_utils.fill_random_covariance_hyperparameters">fill_random_covariance_hyperparameters() (in module moe.tests.optimal_learning.python.gaussian_process_test_utils)</a>
   </dt>
 
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_utils.fill_random_domain_bounds">fill_random_domain_bounds() (in module moe.tests.optimal_learning.python.gaussian_process_test_utils)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_utils.fill_random_domain_bounds">fill_random_domain_bounds() (in module moe.tests.optimal_learning.python.gaussian_process_test_utils)</a>
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.find_new_points_to_sample">find_new_points_to_sample() (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -1372,15 +1350,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest">GaussianProcessLogMarginalLikelihoodTest (class in moe.tests.optimal_learning.python.python_version.log_likelihood_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.GaussianProcessParameters">GaussianProcessParameters (class in moe.optimal_learning.python.constant)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest">GaussianProcessTest (class in moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test)</a>
   </dt>
 
       
@@ -1408,7 +1378,15 @@
   </dt>
 
       
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.generate_initial_traffic">generate_initial_traffic() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.geometry_utils.generate_latin_hypercube_points">generate_latin_hypercube_points() (in module moe.optimal_learning.python.geometry_utils)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.generate_new_arms">generate_new_arms() (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -1452,7 +1430,11 @@
 
       </dl></dd>
       
-  <dt><a href="moe.bandit.html#moe.bandit.bla.BLA.get_bla_payoff">get_bla_payoff() (moe.bandit.bla.BLA method)</a>
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.get_allocations">get_allocations() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.bla.html#moe.bandit.bla.bla.BLA.get_bla_payoff">get_bla_payoff() (moe.bandit.bla.bla.BLA method)</a>
   </dt>
 
       
@@ -1470,6 +1452,24 @@
 
         
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.get_bounding_box">(moe.optimal_learning.python.repeated_domain.RepeatedDomain method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_constraint_list">get_constraint_list() (moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.domain_interface.DomainInterface.get_constraint_list">(moe.optimal_learning.python.interfaces.domain_interface.DomainInterface method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_constraint_list">(moe.optimal_learning.python.python_version.domain.TensorProductDomain method)</a>
+  </dt>
+
+        
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.repeated_domain.RepeatedDomain.get_constraint_list">(moe.optimal_learning.python.repeated_domain.RepeatedDomain method)</a>
   </dt>
 
       </dl></dd>
@@ -1606,39 +1606,43 @@
 
       </dl></dd>
       
-  <dt><a href="moe.bandit.html#moe.bandit.ucb1.UCB1.get_ucb_payoff">get_ucb_payoff() (moe.bandit.ucb1.UCB1 method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1.UCB1.get_ucb_payoff">get_ucb_payoff() (moe.bandit.ucb.ucb1.UCB1 method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned.get_ucb_payoff">(moe.bandit.ucb1_tuned.UCB1Tuned method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1_tuned.UCB1Tuned.get_ucb_payoff">(moe.bandit.ucb.ucb1_tuned.UCB1Tuned method)</a>
   </dt>
 
         
-  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_ucb_payoff">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb_interface.UCBInterface.get_ucb_payoff">(moe.bandit.ucb.ucb_interface.UCBInterface method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_unsampled_arm_names">get_unsampled_arm_names() (moe.bandit.ucb_interface.UCBInterface static method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb_interface.UCBInterface.get_unsampled_arm_names">get_unsampled_arm_names() (moe.bandit.ucb.ucb_interface.UCBInterface static method)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.bla.BLA.get_winning_arm_names">get_winning_arm_names() (moe.bandit.bla.BLA method)</a>
+  <dt><a href="moe.bandit.bla.html#moe.bandit.bla.bla.BLA.get_winning_arm_names">get_winning_arm_names() (moe.bandit.bla.bla.BLA method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.bandit.html#moe.bandit.epsilon_interface.EpsilonInterface.get_winning_arm_names">(moe.bandit.epsilon_interface.EpsilonInterface static method)</a>
+  <dt><a href="moe.bandit.epsilon.html#moe.bandit.epsilon.epsilon_interface.EpsilonInterface.get_winning_arm_names">(moe.bandit.epsilon.epsilon_interface.EpsilonInterface static method)</a>
   </dt>
 
         
-  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface.get_winning_arm_names">(moe.bandit.ucb_interface.UCBInterface method)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb_interface.UCBInterface.get_winning_arm_names">(moe.bandit.ucb.ucb_interface.UCBInterface method)</a>
   </dt>
 
       </dl></dd>
       
   <dt><a href="moe.bandit.html#moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list">get_winning_arm_names_from_payoff_arm_name_list() (in module moe.bandit.utils)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.GLOBAL_OPTIMAL_PARAMETER">GLOBAL_OPTIMAL_PARAMETER (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -1677,6 +1681,8 @@
   <dt><a href="moe.easy_interface.html#moe.easy_interface.simple_endpoint.gp_next_points">gp_next_points() (in module moe.easy_interface.simple_endpoint)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar.gp_next_points_constant_liar_view">gp_next_points_constant_liar_view() (moe.views.rest.gp_next_points_constant_liar.GpNextPointsConstantLiar method)</a>
   </dt>
@@ -1685,8 +1691,6 @@
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_next_points_epi.GpNextPointsEpi.gp_next_points_epi_view">gp_next_points_epi_view() (moe.views.rest.gp_next_points_epi.GpNextPointsEpi method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.gp_next_points_kriging.GpNextPointsKriging.gp_next_points_kriging_view">gp_next_points_kriging_view() (moe.views.rest.gp_next_points_kriging.GpNextPointsKriging method)</a>
   </dt>
@@ -1696,12 +1700,12 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">gp_test_environment_input (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.gp_test_environment_input">gp_test_environment_input (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.gp_test_environment_input">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.gp_test_environment_input">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -1709,11 +1713,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.gp_test_environment_input">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.gp_test_environment_input">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.gp_test_environment_input">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.gp_test_environment_input">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
       </dl></dd>
@@ -1892,10 +1896,6 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest">GradientDescentOptimizerTest (class in moe.tests.optimal_learning.python.python_version.optimization_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters">GradientDescentParameters (class in moe.optimal_learning.python.cpp_wrappers.optimization)</a>
   </dt>
 
@@ -1907,10 +1907,6 @@
       </dl></dd>
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.GradientDescentParametersSchema">GradientDescentParametersSchema (class in moe.views.schemas.base_schemas)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest">GridPointGenerationTest (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
   </dt>
 
   </dl></td>
@@ -1934,12 +1930,6 @@
 
       </dl></dd>
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest">HyperOptOfGpFromHistoricalDataTest (class in moe_examples.tests.hyper_opt_of_gp_from_historical_data_test)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_grad_covariance">hyperparameter_grad_covariance() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential method)</a>
   </dt>
 
@@ -1953,6 +1943,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential.hyperparameter_hessian_covariance">hyperparameter_hessian_covariance() (moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential method)</a>
   </dt>
@@ -2054,10 +2046,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest">LatinHypercubeRandomPointGenerationTest (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">LBFGSBOptimizer (class in moe.optimal_learning.python.python_version.optimization)</a>
   </dt>
 
@@ -2082,31 +2070,25 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest">LinkersTest (class in moe.tests.bandit.linkers_test)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest">(class in moe.tests.optimal_learning.python.linkers_test)</a>
-  </dt>
-
-      </dl></dd>
-      
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfExpectedImprovements">ListOfExpectedImprovements (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfFloats">ListOfFloats (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPointsInDomain">ListOfPointsInDomain (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.ListOfPositiveFloats">ListOfPositiveFloats (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.LOCAL_OPTIMAL_PARAMETER">LOCAL_OPTIMAL_PARAMETER (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -2119,10 +2101,6 @@
 
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.linkers.LogLikelihoodMethod">LogLikelihoodMethod (class in moe.optimal_learning.python.linkers)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest">LogLikelihoodTest (class in moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test)</a>
   </dt>
 
       
@@ -2148,7 +2126,7 @@
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.UtilsTest.make_params_from_bandit_historical_info">make_params_from_bandit_historical_info() (moe.tests.views.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.TestUtils.make_params_from_bandit_historical_info">make_params_from_bandit_historical_info() (moe.tests.views.utils_test.TestUtils method)</a>
   </dt>
 
       
@@ -2164,15 +2142,11 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_func_evals">max_func_evals (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.max_func_evals">max_func_evals (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.max_metric_correc">max_metric_correc (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
-  </dt>
-
-      
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest">MeanAndVarOfGpFromHistoricDataTest (class in moe_examples.tests.mean_and_var_of_gp_from_historic_data_test)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.max_metric_correc">max_metric_correc (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
@@ -2200,7 +2174,15 @@
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.bla">moe.bandit.bla (module)</a>
+  <dt><a href="moe.bandit.html#module-moe.bandit.bandit_interface">moe.bandit.bandit_interface (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.bla.html#module-moe.bandit.bla">moe.bandit.bla (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.bla.html#module-moe.bandit.bla.bla">moe.bandit.bla.bla (module)</a>
   </dt>
 
       
@@ -2212,23 +2194,19 @@
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_first">moe.bandit.epsilon_first (module)</a>
+  <dt><a href="moe.bandit.epsilon.html#module-moe.bandit.epsilon">moe.bandit.epsilon (module)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_greedy">moe.bandit.epsilon_greedy (module)</a>
+  <dt><a href="moe.bandit.epsilon.html#module-moe.bandit.epsilon.epsilon_first">moe.bandit.epsilon.epsilon_first (module)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.epsilon_interface">moe.bandit.epsilon_interface (module)</a>
+  <dt><a href="moe.bandit.epsilon.html#module-moe.bandit.epsilon.epsilon_greedy">moe.bandit.epsilon.epsilon_greedy (module)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.interfaces.html#module-moe.bandit.interfaces">moe.bandit.interfaces (module)</a>
-  </dt>
-
-      
-  <dt><a href="moe.bandit.interfaces.html#module-moe.bandit.interfaces.bandit_interface">moe.bandit.interfaces.bandit_interface (module)</a>
+  <dt><a href="moe.bandit.epsilon.html#module-moe.bandit.epsilon.epsilon_interface">moe.bandit.epsilon.epsilon_interface (module)</a>
   </dt>
 
       
@@ -2236,15 +2214,19 @@
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.ucb1">moe.bandit.ucb1 (module)</a>
+  <dt><a href="moe.bandit.ucb.html#module-moe.bandit.ucb">moe.bandit.ucb (module)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.ucb1_tuned">moe.bandit.ucb1_tuned (module)</a>
+  <dt><a href="moe.bandit.ucb.html#module-moe.bandit.ucb.ucb1">moe.bandit.ucb.ucb1 (module)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#module-moe.bandit.ucb_interface">moe.bandit.ucb_interface (module)</a>
+  <dt><a href="moe.bandit.ucb.html#module-moe.bandit.ucb.ucb1_tuned">moe.bandit.ucb.ucb1_tuned (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.bandit.ucb.html#module-moe.bandit.ucb.ucb_interface">moe.bandit.ucb.ucb_interface (module)</a>
   </dt>
 
       
@@ -2281,6 +2263,10 @@
 
       
   <dt><a href="moe.optimal_learning.python.html#module-moe.optimal_learning.python">moe.optimal_learning.python (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.optimal_learning.python.html#module-moe.optimal_learning.python.comparison">moe.optimal_learning.python.comparison (module)</a>
   </dt>
 
       
@@ -2420,7 +2406,11 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.bla_test">moe.tests.bandit.bla_test (module)</a>
+  <dt><a href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla">moe.tests.bandit.bla (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla.bla_test">moe.tests.bandit.bla.bla_test (module)</a>
   </dt>
 
       
@@ -2428,19 +2418,23 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_first_test">moe.tests.bandit.epsilon_first_test (module)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon">moe.tests.bandit.epsilon (module)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_greedy_test">moe.tests.bandit.epsilon_greedy_test (module)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_first_test">moe.tests.bandit.epsilon.epsilon_first_test (module)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test">moe.tests.bandit.epsilon_test (module)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_greedy_test">moe.tests.bandit.epsilon.epsilon_greedy_test (module)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test_case">moe.tests.bandit.epsilon_test_case (module)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test">moe.tests.bandit.epsilon.epsilon_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test_case">moe.tests.bandit.epsilon.epsilon_test_case (module)</a>
   </dt>
 
       
@@ -2448,15 +2442,19 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_test">moe.tests.bandit.ucb1_test (module)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb">moe.tests.bandit.ucb (module)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_tuned_test">moe.tests.bandit.ucb1_tuned_test (module)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_test">moe.tests.bandit.ucb.ucb1_test (module)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#module-moe.tests.bandit.ucb_test_case">moe.tests.bandit.ucb_test_case (module)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_tuned_test">moe.tests.bandit.ucb.ucb1_tuned_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb_test_case">moe.tests.bandit.ucb.ucb_test_case (module)</a>
   </dt>
 
       
@@ -2472,11 +2470,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#module-moe.tests.optimal_learning.python.cpp_unit_tests">moe.tests.optimal_learning.python.cpp_unit_tests (module)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.comparison_test">moe.tests.optimal_learning.python.comparison_test (module)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#module-moe.tests.optimal_learning.python.cpp_unit_tests">moe.tests.optimal_learning.python.cpp_unit_tests (module)</a>
+  </dt>
+
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#module-moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test">moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test (module)</a>
   </dt>
@@ -2499,6 +2501,10 @@
 
       
   <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test (module)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.optimization_test">moe.tests.optimal_learning.python.cpp_wrappers.optimization_test (module)</a>
   </dt>
 
       
@@ -2738,6 +2744,10 @@
   </dt>
 
       
+  <dt><a href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing (module)</a>
+  </dt>
+
+      
   <dt><a href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example (module)</a>
   </dt>
 
@@ -2782,6 +2792,10 @@
   </dt>
 
       
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.moe_experiment_from_sample_arms">moe_experiment_from_sample_arms() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
   <dt><a href="moe_examples.tests.html#moe_examples.tests.moe_example_test_case.MoeExampleTestCase">MoeExampleTestCase (class in moe_examples.tests.moe_example_test_case)</a>
   </dt>
 
@@ -2815,6 +2829,10 @@
       </dl></dd>
       
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.multistart_optimize">multistart_optimize() (in module moe.optimal_learning.python.python_version.optimization)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.multistarted_optimizer_test">multistarted_optimizer_test() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
@@ -2858,16 +2876,12 @@
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.next_point_via_simple_endpoint_test.NextPointsViaSimpleEndpointTest">NextPointsViaSimpleEndpointTest (class in moe_examples.tests.next_point_via_simple_endpoint_test)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.noise_variance_base">noise_variance_base (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.noise_variance_base">noise_variance_base (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.noise_variance_base">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.noise_variance_base">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -2875,14 +2889,18 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.noise_variance_base">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.noise_variance_base">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.noise_variance_base">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.noise_variance_base">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.NotComparableObject">NotComparableObject (class in moe.tests.optimal_learning.python.comparison_test)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.NullOptimizer">NullOptimizer (class in moe.optimal_learning.python.cpp_wrappers.optimization)</a>
   </dt>
@@ -2894,10 +2912,6 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest">NullOptimizerTest (class in moe.tests.optimal_learning.python.python_version.optimization_test)</a>
-  </dt>
-
-      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.NullParameters">NullParameters (class in moe.optimal_learning.python.cpp_wrappers.optimization)</a>
   </dt>
 
@@ -2907,12 +2921,12 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.NullParametersSchema">NullParametersSchema (class in moe.views.schemas.base_schemas)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.bandit.html#moe.bandit.data_containers.HistoricalData.num_arms">num_arms (moe.bandit.data_containers.HistoricalData attribute)</a>
   </dt>
@@ -2957,11 +2971,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.num_hyperparameters">(moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.num_hyperparameters">(moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.num_hyperparameters">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.num_hyperparameters">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -2969,16 +2983,16 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_hyperparameters">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.num_hyperparameters">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_hyperparameters">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.num_hyperparameters">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_mc_iterations">num_mc_iterations (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.num_mc_iterations">num_mc_iterations (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
@@ -3004,12 +3018,12 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.num_sampled_list">num_sampled_list (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.num_sampled_list">num_sampled_list (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.num_sampled_list">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.num_sampled_list">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -3017,11 +3031,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.num_sampled_list">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.num_sampled_list">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.num_sampled_list">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.num_sampled_list">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
         
@@ -3051,12 +3065,20 @@
   <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.num_to_sample_list">num_to_sample_list (moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase attribute)</a>
   </dt>
 
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.NUMBER_OF_ACTIVE_COHORTS">NUMBER_OF_ACTIVE_COHORTS (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.objective_function">objective_function() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
       
   <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case">one_arm_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
   </dt>
@@ -3073,6 +3095,16 @@
   <dt><a href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface">OptimizableInterface (class in moe.optimal_learning.python.interfaces.optimization_interface)</a>
   </dt>
 
+      
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer.optimization_parameters_type">optimization_parameters_type (moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimization_parameters_type">(moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentOptimizer.optimize">optimize() (moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentOptimizer method)</a>
   </dt>
@@ -3095,10 +3127,6 @@
   </dt>
 
         
-  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize">(moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer method)</a>
-  </dt>
-
-        
   <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.MultistartOptimizer.optimize">(moe.optimal_learning.python.python_version.optimization.MultistartOptimizer method)</a>
   </dt>
 
@@ -3108,15 +3136,19 @@
 
       </dl></dd>
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.linkers.OptimizerMethod.optimizer_type">optimizer_type (moe.optimal_learning.python.linkers.OptimizerMethod attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.optimizer_test">optimizer_test() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS (in module moe.optimal_learning.python.constant)</a>
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.linkers.OptimizerMethod.optimizer_type">optimizer_type (moe.optimal_learning.python.linkers.OptimizerMethod attribute)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS">OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS (in module moe.optimal_learning.python.constant)</a>
+  </dt>
+
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.OPTIMIZER_TYPES">OPTIMIZER_TYPES (in module moe.optimal_learning.python.constant)</a>
   </dt>
@@ -3156,7 +3188,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.pgtol">pgtol (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.pgtol">pgtol (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.plot_sample_arms">plot_sample_arms() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.plot_system_ctr">plot_system_ctr() (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -3180,16 +3220,16 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.precompute_gaussian_process_data">precompute_gaussian_process_data (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.precompute_gaussian_process_data">precompute_gaussian_process_data (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood attribute)</a>
   </dt>
 
         
@@ -3197,11 +3237,11 @@
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.precompute_gaussian_process_data">(moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood attribute)</a>
   </dt>
 
         
@@ -3221,12 +3261,12 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.html#moe.views.pretty_view.PrettyView.pretty_response">pretty_response() (moe.views.pretty_view.PrettyView method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.views.rest.html#moe.views.rest.bandit_bla.BanditBLAView.pretty_view">pretty_view() (moe.views.rest.bandit_bla.BanditBLAView method)</a>
   </dt>
@@ -3311,6 +3351,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.prune_arms">prune_arms() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
       
   <dt><a href="moe.views.html#moe.views.exceptions.pyramid_error_view">pyramid_error_view() (in module moe.views.exceptions)</a>
   </dt>
@@ -3444,17 +3488,13 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions">RestGaussianProcessTestCaseWithExceptions (class in moe.tests.views.exceptions_test)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase">RestTestCase (class in moe.tests.views.rest_test_case)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.rest_test_case.RestTestCase">RestTestCase (class in moe.tests.views.rest_test_case)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.rng_seed">rng_seed (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest attribute)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.rng_seed">rng_seed (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement attribute)</a>
   </dt>
 
       
@@ -3466,6 +3506,10 @@
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.run_example">(in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
         
   <dt><a href="moe_examples.html#moe_examples.combined_example.run_example">(in module moe_examples.combined_example)</a>
   </dt>
@@ -3483,6 +3527,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.run_time_consuming_experiment">run_time_consuming_experiment() (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -3530,6 +3578,16 @@
   </dt>
 
       
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.COBYLAParameters.scipy_kwargs">scipy_kwargs() (moe.optimal_learning.python.python_version.optimization.COBYLAParameters method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.optimal_learning.python.python_version.html#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters.scipy_kwargs">(moe.optimal_learning.python.python_version.optimization.LBFGSBParameters method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement.set_current_point">set_current_point() (moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement method)</a>
   </dt>
 
@@ -3573,18 +3631,26 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.html#moe.optimal_learning.python.constant.GaussianProcessParameters.signal_variance">signal_variance (moe.optimal_learning.python.constant.GaussianProcessParameters attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.domain.SimplexIntersectTensorProductDomain">SimplexIntersectTensorProductDomain (class in moe.optimal_learning.python.cpp_wrappers.domain)</a>
   </dt>
 
       
   <dt><a href="moe.views.schemas.html#moe.views.schemas.base_schemas.SinglePoint">SinglePoint (class in moe.views.schemas.base_schemas)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_function">some_function() (moe.tests.optimal_learning.python.comparison_test.ComparableTestObject method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_property">some_property (moe.tests.optimal_learning.python.comparison_test.ComparableTestObject attribute)</a>
   </dt>
 
       
@@ -3598,7 +3664,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest">SquareExponentialTest (class in moe.tests.optimal_learning.python.python_version.covariance_test)</a>
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.STATUS_QUO_PARAMETER">STATUS_QUO_PARAMETER (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -3626,7 +3692,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_1d_analytic_ei_edge_cases">test_1d_analytic_ei_edge_cases() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_1d_analytic_ei_edge_cases">test_1d_analytic_ei_edge_cases() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
@@ -3634,37 +3700,49 @@
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_badly_formed_json_payload_invalid">test_badly_formed_json_payload_invalid() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions.test_badly_formed_json_payload_invalid">test_badly_formed_json_payload_invalid() (moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_bandit_links_have_all_bandit_endpoints">test_bandit_links_have_all_bandit_endpoints() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_bandit_links_have_all_bandit_endpoints">test_bandit_links_have_all_bandit_endpoints() (moe.tests.bandit.linkers_test.TestLinkers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_bfgs_optimizer">test_bfgs_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_bfgs_multistarted_optimizer">test_bfgs_multistarted_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_covariance_links_have_all_covariance_types">test_covariance_links_have_all_covariance_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_bfgs_optimizer">test_bfgs_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_domain_links_have_all_domain_types">test_domain_links_have_all_domain_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_cobyla_multistarted_optimizer">test_cobyla_multistarted_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_empty_arm_invalid">test_empty_arm_invalid() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_cobyla_optimizer">test_cobyla_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_covariance_links_have_all_covariance_types">test_covariance_links_have_all_covariance_types() (moe.tests.optimal_learning.python.linkers_test.TestLinkers method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_domain_links_have_all_domain_types">test_domain_links_have_all_domain_types() (moe.tests.optimal_learning.python.linkers_test.TestLinkers method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_empty_arm_invalid">test_empty_arm_invalid() (moe.tests.bandit.bandit_interface_test.TestBanditInterface method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_empty_arm_invalid">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test.TestEpsilon.test_empty_arm_invalid">(moe.tests.bandit.epsilon.epsilon_test.TestEpsilon method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_empty_json_payload_invalid">test_empty_json_payload_invalid() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions.test_empty_json_payload_invalid">test_empty_json_payload_invalid() (moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions method)</a>
   </dt>
 
       
@@ -3676,125 +3754,141 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_epsilon_links_have_all_epsilon_subtypes">test_epsilon_links_have_all_epsilon_subtypes() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_epsilon_links_have_all_epsilon_subtypes">test_epsilon_links_have_all_epsilon_subtypes() (moe.tests.bandit.linkers_test.TestLinkers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points">test_evaluate_ei_at_points() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_eq">test_eq() (moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points">test_evaluate_log_likelihood_at_points() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_evaluate_ei_at_points">test_evaluate_ei_at_points() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest.test_example_runs">test_example_runs() (moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.HyperOptOfGpFromHistoricalDataTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_evaluate_log_likelihood_at_points">test_evaluate_log_likelihood_at_points() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood method)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.TestHyperOptOfGpFromHistoricalData.test_example_runs">test_example_runs() (moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.TestHyperOptOfGpFromHistoricalData method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest.test_example_runs">(moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.MeanAndVarOfGpFromHistoricDataTest method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.TestMeanAndVarOfGpFromHistoricData.test_example_runs">(moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.TestMeanAndVarOfGpFromHistoricData method)</a>
   </dt>
 
         
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.next_point_via_simple_endpoint_test.NextPointsViaSimpleEndpointTest.test_example_runs">(moe_examples.tests.next_point_via_simple_endpoint_test.NextPointsViaSimpleEndpointTest method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.next_point_via_simple_endpoint_test.TestNextPointsViaSimpleEndpoint.test_example_runs">(moe_examples.tests.next_point_via_simple_endpoint_test.TestNextPointsViaSimpleEndpoint method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.bandit_example_test.BanditExampleTest.test_example_runs_with_non_default_kwargs">test_example_runs_with_non_default_kwargs() (moe_examples.tests.bandit_example_test.BanditExampleTest method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.bandit_example_test.TestBanditExample.test_example_runs_with_non_default_kwargs">test_example_runs_with_non_default_kwargs() (moe_examples.tests.bandit_example_test.TestBanditExample method)</a>
   </dt>
 
       
-  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.CombinedExampleTest.test_example_runs_with_non_default_optimizer_kwargs">test_example_runs_with_non_default_optimizer_kwargs() (moe_examples.tests.combined_example_test.CombinedExampleTest method)</a>
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.TestCombinedExample.test_example_runs_with_non_default_optimizer_kwargs">test_example_runs_with_non_default_optimizer_kwargs() (moe_examples.tests.combined_example_test.TestCombinedExample method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest.test_exception_class_hierarchy">test_exception_class_hierarchy() (moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.TestExceptionStructure.test_exception_class_hierarchy">test_exception_class_hierarchy() (moe.tests.optimal_learning.python.cpp_wrappers.exception_test.TestExceptionStructure method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest.test_exception_thrown_from_cpp">test_exception_thrown_from_cpp() (moe.tests.optimal_learning.python.cpp_wrappers.exception_test.ExceptionStructureTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.TestExceptionStructure.test_exception_thrown_from_cpp">test_exception_thrown_from_cpp() (moe.tests.optimal_learning.python.cpp_wrappers.exception_test.TestExceptionStructure method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_expected_improvement_and_gradient">test_expected_improvement_and_gradient() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_expected_improvement_and_gradient">test_expected_improvement_and_gradient() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_get_averaging_range">test_get_averaging_range() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_get_averaging_range">test_get_averaging_range() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_empty_arm_invalid">test_get_equal_arm_allocations_empty_arm_invalid() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_empty_arm_invalid">test_get_equal_arm_allocations_empty_arm_invalid() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_no_winner">test_get_equal_arm_allocations_no_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_no_winner">test_get_equal_arm_allocations_no_winner() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_one_winner">test_get_equal_arm_allocations_one_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_one_winner">test_get_equal_arm_allocations_one_winner() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_two_winners">test_get_equal_arm_allocations_two_winners() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_two_winners">test_get_equal_arm_allocations_two_winners() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid">test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid">test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner">test_get_winning_arm_names_from_payoff_arm_name_list_one_winner() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner">test_get_winning_arm_names_from_payoff_arm_name_list_one_winner() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners">test_get_winning_arm_names_from_payoff_arm_name_list_two_winners() (moe.tests.bandit.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners">test_get_winning_arm_names_from_payoff_arm_name_list_two_winners() (moe.tests.bandit.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_gp_add_sampled_points_singular_covariance_matrix">test_gp_add_sampled_points_singular_covariance_matrix() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_gp_add_sampled_points_singular_covariance_matrix">test_gp_add_sampled_points_singular_covariance_matrix() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_gp_construction_singular_covariance_matrix">test_gp_construction_singular_covariance_matrix() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_gp_construction_singular_covariance_matrix">test_gp_construction_singular_covariance_matrix() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings">test_grad_log_likelihood_pings() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_grad_log_likelihood_pings">test_grad_log_likelihood_pings() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer">test_gradient_descent_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_gradient_descent_multistarted_optimizer">test_gradient_descent_multistarted_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_constrained">test_gradient_descent_optimizer_constrained() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_gradient_descent_optimizer">test_gradient_descent_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_gradient_descent_optimizer_with_averaging">test_gradient_descent_optimizer_with_averaging() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_gradient_descent_optimizer_constrained">test_gradient_descent_optimizer_constrained() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest.test_grid_generation">test_grid_generation() (moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_gradient_descent_optimizer_with_averaging">test_gradient_descent_optimizer_with_averaging() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms">test_historical_data_append_arms() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters.test_gradient_descent_parameters">test_gradient_descent_parameters() (moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms_with_variance_invalid">test_historical_data_append_arms_with_variance_invalid() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration.test_grid_generation">test_grid_generation() (moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_unsampled_arm">test_historical_data_append_unsampled_arm() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_hash">test_hash() (moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_str">test_historical_data_str() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms">test_historical_data_append_arms() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms_with_variance_invalid">test_historical_data_append_arms_with_variance_invalid() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_unsampled_arm">test_historical_data_append_unsampled_arm() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_str">test_historical_data_str() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
   </dt>
 
       
@@ -3812,7 +3906,7 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_hyperparameter_gradient_pings">test_hyperparameter_gradient_pings() (moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_hyperparameter_gradient_pings">test_hyperparameter_gradient_pings() (moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential method)</a>
   </dt>
 
       
@@ -3820,20 +3914,20 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_init_default">test_init_default() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_init_default">test_init_default() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_init_default">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_init_default">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_init_default">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.test_init_default">(moe.tests.bandit.ucb.ucb1_test.TestUCB1 method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_init_default">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_init_default">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       </dl></dd>
@@ -3870,47 +3964,47 @@
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_hyperparameters_input">test_invalid_hyperparameters_input() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions.test_invalid_hyperparameters_input">test_invalid_hyperparameters_input() (moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions.test_invalid_points_sampled_input">test_invalid_points_sampled_input() (moe.tests.views.exceptions_test.RestGaussianProcessTestCaseWithExceptions method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions.test_invalid_points_sampled_input">test_invalid_points_sampled_input() (moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_empty">test_is_empty() (moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_empty">test_is_empty() (moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_inside">test_is_inside() (moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_inside">test_is_inside() (moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced">test_latin_hypercube_equally_spaced() (moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_equally_spaced">test_latin_hypercube_equally_spaced() (moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain">test_latin_hypercube_within_domain() (moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_within_domain">test_latin_hypercube_within_domain() (moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length">test_length() (moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_length">test_length() (moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types">test_likelihood_links_have_all_likelihood_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_likelihood_links_have_all_likelihood_types">test_likelihood_links_have_all_likelihood_types() (moe.tests.optimal_learning.python.linkers_test.TestLinkers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_make_bernoulli_arms">test_make_bandit_historical_info_from_params_make_bernoulli_arms() (moe.tests.views.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.TestUtils.test_make_bandit_historical_info_from_params_make_bernoulli_arms">test_make_bandit_historical_info_from_params_make_bernoulli_arms() (moe.tests.views.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.UtilsTest.test_make_bandit_historical_info_from_params_variance_passed_through">test_make_bandit_historical_info_from_params_variance_passed_through() (moe.tests.views.utils_test.UtilsTest method)</a>
+  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.TestUtils.test_make_bandit_historical_info_from_params_variance_passed_through">test_make_bandit_historical_info_from_params_variance_passed_through() (moe.tests.views.utils_test.TestUtils method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain">test_make_rand_point_within_domain() (moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_make_rand_point_within_domain">test_make_rand_point_within_domain() (moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration method)</a>
   </dt>
 
       
@@ -3918,71 +4012,65 @@
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization">test_multistart_analytic_expected_improvement_optimization() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization">test_multistart_hyperparameter_optimization() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_analytic_expected_improvement_optimization">test_multistart_analytic_expected_improvement_optimization() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization">test_multistart_monte_carlo_expected_improvement_optimization() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_multistart_hyperparameter_optimization">test_multistart_hyperparameter_optimization() (moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo">test_multistart_qei_expected_improvement_dfo() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_monte_carlo_expected_improvement_optimization">test_multistart_monte_carlo_expected_improvement_optimization() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_bfgs_optimizer">test_multistarted_bfgs_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_qei_expected_improvement_dfo">test_multistart_qei_expected_improvement_dfo() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer">test_multistarted_gradient_descent_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer.test_multistarted_gradient_descent_optimizer_crippled_start">test_multistarted_gradient_descent_optimizer_crippled_start() (moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest.test_multistarted_gradient_descent_optimizer_crippled_start">test_multistarted_gradient_descent_optimizer_crippled_start() (moe.tests.optimal_learning.python.python_version.optimization_test.GradientDescentOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer.test_multistarted_null_optimizer">test_multistarted_null_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_multistarted_null_optimizer">test_multistarted_null_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters.test_newton_parameters">test_newton_parameters() (moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest.test_null_optimizer">test_null_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.NullOptimizerTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer.test_null_optimizer">test_null_optimizer() (moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_one_arm">test_one_arm() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_one_arm">test_one_arm() (moe.tests.bandit.bandit_interface_test.TestBanditInterface method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bla_test.BLATest.test_one_arm">(moe.tests.bandit.bla_test.BLATest method)</a>
+  <dt><a href="moe.tests.bandit.bla.html#moe.tests.bandit.bla.bla_test.TestBLA.test_one_arm">(moe.tests.bandit.bla.bla_test.TestBLA method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_one_arm">(moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_one_arm">(moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_one_arm">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_one_arm">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_one_arm">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.test_one_arm">(moe.tests.bandit.ucb.ucb1_test.TestUCB1 method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_one_arm">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_one_arm">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_optimization_links_have_all_optimizer_types">test_optimization_links_have_all_optimizer_types() (moe.tests.optimal_learning.python.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_optimization_links_have_all_optimizer_types">test_optimization_links_have_all_optimizer_types() (moe.tests.optimal_learning.python.linkers_test.TestLinkers method)</a>
   </dt>
 
       
@@ -3996,175 +4084,177 @@
 
       </dl></dd>
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest.test_python_and_cpp_return_same_1d_analytic_ei_and_gradient">test_python_and_cpp_return_same_1d_analytic_ei_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement.test_python_and_cpp_return_same_1d_analytic_ei_and_gradient">test_python_and_cpp_return_same_1d_analytic_ei_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_python_and_cpp_return_same_cholesky_variance_and_gradient">test_python_and_cpp_return_same_cholesky_variance_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_python_and_cpp_return_same_cholesky_variance_and_gradient">test_python_and_cpp_return_same_cholesky_variance_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood.test_python_and_cpp_return_same_log_likelihood_and_gradient">test_python_and_cpp_return_same_log_likelihood_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest.test_python_and_cpp_return_same_log_likelihood_and_gradient">test_python_and_cpp_return_same_log_likelihood_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.LogLikelihoodTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_python_and_cpp_return_same_mu_and_gradient">test_python_and_cpp_return_same_mu_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_python_and_cpp_return_same_mu_and_gradient">test_python_and_cpp_return_same_mu_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_python_and_cpp_return_same_variance_and_gradient">test_python_and_cpp_return_same_variance_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_python_and_cpp_return_same_variance_and_gradient">test_python_and_cpp_return_same_variance_and_gradient() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_qd_and_1d_return_same_analytic_ei">test_qd_and_1d_return_same_analytic_ei() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei">test_qd_and_1d_return_same_analytic_ei() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_qd_ei_with_self">test_qd_ei_with_self() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_ei_with_self">test_qd_ei_with_self() (moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.TestCppUnitTestWrapper.test_run_cpp_unit_tests">test_run_cpp_unit_tests() (moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.TestCppUnitTestWrapper method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.CppUnitTestWrapperTest.test_run_cpp_unit_tests">test_run_cpp_unit_tests() (moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.CppUnitTestWrapperTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add">test_sample_arm_add() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add">test_sample_arm_add() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add_arm_with_variance_invalid">test_sample_arm_add_arm_with_variance_invalid() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add_arm_with_variance_invalid">test_sample_arm_add_arm_with_variance_invalid() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_iadd">test_sample_arm_iadd() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_iadd">test_sample_arm_iadd() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_str">test_sample_arm_str() (moe.tests.bandit.data_containers_test.TestDataContainers method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_str">test_sample_arm_str() (moe.tests.bandit.data_containers_test.DataContainersTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess.test_sample_point_from_gp">test_sample_point_from_gp() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest.test_sample_point_from_gp">test_sample_point_from_gp() (moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.GaussianProcessTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_covariance_one_dim">test_square_exponential_covariance_one_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_one_dim">test_square_exponential_covariance_one_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_covariance_three_dim">test_square_exponential_covariance_three_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_covariance_three_dim">test_square_exponential_covariance_three_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential.test_square_exponential_grad_covariance_three_dim">test_square_exponential_grad_covariance_three_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest.test_square_exponential_grad_covariance_three_dim">test_square_exponential_grad_covariance_three_dim() (moe.tests.optimal_learning.python.python_version.covariance_test.SquareExponentialTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_three_arms">test_three_arms() (moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms">test_three_arms() (moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_three_arms_diferent_variance">test_three_arms_diferent_variance() (moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_diferent_variance">test_three_arms_diferent_variance() (moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_three_arms_exploit">test_three_arms_exploit() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit">test_three_arms_exploit() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_three_arms_exploit_two_winners">test_three_arms_exploit_two_winners() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit_two_winners">test_three_arms_exploit_two_winners() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_three_arms_explore">test_three_arms_explore() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_explore">test_three_arms_explore() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_one_unsampled_arm">test_three_arms_one_unsampled_arm() (moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.test_three_arms_one_unsampled_arm">test_three_arms_one_unsampled_arm() (moe.tests.bandit.ucb.ucb1_test.TestUCB1 method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_one_unsampled_arm">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_three_arms_one_unsampled_arm">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_three_arms_two_winners">test_three_arms_two_winners() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_three_arms_two_winners">test_three_arms_two_winners() (moe.tests.bandit.bandit_interface_test.TestBanditInterface method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms_two_winners">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_three_arms_two_winners">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_three_arms_two_winners">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test.TestEpsilon.test_three_arms_two_winners">(moe.tests.bandit.epsilon.epsilon_test.TestEpsilon method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_two_winners">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.test_three_arms_two_winners">(moe.tests.bandit.ucb.ucb1_test.TestUCB1 method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_two_winners">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_three_arms_two_winners">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_one">test_two_arms_epsilon_one() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_two_arms_epsilon_one">test_two_arms_epsilon_one() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_one">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_two_arms_epsilon_one">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_zero">test_two_arms_epsilon_zero() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_two_arms_epsilon_zero">test_two_arms_epsilon_zero() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_zero">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_two_arms_epsilon_zero">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_two_arms_one_winner">test_two_arms_one_winner() (moe.tests.bandit.bandit_interface_test.BanditInterfaceTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_two_arms_one_winner">test_two_arms_one_winner() (moe.tests.bandit.bandit_interface_test.TestBanditInterface method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bla_test.BLATest.test_two_arms_one_winner">(moe.tests.bandit.bla_test.BLATest method)</a>
+  <dt><a href="moe.tests.bandit.bla.html#moe.tests.bandit.bla.bla_test.TestBLA.test_two_arms_one_winner">(moe.tests.bandit.bla.bla_test.TestBLA method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_unsampled_arms">test_two_unsampled_arms() (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.test_two_unsampled_arms">test_two_unsampled_arms() (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_unsampled_arms">(moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy.test_two_unsampled_arms">(moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_test.EpsilonTest.test_two_unsampled_arms">(moe.tests.bandit.epsilon_test.EpsilonTest method)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test.TestEpsilon.test_two_unsampled_arms">(moe.tests.bandit.epsilon.epsilon_test.TestEpsilon method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test.test_two_unsampled_arms">(moe.tests.bandit.ucb1_test.UCB1Test method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1.test_two_unsampled_arms">(moe.tests.bandit.ucb.ucb1_test.TestUCB1 method)</a>
   </dt>
 
         
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_two_unsampled_arms">(moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest method)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned.test_two_unsampled_arms">(moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_ucb_links_have_all_ucb_subtypes">test_ucb_links_have_all_ucb_subtypes() (moe.tests.bandit.linkers_test.LinkersTest method)</a>
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_ucb_links_have_all_ucb_subtypes">test_ucb_links_have_all_ucb_subtypes() (moe.tests.bandit.linkers_test.TestLinkers method)</a>
   </dt>
 
       
@@ -4176,11 +4266,77 @@
   </dt>
 
       
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.bandit_example_test.TestBanditExample">TestBanditExample (class in moe_examples.tests.bandit_example_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface">TestBanditInterface (class in moe.tests.bandit.bandit_interface_test)</a>
+  </dt>
+
+      
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_ucb_test.TestBanditUCBViews">TestBanditUCBViews (class in moe.tests.views.rest.bandit_ucb_test)</a>
   </dt>
 
       
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.bandit_test.TestBanditViews">TestBanditViews (class in moe.tests.views.rest.bandit_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.bla.html#moe.tests.bandit.bla.bla_test.TestBLA">TestBLA (class in moe.tests.bandit.bla.bla_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval">TestClosedInterval (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.combined_example_test.TestCombinedExample">TestCombinedExample (class in moe_examples.tests.combined_example_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_unit_tests.html#moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test.TestCppUnitTestWrapper">TestCppUnitTestWrapper (class in moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.data_containers_test.TestDataContainers">TestDataContainers (class in moe.tests.bandit.data_containers_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_test.TestEpsilon">TestEpsilon (class in moe.tests.bandit.epsilon.epsilon_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst">TestEpsilonFirst (class in moe.tests.bandit.epsilon.epsilon_first_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_greedy_test.TestEpsilonGreedy">TestEpsilonGreedy (class in moe.tests.bandit.epsilon.epsilon_greedy_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin">TestEqualityComparisonMixin (class in moe.tests.optimal_learning.python.comparison_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.exception_test.TestExceptionStructure">TestExceptionStructure (class in moe.tests.optimal_learning.python.cpp_wrappers.exception_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test.TestExpectedImprovement">TestExpectedImprovement (class in moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement">(class in moe.tests.optimal_learning.python.python_version.expected_improvement_test)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test.TestGaussianProcess">TestGaussianProcess (class in moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood">TestGaussianProcessLogMarginalLikelihood (class in moe.tests.optimal_learning.python.python_version.log_likelihood_test)</a>
   </dt>
 
       
@@ -4199,6 +4355,78 @@
   <dt><a href="moe.tests.views.rest.html#moe.tests.views.rest.gp_next_points_test.TestGpNextPointsViews">TestGpNextPointsViews (class in moe.tests.views.rest.gp_next_points_test)</a>
   </dt>
 
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration">TestGridPointGeneration (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.hyper_opt_of_gp_from_historical_data_test.TestHyperOptOfGpFromHistoricalData">TestHyperOptOfGpFromHistoricalData (class in moe_examples.tests.hyper_opt_of_gp_from_historical_data_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration">TestLatinHypercubeRandomPointGeneration (class in moe.tests.optimal_learning.python.geometry_utils_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers">TestLinkers (class in moe.tests.bandit.linkers_test)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers">(class in moe.tests.optimal_learning.python.linkers_test)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test.TestLogLikelihood">TestLogLikelihood (class in moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.mean_and_var_of_gp_from_historic_data_test.TestMeanAndVarOfGpFromHistoricData">TestMeanAndVarOfGpFromHistoricData (class in moe_examples.tests.mean_and_var_of_gp_from_historic_data_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.tests.html#moe_examples.tests.next_point_via_simple_endpoint_test.TestNextPointsViaSimpleEndpoint">TestNextPointsViaSimpleEndpoint (class in moe_examples.tests.next_point_via_simple_endpoint_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestNullOptimizer">TestNullOptimizer (class in moe.tests.optimal_learning.python.python_version.optimization_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.optimization_test.TestOptimizer">TestOptimizer (class in moe.tests.optimal_learning.python.python_version.optimization_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.cpp_wrappers.html#moe.tests.optimal_learning.python.cpp_wrappers.optimization_test.TestOptimizerParameters">TestOptimizerParameters (class in moe.tests.optimal_learning.python.cpp_wrappers.optimization_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.views.html#moe.tests.views.exceptions_test.TestRestGaussianProcessWithExceptions">TestRestGaussianProcessWithExceptions (class in moe.tests.views.exceptions_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.covariance_test.TestSquareExponential">TestSquareExponential (class in moe.tests.optimal_learning.python.python_version.covariance_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_test.TestUCB1">TestUCB1 (class in moe.tests.bandit.ucb.ucb1_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb1_tuned_test.TestUCB1Tuned">TestUCB1Tuned (class in moe.tests.bandit.ucb.ucb1_tuned_test)</a>
+  </dt>
+
+      
+  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.TestUtils">TestUtils (class in moe.tests.bandit.utils_test)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.TestUtils">(class in moe.tests.views.utils_test)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="moe.tests.bandit.html#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case">three_arms_float_payoffs_test_case (moe.tests.bandit.bandit_test_case.BanditTestCase attribute)</a>
   </dt>
@@ -4246,7 +4474,15 @@
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.total_samples_to_test">total_samples_to_test (moe.tests.bandit.epsilon_first_test.EpsilonFirstTest attribute)</a>
+  <dt><a href="moe.tests.bandit.epsilon.html#moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst.total_samples_to_test">total_samples_to_test (moe.tests.bandit.epsilon.epsilon_first_test.TestEpsilonFirst attribute)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.TRAFFIC_PER_DAY">TRAFFIC_PER_DAY (in module moe_examples.blog_post_example_ab_testing)</a>
+  </dt>
+
+      
+  <dt><a href="moe_examples.html#moe_examples.blog_post_example_ab_testing.true_click_through_rate">true_click_through_rate() (in module moe_examples.blog_post_example_ab_testing)</a>
   </dt>
 
       
@@ -4264,45 +4500,27 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.bandit.html#moe.bandit.ucb1.UCB1">UCB1 (class in moe.bandit.ucb1)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1.UCB1">UCB1 (class in moe.bandit.ucb.ucb1)</a>
   </dt>
 
       
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_test.UCB1Test">UCB1Test (class in moe.tests.bandit.ucb1_test)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb1_tuned.UCB1Tuned">UCB1Tuned (class in moe.bandit.ucb.ucb1_tuned)</a>
   </dt>
 
       
-  <dt><a href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned">UCB1Tuned (class in moe.bandit.ucb1_tuned)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest">UCB1TunedTest (class in moe.tests.bandit.ucb1_tuned_test)</a>
+  <dt><a href="moe.bandit.ucb.html#moe.bandit.ucb.ucb_interface.UCBInterface">UCBInterface (class in moe.bandit.ucb.ucb_interface)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="moe.bandit.html#moe.bandit.ucb_interface.UCBInterface">UCBInterface (class in moe.bandit.ucb_interface)</a>
-  </dt>
-
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.ucb_test_case.UCBTestCase">UCBTestCase (class in moe.tests.bandit.ucb_test_case)</a>
+  <dt><a href="moe.tests.bandit.ucb.html#moe.tests.bandit.ucb.ucb_test_case.UCBTestCase">UCBTestCase (class in moe.tests.bandit.ucb.ucb_test_case)</a>
   </dt>
 
       
   <dt><a href="moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.cpp_utils.uncppify">uncppify() (in module moe.optimal_learning.python.cpp_wrappers.cpp_utils)</a>
   </dt>
 
-      
-  <dt><a href="moe.tests.bandit.html#moe.tests.bandit.utils_test.UtilsTest">UtilsTest (class in moe.tests.bandit.utils_test)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="moe.tests.views.html#moe.tests.views.utils_test.UtilsTest">(class in moe.tests.views.utils_test)</a>
-  </dt>
-
-      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -4398,7 +4616,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

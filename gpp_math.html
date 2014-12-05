@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_math &mdash; MOE 0.2.0 documentation</title>
+  <title>gpp_math &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_random_test" href="gpp_random_test.html"/>
         <link rel="prev" title="gpp_python_model_selection" href="gpp_python_model_selection.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -420,7 +422,9 @@ Journal of Global Optimization, 13, 455-492.</li>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Functions</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1a349b2b417f39d01939fcfdfcff8d1326"></span><div class="line-block">
 <div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>SetupExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_one_potential_sample_expected_improvement_evaluator"><em>OnePotentialSampleExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, double const *restrict starting_point, int max_num_threads, bool configure_for_gradients, std::vector&lt; typename  <a class="reference internal" href="#project0structoptimal__learning_1_1_one_potential_sample_expected_improvement_state"><em>OnePotentialSampleExpectedImprovementEvaluator::StateType</em></a>  &gt; * state_vector)</div>
@@ -592,9 +596,9 @@ true optima (i.e., the gradient may be substantially nonzero).</p>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1aee72005f81c57e341686999becfa034a"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1aff5d007560a4367af248b62bcd281074"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>ComputeOptimalPointsToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a> thread_schedule, double const *restrict start_point_set, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, <a class="reference internal" href="gpp_random.html#project0classoptimal__learning_1_1_normal_r_n_g"><em>NormalRNG</em></a>  * normal_rng, bool *restrict found_flag, double *restrict best_next_point)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>ComputeOptimalPointsToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict start_point_set, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, <a class="reference internal" href="gpp_random.html#project0classoptimal__learning_1_1_normal_r_n_g"><em>NormalRNG</em></a>  * normal_rng, bool *restrict found_flag, double *restrict best_next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -1998,7 +2002,7 @@ Useful for testing&#8211;e.g., can conduct multiple runs with the same initial c
 <p><span class="target" id="project0classoptimal__learning_1_1_gaussian_process_1a28d4fe0e34bae84d499fa5b5525db7b8"></span>constexpr double <strong>kMinimumStdDev</strong></p>
 <blockquote>
 <div><p></p>
-<p>Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision). Values that are too small result in problems b/c we may compute <tt class="docutils literal"><span class="pre">std_dev/var</span></tt> (which is enormous if <tt class="docutils literal"><span class="pre">std_dev</span> <span class="pre">=</span> <span class="pre">1.0e-150</span></tt> and <tt class="docutils literal"><span class="pre">var</span> <span class="pre">=</span> <span class="pre">1.0e-300</span></tt>) since this only arises when we fail to compute <tt class="docutils literal"><span class="pre">std_dev</span> <span class="pre">=</span> <span class="pre">var</span> <span class="pre">=</span> <span class="pre">0.0</span></tt>. Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value is below the smallest amount of noise users can meaningfully add. This value was chosen to be consistent with the singularity condition in CholeskyFactorL and tested for robustness with the setup in EIOnePotentialSampleEdgeCasesTest(). </p>
+<p>Minimum allowed standard deviation value in ComputeGradCholeskyVarianceOfPointsPerPoint (= machine precision). Values that are too small result in problems b/c we may compute <tt class="docutils literal"><span class="pre">std_dev/var</span></tt> (which is enormous if <tt class="docutils literal"><span class="pre">std_dev</span> <span class="pre">=</span> <span class="pre">1.0e-150</span></tt> and <tt class="docutils literal"><span class="pre">var</span> <span class="pre">=</span> <span class="pre">1.0e-300</span></tt>) since this only arises when we fail to compute <tt class="docutils literal"><span class="pre">std_dev</span> <span class="pre">=</span> <span class="pre">var</span> <span class="pre">=</span> <span class="pre">0.0</span></tt>. Note: this is only relevant if noise = 0.0; this minimum will not affect GPs with noise since this value is below the smallest amount of noise users can meaningfully add. This value was chosen to be consistent with the singularity condition in CholeskyFactorL and tested for robustness with the setup in <a class="reference internal" href="gpp_math_test.html#project0namespaceoptimal__learning_1a462dd5b27f3d3431be48058fc52c1040"><em>EIOnePotentialSampleEdgeCasesTest()</em></a>. </p>
 </div></blockquote>
 </div></blockquote>
 <em>Protected Functions</em><blockquote>
@@ -3062,7 +3066,9 @@ relevant derivations for gradients of these quantities.  Suffice to say there&#8
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Functions</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1a50f40171d8c7e0497411b03f9342a7cb"></span><div class="line-block">
 <div class="line">void <strong>EvaluateEIAtPointList</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0classoptimal__learning_1_1_normal_r_n_g"><em>NormalRNG</em></a>  * normal_rng, double *restrict function_values, double *restrict best_next_point)</div>
@@ -3304,7 +3310,7 @@ the (pesudo)random source for MC integration</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -1,0 +1,38 @@
+moe.bandit.ucb package
+======================
+
+Submodules
+----------
+
+moe.bandit.ucb.ucb1 module
+--------------------------
+
+.. automodule:: moe.bandit.ucb.ucb1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.ucb.ucb1_tuned module
+--------------------------------
+
+.. automodule:: moe.bandit.ucb.ucb1_tuned
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.ucb.ucb_interface module
+-----------------------------------
+
+.. automodule:: moe.bandit.ucb.ucb_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.bandit.ucb
+    :members:
+    :undoc-members:
+    :show-inheritance:

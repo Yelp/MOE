@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Install &mdash; MOE 0.2.0 documentation</title>
+  <title>Install &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="next" title="How does MOE work?" href="moe_math.html"/>
         <link rel="prev" title="Why Do We Need MOE?" href="why_moe.html"/> 
 
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -144,6 +145,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -292,7 +294,7 @@ $ python setup.py install
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a class="reference internal" href="#cmake-tips">CMake Tips</a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
+<p class="last">MOE&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> invokes cmake. <tt class="docutils literal"><span class="pre">setup.py</span></tt> installs MOE with the python installation used to run it; so be sure to invoke <tt class="docutils literal"><span class="pre">setup.py</span></tt> with the Python that you want to use to run MOE. If this fails, then consult <a class="reference internal" href="#python-tips">Python Tips</a>. Users can pass command line arguments to cmake via the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Other sections (e.g., <a class="reference internal" href="#python-tips">Python Tips</a>, <a class="reference internal" href="#cmake-tips">CMake Tips</a>) detail additional environment variables that may be needed to customize cmake&#8217;s behavior.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -300,51 +302,6 @@ $ python setup.py install
 </div>
 </li>
 </ol>
-<div class="section" id="python-tips">
-<h3>Python Tips<a class="headerlink" href="#python-tips" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes cmake will fail to find your Python installation or you will want to specify an alternate Python. To specify Python, add:</p>
-<div class="highlight-python"><div class="highlight"><pre>-D MOE_PYTHON_INCLUDE_DIR=/path/to/where/Python.h/is/found
--D MOE_PYTHON_LIBRARY=/path/to/python/shared/library/object
-</pre></div>
-</div>
-<p>to the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. For example, an OS X user might have:</p>
-<div class="highlight-python"><div class="highlight"><pre>export MOE_CMAKE_OPTS=&#39;-D CMAKE_FIND_ROOT_PATH=/opt/local -D MOE_PYTHON_INCLUDE_DIR=/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/ -D MOE_PYTHON_LIBRARY=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib&#39;
-</pre></div>
-</div>
-<p>In OS X, the python dynamic library will be a <tt class="docutils literal"><span class="pre">.dylib</span></tt> file; in Linux, it will be a <tt class="docutils literal"><span class="pre">.so</span></tt> file.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Mis-matched Python versions between your virtual environment, Boost, and/or MOE&#8217;s installer can lead to a plethora of strange bugs. Anywhere from <tt class="docutils literal"><span class="pre">Fatal</span> <span class="pre">Python</span> <span class="pre">error:</span> <span class="pre">PyThreadState_Get:</span> <span class="pre">no</span> <span class="pre">current</span> <span class="pre">thread</span></tt> to segmentation faults and beyond. (You are hitting a binary incompatibility so it is hard to predict the specific error.)  You may need to instruct your package manager to build Boost against a particular version of Python, indicate a different Python to MOE, etc. to make these versions line up.</p>
-</div>
-<p>Here are some ways to check/ensure that Python was found and linked correctly:</p>
-<ol class="arabic">
-<li><p class="first">You can verify that cmake found the correct version by checking the values of <tt class="docutils literal"><span class="pre">PYTHON_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">PYTHON_LIBRARY</span></tt> in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>.</p>
-</li>
-<li><p class="first">In <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a>, <em>notice</em> that Boost is built against <tt class="docutils literal"><span class="pre">python27</span></tt>. Checking <tt class="docutils literal"><span class="pre">port</span> <span class="pre">installed</span> <span class="pre">&quot;python*&quot;</span></tt>, you should see (amongst others) <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">&#64;2.7.6_0</span> <span class="pre">(active)</span></tt>.</p>
-</li>
-<li><p class="first"><tt class="docutils literal"><span class="pre">python</span> <span class="pre">--version</span></tt> will show you what version of Python is called by default.</p>
-</li>
-<li><p class="first">Outside of a virtual environment, running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> (and tracking through the symlinks; the first level should be in <tt class="docutils literal"><span class="pre">/opt/local/...</span></tt> if you are using MacPorts in OS X) will show you specifically which Python is being used.</p>
-</li>
-<li><p class="first">Inside of a virtual environment, <tt class="docutils literal"><span class="pre">yolk</span> <span class="pre">-l</span></tt> will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> still works here if you trace through the symlinks.) Get <tt class="docutils literal"><span class="pre">yolk</span></tt> via <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">yolk</span></tt>.</p>
-</li>
-<li><p class="first">Check binary shared library dependencies (only works if you are not linking statically). <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">libboost_python</span></tt> and run <tt class="docutils literal"><span class="pre">ldd</span></tt> (Linux) or <tt class="docutils literal"><span class="pre">otool</span> <span class="pre">-L</span></tt> (OS X) on the dynamic library.  (Note: <tt class="docutils literal"><span class="pre">ldd</span></tt> in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on <tt class="docutils literal"><span class="pre">moe/build/GPP.so</span></tt> should show you the same Python as above; for example:</p>
-<div class="highlight-python"><div class="highlight"><pre>LINUX:
-$ ldd moe/build/GPP.so
-yields lines like:
-libpython2.7.so.1.0 =&gt; /usr/lib/libpython2.7.so.1.0 (0x00007f7d7a9fc000)
-
-OS X:
-$ otool -L moe/build/GPP.so
-yields:
-/opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python (compatibility version 2.7.0, current version 2.7.0)
-</pre></div>
-</div>
-<p>This should be the same Python that you see in the other steps.</p>
-<p>If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.</p>
-</li>
-</ol>
-</div>
 </div>
 <div class="section" id="osx-tips">
 <h2>OSX Tips<a class="headerlink" href="#osx-tips" title="Permalink to this headline">¶</a></h2>
@@ -386,7 +343,7 @@ $ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local &amp;&amp; export MOE_
 </li>
 <li><p class="first">Using <tt class="docutils literal"><span class="pre">port</span> <span class="pre">select</span> <span class="pre">--list</span></tt>, check that the active versions of gcc, python, etc. are correct. In particular, OS X users want to see <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">(active)</span></tt>, not <tt class="docutils literal"><span class="pre">python27-apple</span> <span class="pre">(active)</span></tt>. See <a class="reference internal" href="#port-select-information">port select information</a>.</p>
 </li>
-<li><p class="first">If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</p>
+<li><p class="first">Continue with the installation instructions. If you are having strange errors (no current thread, segfault, etc.), check <a class="reference internal" href="#python-tips">Python Tips</a>.</p>
 </li>
 </ol>
 <div class="section" id="general-macports-tips">
@@ -513,6 +470,55 @@ $ python setup.py install
 <li>Are you using the right compiler? e.g., for <tt class="docutils literal"><span class="pre">gcc</span></tt>, run <tt class="docutils literal"><span class="pre">export</span> <span class="pre">MOE_CC_PATH=/path/to/your/gcc</span> <span class="pre">&amp;&amp;</span> <span class="pre">export</span> <span class="pre">MOE_CXX_PATH=/path/to/your/g++</span></tt> (OS X users need to explicitly set this.)</li>
 </ol>
 </div>
+<div class="section" id="python-tips">
+<h2>Python Tips<a class="headerlink" href="#python-tips" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is an advanced-user section. <tt class="docutils literal"><span class="pre">setup.py</span></tt> should be able to identify the correct Python automatically (i.e., it tries to find the Python it was launched with). Examples of why you might need to keep reading: 1) <tt class="docutils literal"><span class="pre">setup.py</span></tt> failed to find the correct Python paths; 2) you building manually and not using <tt class="docutils literal"><span class="pre">setup.py</span></tt>; 3) you are doing something &#8220;weird&#8221; like building MOE with a different version of Python than the one you intend to run MOE with.</p>
+</div>
+<p>Sometimes cmake and/or <tt class="docutils literal"><span class="pre">setup.py</span></tt> will fail to find your Python installation or you will want to specify an alternate Python. To specify Python, add:</p>
+<div class="highlight-python"><div class="highlight"><pre>-D MOE_PYTHON_INCLUDE_DIR=/path/to/where/Python.h/is/found
+-D MOE_PYTHON_LIBRARY=/path/to/python/shared/library/object
+</pre></div>
+</div>
+<p>to the <tt class="docutils literal"><span class="pre">MOE_CMAKE_OPTS</span></tt> environment variable. Note that options added to this environment variable <em>supersede</em> options set by <tt class="docutils literal"><span class="pre">setup.py</span></tt>; so if <tt class="docutils literal"><span class="pre">setup.py</span></tt> failed, manually specifying the right paths will solve the problem. For example, an OS X user might have:</p>
+<div class="highlight-python"><div class="highlight"><pre>export MOE_CMAKE_OPTS=&#39;-D CMAKE_FIND_ROOT_PATH=/opt/local -D MOE_PYTHON_INCLUDE_DIR=/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7/ -D MOE_PYTHON_LIBRARY=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib&#39;
+</pre></div>
+</div>
+<p>In OS X, the python dynamic library will be a <tt class="docutils literal"><span class="pre">.dylib</span></tt> file; in Linux, it will be a <tt class="docutils literal"><span class="pre">.so</span></tt> file.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Mis-matched Python versions between your virtual environment, Boost, and/or MOE&#8217;s installer can lead to a plethora of strange bugs. Anywhere from <tt class="docutils literal"><span class="pre">Fatal</span> <span class="pre">Python</span> <span class="pre">error:</span> <span class="pre">PyThreadState_Get:</span> <span class="pre">no</span> <span class="pre">current</span> <span class="pre">thread</span></tt> to segmentation faults and beyond. (You are hitting a binary incompatibility so it is hard to predict the specific error.)  You may need to instruct your package manager to build Boost against a particular version of Python, indicate a different Python to MOE, etc. to make these versions line up.</p>
+</div>
+<p>Here are some ways to check/ensure that Python was found and linked correctly:</p>
+<ol class="arabic">
+<li><p class="first">You can verify that cmake found the correct version by checking the values of <tt class="docutils literal"><span class="pre">PYTHON_INCLUDE_DIR</span></tt> and <tt class="docutils literal"><span class="pre">PYTHON_LIBRARY</span></tt> in <tt class="docutils literal"><span class="pre">moe/build/CMakeCache.txt</span></tt>.</p>
+</li>
+<li><p class="first">In <a class="reference internal" href="#general-macports-tips">General MacPorts Tips</a>, <em>notice</em> that Boost is built against <tt class="docutils literal"><span class="pre">python27</span></tt>. Checking <tt class="docutils literal"><span class="pre">port</span> <span class="pre">installed</span> <span class="pre">&quot;python*&quot;</span></tt>, you should see (amongst others) <tt class="docutils literal"><span class="pre">python27</span> <span class="pre">&#64;2.7.6_0</span> <span class="pre">(active)</span></tt>.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">python</span> <span class="pre">--version</span></tt> will show you what version of Python is called by default.</p>
+</li>
+<li><p class="first">Outside of a virtual environment, running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> (and tracking through the symlinks; the first level should be in <tt class="docutils literal"><span class="pre">/opt/local/...</span></tt> if you are using MacPorts in OS X) will show you specifically which Python is being used.</p>
+</li>
+<li><p class="first">Inside of a virtual environment, <tt class="docutils literal"><span class="pre">yolk</span> <span class="pre">-l</span></tt> will show you what software versions are in use. The path to Python should match the Python used to install Boost and MOE. (Running <tt class="docutils literal"><span class="pre">which</span> <span class="pre">python</span></tt> still works here if you trace through the symlinks.) Get <tt class="docutils literal"><span class="pre">yolk</span></tt> via <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">yolk</span></tt>.</p>
+</li>
+<li><p class="first">Check binary shared library dependencies (only works if you are not linking statically). <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">libboost_python</span></tt> and run <tt class="docutils literal"><span class="pre">ldd</span></tt> (Linux) or <tt class="docutils literal"><span class="pre">otool</span> <span class="pre">-L</span></tt> (OS X) on the dynamic library.  (Note: <tt class="docutils literal"><span class="pre">ldd</span></tt> in Linux may not show the Python dependency since this linkage may be delayed till actual use.)  Similarly, running those commands on <tt class="docutils literal"><span class="pre">moe/build/GPP.so</span></tt> should show you the same Python as above; for example:</p>
+<div class="highlight-python"><div class="highlight"><pre>LINUX:
+$ ldd moe/build/GPP.so
+yields lines like:
+libpython2.7.so.1.0 =&gt; /usr/lib/libpython2.7.so.1.0 (0x00007f7d7a9fc000)
+
+OS X:
+$ otool -L moe/build/GPP.so
+yields:
+/opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python (compatibility version 2.7.0, current version 2.7.0)
+</pre></div>
+</div>
+<p>This should be the same Python that you see in the other steps.</p>
+<p>If you linked statically, you need to check your link lines manually. Since MOE links dynamically by default, we assume that you know what you are doing if you changed it.</p>
+</li>
+</ol>
+</div>
 </div>
 
 
@@ -553,7 +559,7 @@ $ python setup.py install
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

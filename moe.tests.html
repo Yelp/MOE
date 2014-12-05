@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe package" href="moe.html"/>
         <link rel="next" title="moe.tests.bandit package" href="moe.tests.bandit.html"/>
         <link rel="prev" title="moe.optimal_learning.python.python_version package" href="moe.optimal_learning.python.python_version.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -238,19 +240,37 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="moe.tests.bandit.html">moe.tests.bandit package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="moe.tests.bandit.bla.html">moe.tests.bandit.bla package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.bla.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla.bla_test">moe.tests.bandit.bla.bla_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moe.tests.bandit.epsilon.html">moe.tests.bandit.epsilon package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_first_test">moe.tests.bandit.epsilon.epsilon_first_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_greedy_test">moe.tests.bandit.epsilon.epsilon_greedy_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test">moe.tests.bandit.epsilon.epsilon_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test_case">moe.tests.bandit.epsilon.epsilon_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moe.tests.bandit.ucb.html">moe.tests.bandit.ucb package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.ucb.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_test">moe.tests.bandit.ucb.ucb1_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_tuned_test">moe.tests.bandit.ucb.ucb1_tuned_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb_test_case">moe.tests.bandit.ucb.ucb_test_case module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_interface_test">moe.tests.bandit.bandit_interface_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.bandit_test_case">moe.tests.bandit.bandit_test_case module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.bla_test">moe.tests.bandit.bla_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.data_containers_test">moe.tests.bandit.data_containers_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_first_test">moe.tests.bandit.epsilon_first_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_greedy_test">moe.tests.bandit.epsilon_greedy_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test">moe.tests.bandit.epsilon_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.epsilon_test_case">moe.tests.bandit.epsilon_test_case module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.linkers_test">moe.tests.bandit.linkers_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_test">moe.tests.bandit.ucb1_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb1_tuned_test">moe.tests.bandit.ucb1_tuned_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.ucb_test_case">moe.tests.bandit.ucb_test_case module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit.utils_test">moe.tests.bandit.utils_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.html#module-moe.tests.bandit">Module contents</a></li>
 </ul>
@@ -271,6 +291,7 @@
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.optimization_test">moe.tests.optimal_learning.python.cpp_wrappers.optimization_test module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers">Module contents</a></li>
 </ul>
 </li>
@@ -286,6 +307,7 @@
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.python.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.comparison_test">moe.tests.optimal_learning.python.comparison_test module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.gaussian_process_test_case">moe.tests.optimal_learning.python.gaussian_process_test_case module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.gaussian_process_test_utils">moe.tests.optimal_learning.python.gaussian_process_test_utils module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moe.tests.optimal_learning.python.html#module-moe.tests.optimal_learning.python.geometry_utils_test">moe.tests.optimal_learning.python.geometry_utils_test module</a></li>
@@ -370,7 +392,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

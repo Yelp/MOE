@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; MOE 0.2.0 documentation</title>
+  <title>Overview: module code &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../index.html"/> 
+    <link rel="top" title="MOE 0.2.2 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,6 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../moe_math.html">How does MOE work?</a><ul>
@@ -142,6 +143,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -226,21 +228,22 @@
             
   <h1>All modules for which code is available</h1>
 <ul><li><a href="moe.html">moe</a></li>
-<ul><li><a href="moe/bandit/bla.html">moe.bandit.bla</a></li>
+<ul><li><a href="moe/bandit/bandit_interface.html">moe.bandit.bandit_interface</a></li>
+<li><a href="moe/bandit/bla/bla.html">moe.bandit.bla.bla</a></li>
 <li><a href="moe/bandit/constant.html">moe.bandit.constant</a></li>
 <li><a href="moe/bandit/data_containers.html">moe.bandit.data_containers</a></li>
-<li><a href="moe/bandit/epsilon_first.html">moe.bandit.epsilon_first</a></li>
-<li><a href="moe/bandit/epsilon_greedy.html">moe.bandit.epsilon_greedy</a></li>
-<li><a href="moe/bandit/epsilon_interface.html">moe.bandit.epsilon_interface</a></li>
-<li><a href="moe/bandit/interfaces/bandit_interface.html">moe.bandit.interfaces.bandit_interface</a></li>
+<li><a href="moe/bandit/epsilon/epsilon_first.html">moe.bandit.epsilon.epsilon_first</a></li>
+<li><a href="moe/bandit/epsilon/epsilon_greedy.html">moe.bandit.epsilon.epsilon_greedy</a></li>
+<li><a href="moe/bandit/epsilon/epsilon_interface.html">moe.bandit.epsilon.epsilon_interface</a></li>
 <li><a href="moe/bandit/linkers.html">moe.bandit.linkers</a></li>
-<li><a href="moe/bandit/ucb1.html">moe.bandit.ucb1</a></li>
-<li><a href="moe/bandit/ucb1_tuned.html">moe.bandit.ucb1_tuned</a></li>
-<li><a href="moe/bandit/ucb_interface.html">moe.bandit.ucb_interface</a></li>
+<li><a href="moe/bandit/ucb/ucb1.html">moe.bandit.ucb.ucb1</a></li>
+<li><a href="moe/bandit/ucb/ucb1_tuned.html">moe.bandit.ucb.ucb1_tuned</a></li>
+<li><a href="moe/bandit/ucb/ucb_interface.html">moe.bandit.ucb.ucb_interface</a></li>
 <li><a href="moe/bandit/utils.html">moe.bandit.utils</a></li>
 <li><a href="moe/easy_interface/bandit_simple_endpoint.html">moe.easy_interface.bandit_simple_endpoint</a></li>
 <li><a href="moe/easy_interface/experiment.html">moe.easy_interface.experiment</a></li>
 <li><a href="moe/easy_interface/simple_endpoint.html">moe.easy_interface.simple_endpoint</a></li>
+<li><a href="moe/optimal_learning/python/comparison.html">moe.optimal_learning.python.comparison</a></li>
 <li><a href="moe/optimal_learning/python/constant.html">moe.optimal_learning.python.constant</a></li>
 <li><a href="moe/optimal_learning/python/cpp_wrappers/covariance.html">moe.optimal_learning.python.cpp_wrappers.covariance</a></li>
 <li><a href="moe/optimal_learning/python/cpp_wrappers/cpp_utils.html">moe.optimal_learning.python.cpp_wrappers.cpp_utils</a></li>
@@ -270,22 +273,24 @@
 <li><a href="moe/resources.html">moe.resources</a></li>
 <li><a href="moe/tests/bandit/bandit_interface_test.html">moe.tests.bandit.bandit_interface_test</a></li>
 <li><a href="moe/tests/bandit/bandit_test_case.html">moe.tests.bandit.bandit_test_case</a></li>
-<li><a href="moe/tests/bandit/bla_test.html">moe.tests.bandit.bla_test</a></li>
+<li><a href="moe/tests/bandit/bla/bla_test.html">moe.tests.bandit.bla.bla_test</a></li>
 <li><a href="moe/tests/bandit/data_containers_test.html">moe.tests.bandit.data_containers_test</a></li>
-<li><a href="moe/tests/bandit/epsilon_first_test.html">moe.tests.bandit.epsilon_first_test</a></li>
-<li><a href="moe/tests/bandit/epsilon_greedy_test.html">moe.tests.bandit.epsilon_greedy_test</a></li>
-<li><a href="moe/tests/bandit/epsilon_test.html">moe.tests.bandit.epsilon_test</a></li>
-<li><a href="moe/tests/bandit/epsilon_test_case.html">moe.tests.bandit.epsilon_test_case</a></li>
+<li><a href="moe/tests/bandit/epsilon/epsilon_first_test.html">moe.tests.bandit.epsilon.epsilon_first_test</a></li>
+<li><a href="moe/tests/bandit/epsilon/epsilon_greedy_test.html">moe.tests.bandit.epsilon.epsilon_greedy_test</a></li>
+<li><a href="moe/tests/bandit/epsilon/epsilon_test.html">moe.tests.bandit.epsilon.epsilon_test</a></li>
+<li><a href="moe/tests/bandit/epsilon/epsilon_test_case.html">moe.tests.bandit.epsilon.epsilon_test_case</a></li>
 <li><a href="moe/tests/bandit/linkers_test.html">moe.tests.bandit.linkers_test</a></li>
-<li><a href="moe/tests/bandit/ucb1_test.html">moe.tests.bandit.ucb1_test</a></li>
-<li><a href="moe/tests/bandit/ucb1_tuned_test.html">moe.tests.bandit.ucb1_tuned_test</a></li>
-<li><a href="moe/tests/bandit/ucb_test_case.html">moe.tests.bandit.ucb_test_case</a></li>
+<li><a href="moe/tests/bandit/ucb/ucb1_test.html">moe.tests.bandit.ucb.ucb1_test</a></li>
+<li><a href="moe/tests/bandit/ucb/ucb1_tuned_test.html">moe.tests.bandit.ucb.ucb1_tuned_test</a></li>
+<li><a href="moe/tests/bandit/ucb/ucb_test_case.html">moe.tests.bandit.ucb.ucb_test_case</a></li>
 <li><a href="moe/tests/bandit/utils_test.html">moe.tests.bandit.utils_test</a></li>
+<li><a href="moe/tests/optimal_learning/python/comparison_test.html">moe.tests.optimal_learning.python.comparison_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_unit_tests/cpp_unit_test_wrapper_test.html">moe.tests.optimal_learning.python.cpp_unit_tests.cpp_unit_test_wrapper_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/exception_test.html">moe.tests.optimal_learning.python.cpp_wrappers.exception_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/expected_improvement_test.html">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/gaussian_process_test.html">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/cpp_wrappers/log_likelihood_test.html">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test</a></li>
+<li><a href="moe/tests/optimal_learning/python/cpp_wrappers/optimization_test.html">moe.tests.optimal_learning.python.cpp_wrappers.optimization_test</a></li>
 <li><a href="moe/tests/optimal_learning/python/gaussian_process_test_case.html">moe.tests.optimal_learning.python.gaussian_process_test_case</a></li>
 <li><a href="moe/tests/optimal_learning/python/gaussian_process_test_utils.html">moe.tests.optimal_learning.python.gaussian_process_test_utils</a></li>
 <li><a href="moe/tests/optimal_learning/python/geometry_utils_test.html">moe.tests.optimal_learning.python.geometry_utils_test</a></li>
@@ -336,6 +341,7 @@
 <li><a href="moe/views/schemas/rest/gp_next_points_constant_liar.html">moe.views.schemas.rest.gp_next_points_constant_liar</a></li>
 <li><a href="moe/views/schemas/rest/gp_next_points_kriging.html">moe.views.schemas.rest.gp_next_points_kriging</a></li>
 </ul><li><a href="moe_examples/bandit_example.html">moe_examples.bandit_example</a></li>
+<li><a href="moe_examples/blog_post_example_ab_testing.html">moe_examples.blog_post_example_ab_testing</a></li>
 <li><a href="moe_examples/combined_example.html">moe_examples.combined_example</a></li>
 <li><a href="moe_examples/hyper_opt_of_gp_from_historical_data.html">moe_examples.hyper_opt_of_gp_from_historical_data</a></li>
 <li><a href="moe_examples/mean_and_var_of_gp_from_historic_data.html">moe_examples.mean_and_var_of_gp_from_historic_data</a></li>
@@ -376,7 +382,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

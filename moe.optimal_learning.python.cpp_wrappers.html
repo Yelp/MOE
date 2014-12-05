@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.cpp_wrappers package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.optimal_learning.python.cpp_wrappers package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/>
         <link rel="next" title="moe.optimal_learning.python.interfaces package" href="moe.optimal_learning.python.interfaces.html"/>
         <link rel="prev" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -518,6 +520,12 @@ internals to Python.</p>
 <dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_bounding_box">
 <tt class="descname">get_bounding_box</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.get_bounding_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_bounding_box" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of ClosedIntervals representing a bounding box for this domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_constraint_list">
+<tt class="descname">get_constraint_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/domain.html#TensorProductDomain.get_constraint_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.domain.TensorProductDomain.get_constraint_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1797,10 +1805,10 @@ for full details on GD.</p>
 
 <dl class="class">
 <dt id="moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.optimization.</tt><tt class="descname">GradientDescentParameters</tt><big>(</big><em>num_multistarts</em>, <em>max_num_steps</em>, <em>max_num_restarts</em>, <em>num_steps_averaged</em>, <em>gamma</em>, <em>pre_mult</em>, <em>max_relative_change</em>, <em>tolerance</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/optimization.html#GradientDescentParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.optimization.</tt><tt class="descname">GradientDescentParameters</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/optimization.html#GradientDescentParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.build.GPP.GradientDescentParameters</span></tt>, <a class="reference internal" href="moe.optimal_learning.python.html#moe.optimal_learning.python.comparison.EqualityComparisonMixin" title="moe.optimal_learning.python.comparison.EqualityComparisonMixin"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.comparison.EqualityComparisonMixin</span></tt></a></p>
 <p>Container to hold parameters that specify the behavior of Gradient Descent in a C++-readable form.</p>
-<p>See __init__ docstring for more information.</p>
+<p>See <tt class="xref py py-func docutils literal"><span class="pre">__init__()</span></tt> docstring for more information.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1820,10 +1828,10 @@ for full details on Newton.</p>
 
 <dl class="class">
 <dt id="moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters">
-<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.optimization.</tt><tt class="descname">NewtonParameters</tt><big>(</big><em>num_multistarts</em>, <em>max_num_steps</em>, <em>gamma</em>, <em>time_factor</em>, <em>max_relative_change</em>, <em>tolerance</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/optimization.html#NewtonParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.cpp_wrappers.optimization.</tt><tt class="descname">NewtonParameters</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/cpp_wrappers/optimization.html#NewtonParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.build.GPP.NewtonParameters</span></tt>, <a class="reference internal" href="moe.optimal_learning.python.html#moe.optimal_learning.python.comparison.EqualityComparisonMixin" title="moe.optimal_learning.python.comparison.EqualityComparisonMixin"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.comparison.EqualityComparisonMixin</span></tt></a></p>
 <p>Container to hold parameters that specify the behavior of Newton in a C++-readable form.</p>
-<p>See __init__ docstring for more information.</p>
+<p>See <tt class="xref py py-func docutils literal"><span class="pre">__init__()</span></tt> docstring for more information.</p>
 </dd></dl>
 
 <dl class="class">
@@ -1894,7 +1902,7 @@ and classes for model selection, gaussian process construction, expected improve
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

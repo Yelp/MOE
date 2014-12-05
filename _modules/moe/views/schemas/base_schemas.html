@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.views.schemas.base_schemas &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.views.schemas.base_schemas &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../index.html"/>
         <link rel="up" title="moe" href="../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -238,10 +240,22 @@
 <span class="sd">  Thus changing missing/default fields in the output dict can modify the schema!</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">colander</span>
 
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">GRADIENT_DESCENT_OPTIMIZER</span><span class="p">,</span> <span class="n">L_BFGS_B_OPTIMIZER</span><span class="p">,</span> <span class="n">TENSOR_PRODUCT_DOMAIN_TYPE</span><span class="p">,</span> <span class="n">SQUARE_EXPONENTIAL_COVARIANCE_TYPE</span><span class="p">,</span> <span class="n">NULL_OPTIMIZER</span><span class="p">,</span> <span class="n">NEWTON_OPTIMIZER</span><span class="p">,</span> <span class="n">DOMAIN_TYPES</span><span class="p">,</span> <span class="n">OPTIMIZER_TYPES</span><span class="p">,</span> <span class="n">COVARIANCE_TYPES</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.expected_improvement</span> <span class="kn">import</span> <span class="n">DEFAULT_MVNDST_PARAMS</span>
+
+
+<span class="c"># Several users have forgotten to run ``pip install -r requirements.txt`` and end up with</span>
+<span class="c"># and old colander version. The error message looks like a syntax error (vs version mismatch),</span>
+<span class="c"># so let&#39;s be more explicit.</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">SchemaNode</span><span class="o">.</span><span class="n">__init__</span><span class="p">)</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;It looks like your version of colander is out of date.</span><span class="se">\n</span><span class="s">&quot;</span>
+                  <span class="s">&quot;You will probably see the error quoted here: https://github.com/Yelp/MOE/issues/413</span><span class="se">\n</span><span class="s">&quot;</span>
+                  <span class="s">&quot;Did you run &#39;pip install -r requirements.txt&#39;?.&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="StrictMappingSchema"><a class="viewcode-back" href="../../../../moe.views.schemas.html#moe.views.schemas.base_schemas.StrictMappingSchema">[docs]</a><span class="k">class</span> <span class="nc">StrictMappingSchema</span><span class="p">(</span><span class="n">colander</span><span class="o">.</span><span class="n">MappingSchema</span><span class="p">):</span>
@@ -694,7 +708,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

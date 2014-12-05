@@ -1,0 +1,13 @@
+gpp_adhoc
+=========
+
+**Contents:**
+
+    1. `gpp_adhoc.cpp`_
+
+
+gpp_adhoc.cpp
+-------------
+
+.. doxygenfile:: gpp_adhoc.cpp
+

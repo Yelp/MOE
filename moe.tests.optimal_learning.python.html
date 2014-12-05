@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe.tests.optimal_learning package" href="moe.tests.optimal_learning.html"/>
         <link rel="next" title="moe.tests.optimal_learning.python.cpp_unit_tests package" href="moe.tests.optimal_learning.python.cpp_unit_tests.html"/>
         <link rel="prev" title="moe.tests.optimal_learning package" href="moe.tests.optimal_learning.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -253,6 +255,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test">moe.tests.optimal_learning.python.cpp_wrappers.expected_improvement_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test">moe.tests.optimal_learning.python.cpp_wrappers.gaussian_process_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test">moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers.optimization_test">moe.tests.optimal_learning.python.cpp_wrappers.optimization_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe.tests.optimal_learning.python.cpp_wrappers.html#module-moe.tests.optimal_learning.python.cpp_wrappers">Module contents</a></li>
 </ul>
 </li>
@@ -271,12 +274,67 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-moe.tests.optimal_learning.python.comparison_test">
+<span id="moe-tests-optimal-learning-python-comparison-test-module"></span><h2>moe.tests.optimal_learning.python.comparison_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.comparison_test" title="Permalink to this headline">¶</a></h2>
+<p>Tests for the functions/classes in <tt class="docutils literal"><span class="pre">comparison.py</span></tt>.</p>
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.comparison_test.ComparableTestObject">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.comparison_test.</tt><tt class="descname">ComparableTestObject</tt><big>(</big><em>args</em>, <em>property_offset=0</em>, <em>function_offset=0</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#ComparableTestObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.html#moe.optimal_learning.python.comparison.EqualityComparisonMixin" title="moe.optimal_learning.python.comparison.EqualityComparisonMixin"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.comparison.EqualityComparisonMixin</span></tt></a></p>
+<p>Object for testing equality comparisons.</p>
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_function">
+<tt class="descname">some_function</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#ComparableTestObject.some_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some function; will not be picked up in the comparison.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_property">
+<tt class="descname">some_property</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#ComparableTestObject.some_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.ComparableTestObject.some_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some property; will be picked up in the comparison.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.comparison_test.NotComparableObject">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.comparison_test.</tt><tt class="descname">NotComparableObject</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#NotComparableObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.NotComparableObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Object with == and != disabled.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.comparison_test.</tt><tt class="descname">TestEqualityComparisonMixin</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#TestEqualityComparisonMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Test the mixin features of <tt class="docutils literal"><span class="pre">EqualityComparisonMixin</span></tt>.</p>
+<dl class="classmethod">
+<dt id="moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.base_setup">
+<em class="property">classmethod </em><tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#TestEqualityComparisonMixin.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up test cases for <tt class="docutils literal"><span class="pre">EqualityComparisonMixin</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_eq">
+<tt class="descname">test_eq</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#TestEqualityComparisonMixin.test_eq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_eq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test __eq__ and __ne__ operators.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_hash">
+<tt class="descname">test_hash</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/comparison_test.html#TestEqualityComparisonMixin.test_hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.comparison_test.TestEqualityComparisonMixin.test_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that hashing will fail.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-moe.tests.optimal_learning.python.gaussian_process_test_case">
 <span id="moe-tests-optimal-learning-python-gaussian-process-test-case-module"></span><h2>moe.tests.optimal_learning.python.gaussian_process_test_case module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.gaussian_process_test_case" title="Permalink to this headline">¶</a></h2>
 <p>Base test case for tests that manipulate Gaussian Process data and supporting structures.</p>
 <dl class="class">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.gaussian_process_test_case.</tt><tt class="descname">GaussianProcessTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/gaussian_process_test_case.html#GaussianProcessTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.gaussian_process_test_case.</tt><tt class="descname">GaussianProcessTestCase</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/gaussian_process_test_case.html#GaussianProcessTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
 <p>Base test case for tests that want to use random data generated from Gaussian Process(es).</p>
 <p>Users are required to set the <em>class variable</em> <tt class="docutils literal"><span class="pre">precompute_gaussian_process_data</span></tt> flag and define <em>class variables</em>:
@@ -284,20 +342,20 @@
 <p>Using that info, base_setup will create the required test cases (in <tt class="docutils literal"><span class="pre">gp_test_environments</span></tt>) for use in testing.</p>
 <p>The idea is that base_setup is run once per test class, so the (expensive) work of building GPs can be shared across
 numerous individual tests.</p>
-<dl class="method">
+<dl class="classmethod">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup">
-<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/gaussian_process_test_case.html#GaussianProcessTestCase.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a Gaussian Process prior for each problem size in <tt class="docutils literal"><span class="pre">self.num_sampled_list</span></tt> if precomputation is desired.</p>
+<em class="property">classmethod </em><tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/gaussian_process_test_case.html#GaussianProcessTestCase.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a Gaussian Process prior for each problem size in <tt class="docutils literal"><span class="pre">cls.num_sampled_list</span></tt> if precomputation is desired.</p>
 <p><strong>Requires</strong></p>
 <ul class="simple">
-<li>self.num_sampled_list: (<em>list of int</em>) problem sizes to consider</li>
-<li>self.gp_test_environment_input: (<em>GaussianProcessTestEnvironmentInput</em>) specification of how to build the
+<li>cls.num_sampled_list: (<em>list of int</em>) problem sizes to consider</li>
+<li>cls.gp_test_environment_input: (<em>GaussianProcessTestEnvironmentInput</em>) specification of how to build the
 gaussian process prior</li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
-<li>self.gp_test_environments: (<em>list of GaussianProcessTestEnvironment</em>) gaussian process data for each of the
-specified problem sizes (<tt class="docutils literal"><span class="pre">self.num_sampled_list</span></tt>)</li>
+<li>cls.gp_test_environments: (<em>list of GaussianProcessTestEnvironment</em>) gaussian process data for each of the
+specified problem sizes (<tt class="docutils literal"><span class="pre">cls.num_sampled_list</span></tt>)</li>
 </ul>
 </dd></dl>
 
@@ -308,7 +366,7 @@ specified problem sizes (<tt class="docutils literal"><span class="pre">self.num
 
 <dl class="attribute">
 <dt id="moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input">
-<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x1124f0490&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gp_test_environment_input</tt><em class="property"> = &lt;moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestEnvironmentInput object at 0x119471f90&gt;</em><a class="headerlink" href="#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.gp_test_environment_input" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -466,44 +524,44 @@ can override this behavior with any implementation of the ABCs in the interfaces
 <span id="moe-tests-optimal-learning-python-geometry-utils-test-module"></span><h2>moe.tests.optimal_learning.python.geometry_utils_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.geometry_utils_test" title="Permalink to this headline">¶</a></h2>
 <p>Tests for the functions/classes in geometry_utils.</p>
 <dl class="class">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">ClosedIntervalTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#ClosedIntervalTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">TestClosedInterval</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestClosedInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
 <p>Tests for ClosedInterval&#8217;s member functions.</p>
-<dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.base_setup">
-<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#ClosedIntervalTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dl class="classmethod">
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.base_setup">
+<em class="property">classmethod </em><tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestClosedInterval.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.base_setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up test cases (described inline).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_empty">
-<tt class="descname">test_is_empty</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#ClosedIntervalTest.test_is_empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_empty" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_empty">
+<tt class="descname">test_is_empty</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestClosedInterval.test_is_empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_empty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that is_empty works.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_inside">
-<tt class="descname">test_is_inside</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#ClosedIntervalTest.test_is_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_is_inside" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_inside">
+<tt class="descname">test_is_inside</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestClosedInterval.test_is_inside"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_is_inside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that is_inside works.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length">
-<tt class="descname">test_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#ClosedIntervalTest.test_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.ClosedIntervalTest.test_length" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_length">
+<tt class="descname">test_length</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestClosedInterval.test_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestClosedInterval.test_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that length works.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">GridPointGenerationTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#GridPointGenerationTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">TestGridPointGeneration</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestGridPointGeneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
 <p>Test the generation of an evenly spaced, axis-aligned grid on a hypercube.</p>
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest.test_grid_generation">
-<tt class="descname">test_grid_generation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#GridPointGenerationTest.test_grid_generation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.GridPointGenerationTest.test_grid_generation" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration.test_grid_generation">
+<tt class="descname">test_grid_generation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestGridPointGeneration.test_grid_generation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestGridPointGeneration.test_grid_generation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that <tt class="docutils literal"><span class="pre">generate_grid_points</span></tt> generates a uniform grid.</p>
 <p>Test makes assumptions about the ordering of the output that may be invalidated by
 changes to numpy.meshgrid.</p>
@@ -512,8 +570,8 @@ changes to numpy.meshgrid.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">LatinHypercubeRandomPointGenerationTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#LatinHypercubeRandomPointGenerationTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.geometry_utils_test.</tt><tt class="descname">TestLatinHypercubeRandomPointGeneration</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestLatinHypercubeRandomPointGeneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase</span></tt></a></p>
 <p>Test moe.optimal_learning.python.geometry_utils.generate_latin_hypercube_points.</p>
 <p><a class="reference external" href="http://en.wikipedia.org/wiki/Latin_hypercube_sampling">http://en.wikipedia.org/wiki/Latin_hypercube_sampling</a></p>
@@ -532,15 +590,15 @@ Another advantage is that random samples can be taken one at a time,
 remembering which samples were taken so far.</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.base_setup">
-<tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#LatinHypercubeRandomPointGenerationTest.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.base_setup" title="Permalink to this definition">¶</a></dt>
+<dl class="classmethod">
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.base_setup">
+<em class="property">classmethod </em><tt class="descname">base_setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestLatinHypercubeRandomPointGeneration.base_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.base_setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up parameters for test cases.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced">
-<tt class="descname">test_latin_hypercube_equally_spaced</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_equally_spaced" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_equally_spaced">
+<tt class="descname">test_latin_hypercube_equally_spaced</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_equally_spaced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_equally_spaced" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that generate_latin_hypercube_points returns properly spaced points.</p>
 <p>Sampling from a latin hypercube results in a set of points that in each dimension are drawn
 uniformly from sub-intervals of the domain this tests that every sub-interval in each dimension
@@ -548,14 +606,14 @@ contains exactly one point.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain">
-<tt class="descname">test_latin_hypercube_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_latin_hypercube_within_domain" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_within_domain">
+<tt class="descname">test_latin_hypercube_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_latin_hypercube_within_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that generate_latin_hypercube_points returns points within the domain.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain">
-<tt class="descname">test_make_rand_point_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.LatinHypercubeRandomPointGenerationTest.test_make_rand_point_within_domain" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_make_rand_point_within_domain">
+<tt class="descname">test_make_rand_point_within_domain</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/geometry_utils_test.html#TestLatinHypercubeRandomPointGeneration.test_make_rand_point_within_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.geometry_utils_test.TestLatinHypercubeRandomPointGeneration.test_make_rand_point_within_domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that domain.generate_random_point_in_domain returns a point in the domain.</p>
 </dd></dl>
 
@@ -566,31 +624,31 @@ contains exactly one point.</p>
 <span id="moe-tests-optimal-learning-python-linkers-test-module"></span><h2>moe.tests.optimal_learning.python.linkers_test module<a class="headerlink" href="#module-moe.tests.optimal_learning.python.linkers_test" title="Permalink to this headline">¶</a></h2>
 <p>Tests that linkers contain all possible types defined in constants.</p>
 <dl class="class">
-<dt id="moe.tests.optimal_learning.python.linkers_test.LinkersTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.linkers_test.</tt><tt class="descname">LinkersTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#LinkersTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.LinkersTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<dt id="moe.tests.optimal_learning.python.linkers_test.TestLinkers">
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.linkers_test.</tt><tt class="descname">TestLinkers</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#TestLinkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.TestLinkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Tests that linkers contain all possible types defined in constants.</p>
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_covariance_links_have_all_covariance_types">
-<tt class="descname">test_covariance_links_have_all_covariance_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#LinkersTest.test_covariance_links_have_all_covariance_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_covariance_links_have_all_covariance_types" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_covariance_links_have_all_covariance_types">
+<tt class="descname">test_covariance_links_have_all_covariance_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#TestLinkers.test_covariance_links_have_all_covariance_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_covariance_links_have_all_covariance_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each covariance type is in a linker, and every linker key is a covariance type.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_domain_links_have_all_domain_types">
-<tt class="descname">test_domain_links_have_all_domain_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#LinkersTest.test_domain_links_have_all_domain_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_domain_links_have_all_domain_types" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_domain_links_have_all_domain_types">
+<tt class="descname">test_domain_links_have_all_domain_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#TestLinkers.test_domain_links_have_all_domain_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_domain_links_have_all_domain_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each domain type is in a linker, and every linker is a domain type.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types">
-<tt class="descname">test_likelihood_links_have_all_likelihood_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#LinkersTest.test_likelihood_links_have_all_likelihood_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_likelihood_links_have_all_likelihood_types">
+<tt class="descname">test_likelihood_links_have_all_likelihood_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#TestLinkers.test_likelihood_links_have_all_likelihood_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_likelihood_links_have_all_likelihood_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each likelihood type is in a linker, and every linker key is a likelihood type.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_optimization_links_have_all_optimizer_types">
-<tt class="descname">test_optimization_links_have_all_optimizer_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#LinkersTest.test_optimization_links_have_all_optimizer_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_optimization_links_have_all_optimizer_types" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_optimization_links_have_all_optimizer_types">
+<tt class="descname">test_optimization_links_have_all_optimizer_types</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/linkers_test.html#TestLinkers.test_optimization_links_have_all_optimizer_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_optimization_links_have_all_optimizer_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each optimizer type is in a linker, and every linker key is a optimizer type.</p>
 </dd></dl>
 
@@ -604,14 +662,14 @@ contains exactly one point.</p>
 to be more DRY (model after C++ test cases). We can set up one ping tester and just pass it objective functions.</p>
 <dl class="class">
 <dt id="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase">
-<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.optimal_learning_test_case.</tt><tt class="descname">OptimalLearningTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<em class="property">class </em><tt class="descclassname">moe.tests.optimal_learning.python.optimal_learning_test_case.</tt><tt class="descname">OptimalLearningTestCase</tt><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Base test case for the optimal_learning library.</p>
 <p>This includes extra asserts for checking relative differences of floating point scalars/vectors and
 a routine to check that points are distinct.</p>
-<dl class="method">
+<dl class="staticmethod">
 <dt id="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct">
-<tt class="descname">assert_points_distinct</tt><big>(</big><em>point_list</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_points_distinct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">assert_points_distinct</tt><big>(</big><em>point_list</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_points_distinct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_points_distinct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the distance between every pair of points is larger than tolerance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -630,9 +688,9 @@ a routine to check that points are distinct.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="staticmethod">
 <dt id="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute">
-<tt class="descname">assert_scalar_within_absolute</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_scalar_within_absolute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">assert_scalar_within_absolute</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_scalar_within_absolute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_absolute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a scalar <tt class="docutils literal"><span class="pre">value</span></tt> is equal to <tt class="docutils literal"><span class="pre">truth</span></tt>: <tt class="docutils literal"><span class="pre">|value</span> <span class="pre">-</span> <span class="pre">truth|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -652,9 +710,9 @@ a routine to check that points are distinct.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="staticmethod">
 <dt id="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative">
-<tt class="descname">assert_scalar_within_relative</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_scalar_within_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">assert_scalar_within_relative</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_scalar_within_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_scalar_within_relative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a scalar <tt class="docutils literal"><span class="pre">value</span></tt> is relatively equal to <tt class="docutils literal"><span class="pre">truth</span></tt>: <tt class="docutils literal"><span class="pre">|value</span> <span class="pre">-</span> <span class="pre">truth|/|truth|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -674,17 +732,17 @@ a routine to check that points are distinct.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="staticmethod">
 <dt id="moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative">
-<tt class="descname">assert_vector_within_relative</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_vector_within_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">assert_vector_within_relative</tt><big>(</big><em>value</em>, <em>truth</em>, <em>tol</em><big>)</big><a class="reference internal" href="_modules/moe/tests/optimal_learning/python/optimal_learning_test_case.html#OptimalLearningTestCase.assert_vector_within_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.optimal_learning.python.optimal_learning_test_case.OptimalLearningTestCase.assert_vector_within_relative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a vector is element-wise relatively equal to <tt class="docutils literal"><span class="pre">truth</span></tt>: <tt class="docutils literal"><span class="pre">|value[i]</span> <span class="pre">-</span> <span class="pre">truth[i]|/|truth[i]|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> (<em>float64</em>) &#8211; scalar to check</li>
-<li><strong>truth</strong> &#8211; exact/desired result</li>
+<li><strong>value</strong> (array of float64 with shape matching <tt class="docutils literal"><span class="pre">value</span></tt>) &#8211; vector to check</li>
+<li><strong>truth</strong> &#8211; exact/desired vector result</li>
 <li><strong>tol</strong> (<em>float64</em>) &#8211; max permissible relative difference</li>
 </ul>
 </td>
@@ -769,7 +827,7 @@ optimal_learning (where applicable). Also runs the C++ unit tests.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.bandit.bandit_interface_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.bandit.bandit_interface_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../index.html"/>
         <link rel="up" title="moe" href="../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -232,49 +234,49 @@
   <h1>Source code for moe.tests.bandit.bandit_interface_test</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Test bandit interface implementation.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="kn">from</span> <span class="nn">moe.bandit.interfaces.bandit_interface</span> <span class="kn">import</span> <span class="n">BanditInterface</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.bandit_interface</span> <span class="kn">import</span> <span class="n">BanditInterface</span>
 <span class="kn">from</span> <span class="nn">moe.tests.bandit.bandit_test_case</span> <span class="kn">import</span> <span class="n">BanditTestCase</span>
 
 
-<div class="viewcode-block" id="BanditInterfaceTest"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest">[docs]</a><span class="k">class</span> <span class="nc">BanditInterfaceTest</span><span class="p">(</span><span class="n">BanditTestCase</span><span class="p">):</span>
+<span class="nd">@pytest.fixture</span><span class="p">()</span>
+<div class="viewcode-block" id="disable_logging"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.disable_logging">[docs]</a><span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Disable logging (for the duration of this test case).&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Re-enable logging (so other test cases are unaffected).&quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">)</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">addfinalizer</span><span class="p">(</span><span class="n">finalize</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="TestBanditInterface"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface">[docs]</a><span class="k">class</span> <span class="nc">TestBanditInterface</span><span class="p">(</span><span class="n">BanditTestCase</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Verify that different historical infos return correct results.&quot;&quot;&quot;</span>
 
-    <span class="nd">@T.class_setup</span>
-<div class="viewcode-block" id="BanditInterfaceTest.disable_logging"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Disable logging (for the duration of this test case).&quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
-</div>
-    <span class="nd">@T.class_teardown</span>
-<div class="viewcode-block" id="BanditInterfaceTest.enable_logging"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Re-enable logging (so other test cases are unaffected).&quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">disable</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="BanditInterfaceTest.test_empty_arm_invalid"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_empty_arm_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_arm_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@pytest.mark.usefixtures</span><span class="p">(</span><span class="s">&quot;disable_logging&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestBanditInterface.test_empty_arm_invalid"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_empty_arm_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_arm_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test empty ``arms_to_allocations`` causes an ValueError.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">({})</span>
 </div>
-<div class="viewcode-block" id="BanditInterfaceTest.test_one_arm"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_one_arm">[docs]</a>    <span class="k">def</span> <span class="nf">test_one_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestBanditInterface.test_one_arm"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_one_arm">[docs]</a>    <span class="k">def</span> <span class="nf">test_one_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that the one-arm case always returns the given arm as the winning arm.&quot;&quot;&quot;</span>
         <span class="n">arms_to_allocations</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;arm1&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">),</span> <span class="s">&quot;arm1&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;arm1&quot;</span>
 </div>
-<div class="viewcode-block" id="BanditInterfaceTest.test_two_arms_one_winner"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_two_arms_one_winner">[docs]</a>    <span class="k">def</span> <span class="nf">test_two_arms_one_winner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestBanditInterface.test_two_arms_one_winner"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_two_arms_one_winner">[docs]</a>    <span class="k">def</span> <span class="nf">test_two_arms_one_winner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that the two-arms case with one winner always returns the winning arm.&quot;&quot;&quot;</span>
         <span class="n">arms_to_allocations</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;arm1&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;arm2&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">),</span> <span class="s">&quot;arm1&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;arm1&quot;</span>
 </div>
-<div class="viewcode-block" id="BanditInterfaceTest.test_three_arms_two_winners"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_three_arms_two_winners">[docs]</a>    <span class="k">def</span> <span class="nf">test_three_arms_two_winners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestBanditInterface.test_three_arms_two_winners"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_three_arms_two_winners">[docs]</a>    <span class="k">def</span> <span class="nf">test_three_arms_two_winners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that the three-arms cases with two winners return one of the two winners.&quot;&quot;&quot;</span>
         <span class="n">arms_to_allocations</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;arm1&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s">&quot;arm2&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s">&quot;arm3&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_in</span><span class="p">(</span><span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">),</span> <span class="nb">frozenset</span><span class="p">([</span><span class="s">&quot;arm1&quot;</span><span class="p">,</span> <span class="s">&quot;arm2&quot;</span><span class="p">]))</span>
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">BanditInterface</span><span class="o">.</span><span class="n">choose_arm</span><span class="p">(</span><span class="n">arms_to_allocations</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">frozenset</span><span class="p">([</span><span class="s">&quot;arm1&quot;</span><span class="p">,</span> <span class="s">&quot;arm2&quot;</span><span class="p">])</span></div></div>
 </pre></div>
 
           </div>
@@ -305,7 +307,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

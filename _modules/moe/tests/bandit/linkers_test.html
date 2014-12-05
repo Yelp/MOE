@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.bandit.linkers_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.bandit.linkers_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../index.html"/>
         <link rel="up" title="moe" href="../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -232,39 +234,25 @@
   <h1>Source code for moe.tests.bandit.linkers_test</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Tests that linkers contain all possible types defined in constants.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
 <span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">BANDIT_ENDPOINTS</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPES</span><span class="p">,</span> <span class="n">UCB_SUBTYPES</span>
 <span class="kn">from</span> <span class="nn">moe.bandit.linkers</span> <span class="kn">import</span> <span class="n">BANDIT_ENDPOINTS_TO_SUBTYPES</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPES_TO_BANDIT_METHODS</span><span class="p">,</span> <span class="n">UCB_SUBTYPES_TO_BANDIT_METHODS</span>
 
 
-<div class="viewcode-block" id="LinkersTest"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest">[docs]</a><span class="k">class</span> <span class="nc">LinkersTest</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers">[docs]</a><span class="k">class</span> <span class="nc">TestLinkers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Tests that linkers contain all possible types defined in constants.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LinkersTest.test_bandit_links_have_all_bandit_endpoints"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_bandit_links_have_all_bandit_endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">test_bandit_links_have_all_bandit_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_bandit_links_have_all_bandit_endpoints"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_bandit_links_have_all_bandit_endpoints">[docs]</a>    <span class="k">def</span> <span class="nf">test_bandit_links_have_all_bandit_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each bandit endpoint is in a linker, and every linker key is a bandit endpoint.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">BANDIT_ENDPOINTS</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">BANDIT_ENDPOINTS_TO_SUBTYPES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">BANDIT_ENDPOINTS</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">BANDIT_ENDPOINTS_TO_SUBTYPES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="LinkersTest.test_epsilon_links_have_all_epsilon_subtypes"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_epsilon_links_have_all_epsilon_subtypes">[docs]</a>    <span class="k">def</span> <span class="nf">test_epsilon_links_have_all_epsilon_subtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_epsilon_links_have_all_epsilon_subtypes"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_epsilon_links_have_all_epsilon_subtypes">[docs]</a>    <span class="k">def</span> <span class="nf">test_epsilon_links_have_all_epsilon_subtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each epsilon subtype is in a linker, and every linker key is an epsilon subtype.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">EPSILON_SUBTYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">EPSILON_SUBTYPES_TO_BANDIT_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">EPSILON_SUBTYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">EPSILON_SUBTYPES_TO_BANDIT_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="LinkersTest.test_ucb_links_have_all_ucb_subtypes"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.LinkersTest.test_ucb_links_have_all_ucb_subtypes">[docs]</a>    <span class="k">def</span> <span class="nf">test_ucb_links_have_all_ucb_subtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_ucb_links_have_all_ucb_subtypes"><a class="viewcode-back" href="../../../../moe.tests.bandit.html#moe.tests.bandit.linkers_test.TestLinkers.test_ucb_links_have_all_ucb_subtypes">[docs]</a>    <span class="k">def</span> <span class="nf">test_ucb_links_have_all_ucb_subtypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each UCB subtype is in a linker, and every linker key is a UCB subtype.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">UCB_SUBTYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">UCB_SUBTYPES_TO_BANDIT_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">UCB_SUBTYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">UCB_SUBTYPES_TO_BANDIT_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div></div>
 </pre></div>
 
           </div>
@@ -295,7 +283,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

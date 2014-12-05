@@ -1,0 +1,22 @@
+moe.tests.bandit.bla package
+============================
+
+Submodules
+----------
+
+moe.tests.bandit.bla.bla_test module
+------------------------------------
+
+.. automodule:: moe.tests.bandit.bla.bla_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.bandit.bla
+    :members:
+    :undoc-members:
+    :show-inheritance:

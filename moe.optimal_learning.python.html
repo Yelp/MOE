@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.optimal_learning.python package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe.optimal_learning package" href="moe.optimal_learning.html"/>
         <link rel="next" title="moe.optimal_learning.python.cpp_wrappers package" href="moe.optimal_learning.python.cpp_wrappers.html"/>
         <link rel="prev" title="moe.optimal_learning.cpp package" href="moe.optimal_learning.cpp.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -279,6 +281,46 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-moe.optimal_learning.python.comparison">
+<span id="moe-optimal-learning-python-comparison-module"></span><h2>moe.optimal_learning.python.comparison module<a class="headerlink" href="#module-moe.optimal_learning.python.comparison" title="Permalink to this headline">¶</a></h2>
+<p>Comparison mixins to help devs generate comparison operations for their classes.</p>
+<p>Consider combining with tools like <tt class="docutils literal"><span class="pre">functools.total_ordering</span></tt>:
+<a class="reference external" href="https://docs.python.org/2/library/functools.html#functools.total_ordering">https://docs.python.org/2/library/functools.html#functools.total_ordering</a>
+to fill out additional comparison functionality.</p>
+<dl class="class">
+<dt id="moe.optimal_learning.python.comparison.EqualityComparisonMixin">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.comparison.</tt><tt class="descname">EqualityComparisonMixin</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/comparison.html#EqualityComparisonMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.comparison.EqualityComparisonMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Mixin class to autogenerate __eq__ (from instance members), __ne__, and __repr__ and disable __hash__.</p>
+<p>Adds no names to the class&#8217;s public namespace (names without pre/postceding underscores).</p>
+<p>Sources:
+<a class="reference external" href="http://stackoverflow.com/questions/390250/elegant-ways-to-support-equivalence-equality-in-python-classes">http://stackoverflow.com/questions/390250/elegant-ways-to-support-equivalence-equality-in-python-classes</a>
+<a class="reference external" href="http://stackoverflow.com/questions/9058305/getting-attributes-of-a-class">http://stackoverflow.com/questions/9058305/getting-attributes-of-a-class</a></p>
+<p>Be careful with NaN!
+This object uses dict comparison (which amounts to sorted tuple comparison).
+Sorted tuple comparison in Python <em>IS NOT</em> calling __eq__ on every test pair.</p>
+<p>In particular, Python short-circuits comparison when object ids are the same. Identity is equality.
+However, NaN makes it impossible to be consistent here, since NaN != NaN by definition.</p>
+<p>So:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt;&gt; a = {&#39;k&#39;: float(&#39;nan&#39;)}  # Note: float(&#39;nan&#39;) is not interned (no floats are)
+&gt;&gt; float(&#39;nan&#39;) == float(&#39;nan&#39;)  # False: by definition in IEEE754
+&gt;&gt; a == a  # True: short-circuits b/c both floats have the same object id
+&gt;&gt; a == copy.deepcopy(a)  # True: WHOA!
+</pre></div>
+</div>
+<p>WHOA: You might think deepcopy would produce <em>different</em> object ids, but it doesn&#8217;t. Instead of interning,
+<tt class="docutils literal"><span class="pre">float</span></tt> have a short cache for already-created objects (the &#8220;free-list&#8221;) so a new <tt class="docutils literal"><span class="pre">float</span></tt> is NOT created.
+This is generally not crippling because:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt;&gt; b = copy.deepcopy(a)
+&gt;&gt; b[&#39;k&#39;] = float(&#39;nan&#39;)  # Force a new float object
+&gt;&gt; a == b  # False
+</pre></div>
+</div>
+<p>Note: <tt class="docutils literal"><span class="pre">numpy.nan</span></tt> is a Python float and has the same issue. <tt class="docutils literal"><span class="pre">numpy.float64(numpy.nan)</span></tt> however is
+a <tt class="docutils literal"><span class="pre">numpy.float64</span></tt> which does not appear to undergo any kind of caching/interning.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-moe.optimal_learning.python.constant">
 <span id="moe-optimal-learning-python-constant-module"></span><h2>moe.optimal_learning.python.constant module<a class="headerlink" href="#module-moe.optimal_learning.python.constant" title="Permalink to this headline">¶</a></h2>
@@ -1016,6 +1058,24 @@ fewer than <tt class="docutils literal"><span class="pre">num_points</span></tt>
 <dd><p>Return a list of ClosedIntervals representing a bounding box for this domain.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="moe.optimal_learning.python.repeated_domain.RepeatedDomain.get_constraint_list">
+<tt class="descname">get_constraint_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/repeated_domain.html#RepeatedDomain.get_constraint_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.repeated_domain.RepeatedDomain.get_constraint_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.</p>
+<p>Calls <tt class="docutils literal"><span class="pre">self._domain.get_constraint_list()</span></tt> for each repeat, writing the results sequentially.
+So output[0:2*dim] is from the first repeated domain, output[2*dim:4*dim] is from the second, etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of lambda functions corresponding to constraints</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of lambda functions with shape (num_repeats * dim * 2)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1124,7 +1184,7 @@ implementation in Python while connecting it to C++ evaluation of objective func
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -59,11 +59,11 @@ There are many different policies for this problem:
 
 We have implemented the following policies in our package:
 
-* :mod:`~moe.bandit.epsilon_first.EpsilonFirst`
-* :mod:`~moe.bandit.epsilon_greedy.EpsilonGreedy`
-* :mod:`~moe.bandit.ucb1.UCB1`
-* :mod:`~moe.bandit.ucb1_tuned.UCB1Tuned`
-* :mod:`~moe.bandit.bla.BLA`
+* :mod:`~moe.bandit.epsilon.epsilon_first.EpsilonFirst`
+* :mod:`~moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy`
+* :mod:`~moe.bandit.ucb.ucb1.UCB1`
+* :mod:`~moe.bandit.ucb.ucb1_tuned.UCB1Tuned`
+* :mod:`~moe.bandit.bla.bla.BLA`
 
 Other policies include:
 

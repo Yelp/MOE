@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.gaussian_process_test_case &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.gaussian_process_test_case &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -232,11 +234,11 @@
   <h1>Source code for moe.tests.optimal_learning.python.gaussian_process_test_case</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Base test case for tests that manipulate Gaussian Process data and supporting structures.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
 <span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
-
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
 
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
@@ -379,29 +381,31 @@
     <span class="n">num_sampled_list</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
     <span class="n">num_to_sample_list</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 
-    <span class="nd">@T.class_setup</span>
-<div class="viewcode-block" id="GaussianProcessTestCase.base_setup"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.</span>
+    <span class="nd">@classmethod</span>
+    <span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="GaussianProcessTestCase.base_setup"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.gaussian_process_test_case.GaussianProcessTestCase.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a Gaussian Process prior for each problem size in ``cls.num_sampled_list`` if precomputation is desired.</span>
 
 <span class="sd">        **Requires**</span>
 
-<span class="sd">        * self.num_sampled_list: (*list of int*) problem sizes to consider</span>
-<span class="sd">        * self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the</span>
+<span class="sd">        * cls.num_sampled_list: (*list of int*) problem sizes to consider</span>
+<span class="sd">        * cls.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the</span>
 <span class="sd">          gaussian process prior</span>
 
 <span class="sd">        **Outputs**</span>
 
-<span class="sd">        * self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the</span>
-<span class="sd">          specified problem sizes (``self.num_sampled_list``)</span>
+<span class="sd">        * cls.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the</span>
+<span class="sd">          specified problem sizes (``cls.num_sampled_list``)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">precompute_gaussian_process_data</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">num_sampled</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environment_input</span><span class="o">.</span><span class="n">num_sampled</span> <span class="o">=</span> <span class="n">num_sampled</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_gaussian_process_test_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environment_input</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">precompute_gaussian_process_data</span><span class="p">:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">gp_test_environments</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">num_sampled</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">:</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">gp_test_environment_input</span><span class="o">.</span><span class="n">num_sampled</span> <span class="o">=</span> <span class="n">num_sampled</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_build_gaussian_process_test_data</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">gp_test_environment_input</span><span class="p">))</span>
 </div>
-    <span class="k">def</span> <span class="nf">_build_gaussian_process_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_environment</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_gaussian_process_test_data</span><span class="p">(</span><span class="n">test_environment</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build up a Gaussian Process randomly by repeatedly drawing from and then adding to the prior.</span>
 
 <span class="sd">        :param test_environment: parameters describing how to construct a GP prior</span>
@@ -461,7 +465,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

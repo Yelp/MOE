@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe_examples.bandit_example &mdash; MOE 0.2.0 documentation</title>
+  <title>moe_examples.bandit_example &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -308,7 +310,7 @@
             <span class="k">print</span> <span class="s">&quot;Running Bandit: {0:s}...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
         <span class="c"># Each bandit type has different subtypes. If a user does not specify a subtype, we use the default subtype.</span>
         <span class="c"># For example, the bandit type Epsilon has two subtypes: epsilon-first and epsilon-greedy.</span>
-        <span class="c"># See :class:`~moe.bandit.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon_greedy.EpsilonGreedy` for more details.</span>
+        <span class="c"># See :class:`~moe.bandit.epsilon.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy` for more details.</span>
         <span class="k">for</span> <span class="n">subtype</span> <span class="ow">in</span> <span class="n">BANDIT_ROUTE_NAMES_TO_SUBTYPES</span><span class="p">[</span><span class="nb">type</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="k">print</span> <span class="s">&quot;Running subtype: {0:s}...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subtype</span><span class="p">)</span>
@@ -316,7 +318,7 @@
             <span class="c"># Compute and return arm allocations given the sample history of bandit arms.</span>
             <span class="c"># For example, the allocations {arm1: 0.3, arm2: 0.7} means</span>
             <span class="c"># if we have 10 arm pulls, we should pull arm1 3 times and arm2 7 times.</span>
-            <span class="c"># See :func:`moe.bandit.interfaces.bandit_interface.BanditInterface.allocate_arms` for more details.</span>
+            <span class="c"># See :func:`moe.bandit.bandit_interface.BanditInterface.allocate_arms` for more details.</span>
             <span class="n">arm_allocations</span> <span class="o">=</span> <span class="n">bandit</span><span class="p">(</span><span class="n">historical_info</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">testapp</span><span class="o">=</span><span class="n">testapp</span><span class="p">,</span> <span class="o">**</span><span class="n">bandit_kwargs</span><span class="p">[</span><span class="nb">type</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="k">print</span> <span class="s">&quot;Arm allocations {0:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">arm_allocations</span><span class="p">))</span>
@@ -354,7 +356,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

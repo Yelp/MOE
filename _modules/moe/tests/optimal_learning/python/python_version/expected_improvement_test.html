@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.python_version.expected_improvement_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.python_version.expected_improvement_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -234,7 +236,7 @@
 <span class="sd">&quot;&quot;&quot;Test the Python implementation of Expected Improvement and its gradient.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="kn">import</span> <span class="nn">moe</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.data_containers</span> <span class="kn">import</span> <span class="n">HistoricalData</span><span class="p">,</span> <span class="n">SamplePoint</span>
@@ -248,7 +250,7 @@
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span><span class="p">,</span> <span class="n">GaussianProcessTestEnvironmentInput</span>
 
 
-<div class="viewcode-block" id="ExpectedImprovementTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest">[docs]</a><span class="k">class</span> <span class="nc">ExpectedImprovementTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement">[docs]</a><span class="k">class</span> <span class="nc">TestExpectedImprovement</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Verify that the &quot;naive&quot; and &quot;vectorized&quot; EI implementations in Python return the same result.</span>
 
@@ -300,8 +302,9 @@
         <span class="n">epsilon</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="nd">@T.class_setup</span>
-<div class="viewcode-block" id="ExpectedImprovementTest.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="TestExpectedImprovement.base_setup"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.base_setup">[docs]</a>    <span class="k">def</span> <span class="nf">base_setup</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run the standard setup but seed the RNG first (for repeatability).</span>
 
 <span class="sd">        It is easy to stumble into test cases where EI is very small (e.g., &lt; 1.e-20),</span>
@@ -309,9 +312,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7859</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedImprovementTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">base_setup</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TestExpectedImprovement</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">base_setup</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_expected_improvement_and_gradient"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_expected_improvement_and_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">test_expected_improvement_and_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_expected_improvement_and_gradient"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_expected_improvement_and_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">test_expected_improvement_and_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test EI by comparing the vectorized and &quot;naive&quot; versions.</span>
 
 <span class="sd">        With the same RNG state, these two functions should return identical output.</span>
@@ -324,7 +327,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_points_p_q_list</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
         <span class="n">grad_ei_tolerance</span> <span class="o">=</span> <span class="mf">1.0e-13</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">78532</span><span class="p">)</span>
 
@@ -386,7 +389,8 @@
                 <span class="c"># Restore state</span>
                 <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">rng_state</span><span class="p">)</span>
 </div>
-    <span class="k">def</span> <span class="nf">_check_ei_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ei_eval</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_check_ei_symmetry</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">ei_eval</span><span class="p">,</span> <span class="n">point_to_sample</span><span class="p">,</span> <span class="n">shifts</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute ei at each ``[point_to_sample +/- shift for shift in shifts]`` and check for equality.</span>
 
 <span class="sd">        :param ei_eval: properly configured ExpectedImprovementEvaluator object</span>
@@ -398,6 +402,7 @@
 <span class="sd">        :return: None; assertions fail if test conditions are not met</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">:</span>
             <span class="n">ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">point_to_sample</span> <span class="o">-</span> <span class="n">shift</span>
             <span class="n">left_ei</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
@@ -407,10 +412,10 @@
             <span class="n">right_ei</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
             <span class="n">right_grad_ei</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_grad_expected_improvement</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">left_ei</span><span class="p">,</span> <span class="n">right_ei</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">left_grad_ei</span><span class="p">,</span> <span class="o">-</span><span class="n">right_grad_ei</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">left_ei</span><span class="p">,</span> <span class="n">right_ei</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">left_grad_ei</span><span class="p">,</span> <span class="o">-</span><span class="n">right_grad_ei</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExpectedImprovementTest.test_1d_analytic_ei_edge_cases"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_1d_analytic_ei_edge_cases">[docs]</a>    <span class="k">def</span> <span class="nf">test_1d_analytic_ei_edge_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_1d_analytic_ei_edge_cases"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_1d_analytic_ei_edge_cases">[docs]</a>    <span class="k">def</span> <span class="nf">test_1d_analytic_ei_edge_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds.&quot;&quot;&quot;</span>
         <span class="n">base_coord</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">])</span>
         <span class="n">point1</span> <span class="o">=</span> <span class="n">SamplePoint</span><span class="p">(</span><span class="n">base_coord</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.809342</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -445,7 +450,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">ei</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0e-15</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grad_ei</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">grad_ei</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="mf">1.0e-15</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_evaluate_ei_at_points"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_evaluate_ei_at_points">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_ei_at_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_evaluate_ei_at_points"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_evaluate_ei_at_points">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_ei_at_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that ``evaluate_expected_improvement_at_point_list`` computes and orders results correctly (using 1D analytic EI).&quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="n">domain</span><span class="p">,</span> <span class="n">gaussian_process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_test_environments</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
@@ -462,9 +467,9 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_values</span><span class="p">):</span>
             <span class="n">ei_eval</span><span class="o">.</span><span class="n">current_point</span> <span class="o">=</span> <span class="n">points_to_evaluate</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
             <span class="n">truth</span> <span class="o">=</span> <span class="n">ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
-            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">value</span> <span class="o">==</span> <span class="n">truth</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_analytic_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_analytic_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_multistart_analytic_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_analytic_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_analytic_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI).&quot;&quot;&quot;</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3148</span><span class="p">)</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
@@ -505,9 +510,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
 
         <span class="c"># Check that output is in the domain</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_monte_carlo_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_monte_carlo_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_multistart_monte_carlo_expected_improvement_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_monte_carlo_expected_improvement_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_monte_carlo_expected_improvement_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI).&quot;&quot;&quot;</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7858</span><span class="p">)</span>  <span class="c"># TODO(271): Monte Carlo only works for this seed</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
@@ -554,17 +559,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
 
         <span class="c"># Check that output is in the domain</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
 
         <span class="c"># Since we didn&#39;t really converge to the optimal EI (too costly), do some other sanity checks</span>
         <span class="c"># EI should have improved</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_gt</span><span class="p">(</span><span class="n">ei_final</span><span class="p">,</span> <span class="n">ei_initial</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">ei_final</span> <span class="o">&gt;=</span> <span class="n">ei_initial</span>
 
         <span class="c"># grad EI should have improved</span>
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
-            <span class="n">T</span><span class="o">.</span><span class="n">assert_lt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_initial</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+            <span class="k">assert</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_final</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">grad_ei_initial</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_multistart_qei_expected_improvement_dfo">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_qei_expected_improvement_dfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_multistart_qei_expected_improvement_dfo"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_multistart_qei_expected_improvement_dfo">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_qei_expected_improvement_dfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI).&quot;&quot;&quot;</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7860</span><span class="p">)</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sampled_list</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
@@ -609,13 +614,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">finite_diff_grad</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">finite_diff_grad</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
 
         <span class="c"># Check that output is in the domain</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_true</span><span class="p">(</span><span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="n">repeated_domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_point</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
 
         <span class="c"># Since we didn&#39;t really converge to the optimal EI (too costly), do some other sanity checks</span>
         <span class="c"># EI should have improved</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_gt</span><span class="p">(</span><span class="n">ei_final</span><span class="p">,</span> <span class="n">ei_initial</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">ei_final</span> <span class="o">&gt;=</span> <span class="n">ei_initial</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_qd_ei_with_self"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_ei_with_self">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_ei_with_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_qd_ei_with_self"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_qd_ei_with_self">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_ei_with_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.</span>
 
 <span class="sd">        This test case (unfortunately) suffers from a lot of random variation in the qEI parameters. The tolerance is high because</span>
@@ -665,7 +670,7 @@
                 <span class="c"># (i.e., releps=1.0e-6, abseps=0) takes 10x longer. A relative check would be preferable, though.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_absolute</span><span class="p">(</span><span class="n">python_qd_ei</span><span class="p">,</span> <span class="n">precomputed_answers</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span> <span class="n">ei_tolerance</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.ExpectedImprovementTest.test_qd_and_1d_return_same_analytic_ei">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_and_1d_return_same_analytic_ei</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestExpectedImprovement.test_qd_and_1d_return_same_analytic_ei"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.expected_improvement_test.TestExpectedImprovement.test_qd_and_1d_return_same_analytic_ei">[docs]</a>    <span class="k">def</span> <span class="nf">test_qd_and_1d_return_same_analytic_ei</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.&quot;&quot;&quot;</span>
         <span class="n">num_tests_per_case</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="n">ei_tolerance</span> <span class="o">=</span> <span class="mf">1.0e-9</span>
@@ -681,11 +686,7 @@
 
                 <span class="n">python_1d_ei</span> <span class="o">=</span> <span class="n">python_ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">(</span><span class="n">force_1d_ei</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
                 <span class="n">python_qd_ei</span> <span class="o">=</span> <span class="n">python_ei_eval</span><span class="o">.</span><span class="n">compute_expected_improvement</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">python_1d_ei</span><span class="p">,</span> <span class="n">python_qd_ei</span><span class="p">,</span> <span class="n">ei_tolerance</span><span class="p">)</span>
-
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">python_1d_ei</span><span class="p">,</span> <span class="n">python_qd_ei</span><span class="p">,</span> <span class="n">ei_tolerance</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -716,7 +717,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

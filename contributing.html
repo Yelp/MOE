@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributing &mdash; MOE 0.2.0 documentation</title>
+  <title>Contributing &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="next" title="Frequently Asked Questions" href="faq.html"/>
         <link rel="prev" title="Examples" href="examples.html"/> 
 
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -144,6 +145,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -373,7 +375,7 @@ git push origin HEAD
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>MOE currently uses <tt class="docutils literal"><span class="pre">testify</span></tt> (<a class="reference external" href="https://github.com/Yelp/Testify">https://github.com/Yelp/Testify</a>) to run all unit and integration tests.</p>
+<p>MOE currently uses <tt class="docutils literal"><span class="pre">pytest</span></tt> (<a class="reference external" href="http://pytest.org/">http://pytest.org/</a>) to run all unit and integration tests.</p>
 <p>Tests can be run using <tt class="docutils literal"><span class="pre">make</span> <span class="pre">test</span></tt>. Continuous integration testing is provided by <a class="reference external" href="http://travis-ci.org">http://travis-ci.org</a>. All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -415,6 +417,7 @@ git push origin HEAD
 <li>Tag the release (<a class="reference internal" href="#tagging-releases">Tagging Releases</a>).</li>
 <li>Update the documentation (<a class="reference internal" href="#building-the-documentation">Building the documentation</a>); in all likelihood the new code includes documentation changes. Be sure to double check the number of warnings is not increasing (see link).</li>
 <li>Create and push Docker containers for the new release (<a class="reference internal" href="#updating-dockerhub">Updating DockerHub</a>).</li>
+<li>Update the <tt class="docutils literal"><span class="pre">version</span></tt> field in <tt class="docutils literal"><span class="pre">conda-recipe/moe/meta.yaml</span></tt> and rebuild the conda binaries (<a class="reference internal" href="#updating-conda">Updating Conda</a>).</li>
 </ol>
 <div class="section" id="tagging-releases">
 <h3>Tagging Releases<a class="headerlink" href="#tagging-releases" title="Permalink to this headline">¶</a></h3>
@@ -490,6 +493,11 @@ https://github.com/Yelp/MOE/releases/tag/VERSION
 </pre></div>
 </div>
 </div>
+<div class="section" id="updating-conda">
+<h3>Updating Conda<a class="headerlink" href="#updating-conda" title="Permalink to this headline">¶</a></h3>
+<p>TODO(GH-427): Create a MOE or Yelp conda channel for binaries of MOE and its dependenceies.</p>
+<p>Unfortunately, right now MOE does not have an official conda channel for its binaries. Some third parties (e.g., <a class="reference external" href="https://conda.binstar.org/rmcgibbo">https://conda.binstar.org/rmcgibbo</a>) have set up their own channels. For a discussion of the conda build process, see the README at: <a class="reference external" href="https://github.com/Yelp/MOE/tree/master/conda-recipe">https://github.com/Yelp/MOE/tree/master/conda-recipe</a>. But at the moment, new MOE releases have no official steps for updating the conda build.</p>
+</div>
 </div>
 </div>
 
@@ -531,7 +539,7 @@ https://github.com/Yelp/MOE/releases/tag/VERSION
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

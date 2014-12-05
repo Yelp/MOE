@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.views.rest.bandit_epsilon_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.views.rest.bandit_epsilon_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -236,8 +238,6 @@
 
 <span class="kn">import</span> <span class="nn">simplejson</span> <span class="kn">as</span> <span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
 <span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">BANDIT_EPSILON_ENDPOINT</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPE_FIRST</span><span class="p">,</span> <span class="n">EPSILON_SUBTYPE_GREEDY</span>
 <span class="kn">from</span> <span class="nn">moe.tests.bandit.bandit_test_case</span> <span class="kn">import</span> <span class="n">BanditTestCase</span>
 <span class="kn">from</span> <span class="nn">moe.tests.views.rest.bandit_test</span> <span class="kn">import</span> <span class="n">TestBanditViews</span>
@@ -254,7 +254,8 @@
     <span class="n">_moe_route</span> <span class="o">=</span> <span class="n">BANDIT_EPSILON_MOE_ROUTE</span>
     <span class="n">_view</span> <span class="o">=</span> <span class="n">BanditEpsilonView</span>
 
-    <span class="k">def</span> <span class="nf">_build_json_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">historical_info</span><span class="p">,</span> <span class="n">hyperparameter_info</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_json_payload</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">historical_info</span><span class="p">,</span> <span class="n">hyperparameter_info</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a json_payload to POST to the /bandit/epsilon endpoint with all needed info.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">hyperparameter_info</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">hyperparameter_info</span> <span class="o">=</span> <span class="n">EPSILON_SUBTYPES_TO_DEFAULT_HYPERPARAMETER_INFOS</span><span class="p">[</span><span class="n">subtype</span><span class="p">]</span>
@@ -278,7 +279,7 @@
         <span class="n">view</span> <span class="o">=</span> <span class="n">BanditEpsilonView</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
 
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_dicts_equal</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">],</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span>
 
         <span class="c"># Test arbitrary epsilons get passed through</span>
         <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">][</span><span class="s">&#39;epsilon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -288,7 +289,7 @@
         <span class="n">view</span> <span class="o">=</span> <span class="n">BanditEpsilonView</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
 
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_dicts_equal</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">],</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through"><a class="viewcode-back" href="../../../../../moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_epsilon_first_hyperparameters_passed_through">[docs]</a>    <span class="k">def</span> <span class="nf">test_epsilon_first_hyperparameters_passed_through</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test that the hyperparameters get passed through to the epsilon-first endpoint.&quot;&quot;&quot;</span>
@@ -302,7 +303,7 @@
         <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
 
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_dicts_equal</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">],</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span>
 
         <span class="c"># Test an arbitrary epsilon and total_tamples get passed through</span>
         <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">][</span><span class="s">&#39;epsilon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -313,7 +314,7 @@
         <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_params_from_request</span><span class="p">()</span>
 
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_dicts_equal</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">],</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">json_payload</span><span class="p">[</span><span class="s">&#39;hyperparameter_info&#39;</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="TestBanditEpsilonViews.test_historical_info_passed_through"><a class="viewcode-back" href="../../../../../moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_historical_info_passed_through">[docs]</a>    <span class="k">def</span> <span class="nf">test_historical_info_passed_through</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test that the historical info get passed through to the endpoint.&quot;&quot;&quot;</span>
@@ -321,11 +322,7 @@
 </div>
 <div class="viewcode-block" id="TestBanditEpsilonViews.test_interface_returns_as_expected"><a class="viewcode-back" href="../../../../../moe.tests.views.rest.html#moe.tests.views.rest.bandit_epsilon_test.TestBanditEpsilonViews.test_interface_returns_as_expected">[docs]</a>    <span class="k">def</span> <span class="nf">test_interface_returns_as_expected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Integration test for the /bandit/epsilon endpoint.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_test_interface_returns_as_expected</span><span class="p">()</span>
-
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_interface_returns_as_expected</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>
@@ -356,7 +353,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.cpp_wrappers.optimization &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.optimal_learning.python.cpp_wrappers.optimization &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -418,9 +420,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
-
 <span class="kn">import</span> <span class="nn">moe.build.GPP</span> <span class="kn">as</span> <span class="nn">C_GP</span>
+<span class="kn">from</span> <span class="nn">moe.optimal_learning.python.comparison</span> <span class="kn">import</span> <span class="n">EqualityComparisonMixin</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.interfaces.optimization_interface</span> <span class="kn">import</span> <span class="n">OptimizerInterface</span>
 
 
@@ -432,23 +433,17 @@
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="NewtonParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters">[docs]</a><span class="k">class</span> <span class="nc">NewtonParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="NewtonParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters">[docs]</a><span class="k">class</span> <span class="nc">NewtonParameters</span><span class="p">(</span><span class="n">C_GP</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">,</span> <span class="n">EqualityComparisonMixin</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Container to hold parameters that specify the behavior of Newton in a C++-readable form.</span>
 
-<span class="sd">    See __init__ docstring for more information.</span>
+<span class="sd">    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters.__init__` docstring for more information.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">num_multistarts</span><span class="p">,</span>
-            <span class="n">max_num_steps</span><span class="p">,</span>
-            <span class="n">gamma</span><span class="p">,</span>
-            <span class="n">time_factor</span><span class="p">,</span>
-            <span class="n">max_relative_change</span><span class="p">,</span>
-            <span class="n">tolerance</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Build a NewtonParameters (C++ object) via its ctor; this object specifies multistarted Newton behavior and is required by C++ Newton optimization.</span>
 
 <span class="sd">        .. Note:: See gpp_optimizer_parameters.hpp for more details.</span>
@@ -482,36 +477,20 @@
 <span class="sd">        :type tolerance: float64 &gt;= 0.0</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">num_multistarts</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">NewtonParameters</span><span class="p">(</span>
-            <span class="n">num_multistarts</span><span class="p">,</span>
-            <span class="n">max_num_steps</span><span class="p">,</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">gamma</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">time_factor</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">tolerance</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NewtonParameters</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="GradientDescentParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters">[docs]</a><span class="k">class</span> <span class="nc">GradientDescentParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GradientDescentParameters"><a class="viewcode-back" href="../../../../../moe.optimal_learning.python.cpp_wrappers.html#moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters">[docs]</a><span class="k">class</span> <span class="nc">GradientDescentParameters</span><span class="p">(</span><span class="n">C_GP</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="n">EqualityComparisonMixin</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Container to hold parameters that specify the behavior of Gradient Descent in a C++-readable form.</span>
 
-<span class="sd">    See __init__ docstring for more information.</span>
+<span class="sd">    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters.__init__` docstring for more information.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">num_multistarts</span><span class="p">,</span>
-            <span class="n">max_num_steps</span><span class="p">,</span>
-            <span class="n">max_num_restarts</span><span class="p">,</span>
-            <span class="n">num_steps_averaged</span><span class="p">,</span>
-            <span class="n">gamma</span><span class="p">,</span>
-            <span class="n">pre_mult</span><span class="p">,</span>
-            <span class="n">max_relative_change</span><span class="p">,</span>
-            <span class="n">tolerance</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">r&quot;&quot;&quot;Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.</span>
 
 <span class="sd">        .. Note:: See gpp_optimizer_parameters.hpp for more details.</span>
@@ -570,18 +549,7 @@
 <span class="sd">        :type tolerance: float64 &gt;= 0.0</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_multistarts</span> <span class="o">=</span> <span class="n">num_multistarts</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">C_GP</span><span class="o">.</span><span class="n">GradientDescentParameters</span><span class="p">(</span>
-            <span class="n">num_multistarts</span><span class="p">,</span>
-            <span class="n">max_num_steps</span><span class="p">,</span>
-            <span class="n">max_num_restarts</span><span class="p">,</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">gamma</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">pre_mult</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">max_relative_change</span><span class="p">),</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">tolerance</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="c"># TODO(eliu GH-138) Expose the internal data from the above object for testing in python</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_python_max_num_steps</span> <span class="o">=</span> <span class="n">max_num_steps</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GradientDescentParameters</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 </div>
 <span class="k">class</span> <span class="nc">_CppOptimizerParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -628,7 +596,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_type</span> <span class="o">=</span> <span class="n">optimizer_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_random_samples</span> <span class="o">=</span> <span class="n">num_random_samples</span>  <span class="c"># number of samples to &#39;dumb&#39; search over</span>
         <span class="k">if</span> <span class="n">optimizer_parameters</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">optimizer_parameters</span><span class="o">.</span><span class="n">parameters</span>  <span class="c"># must match the optimizer_type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="n">optimizer_parameters</span>  <span class="c"># must match the optimizer_type</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_parameters</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -770,7 +738,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

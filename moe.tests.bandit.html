@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.bandit package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.bandit package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe.tests package" href="moe.tests.html"/>
-        <link rel="next" title="moe.tests.optimal_learning package" href="moe.tests.optimal_learning.html"/>
+        <link rel="next" title="moe.tests.bandit.bla package" href="moe.tests.bandit.bla.html"/>
         <link rel="prev" title="moe.tests package" href="moe.tests.html"/> 
 
   
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -235,6 +237,36 @@
             
   <div class="section" id="moe-tests-bandit-package">
 <h1>moe.tests.bandit package<a class="headerlink" href="#moe-tests-bandit-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="moe.tests.bandit.bla.html">moe.tests.bandit.bla package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.bla.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla.bla_test">moe.tests.bandit.bla.bla_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe.tests.bandit.epsilon.html">moe.tests.bandit.epsilon package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_first_test">moe.tests.bandit.epsilon.epsilon_first_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_greedy_test">moe.tests.bandit.epsilon.epsilon_greedy_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test">moe.tests.bandit.epsilon.epsilon_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon.epsilon_test_case">moe.tests.bandit.epsilon.epsilon_test_case module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="moe.tests.bandit.ucb.html">moe.tests.bandit.ucb package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.ucb.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_test">moe.tests.bandit.ucb.ucb1_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb1_tuned_test">moe.tests.bandit.ucb.ucb1_tuned_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb.ucb_test_case">moe.tests.bandit.ucb.ucb_test_case module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -242,46 +274,40 @@
 <span id="moe-tests-bandit-bandit-interface-test-module"></span><h2>moe.tests.bandit.bandit_interface_test module<a class="headerlink" href="#module-moe.tests.bandit.bandit_interface_test" title="Permalink to this headline">¶</a></h2>
 <p>Test bandit interface implementation.</p>
 <dl class="class">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bandit_interface_test.</tt><tt class="descname">BanditInterfaceTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.bandit_interface_test.TestBanditInterface">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bandit_interface_test.</tt><tt class="descname">TestBanditInterface</tt><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#TestBanditInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.TestBanditInterface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
 <p>Verify that different historical infos return correct results.</p>
 <dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.disable_logging">
-<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.disable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disable logging (for the duration of this test case).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.enable_logging">
-<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.enable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-enable logging (so other test cases are unaffected).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_empty_arm_invalid">
-<tt class="descname">test_empty_arm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.test_empty_arm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_empty_arm_invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_empty_arm_invalid">
+<tt class="descname">test_empty_arm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#TestBanditInterface.test_empty_arm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_empty_arm_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test empty <tt class="docutils literal"><span class="pre">arms_to_allocations</span></tt> causes an ValueError.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_one_arm" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_one_arm">
+<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#TestBanditInterface.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_one_arm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the one-arm case always returns the given arm as the winning arm.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_three_arms_two_winners">
-<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_three_arms_two_winners">
+<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#TestBanditInterface.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the three-arms cases with two winners return one of the two winners.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_two_arms_one_winner">
-<tt class="descname">test_two_arms_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#BanditInterfaceTest.test_two_arms_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.BanditInterfaceTest.test_two_arms_one_winner" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_two_arms_one_winner">
+<tt class="descname">test_two_arms_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#TestBanditInterface.test_two_arms_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.TestBanditInterface.test_two_arms_one_winner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the two-arms case with one winner always returns the winning arm.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.tests.bandit.bandit_interface_test.disable_logging">
+<tt class="descclassname">moe.tests.bandit.bandit_interface_test.</tt><tt class="descname">disable_logging</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_interface_test.html#disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_interface_test.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable logging (for the duration of this test case).</p>
 </dd></dl>
 
 </div>
@@ -290,8 +316,8 @@
 <p>Base test case class for bandit tests; includes different historical infos (different sampled arms).</p>
 <dl class="class">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bandit_test_case.</tt><tt class="descname">BanditTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bandit_test_case.html#BanditTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bandit_test_case.</tt><tt class="descname">BanditTestCase</tt><a class="reference internal" href="_modules/moe/tests/bandit/bandit_test_case.html#BanditTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Base test case for the bandit library.</p>
 <p>This sets up arms for test cases and includes an integration test case for
 verifying that default values do not throw an error.</p>
@@ -303,84 +329,53 @@ verifying that default values do not throw an error.</p>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.bernoulli_historical_infos_to_test">
-<tt class="descname">bernoulli_historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.bernoulli_historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">bernoulli_historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x11a880980&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809b8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809f0&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.bernoulli_historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test">
-<tt class="descname">historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x1180597c0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597f8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059830&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059868&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x1180598a0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">historical_infos_to_test</tt><em class="property"> = [&lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a28&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a60&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a98&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880ad0&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880b08&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880980&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809b8&gt;, &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809f0&gt;]</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.historical_infos_to_test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case">
-<tt class="descname">one_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059718&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">one_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880980&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.one_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case">
-<tt class="descname">three_arms_float_payoffs_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597f8&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_float_payoffs_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a60&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_float_payoffs_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case">
-<tt class="descname">three_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180597c0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a28&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case">
-<tt class="descname">three_arms_two_winners_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059868&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_two_winners_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880ad0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case">
-<tt class="descname">three_arms_two_winners_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059830&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_two_winners_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880a98&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_two_winners_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case">
-<tt class="descname">three_arms_with_variance_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x1180598a0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">three_arms_with_variance_no_unsampled_arm_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a880b08&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.three_arms_with_variance_no_unsampled_arm_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case">
-<tt class="descname">two_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059788&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">two_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809f0&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case">
-<tt class="descname">two_unsampled_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x118059750&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">two_unsampled_arms_test_case</tt><em class="property"> = &lt;moe.bandit.data_containers.HistoricalData object at 0x11a8809b8&gt;</em><a class="headerlink" href="#moe.tests.bandit.bandit_test_case.BanditTestCase.two_unsampled_arms_test_case" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.bla_test">
-<span id="moe-tests-bandit-bla-test-module"></span><h2>moe.tests.bandit.bla_test module<a class="headerlink" href="#module-moe.tests.bandit.bla_test" title="Permalink to this headline">¶</a></h2>
-<p>Test UCB1 bandit implementation.</p>
-<p>Test that the one arm case returns the given arm as the winning arm.
-Test that two-arm cases with specified random seeds return expected results.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.bla_test.BLATest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.bla_test.</tt><tt class="descname">BLATest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
-<p>Verify that different historical infos return correct results.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.bla_test.BLATest.bandit_class">
-<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.bandit_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">BLA</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.bla_test.BLATest.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.test_one_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.bla_test.BLATest.test_two_arms_one_winner">
-<tt class="descname">test_two_arms_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/bla_test.html#BLATest.test_two_arms_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.bla_test.BLATest.test_two_arms_one_winner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-arms case with random seed 0 always allocate arm1:1.0 and arm2:0.0.</p>
-</dd></dl>
 
 </dd></dl>
 
@@ -389,263 +384,65 @@ Test that two-arm cases with specified random seeds return expected results.</p>
 <span id="moe-tests-bandit-data-containers-test-module"></span><h2>moe.tests.bandit.data_containers_test module<a class="headerlink" href="#module-moe.tests.bandit.data_containers_test" title="Permalink to this headline">¶</a></h2>
 <p>Tests for functions in SampleArm and HistoricalData.</p>
 <dl class="class">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.data_containers_test.</tt><tt class="descname">DataContainersTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.data_containers_test.</tt><tt class="descname">TestDataContainers</tt><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
 <p>Tests functions in <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.SampleArm" title="moe.bandit.data_containers.SampleArm"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.SampleArm</span></tt></a> and <a class="reference internal" href="moe.bandit.html#moe.bandit.data_containers.HistoricalData" title="moe.bandit.data_containers.HistoricalData"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.data_containers.HistoricalData</span></tt></a>.</p>
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.disable_logging">
-<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.disable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disable logging (for the duration of this test case).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.enable_logging">
-<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.enable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-enable logging (so other test cases are unaffected).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms">
-<tt class="descname">test_historical_data_append_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms">
+<tt class="descname">test_historical_data_append_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_historical_data_append_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that appending arms to HistoricalData updates historical info correctly.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms_with_variance_invalid">
-<tt class="descname">test_historical_data_append_arms_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_arms_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_arms_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms_with_variance_invalid">
+<tt class="descname">test_historical_data_append_arms_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_historical_data_append_arms_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_arms_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that adding arms with variance causes a ValueError.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_unsampled_arm">
-<tt class="descname">test_historical_data_append_unsampled_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_append_unsampled_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_append_unsampled_arm" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_unsampled_arm">
+<tt class="descname">test_historical_data_append_unsampled_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_historical_data_append_unsampled_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_append_unsampled_arm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that adding an unsampled arm (already exists in historical info) to HistoricalData does not change anything.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_str">
-<tt class="descname">test_historical_data_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_historical_data_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_historical_data_str" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_str">
+<tt class="descname">test_historical_data_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_historical_data_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_historical_data_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test HistoricalData&#8217;s __str__ overload operator.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add">
-<tt class="descname">test_sample_arm_add</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add">
+<tt class="descname">test_sample_arm_add</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_sample_arm_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test SampleArm&#8217;s __add__ overload operator.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add_arm_with_variance_invalid">
-<tt class="descname">test_sample_arm_add_arm_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_add_arm_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_add_arm_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add_arm_with_variance_invalid">
+<tt class="descname">test_sample_arm_add_arm_with_variance_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_sample_arm_add_arm_with_variance_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_add_arm_with_variance_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test that adding arms with variance causes a ValueError. Neither of the arms can have non-None variance.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_iadd">
-<tt class="descname">test_sample_arm_iadd</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_iadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_iadd" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_iadd">
+<tt class="descname">test_sample_arm_iadd</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_sample_arm_iadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_iadd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test SampleArm&#8217;s __iadd__ overload operator.</p>
 <p>Verify that after x += y, x gets the new value x + y and still retains its old id.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_str">
-<tt class="descname">test_sample_arm_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#DataContainersTest.test_sample_arm_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.DataContainersTest.test_sample_arm_str" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_str">
+<tt class="descname">test_sample_arm_str</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#TestDataContainers.test_sample_arm_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.TestDataContainers.test_sample_arm_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test SampleArm&#8217;s __str__ overload operator.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-moe.tests.bandit.epsilon_first_test">
-<span id="moe-tests-bandit-epsilon-first-test-module"></span><h2>moe.tests.bandit.epsilon_first_test module<a class="headerlink" href="#module-moe.tests.bandit.epsilon_first_test" title="Permalink to this headline">¶</a></h2>
-<p>Test epsilon-first bandit implementation.</p>
-<p>Test default values with one, two, and three arms.
-Test one arm with various epsilon values.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.epsilon_first_test.</tt><tt class="descname">EpsilonFirstTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.epsilon_test_case.EpsilonTestCase" title="moe.tests.bandit.epsilon_test_case.EpsilonTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.epsilon_test_case.EpsilonTestCase</span></tt></a></p>
-<p>Verify that different epsilon values and historical infos return correct results.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.bandit_class">
-<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.bandit_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">EpsilonFirst</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_init_default">
-<tt class="descname">test_init_default</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_init_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_init_default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify that default values do not throw and error. This is purely an integration test.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_one_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit">
-<tt class="descname">test_three_arms_exploit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_three_arms_exploit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with integer and float payoffs in exploitation phase return the expected arm allocations.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit_two_winners">
-<tt class="descname">test_three_arms_exploit_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_three_arms_exploit_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_exploit_two_winners" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with two winners in exploitation phase return the expected arm allocations. This tests num_arms &gt; num_winning_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_explore">
-<tt class="descname">test_three_arms_explore</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_three_arms_explore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_three_arms_explore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with integer and float payoffs in exploration phase return the expected arm allocations.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_one">
-<tt class="descname">test_two_arms_epsilon_one</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_two_arms_epsilon_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_one" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-arms case with one epsilon (always explore) always allocate arm1:0.5 and arm2:0.5 when average payoffs are arm1:1.0 and arm2:0.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_zero">
-<tt class="descname">test_two_arms_epsilon_zero</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_two_arms_epsilon_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_arms_epsilon_zero" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-arms case with zero epsilon (always exploit) always allocate arm1:1.0 and arm2:0.0 when average payoffs are arm1:1.0 and arm2:0.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_unsampled_arms">
-<tt class="descname">test_two_unsampled_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_first_test.html#EpsilonFirstTest.test_two_unsampled_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.test_two_unsampled_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.total_samples_to_test">
-<tt class="descname">total_samples_to_test</tt><em class="property"> = [1, 10, 100]</em><a class="headerlink" href="#moe.tests.bandit.epsilon_first_test.EpsilonFirstTest.total_samples_to_test" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.epsilon_greedy_test">
-<span id="moe-tests-bandit-epsilon-greedy-test-module"></span><h2>moe.tests.bandit.epsilon_greedy_test module<a class="headerlink" href="#module-moe.tests.bandit.epsilon_greedy_test" title="Permalink to this headline">¶</a></h2>
-<p>Test epsilon-greedy bandit implementation.</p>
-<p>Test default values with one, two, and three arms.
-Test one arm with various epsilon values.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.epsilon_greedy_test.</tt><tt class="descname">EpsilonGreedyTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.epsilon_test_case.EpsilonTestCase" title="moe.tests.bandit.epsilon_test_case.EpsilonTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.epsilon_test_case.EpsilonTestCase</span></tt></a></p>
-<p>Verify that different epsilon values and historical infos return correct results.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.bandit_class">
-<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.bandit_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">EpsilonGreedy</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_init_default">
-<tt class="descname">test_init_default</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_init_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_init_default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify that default values do not throw and error. This is purely an integration test.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_one_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms">
-<tt class="descname">test_three_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_three_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with integer and float payoffs return the expected arm allocations.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms_two_winners">
-<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms &gt; num_winning_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_one">
-<tt class="descname">test_two_arms_epsilon_one</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_two_arms_epsilon_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_one" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-arms case with one epsilon always allocate arm1:0.5 and arm2:0.5 when average payoffs are arm1:1.0 and arm2:0.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_zero">
-<tt class="descname">test_two_arms_epsilon_zero</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_two_arms_epsilon_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_arms_epsilon_zero" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-arms case with zero epsilon always allocate arm1:1.0 and arm2:0.0 when average payoffs are arm1:1.0 and arm2:0.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_unsampled_arms">
-<tt class="descname">test_two_unsampled_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_greedy_test.html#EpsilonGreedyTest.test_two_unsampled_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_greedy_test.EpsilonGreedyTest.test_two_unsampled_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_winning_arms == num_arms &gt; 1.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.epsilon_test">
-<span id="moe-tests-bandit-epsilon-test-module"></span><h2>moe.tests.bandit.epsilon_test module<a class="headerlink" href="#module-moe.tests.bandit.epsilon_test" title="Permalink to this headline">¶</a></h2>
-<p>Test epsilon bandit implementation (functions common to epsilon bandit).</p>
-<p>Test functions in <a class="reference internal" href="moe.bandit.html#moe.bandit.epsilon_interface.EpsilonInterface" title="moe.bandit.epsilon_interface.EpsilonInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.bandit.epsilon_interface.EpsilonInterface</span></tt></a></p>
-<dl class="class">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.epsilon_test.</tt><tt class="descname">EpsilonTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.epsilon_test_case.EpsilonTestCase" title="moe.tests.bandit.epsilon_test_case.EpsilonTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.epsilon_test_case.EpsilonTestCase</span></tt></a></p>
-<p>Verify that different sample_arms return correct results.</p>
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest.disable_logging">
-<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="moe.tests.bandit.data_containers_test.disable_logging">
+<tt class="descclassname">moe.tests.bandit.data_containers_test.</tt><tt class="descname">disable_logging</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/data_containers_test.html#disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.data_containers_test.disable_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable logging (for the duration of this test case).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest.enable_logging">
-<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest.enable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-enable logging (so other test cases are unaffected).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest.test_empty_arm_invalid">
-<tt class="descname">test_empty_arm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest.test_empty_arm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest.test_empty_arm_invalid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test empty <tt class="docutils literal"><span class="pre">sample_arms</span></tt> causes an ValueError.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest.test_three_arms_two_winners">
-<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with two winners return the expected winning arms. This tests num_arms &gt; num_winning_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.epsilon_test.EpsilonTest.test_two_unsampled_arms">
-<tt class="descname">test_two_unsampled_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test.html#EpsilonTest.test_two_unsampled_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test.EpsilonTest.test_two_unsampled_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-unsampled-arms case always returns both arms as winning arms. This tests num_winning_arms == num_arms &gt; 1.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.epsilon_test_case">
-<span id="moe-tests-bandit-epsilon-test-case-module"></span><h2>moe.tests.bandit.epsilon_test_case module<a class="headerlink" href="#module-moe.tests.bandit.epsilon_test_case" title="Permalink to this headline">¶</a></h2>
-<p>Base test case class for bandit epsilon tests; includes different epsilon values to test.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.epsilon_test_case.EpsilonTestCase">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.epsilon_test_case.</tt><tt class="descname">EpsilonTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/epsilon_test_case.html#EpsilonTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.epsilon_test_case.EpsilonTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
-<p>Base test case for the bandit library.</p>
-<p>Test different epsilon values.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.epsilon_test_case.EpsilonTestCase.epsilons_to_test">
-<tt class="descname">epsilons_to_test</tt><em class="property"> = [0.05, 0.0, 0.5, 1.0]</em><a class="headerlink" href="#moe.tests.bandit.epsilon_test_case.EpsilonTestCase.epsilons_to_test" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
@@ -653,143 +450,28 @@ Test one arm with various epsilon values.</p>
 <span id="moe-tests-bandit-linkers-test-module"></span><h2>moe.tests.bandit.linkers_test module<a class="headerlink" href="#module-moe.tests.bandit.linkers_test" title="Permalink to this headline">¶</a></h2>
 <p>Tests that linkers contain all possible types defined in constants.</p>
 <dl class="class">
-<dt id="moe.tests.bandit.linkers_test.LinkersTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.linkers_test.</tt><tt class="descname">LinkersTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#LinkersTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.LinkersTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">testify.test_case.TestCase</span></tt></p>
+<dt id="moe.tests.bandit.linkers_test.TestLinkers">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.linkers_test.</tt><tt class="descname">TestLinkers</tt><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#TestLinkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.TestLinkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Tests that linkers contain all possible types defined in constants.</p>
 <dl class="method">
-<dt id="moe.tests.bandit.linkers_test.LinkersTest.test_bandit_links_have_all_bandit_endpoints">
-<tt class="descname">test_bandit_links_have_all_bandit_endpoints</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#LinkersTest.test_bandit_links_have_all_bandit_endpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.LinkersTest.test_bandit_links_have_all_bandit_endpoints" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.linkers_test.TestLinkers.test_bandit_links_have_all_bandit_endpoints">
+<tt class="descname">test_bandit_links_have_all_bandit_endpoints</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#TestLinkers.test_bandit_links_have_all_bandit_endpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.TestLinkers.test_bandit_links_have_all_bandit_endpoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each bandit endpoint is in a linker, and every linker key is a bandit endpoint.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.linkers_test.LinkersTest.test_epsilon_links_have_all_epsilon_subtypes">
-<tt class="descname">test_epsilon_links_have_all_epsilon_subtypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#LinkersTest.test_epsilon_links_have_all_epsilon_subtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.LinkersTest.test_epsilon_links_have_all_epsilon_subtypes" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.linkers_test.TestLinkers.test_epsilon_links_have_all_epsilon_subtypes">
+<tt class="descname">test_epsilon_links_have_all_epsilon_subtypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#TestLinkers.test_epsilon_links_have_all_epsilon_subtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.TestLinkers.test_epsilon_links_have_all_epsilon_subtypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each epsilon subtype is in a linker, and every linker key is an epsilon subtype.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.linkers_test.LinkersTest.test_ucb_links_have_all_ucb_subtypes">
-<tt class="descname">test_ucb_links_have_all_ucb_subtypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#LinkersTest.test_ucb_links_have_all_ucb_subtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.LinkersTest.test_ucb_links_have_all_ucb_subtypes" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.linkers_test.TestLinkers.test_ucb_links_have_all_ucb_subtypes">
+<tt class="descname">test_ucb_links_have_all_ucb_subtypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/linkers_test.html#TestLinkers.test_ucb_links_have_all_ucb_subtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.linkers_test.TestLinkers.test_ucb_links_have_all_ucb_subtypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test each UCB subtype is in a linker, and every linker key is a UCB subtype.</p>
 </dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.ucb1_test">
-<span id="moe-tests-bandit-ucb1-test-module"></span><h2>moe.tests.bandit.ucb1_test module<a class="headerlink" href="#module-moe.tests.bandit.ucb1_test" title="Permalink to this headline">¶</a></h2>
-<p>Test UCB1 bandit implementation.</p>
-<p>Test default values with one, two, and three arms.
-Test different cases including unsampled arms and multiple winners.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.ucb1_test.</tt><tt class="descname">UCB1Test</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.ucb_test_case.UCBTestCase" title="moe.tests.bandit.ucb_test_case.UCBTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.ucb_test_case.UCBTestCase</span></tt></a></p>
-<p>Verify that different historical infos return correct results.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.bandit_class">
-<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.bandit_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">UCB1</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.test_init_default">
-<tt class="descname">test_init_default</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test.test_init_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.test_init_default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify that default values do not throw and error. This is purely an integration test.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.test_one_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_one_unsampled_arm">
-<tt class="descname">test_three_arms_one_unsampled_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test.test_three_arms_one_unsampled_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_one_unsampled_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with integer and float payoffs return the expected arm allocations. When arm3 is the only unsampled arm, we expect all allocation is given to arm3.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_two_winners">
-<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms &gt; num_winning_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_test.UCB1Test.test_two_unsampled_arms">
-<tt class="descname">test_two_unsampled_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_test.html#UCB1Test.test_two_unsampled_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_test.UCB1Test.test_two_unsampled_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_unsampled_arms == num_arms &gt; 1.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.ucb1_tuned_test">
-<span id="moe-tests-bandit-ucb1-tuned-test-module"></span><h2>moe.tests.bandit.ucb1_tuned_test module<a class="headerlink" href="#module-moe.tests.bandit.ucb1_tuned_test" title="Permalink to this headline">¶</a></h2>
-<p>Test UCB1-tuned bandit implementation.</p>
-<p>Test default values with one, two, and three arms.
-Test different cases including unsampled arms and multiple winners.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.ucb1_tuned_test.</tt><tt class="descname">UCB1TunedTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.ucb_test_case.UCBTestCase" title="moe.tests.bandit.ucb_test_case.UCBTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.ucb_test_case.UCBTestCase</span></tt></a></p>
-<p>Verify that different historical infos return correct results.</p>
-<dl class="attribute">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.bandit_class">
-<tt class="descname">bandit_class</tt><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.bandit_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">UCB1Tuned</span></tt></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_init_default">
-<tt class="descname">test_init_default</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_init_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_init_default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Verify that default values do not throw and error. This is purely an integration test.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_one_arm">
-<tt class="descname">test_one_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_one_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_one_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the one-arm case always returns the given arm as the winning arm and the allocation is 1.0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_diferent_variance">
-<tt class="descname">test_three_arms_diferent_variance</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_three_arms_diferent_variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_diferent_variance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with different variance (same average payoff) return the expected arm allocations. The highest variance wins.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_one_unsampled_arm">
-<tt class="descname">test_three_arms_one_unsampled_arm</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_three_arms_one_unsampled_arm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_one_unsampled_arm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with integer and float payoffs return the expected arm allocations. When arm3 is the only unsampled arm, we expect all allocation is given to arm3.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_two_winners">
-<tt class="descname">test_three_arms_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_three_arms_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_three_arms_two_winners" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms &gt; num_winning_arms &gt; 1.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_two_unsampled_arms">
-<tt class="descname">test_two_unsampled_arms</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb1_tuned_test.html#UCB1TunedTest.test_two_unsampled_arms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb1_tuned_test.UCB1TunedTest.test_two_unsampled_arms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the two-unsampled-arms case always allocate each arm equally (the allocation is 0.5 for both arms). This tests num_unsampled_arms == num_arms &gt; 1.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-moe.tests.bandit.ucb_test_case">
-<span id="moe-tests-bandit-ucb-test-case-module"></span><h2>moe.tests.bandit.ucb_test_case module<a class="headerlink" href="#module-moe.tests.bandit.ucb_test_case" title="Permalink to this headline">¶</a></h2>
-<p>Base test case class for UCB tests; includes different cases where unsampled arms are winners.</p>
-<dl class="class">
-<dt id="moe.tests.bandit.ucb_test_case.UCBTestCase">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.ucb_test_case.</tt><tt class="descname">UCBTestCase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/ucb_test_case.html#UCBTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.ucb_test_case.UCBTestCase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
-<p>Base test case for the UCB bandit library.</p>
 </dd></dl>
 
 </div>
@@ -797,64 +479,58 @@ Test different cases including unsampled arms and multiple winners.</p>
 <span id="moe-tests-bandit-utils-test-module"></span><h2>moe.tests.bandit.utils_test module<a class="headerlink" href="#module-moe.tests.bandit.utils_test" title="Permalink to this headline">¶</a></h2>
 <p>Tests for functions in utils.</p>
 <dl class="class">
-<dt id="moe.tests.bandit.utils_test.UtilsTest">
-<em class="property">class </em><tt class="descclassname">moe.tests.bandit.utils_test.</tt><tt class="descname">UtilsTest</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils">
+<em class="property">class </em><tt class="descclassname">moe.tests.bandit.utils_test.</tt><tt class="descname">TestUtils</tt><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moe.tests.bandit.bandit_test_case.BanditTestCase" title="moe.tests.bandit.bandit_test_case.BanditTestCase"><tt class="xref py py-class docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case.BanditTestCase</span></tt></a></p>
 <p>Tests <a class="reference internal" href="moe.bandit.html#moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list" title="moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list"><tt class="xref py py-func docutils literal"><span class="pre">moe.bandit.utils.get_winning_arm_names_from_payoff_arm_name_list()</span></tt></a> and <a class="reference internal" href="moe.bandit.html#moe.bandit.utils.get_equal_arm_allocations" title="moe.bandit.utils.get_equal_arm_allocations"><tt class="xref py py-func docutils literal"><span class="pre">moe.bandit.utils.get_equal_arm_allocations()</span></tt></a>.</p>
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.disable_logging">
-<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.disable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disable logging (for the duration of this test case).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.enable_logging">
-<tt class="descname">enable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.enable_logging" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-enable logging (so other test cases are unaffected).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_empty_arm_invalid">
-<tt class="descname">test_get_equal_arm_allocations_empty_arm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_equal_arm_allocations_empty_arm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_empty_arm_invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_empty_arm_invalid">
+<tt class="descname">test_get_equal_arm_allocations_empty_arm_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_equal_arm_allocations_empty_arm_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_empty_arm_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test empty <tt class="docutils literal"><span class="pre">arms_sampled</span></tt> causes an ValueError.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_no_winner">
-<tt class="descname">test_get_equal_arm_allocations_no_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_equal_arm_allocations_no_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_no_winner" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_no_winner">
+<tt class="descname">test_get_equal_arm_allocations_no_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_equal_arm_allocations_no_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_no_winner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test allocations split among all sample arms when there is no winner.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_one_winner">
-<tt class="descname">test_get_equal_arm_allocations_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_equal_arm_allocations_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_one_winner" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_one_winner">
+<tt class="descname">test_get_equal_arm_allocations_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_equal_arm_allocations_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_one_winner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test all allocation given to the winning arm.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_two_winners">
-<tt class="descname">test_get_equal_arm_allocations_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_equal_arm_allocations_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_equal_arm_allocations_two_winners" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_two_winners">
+<tt class="descname">test_get_equal_arm_allocations_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_equal_arm_allocations_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_equal_arm_allocations_two_winners" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test allocations split between two winning arms.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid">
-<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid">
+<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_empty_list_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test empty <tt class="docutils literal"><span class="pre">payoff_arm_name_list</span></tt> causes an ValueError.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner">
-<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner">
+<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_one_winner</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_one_winner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test winning arm name matches the winner.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners">
-<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.UtilsTest.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners" title="Permalink to this definition">¶</a></dt>
+<dt id="moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners">
+<tt class="descname">test_get_winning_arm_names_from_payoff_arm_name_list_two_winners</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.TestUtils.test_get_winning_arm_names_from_payoff_arm_name_list_two_winners" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test winning arm names match the winners.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="moe.tests.bandit.utils_test.disable_logging">
+<tt class="descclassname">moe.tests.bandit.utils_test.</tt><tt class="descname">disable_logging</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/moe/tests/bandit/utils_test.html#disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.tests.bandit.utils_test.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable logging (for the duration of this test case).</p>
 </dd></dl>
 
 </div>
@@ -866,9 +542,9 @@ Test different cases including unsampled arms and multiple winners.</p>
 <p>This package includes:</p>
 <ul class="simple">
 <li>Test cases/test setup files</li>
-<li>Tests for bandit/epsilon</li>
-<li>Tests for bandit/ucb</li>
-<li>Tests for bandit/bla</li>
+<li>Tests for bandit/epsilon: <a class="reference internal" href="moe.tests.bandit.epsilon.html#module-moe.tests.bandit.epsilon" title="moe.tests.bandit.epsilon"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon</span></tt></a></li>
+<li>Tests for bandit/ucb: <a class="reference internal" href="moe.tests.bandit.ucb.html#module-moe.tests.bandit.ucb" title="moe.tests.bandit.ucb"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.ucb</span></tt></a></li>
+<li>Tests for bandit/bla: <a class="reference internal" href="moe.tests.bandit.bla.html#module-moe.tests.bandit.bla" title="moe.tests.bandit.bla"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bla</span></tt></a></li>
 </ul>
 <p>This package includes:</p>
 <ul class="simple">
@@ -877,17 +553,9 @@ Test different cases including unsampled arms and multiple winners.</p>
 </ul>
 <p><strong>Files in this package</strong></p>
 <ul class="simple">
-<li><a class="reference internal" href="#module-moe.tests.bandit.bandit_interface_test" title="moe.tests.bandit.bandit_interface_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bandit_interface_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.interfaces.html#moe.bandit.interfaces.bandit_interface.BanditInterface" title="moe.bandit.interfaces.bandit_interface.BanditInterface"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface.BanditInterface</span></tt></a></li>
+<li><a class="reference internal" href="#module-moe.tests.bandit.bandit_interface_test" title="moe.tests.bandit.bandit_interface_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bandit_interface_test</span></tt></a>: tests for <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.interfaces.bandit_interface.BanditInterface</span></tt></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.bandit_test_case" title="moe.tests.bandit.bandit_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bandit_test_case</span></tt></a>: base test case for bandit tests with a simple integration test case</li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.bla_test" title="moe.tests.bandit.bla_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.bla_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.bla.BLA" title="moe.bandit.bla.BLA"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.bla.BLA</span></tt></a></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_first_test" title="moe.tests.bandit.epsilon_first_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_first_test</span></tt></a>: tests for <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.EpsilonFirst</span></tt></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_greedy_test" title="moe.tests.bandit.epsilon_greedy_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_greedy_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.epsilon_greedy.EpsilonGreedy" title="moe.bandit.epsilon_greedy.EpsilonGreedy"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.EpsilonGreedy</span></tt></a></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_test" title="moe.tests.bandit.epsilon_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_test</span></tt></a>: tests for <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon_greedy.Epsilon</span></tt></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.epsilon_test_case" title="moe.tests.bandit.epsilon_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.epsilon_test_case</span></tt></a>: test cases for classes under <tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.epsilon.Epsilon</span></tt></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.linkers_test" title="moe.tests.bandit.linkers_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.linkers_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#module-moe.bandit.linkers" title="moe.bandit.linkers"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.linkers</span></tt></a></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.ucb_test_case" title="moe.tests.bandit.ucb_test_case"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.ucb_test_case</span></tt></a>: base test case for UCB tests</li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.ucb1_test" title="moe.tests.bandit.ucb1_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.ucb1_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.ucb1.UCB1" title="moe.bandit.ucb1.UCB1"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.ucb1.UCB1</span></tt></a></li>
-<li><a class="reference internal" href="#module-moe.tests.bandit.ucb1_tuned_test" title="moe.tests.bandit.ucb1_tuned_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.ucb1_tuned_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#moe.bandit.ucb1_tuned.UCB1Tuned" title="moe.bandit.ucb1_tuned.UCB1Tuned"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.ucb1_tuned.UCB1Tuned</span></tt></a></li>
 <li><a class="reference internal" href="#module-moe.tests.bandit.utils_test" title="moe.tests.bandit.utils_test"><tt class="xref py py-mod docutils literal"><span class="pre">moe.tests.bandit.utils_test</span></tt></a>: tests for <a class="reference internal" href="moe.bandit.html#module-moe.bandit.utils" title="moe.bandit.utils"><tt class="xref py py-mod docutils literal"><span class="pre">moe.bandit.utils</span></tt></a></li>
 </ul>
 </div>
@@ -899,7 +567,7 @@ Test different cases including unsampled arms and multiple winners.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="moe.tests.optimal_learning.html" class="btn btn-neutral float-right" title="moe.tests.optimal_learning package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="moe.tests.bandit.bla.html" class="btn btn-neutral float-right" title="moe.tests.bandit.bla package"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="moe.tests.html" class="btn btn-neutral" title="moe.tests package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -931,7 +599,7 @@ Test different cases including unsampled arms and multiple winners.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

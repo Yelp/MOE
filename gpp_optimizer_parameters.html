@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_optimizer_parameters &mdash; MOE 0.2.0 documentation</title>
+  <title>gpp_optimizer_parameters &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_expected_improvement_demo" href="gpp_expected_improvement_demo.html"/>
         <link rel="prev" title="gpp_random_test" href="gpp_random_test.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -251,7 +253,9 @@ gpp_model_selection.</p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Enums</em><blockquote>
 <div><p><span class="target" id="project0namespaceoptimal__learning_1a17e004bd762695ba16c140e612c3e0b4"></span><strong>OptimizerTypes enum</strong></p>
 <blockquote>
@@ -283,6 +287,19 @@ That function wraps this struct&#8217;s ctor.</p>
 <p><strong>Iterations</strong></p>
 <p>The total number of gradient descent steps is at most <tt class="docutils literal"><span class="pre">num_multistarts</span> <span class="pre">*</span> <span class="pre">max_num_steps</span> <span class="pre">*</span> <span class="pre">max_num_restarts</span></tt>
 Generally, allowing more iterations leads to a better solution but costs more time.</p>
+<p><strong>Averaging (TODO(GH-390): NOT IMPLEMTED YET)</strong></p>
+<p>When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent
+steps to obtain the final result (vs just returning the last step).
+Polyak-Ruppert averaging: postprocessing step where we replace <tt class="docutils literal"><span class="pre">x_n</span></tt> with:
+<tt class="docutils literal"><span class="pre">\overbar{x}</span> <span class="pre">=</span> <span class="pre">\frac{1}{n</span> <span class="pre">-</span> <span class="pre">n_0}</span> <span class="pre">\sum_{t=n_0</span> <span class="pre">+</span> <span class="pre">1}^n</span> <span class="pre">x_t</span></tt>
+<tt class="docutils literal"><span class="pre">n_0</span> <span class="pre">=</span> <span class="pre">0</span></tt> averages all steps; <tt class="docutils literal"><span class="pre">n_0</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></tt> is equivalent to returning <tt class="docutils literal"><span class="pre">x_n</span></tt> directly.
+Here, num_steps_averaged is <tt class="docutils literal"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">n_0</span></tt>.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> &lt; 0: averages all steps</li>
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> == 0: do not average</li>
+<li><tt class="docutils literal"><span class="pre">num_steps_averaged</span></tt> &gt; 0 and &lt;= <tt class="docutils literal"><span class="pre">max_num_steps</span></tt>: average the specified number of steps</li>
+<li><tt class="docutils literal"><span class="pre">max_steps_averaged</span></tt> &gt; <tt class="docutils literal"><span class="pre">max_num_steps</span></tt>: average all steps</li>
+</ul>
 <p><strong>Learning Rate</strong></p>
 <p>GD may be implemented using a learning rate: <tt class="docutils literal"><span class="pre">pre_mult</span> <span class="pre">*</span> <span class="pre">(i+1)^{-\gamma}</span></tt>, where i is the current iteration
 Larger gamma causes the GD step size to (artificially) scale down faster.
@@ -302,8 +319,8 @@ rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &#8220
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1ad10c125a5c7ff4050527dd397f455868"></span><div class="line-block">
-<div class="line"> <strong>GradientDescentParameters</strong>(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1a1121164603cd3ada8d7e802bd7218856"></span><div class="line-block">
+<div class="line"> <strong>GradientDescentParameters</strong>(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, int num_steps_averaged_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in)</div>
 </div>
 </p>
 <blockquote>
@@ -337,6 +354,11 @@ See member declarations below for a description of each parameter.</p>
 <blockquote>
 <div><p>maximum number of gradient descent restarts, the we are allowed to call gradient descent. Should be &gt;= 2 as a minimum (suggest: 4-20) </p>
 <p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1ac4a16e08afffe5568e38613f2e0a0c02"></span>int <strong>num_steps_averaged</strong></p>
+<blockquote>
+<div><p></p>
+<p>number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise) </p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_gradient_descent_parameters_1acc228c20cbca5d6f8fa17a605a36ffe1"></span>double <strong>gamma</strong></p>
 <blockquote>
@@ -499,7 +521,7 @@ See member declarations below for a description of each parameter.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

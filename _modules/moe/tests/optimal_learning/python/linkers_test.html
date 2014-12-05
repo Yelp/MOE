@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.linkers_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.linkers_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -232,46 +234,29 @@
   <h1>Source code for moe.tests.optimal_learning.python.linkers_test</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Tests that linkers contain all possible types defined in constants.&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.constant</span> <span class="kn">import</span> <span class="n">COVARIANCE_TYPES</span><span class="p">,</span> <span class="n">DOMAIN_TYPES</span><span class="p">,</span> <span class="n">OPTIMIZER_TYPES</span><span class="p">,</span> <span class="n">LIKELIHOOD_TYPES</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.linkers</span> <span class="kn">import</span> <span class="n">COVARIANCE_TYPES_TO_CLASSES</span><span class="p">,</span> <span class="n">DOMAIN_TYPES_TO_DOMAIN_LINKS</span><span class="p">,</span> <span class="n">OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS</span><span class="p">,</span> <span class="n">LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS</span>
 
 
-<div class="viewcode-block" id="LinkersTest"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest">[docs]</a><span class="k">class</span> <span class="nc">LinkersTest</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers">[docs]</a><span class="k">class</span> <span class="nc">TestLinkers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Tests that linkers contain all possible types defined in constants.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="LinkersTest.test_covariance_links_have_all_covariance_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_covariance_links_have_all_covariance_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_covariance_links_have_all_covariance_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_covariance_links_have_all_covariance_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_covariance_links_have_all_covariance_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_covariance_links_have_all_covariance_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each covariance type is in a linker, and every linker key is a covariance type.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">COVARIANCE_TYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">COVARIANCE_TYPES_TO_CLASSES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">COVARIANCE_TYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">COVARIANCE_TYPES_TO_CLASSES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="LinkersTest.test_domain_links_have_all_domain_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_domain_links_have_all_domain_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_domain_links_have_all_domain_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_domain_links_have_all_domain_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_domain_links_have_all_domain_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_domain_links_have_all_domain_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each domain type is in a linker, and every linker is a domain type.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">DOMAIN_TYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">DOMAIN_TYPES_TO_DOMAIN_LINKS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">DOMAIN_TYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">DOMAIN_TYPES_TO_DOMAIN_LINKS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="LinkersTest.test_optimization_links_have_all_optimizer_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_optimization_links_have_all_optimizer_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_optimization_links_have_all_optimizer_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_optimization_links_have_all_optimizer_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_optimization_links_have_all_optimizer_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_optimization_links_have_all_optimizer_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each optimizer type is in a linker, and every linker key is a optimizer type.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">OPTIMIZER_TYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">OPTIMIZER_TYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="LinkersTest.test_likelihood_links_have_all_likelihood_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.LinkersTest.test_likelihood_links_have_all_likelihood_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_likelihood_links_have_all_likelihood_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestLinkers.test_likelihood_links_have_all_likelihood_types"><a class="viewcode-back" href="../../../../../moe.tests.optimal_learning.python.html#moe.tests.optimal_learning.python.linkers_test.TestLinkers.test_likelihood_links_have_all_likelihood_types">[docs]</a>    <span class="k">def</span> <span class="nf">test_likelihood_links_have_all_likelihood_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test each likelihood type is in a linker, and every linker key is a likelihood type.&quot;&quot;&quot;</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">LIKELIHOOD_TYPES</span><span class="p">),</span>
-                <span class="nb">set</span><span class="p">(</span><span class="n">LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                <span class="p">)</span>
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">LIKELIHOOD_TYPES</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div></div>
 </pre></div>
 
           </div>
@@ -302,7 +287,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

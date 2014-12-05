@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>moe.bandit.bla.bla &mdash; MOE 0.2.2 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/breathe.css" type="text/css" />
+  
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../index.html"/>
+        <link rel="up" title="moe" href="../../../moe.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../../../index.html" class="fa fa-home"> MOE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../why_moe.html">Why Do We Need MOE?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../why_moe.html#other-methods">Other Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-in-docker">Install in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#osx-tips">OSX Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#building-boost">Building Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#linux-tips">Linux Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#python-tips">Python Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_math.html">How does MOE work?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#build-a-gaussian-process-gp-with-the-historical-data">Build a Gaussian Process (GP) with the historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#optimize-the-hyperparameters-of-the-gaussian-process">Optimize the hyperparameters of the Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#find-the-point-s-of-highest-expected-improvement-ei">Find the point(s) of highest Expected Improvement (EI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_math.html#return-the-point-s-to-sample-then-repeat">Return the point(s) to sample, then repeat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo_tutorial.html">Demo Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../demo_tutorial.html#the-interactive-demo">The Interactive Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pretty_endpoints.html">Pretty Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../objective_functions.html">Objective Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#what-is-an-objective-function">What is an objective function?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#properties-of-an-objective-function">Properties of an objective function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#id1"><span class="math">\(\Phi\)</span> Objective Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../objective_functions.html#example-of-objective-functions">Example of Objective Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bandit.html">Multi-Armed Bandits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#what-is-the-multi-armed-bandit-problem">What is the multi-armed bandit problem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#policies">Policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bandit.html#pointers">Pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#minimizing-an-arbitrary-function">Minimizing an arbitrary function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#gaussian-process-regression-given-historical-data">Gaussian Process regression given historical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#hyperparameter-optimization-of-a-gaussian-process">Hyperparameter optimization of a Gaussian Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#all-above-examples-combined">All above examples combined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.html#setting-thresholds-for-advertising-units">Setting thresholds for advertising units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#making-a-pull-request">Making a pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#versioning">Versioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#releasing-for-maintainers">Releasing (For Maintainers)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-license-is-moe-released-under">What license is MOE released under?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#when-should-i-use-moe">When should I use MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#what-is-the-time-complexity-of-moe">What is the time complexity of MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-cite-moe">How do I cite MOE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#why-does-moe-take-so-long-to-return-the-next-points-to-sample-for-some-inputs">Why does MOE take so long to return the next points to sample for some inputs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-do-i-bootstrap-moe-what-initial-data-does-it-need">How do I bootstrap MOE? What initial data does it need?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-need-before-moe-is-done">How many function evaluations do I need before MOE is &#8220;done&#8221;?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#how-many-function-evaluations-do-i-perform-before-i-update-the-hyperparameters-of-the-gp">How many function evaluations do I perform before I update the hyperparameters of the GP?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../faq.html#will-you-accept-my-pull-request">Will you accept my pull request?</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe.html">moe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe.resources">moe.resources module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe.html#module-moe">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../moe_examples.html">moe_examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples.next_point_via_simple_endpoint">moe_examples.next_point_via_simple_endpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../moe_examples.html#module-moe_examples">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_tree.html">C++ Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization_test.html">gpp_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain_test.html">gpp_domain_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu.html">gpp_expected_improvement_gpu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization_test.html">gpp_heuristic_expected_improvement_optimization_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra_test.html">gpp_linear_algebra_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry.html">gpp_geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_heuristic_expected_improvement_optimization.html">gpp_heuristic_expected_improvement_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra-inl.html">gpp_linear_algebra-inl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils.html">gpp_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_logging.html">gpp_logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance.html">gpp_covariance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_test.html">gpp_python_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_domain.html">gpp_domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_common.html">gpp_python_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyperparameter_optimization_demo.html">gpp_hyperparameter_optimization_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_geometry_test.html">gpp_geometry_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math_test.html">gpp_math_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_cuda_math.html">gpp_cuda_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_model_selection.html">gpp_python_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_math.html">gpp_math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random_test.html">gpp_random_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimizer_parameters.html">gpp_optimizer_parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_demo.html">gpp_expected_improvement_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_optimization.html">gpp_optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_test_utils_test.html">gpp_test_utils_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_linear_algebra.html">gpp_linear_algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_expected_improvement.html">gpp_python_expected_improvement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_exception.html">gpp_exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection.html">gpp_model_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_random.html">gpp_random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_covariance_test.html">gpp_covariance_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_mock_optimization_objective_functions.html">gpp_mock_optimization_objective_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python.html">gpp_python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_model_selection_test.html">gpp_model_selection_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_hyper_and_EI_demo.html">gpp_hyper_and_EI_demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_python_gaussian_process.html">gpp_python_gaussian_process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_common.html">gpp_common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gpp_expected_improvement_gpu_test.html">gpp_expected_improvement_gpu_test</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">MOE</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+          <li><a href="../../../moe.html">moe</a> &raquo;</li>
+      
+    <li>moe.bandit.bla.bla</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <h1>Source code for moe.bandit.bla.bla</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Classes (Python) to compute the Bandit BLA (Bayesian Learning Automaton) arm allocation and choose the arm to pull next.</span>
+
+<span class="sd">See :class:`moe.bandit.bandit_interface` for further details on bandits.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">moe.bandit.constant</span> <span class="kn">import</span> <span class="n">DEFAULT_BLA_SUBTYPE</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.data_containers</span> <span class="kn">import</span> <span class="n">BernoulliArm</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.bandit_interface</span> <span class="kn">import</span> <span class="n">BanditInterface</span>
+<span class="kn">from</span> <span class="nn">moe.bandit.utils</span> <span class="kn">import</span> <span class="n">get_winning_arm_names_from_payoff_arm_name_list</span><span class="p">,</span> <span class="n">get_equal_arm_allocations</span>
+
+
+<div class="viewcode-block" id="BLA"><a class="viewcode-back" href="../../../../moe.bandit.bla.html#moe.bandit.bla.bla.BLA">[docs]</a><span class="k">class</span> <span class="nc">BLA</span><span class="p">(</span><span class="n">BanditInterface</span><span class="p">):</span>
+
+    <span class="sd">r&quot;&quot;&quot;Implementation of the constructor of BLA (Bayesian Learning Automaton) and method allocate_arms.</span>
+
+<span class="sd">    A class to encapsulate the computation of bandit BLA.</span>
+<span class="sd">    The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.</span>
+
+<span class="sd">    See :class:`moe.bandit.bandit_interface` docs for further details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">historical_info</span><span class="p">,</span>
+            <span class="n">subtype</span><span class="o">=</span><span class="n">DEFAULT_BLA_SUBTYPE</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a BLA object. BLA only supports Bernoulli trials (payoff 1 for success and 0 for failure).</span>
+
+<span class="sd">        :param historical_info: a dictionary of arms sampled</span>
+<span class="sd">        :type historical_info: dictionary of (str, SampleArm()) pairs (see :class:`moe.bandit.data_containers.SampleArm` for more details)</span>
+<span class="sd">        :param subtype: subtype of the BLA bandit algorithm (default: :const:`~moe.bandit.constant.DEFAULT_BLA_SUBTYPE`)</span>
+<span class="sd">        :type subtype: str</span>
+<span class="sd">        :type subtype: float</span>
+
+<span class="sd">        :raises ValueError: if the arm is not a valid Bernoulli arm</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_historical_info</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">historical_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subtype</span> <span class="o">=</span> <span class="n">subtype</span>
+        <span class="c"># Validate that every arm is a Bernoulli arm.</span>
+        <span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_info</span><span class="o">.</span><span class="n">arms_sampled</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arm</span><span class="p">,</span> <span class="n">BernoulliArm</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;All arms have to be Bernoulli arms!&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BLA.get_bla_payoff"><a class="viewcode-back" href="../../../../moe.bandit.bla.html#moe.bandit.bla.bla.BLA.get_bla_payoff">[docs]</a>    <span class="k">def</span> <span class="nf">get_bla_payoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampled_arm</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the BLA payoff using the BLA subtype formula.</span>
+
+<span class="sd">        BLA payoff is computed as follows:</span>
+
+<span class="sd">        .. math:: r_j = Sample(Beta(\alpha_j, \beta_j))</span>
+
+<span class="sd">        where :math:`\alpha_j` is the number of arm *j* wins + 1 (``sampled_arm.win`` + 1) and</span>
+<span class="sd">        :math:`\beta_j` is the number of arm *j* losses + 1 (``sampled_arm.total`` - ``sampled_arm.win`` + 1).</span>
+
+<span class="sd">        In other words, BLA payoff is computed by sampling from a beta distribution :math:`Beta(\alpha, \beta)`</span>
+<span class="sd">        with :math:`\alpha = number\_wins + 1` and</span>
+<span class="sd">        :math:`\beta = number\_losses + 1 = number\_total - number\_wins + 1`.</span>
+
+<span class="sd">        Note that for an unsampled arm, :math:`Beta(1, 1)` is a uniform distribution.</span>
+<span class="sd">        Learn more about beta distribution at http://en.wikipedia.org/wiki/Beta_distribution.</span>
+
+<span class="sd">        :param sampled_arm: a sampled arm</span>
+<span class="sd">        :type sampled_arm: :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">        :return: bla payoff</span>
+<span class="sd">        :rtype: float64</span>
+<span class="sd">        :raise: ValueError when ``sampled_arm`` is empty.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sampled_arm</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;sampled_arm is empty!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">sampled_arm</span><span class="o">.</span><span class="n">win</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sampled_arm</span><span class="o">.</span><span class="n">total</span> <span class="o">-</span> <span class="n">sampled_arm</span><span class="o">.</span><span class="n">win</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BLA.allocate_arms"><a class="viewcode-back" href="../../../../moe.bandit.bla.html#moe.bandit.bla.bla.BLA.allocate_arms">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_arms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the allocation to each arm given ``historical_info``, running bandit ``subtype`` endpoint.</span>
+
+<span class="sd">        Computes the allocation to each arm based on the given subtype, and, historical info.</span>
+
+<span class="sd">        Works with k-armed bandits (k &gt;= 1).</span>
+
+<span class="sd">        The Algorithm is from the paper: A Generic Solution to Multi-Armed Bernoulli Bandit Problems, Norheim, Bradland, Granmo, OOmmen (2010) ICAART.</span>
+<span class="sd">        The original algorithm handles k = 2. We extended the algorithm naturally to handle k &gt;= 1.</span>
+
+<span class="sd">        This method will pull the optimal arm (best BLA payoff).</span>
+
+<span class="sd">        See :func:`moe.bandit.bla.bla.BLA.get_bla_payoff` for details on how to compute the BLA payoff</span>
+
+<span class="sd">        In case of a tie, the method will split the allocation among the optimal arms.</span>
+<span class="sd">        For example, if we have three arms (arm1, arm2, and arm3) with expected BLA payoff 0.5, 0.5, and 0.1 respectively.</span>
+<span class="sd">        We split the allocation between the optimal arms arm1 and arm2.</span>
+
+<span class="sd">        ``{arm1: 0.5, arm2: 0.5, arm3: 0.0}``</span>
+
+<span class="sd">        :return: the dictionary of (arm, allocation) key-value pairs</span>
+<span class="sd">        :rtype: a dictionary of (str, float64) pairs</span>
+<span class="sd">        :raise: ValueError when ``sample_arms`` are empty.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arms_sampled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_historical_info</span><span class="o">.</span><span class="n">arms_sampled</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">arms_sampled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;sample_arms are empty!&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">get_equal_arm_allocations</span><span class="p">(</span><span class="n">arms_sampled</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_winning_arm_names</span><span class="p">(</span><span class="n">arms_sampled</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="BLA.get_winning_arm_names"><a class="viewcode-back" href="../../../../moe.bandit.bla.html#moe.bandit.bla.bla.BLA.get_winning_arm_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_winning_arm_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arms_sampled</span><span class="p">):</span>
+        <span class="sd">r&quot;&quot;&quot;Compute the set of winning arm names based on the given ``arms_sampled``..</span>
+
+<span class="sd">        Throws an exception when arms_sampled is empty.</span>
+
+<span class="sd">        :param arms_sampled: a dictionary of arm name to :class:`moe.bandit.data_containers.SampleArm`</span>
+<span class="sd">        :type arms_sampled: dictionary of (str, SampleArm()) pairs</span>
+<span class="sd">        :return: set of names of the winning arms</span>
+<span class="sd">        :rtype: frozenset(str)</span>
+<span class="sd">        :raise: ValueError when ``arms_sampled`` are empty.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">arms_sampled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;arms_sampled is empty!&#39;</span><span class="p">)</span>
+
+        <span class="n">bla_payoff_arm_name_list</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bla_payoff</span><span class="p">(</span><span class="n">sampled_arm</span><span class="p">),</span> <span class="n">arm_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">arm_name</span><span class="p">,</span> <span class="n">sampled_arm</span> <span class="ow">in</span> <span class="n">arms_sampled</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">get_winning_arm_names_from_payoff_arm_name_list</span><span class="p">(</span><span class="n">bla_payoff_arm_name_list</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2012-2014 Yelp. MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.2.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

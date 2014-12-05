@@ -1,0 +1,38 @@
+moe.bandit.epsilon package
+==========================
+
+Submodules
+----------
+
+moe.bandit.epsilon.epsilon_first module
+---------------------------------------
+
+.. automodule:: moe.bandit.epsilon.epsilon_first
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.epsilon.epsilon_greedy module
+----------------------------------------
+
+.. automodule:: moe.bandit.epsilon.epsilon_greedy
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.bandit.epsilon.epsilon_interface module
+-------------------------------------------
+
+.. automodule:: moe.bandit.epsilon.epsilon_interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.bandit.epsilon
+    :members:
+    :undoc-members:
+    :show-inheritance:

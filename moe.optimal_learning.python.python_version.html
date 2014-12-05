@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.optimal_learning.python.python_version package &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.optimal_learning.python.python_version package &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="moe.optimal_learning.python package" href="moe.optimal_learning.python.html"/>
         <link rel="next" title="moe.tests package" href="moe.tests.html"/>
         <link rel="prev" title="moe.optimal_learning.python.interfaces package" href="moe.optimal_learning.python.interfaces.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -561,7 +563,7 @@ independently.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>num_points</strong> (<em>integer &gt;= 0</em>) &#8211; max number of points to generate</li>
+<li><strong>num_points</strong> (<em>int &gt;= 0</em>) &#8211; max number of points to generate</li>
 <li><strong>random_source</strong> (<em>callable yielding uniform random numbers in [0,1]</em>) &#8211; random source producing uniform random numbers (e.g., numpy.random.uniform) (UNUSED)</li>
 </ul>
 </td>
@@ -580,6 +582,31 @@ independently.</p>
 <dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_bounding_box">
 <tt class="descname">get_bounding_box</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.get_bounding_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_bounding_box" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of ClosedIntervals representing a bounding box for this domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_constraint_list">
+<tt class="descname">get_constraint_list</tt><big>(</big><em>start_index=0</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/domain.html#TensorProductDomain.get_constraint_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.domain.TensorProductDomain.get_constraint_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.</p>
+<p>Since COBYLA in scipy only optimizes arrays, we flatten out our points while doing multipoint EI optimization.
+But in order for the constraints to access the correct index, the RepeatedDomain class has to signal which index
+the TensorProductDomain should start from, using the start_index optional parameter.</p>
+<p>That is, RepeatedDomain deals with N d-dimensional points at once. Thus we need N*d constraints (one per
+dimension, once per repeat). Additionally, instead of receiving points with shape (num_repeats, dim), COBYLA
+requires that the points are flattened: (num_repeats*dim, ). Thus this method must know <em>where</em> in the
+flattened-list it is writing to and reading from: signaled via <tt class="docutils literal"><span class="pre">start_index</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>start_index</strong> (<em>int &gt;= 0</em>) &#8211; the dimension this tensor product domain should start indexing from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of lambda functions corresponding to constraints</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array of lambda functions with shape (dim * 2)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1823,6 +1850,51 @@ by just evaluating the objective at numerous points).  For sufficiently complex 
 can have exceptionally poor convergence characteristics or run too slowly.  In cases where these more advanced techniques
 fail, we commonly fall back to &#8216;dumb&#8217; search.</p>
 <dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">COBYLAOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimization_parameters</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#COBYLAOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._ScipyOptimizerWrapper</span></tt></p>
+<p>Optimizes an objective function over the specified contraints with the COBYLA method.</p>
+<p>For more information, visit the scipy docs page and the original paper by Powell:
+<a class="reference external" href="http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html">http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html</a>
+<a class="reference external" href="http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf">http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf</a></p>
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer.optimization_parameters_type">
+<tt class="descname">optimization_parameters_type</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer.optimization_parameters_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#moe.optimal_learning.python.python_version.optimization.COBYLAParameters" title="moe.optimal_learning.python.python_version.optimization.COBYLAParameters"><tt class="xref py py-class docutils literal"><span class="pre">COBYLAParameters</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="moe.optimal_learning.python.python_version.optimization.COBYLAParameters">
+<em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">COBYLAParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#COBYLAParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.COBYLAParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._BaseCOBYLAParameters</span></tt></p>
+<p>Container to hold parameters that specify the behavior of COBYLA.</p>
+<p>Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla:
+<a class="reference external" href="http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_cobyla.html">http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_cobyla.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rhobeg</strong> &#8211; (<em>float64 &gt; 0.0</em>) reasonable initial changes to the variables (suggest: 1.0)</li>
+<li><strong>rhoend</strong> &#8211; (<em>float64 &gt; 0.0</em>) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)</li>
+<li><strong>maxfun</strong> &#8211; (<em>int &gt; 0</em>) maximum number of objective function calls to make (suggest: 1000)</li>
+<li><strong>catol</strong> &#8211; (<em>float64 &gt; 0.0</em>) absolute tolerance for constraint violations (suggest: 2.0e-4)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.COBYLAParameters.scipy_kwargs">
+<tt class="descname">scipy_kwargs</tt><big>(</big><big>)</big><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.COBYLAParameters.scipy_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new OrderedDict which maps field names to their values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">GradientDescentOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimizer_parameters</em>, <em>num_random_samples=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#GradientDescentOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.GradientDescentOptimizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
@@ -1943,7 +2015,7 @@ rate control forces steps to fall below 1.0e-3 quickly, then GD will quit &#8220
 <dl class="class">
 <dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer">
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">LBFGSBOptimizer</tt><big>(</big><em>domain</em>, <em>optimizable</em>, <em>optimization_parameters</em>, <em>num_random_samples=None</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="moe.optimal_learning.python.interfaces.html#moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface" title="moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface"><tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface</span></tt></a></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._ScipyOptimizerWrapper</span></tt></p>
 <p>Optimizes an objective function over the specified domain with the L-BFGS-B method.</p>
 <p>The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
 be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
@@ -1951,18 +2023,13 @@ the analytic qEI algorithm.</p>
 <p>L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
 We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
 these types of problems.</p>
-<p>For more information:
+<p>For more information, visit the scipy docs and the wikipedia page on BFGS:
 <a class="reference external" href="http://en.wikipedia.org/wiki/Limited-memory_BFGS">http://en.wikipedia.org/wiki/Limited-memory_BFGS</a>
 <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html">http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</a></p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">See optimize() docstring for more details.</p>
-</div>
-<dl class="method">
-<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize">
-<tt class="descname">optimize</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBOptimizer.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform an L-BFGS-B optimization given the parameters in optimization_parameters.</p>
-<p>objective_function.current_point will be set to the optimal point found.</p>
+<dl class="attribute">
+<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimization_parameters_type">
+<tt class="descname">optimization_parameters_type</tt><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBOptimizer.optimization_parameters_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters" title="moe.optimal_learning.python.python_version.optimization.LBFGSBParameters"><tt class="xref py py-class docutils literal"><span class="pre">LBFGSBParameters</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -1972,7 +2039,8 @@ these types of problems.</p>
 <em class="property">class </em><tt class="descclassname">moe.optimal_learning.python.python_version.optimization.</tt><tt class="descname">LBFGSBParameters</tt><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moe.optimal_learning.python.python_version.optimization._BaseLBFGSBParameters</span></tt></p>
 <p>Container to hold parameters that specify the behavior of L-BFGS-B.</p>
-<p>Suggested values come from scipy documentation for scipy.optimize.fmin_l_bfgs_b.</p>
+<p>Suggested values come from scipy documentation for <tt class="docutils literal"><span class="pre">scipy.optimize.fmin_l_bfgs_b</span></tt>:
+<a class="reference external" href="http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_l_bfgs_b.html">http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_l_bfgs_b.html</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1989,6 +2057,22 @@ these types of problems.</p>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="moe.optimal_learning.python.python_version.optimization.LBFGSBParameters.scipy_kwargs">
+<tt class="descname">scipy_kwargs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/moe/optimal_learning/python/python_version/optimization.html#LBFGSBParameters.scipy_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moe.optimal_learning.python.python_version.optimization.LBFGSBParameters.scipy_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict that can be unpacked as kwargs to <tt class="docutils literal"><span class="pre">scipy.optimize.fmin_l_bfgs_b</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">kwargs for controlling the behavior of fmin_l_bfgs_b</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2030,7 +2114,7 @@ individual multistart run if desired (through function_values).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>starting_points</strong> (<em>array of float64 with shape (num_points, dim) or None</em>) &#8211; points from which to multistart <tt class="docutils literal"><span class="pre">self.optimizer</span></tt>; if None, points are chosen randomly</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>random_starts</strong> (<em>array of float64 with shape (num_points, dim) or None</em>) &#8211; points from which to multistart <tt class="docutils literal"><span class="pre">self.optimizer</span></tt>; if None, points are chosen randomly</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(best point found, objective function values at the end of each optimization run)</td>
 </tr>
@@ -2297,7 +2381,7 @@ optimal_learning&#8217;s capabilities.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

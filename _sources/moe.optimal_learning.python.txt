@@ -13,6 +13,14 @@ Subpackages
 Submodules
 ----------
 
+moe.optimal_learning.python.comparison module
+---------------------------------------------
+
+.. automodule:: moe.optimal_learning.python.comparison
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 moe.optimal_learning.python.constant module
 -------------------------------------------
 

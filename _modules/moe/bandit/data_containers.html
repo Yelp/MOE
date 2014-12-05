@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.bandit.data_containers &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.bandit.data_containers &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../index.html"/>
         <link rel="up" title="moe" href="../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -268,39 +270,39 @@
         <span class="sd">&quot;&quot;&quot;Pretty print this object as a dict.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json_payload</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overload Add operator to add other sampled arm results to this arm.</span>
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_arm_to_add</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overload Add operator to add ``sample_arm_to_add`` sampled arm results to this arm.</span>
 
-<span class="sd">        :param other: arm samples to add to this arm</span>
-<span class="sd">        :type other: a SampleArm object</span>
+<span class="sd">        :param sample_arm_to_add: arm samples to add to this arm</span>
+<span class="sd">        :type sample_arm_to_add: a SampleArm object</span>
 <span class="sd">        :return: new SampleArm that is a result of adding two arms</span>
 <span class="sd">        :rtype: SampleArm</span>
 <span class="sd">        :raise: ValueError when ``arm.variance`` or self.variance is not None.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot add arms when variance is not None! Please combine arms manually.&#39;</span><span class="p">)</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">SampleArm</span><span class="p">(</span><span class="n">win</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">win</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">out</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">SampleArm</span><span class="p">(</span><span class="n">win</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">+</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">win</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">+</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">+</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
 
     <span class="n">__radd__</span> <span class="o">=</span> <span class="n">__add__</span>
 
-    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overload in-place Add operator to add other sampled arm results to this arm in-place.</span>
+    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_arm_to_add</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overload in-place Add operator to add ``sample_arm_to_add`` sampled arm results to this arm in-place.</span>
 
-<span class="sd">        :param other: arm samples to add to this arm</span>
-<span class="sd">        :type other: a SampleArm object</span>
-<span class="sd">        :return: this arm after adding other</span>
+<span class="sd">        :param sample_arm_to_add: arm samples to add to this arm</span>
+<span class="sd">        :type sample_arm_to_add: a SampleArm object</span>
+<span class="sd">        :return: this arm after adding ``sample_arm_to_add``</span>
 <span class="sd">        :rtype: SampleArm</span>
 <span class="sd">        :raise: ValueError when ``arm.variance`` or self.variance is not None.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">variance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot add arms when variance is not None! Please combine arms manually.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">win</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">loss</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">+=</span> <span class="n">other</span><span class="o">.</span><span class="n">total</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_win</span> <span class="o">+=</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">win</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">+=</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">+=</span> <span class="n">sample_arm_to_add</span><span class="o">.</span><span class="n">total</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -523,7 +525,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

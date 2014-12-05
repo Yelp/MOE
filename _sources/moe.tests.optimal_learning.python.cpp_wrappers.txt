@@ -36,6 +36,14 @@ moe.tests.optimal_learning.python.cpp_wrappers.log_likelihood_test module
     :undoc-members:
     :show-inheritance:
 
+moe.tests.optimal_learning.python.cpp_wrappers.optimization_test module
+-----------------------------------------------------------------------
+
+.. automodule:: moe.tests.optimal_learning.python.cpp_wrappers.optimization_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

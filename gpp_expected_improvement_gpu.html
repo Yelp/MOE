@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gpp_expected_improvement_gpu &mdash; MOE 0.2.0 documentation</title>
+  <title>gpp_expected_improvement_gpu &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="index.html"/>
         <link rel="up" title="C++ Files" href="cpp_tree.html"/>
         <link rel="next" title="gpp_heuristic_expected_improvement_optimization_test" href="gpp_heuristic_expected_improvement_optimization_test.html"/>
         <link rel="prev" title="gpp_domain_test" href="gpp_domain_test.html"/> 
@@ -74,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moe_math.html">How does MOE work?</a><ul>
@@ -145,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -257,11 +259,74 @@ OptimalLearningCudaException if there is error.</p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Functions</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1af6b6abae262111d5f568929e6247b71b"></span><div class="line-block">
+<div><p><span class="target" id="project0namespaceoptimal__learning_1ace97f50390fb13d9a46860c7956cd3ec"></span><div class="line-block">
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>SetupExpectedImprovementState</strong>(const  <a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_expected_improvement_evaluator"><em>CudaExpectedImprovementEvaluator</em></a>  &amp; ei_evaluator, double const *restrict points_to_sample, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, int max_num_threads, bool configure_for_gradients, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, std::vector&lt; typename  <a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementEvaluator::StateType</em></a>  &gt; * state_vector)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Set up vector of CudaExpectedImprovementEvaluator::StateType.</p>
+<p>This is a utility function just for reducing code duplication.</p>
+<p>Throws <tt class="docutils literal"><span class="pre">InvalidValueException</span></tt> if <tt class="docutils literal"><span class="pre">max_num_threads</span> <span class="pre">!=</span> <span class="pre">1</span></tt>. Multiple threads (=&gt; multiple GPUs)
+is not yet supported.
+TODO(GH-398): remove this requirement/comments when we support computation on multiple GPUs</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ei_evaluator:</th><td class="field-body">evaluator object associated w/the state objects being constructed</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">points_to_sample[dim][num_to_sample]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial points to load into state (must be a valid point for the problem);
+i.e., points at which to evaluate EI and/or its gradient</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">points_being_sampled[dim][num_being_sampled]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points that are being sampled in concurrently experiments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">num_to_sample:</th><td class="field-body">number of potential future samples; gradients are evaluated wrt these points (i.e., the &#8220;q&#8221; in q,p-EI)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">num_being_sampled:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">number of points being sampled concurrently (i.e., the p in q,p-EI)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">max_num_threads:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">maximum number of threads for use by OpenMP (generally should be &lt;= # cores)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">configure_for_gradients:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">true if these state objects will be used to compute gradients, false otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">state_vector[arbitrary]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">vector of state objects, arbitrary size (usually 0)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object used to seed the GPU PRNG(s)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Outputs</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">state_vector[max_num_threads]:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">vector of states containing <tt class="docutils literal"><span class="pre">max_num_threads</span></tt> properly initialized state objects</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0namespaceoptimal__learning_1a707e228e4e67bde56282e05ec5ff2291"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>CudaComputeOptimalPointsToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a> thread_schedule, double const *restrict start_point_set, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, bool *restrict found_flag, int which_gpu, double *restrict best_next_point)</div>
+<div class="line"><a class="reference internal" href="gpp_common.html#project0gpp__common_8hpp_1a43aad231fa6009d48201a76fd7dfb6dc"><em>OL_NONNULL_POINTERS</em></a>  void <strong>CudaComputeOptimalPointsToSampleViaMultistartGradientDescent</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict start_point_set, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, bool *restrict found_flag, double *restrict best_next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -306,9 +371,9 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
 </tr>
 <tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide
-the (pesudo)random source for MC integration</td>
+<tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">the device ID of GPU used for computation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object used to seed the GPU PRNG(s)</td>
 </tr>
 </tbody>
 </table>
@@ -318,8 +383,7 @@ the (pesudo)random source for MC integration</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
 <tr class="field-even field"><th class="field-name">found_flag[1]:</th><td class="field-body">true if <tt class="docutils literal"><span class="pre">best_next_point</span></tt> corresponds to a nonzero EI</td>
 </tr>
@@ -332,9 +396,9 @@ the (pesudo)random source for MC integration</td>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a4deff169d33d63d88c080a6a5b42b60a"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1a2d11d51dc0edcd60ffc5e86d68570345"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line">void <strong>CudaComputeOptimalPointsToSampleWithRandomStarts</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSampleWithRandomStarts</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -373,12 +437,10 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
 </tr>
 <tr class="field-odd field"><th class="field-name">max_int_steps:</th><td class="field-body">maximum number of MC iterations</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+<tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">the device ID of GPU used for computation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a vector of NormalRNG objects that provide
-the (pesudo)random source for MC integration</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object used to seed the GPU PRNG(s)</td>
 </tr>
 </tbody>
 </table>
@@ -393,11 +455,8 @@ the (pesudo)random source for MC integration</td>
 <tr class="field-even field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object will have its state changed due to random draws</td>
 </tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">normal_rng[thread_schedule.max_num_threads]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">NormalRNG objects will have their state changed due to random draws</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">best_next_point[dim][num_to_sample]:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body">points yielding the best EI according to MGD</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">best_next_point[dim][num_to_sample]:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">points yielding the best EI according to MGD</td>
 </tr>
 </tbody>
 </table>
@@ -405,9 +464,9 @@ the (pesudo)random source for MC integration</td>
 </dl>
  </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a3d654c6908286fc043fb4a9f2b44a34c"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1a8779230c27ea83044a4f747829faba27"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line">void <strong>CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSampleViaLatinHypercubeSearch</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -461,31 +520,102 @@ max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0
  </p>
 </div></blockquote>
 </div></blockquote>
-<p><p id="project0structoptimal__learning_1_1_cuda_device_pointer"><em>class</em> <strong>CudaDevicePointer</strong></p>
+<p><p id="project0structoptimal__learning_1_1_cuda_deleter"><em>class</em> <strong>CudaDeleter</strong></p>
 <blockquote>
 <div><p></p>
-<p><p>This struct does the same job as C++ smart pointer. It contains pointer to memory location on
-GPU, its constructor and destructor also take care of memory allocation/deallocation on GPU.</p>
+<p><p>A deleter for std::unique_ptr that are created with memory returned by <tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt>;
+e.g., the member of <tt class="docutils literal"><span class="pre">CudaDevicePointer</span></tt>.</p>
+<p>For a description of deleters, see:
+<a class="reference external" href="http://en.cppreference.com/w/cpp/memory/unique_ptr">http://en.cppreference.com/w/cpp/memory/unique_ptr</a>
+<a class="reference external" href="http://en.cppreference.com/w/cpp/memory/unique_ptr/~unique_ptr">http://en.cppreference.com/w/cpp/memory/unique_ptr/~unique_ptr</a></p>
+<p>The STL-provided default deleter:
+<a class="reference external" href="http://en.cppreference.com/w/cpp/memory/default_delete">http://en.cppreference.com/w/cpp/memory/default_delete</a></p>
  </p>
 <em>Public Functions</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1a463fcea05d4cfe5cf472c03b1d9af954"></span><div class="line-block">
-<div class="line"> <strong>CudaDevicePointer</strong>(int num_doubles_in)</div>
+<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_deleter_1a79e3109341d100ffbcc4477215073bdc"></span><div class="line-block">
+<div class="line">void <strong>operator()</strong>(void * device_ptr)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Free the memory pointed to by <tt class="docutils literal"><span class="pre">device_ptr</span></tt>.
+Called as part of the dtor for <tt class="docutils literal"><span class="pre">std::unique_ptr</span></tt> and MUST NOT throw exceptions.
+Wraps <tt class="docutils literal"><span class="pre">cudaFree()</span></tt>.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">device_ptr:</th><td class="field-body">device pointer to memory previously allocated by <tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</p>
+<p><p id="project0classoptimal__learning_1_1_cuda_device_pointer"><em>class</em> <strong>CudaDevicePointer</strong></p>
+<blockquote>
+<div><p></p>
+<p><p>This struct is a smart pointer that wraps <tt class="docutils literal"><span class="pre">std::unique_ptr</span></tt>. It provides a simple
+interface for device memory (i.e., on a GPU) ownership. It automatically handles
+<tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt> and <tt class="docutils literal"><span class="pre">cudaFree()</span></tt> calls and error checks; the result is stored
+in a <tt class="docutils literal"><span class="pre">std::unique_ptr</span></tt>.</p>
+ </p>
+<em>Public Functions</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1ae945ea02486982147088b3fee1e58d85"></span><div class="line-block">
+<div class="line"> <strong>CudaDevicePointer</strong>(int num_values_in)</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p><p>Construct a CudaDevicePointer (via <tt class="docutils literal"><span class="pre">cudaMalloc()</span></tt>) that <em>owns</em> a block of
+<tt class="docutils literal"><span class="pre">num_values</span> <span class="pre">*</span> <span class="pre">sizeof(ValueType)</span></tt> bytes on the GPU device.</p>
+<p>If allocation fails, device_ptr is nullptr and num_values is 0.</p>
+<dl class="docutils">
+<dt><strong>Parameters</strong>:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">num_values:</th><td class="field-body">number of values allocated at the device memory address held in this object</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+ </p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1a4909c70e4a75f8f2147b47e12a14db56"></span><div class="line-block">
+<div class="line"> <strong>CudaDevicePointer</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a>  &amp;&amp; other)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ae23b57574513eb5a5f90ac534e462a84"></span><div class="line-block">
-<div class="line"> <strong>~CudaDevicePointer</strong>()</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1a8a8847bf1690ccf97344afccbf550a45"></span><div class="line-block">
+<div class="line">int <strong>num_values</strong>()</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ac22f0f37e06fb5f88e308f9cf7d768f5"></span><div class="line-block">
-<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a>)</div>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1a4b0f143632de1eb318749a8a06a8fd03"></span><div class="line-block">
+<div class="line">ValueType * <strong>device_ptr</strong>()</div>
+</div>
+</p>
+<blockquote>
+<div><p></p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1a4847c470936872ca8b5724933d67ad4a"></span><div class="line-block">
+<div class="line"> <strong>OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN</strong>(<a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a>)</div>
 </div>
 </p>
 <blockquote>
@@ -493,15 +623,15 @@ GPU, its constructor and destructor also take care of memory allocation/dealloca
 <p></p>
 </div></blockquote>
 </div></blockquote>
-<em>Public Members</em><blockquote>
-<div><p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1a49e77a9eecf30fe9e180dcbc6cc0e0a1"></span>double * <strong>ptr</strong></p>
+<em>Private Members</em><blockquote>
+<div><p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1a9af3e2e49e18e29e5d451b23633ba2f9"></span>int <strong>num_values_</strong></p>
+<blockquote>
+<div><p>number of values to allocate on gpu, so the memory size is <tt class="docutils literal"><span class="pre">num_values</span> <span class="pre">*</span> <span class="pre">sizeof(ValueType)</span></tt> </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0classoptimal__learning_1_1_cuda_device_pointer_1ae835727e8535a829e3acd8682ecd3079"></span>std::unique_ptr&lt; ValueType,  <a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_deleter"><em>CudaDeleter</em></a>  &gt; <strong>device_ptr_</strong></p>
 <blockquote>
 <div><p>pointer to the memory location on gpu </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_device_pointer_1ac63dd2d5e1e7b36dcfada692dbeffa04"></span>int <strong>num_doubles</strong></p>
-<blockquote>
-<div><p>number of doubles to allocate on gpu, so the memory size is num_doubles * sizeof(double) </p>
 <p></p>
 </div></blockquote>
 </div></blockquote>
@@ -756,10 +886,8 @@ documentation.</p>
 </dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<ul class="simple">
-<li>The UniformRandomGenerator object must already be seeded.  If multithreaded computation is used for EI, then every state object</li>
-</ul>
-<p class="last">must have a different UniformRandomGenerator (different seeds, not just different objects).</p>
+<p class="last">* The UniformRandomGenerator object must already be seeded.  If multithreaded computation is used for EI, then every state object
+must have a different UniformRandomGenerator (different seeds, not just different objects).</p>
 </div>
  </p>
 </div></blockquote>
@@ -771,8 +899,8 @@ documentation.</p>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a3ca3f64834852eb87c8e6a931bb5715d"></span><div class="line-block">
-<div class="line"> <strong>CudaExpectedImprovementState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementState</em></a>  &amp;&amp; OL_UNUSED)</div>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a70d1fafa4b6933a02ea867e029c16e94"></span><div class="line-block">
+<div class="line"> <strong>CudaExpectedImprovementState</strong>(<a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_expected_improvement_state"><em>CudaExpectedImprovementState</em></a>  &amp;&amp; other)</div>
 </div>
 </p>
 <blockquote>
@@ -940,50 +1068,50 @@ SetupState is mutated! SetupState() should be called again in such a situation.<
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aea052cd6c431fd5813c188c0e1d2abed"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_mu</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a07ed77763fe918902d2d880d14aec3d7"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_mu</strong></p>
 <blockquote>
 <div><p></p>
-<p>structs containing pointers to store the memory locations of variables on GPU input data for GPU computations and GPU should not modify them </p>
+<p>structs wrapping GPU device pointers used to store GP quantities temp device space for input data for GPU computations; GPU should not modify these </p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1af432fa9970f8e2a4fe0e3f2702767b49"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_chol_var</strong></p>
-<blockquote>
-<div><p></p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aa459a98d0c6bd803ddba0ef2754e1f4d"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_mu</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ac5175665e8e4576d3966aeea21f2de24"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_grad_mu</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a5f5ce4e5f3420fb018c818a13478da45"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_chol_var</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8b16d4a68e0c7dd6deb435a6e6e2eecd"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_chol_var</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8b90da3c4c7ea6e3e706b94c26312e04"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_ei_storage</strong></p>
-<blockquote>
-<div><p>data containing results returned by GPU computations </p>
-<p></p>
-</div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a8d58557840e2ef0bb476de1ea5620016"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_grad_ei_storage</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a47d831a959979bba96740a9a6ca2d996"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_grad_chol_var</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a9b0221f952d0820fd576c0fa4dedc584"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_random_number_ei</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1ad57a6e71a8e18fdf187a7405cee9af17"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_ei_storage</strong></p>
+<blockquote>
+<div><p>temp device space for intermediate results returned by GPU computations </p>
+<p></p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1aebc93655034bcc69401b661145c697e5"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_grad_ei_storage</strong></p>
 <blockquote>
 <div><p></p>
-<p>data containing random numbers used in GPU computations, which are only used for testing </p>
+<p></p>
 </div></blockquote>
-<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1af368b345f90d8e7001757513e420307c"></span><a class="reference internal" href="#project0structoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> <strong>gpu_random_number_grad_ei</strong></p>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a18f6cad0e994fe99e1bdff579e61589e"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_random_number_ei</strong></p>
+<blockquote>
+<div><p></p>
+<p>device storage for random numbers used by the GPU computing of ei &amp; grad_ei only used for testing </p>
+</div></blockquote>
+<p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a7471594e24e060f036a3e5fc79707a81"></span><a class="reference internal" href="#project0classoptimal__learning_1_1_cuda_device_pointer"><em>CudaDevicePointer</em></a> &lt; double &gt; <strong>gpu_random_number_grad_ei</strong></p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a50ba0dffb5508495c4046811cd71d029"></span>std::vector&lt; double &gt; <strong>random_number_ei</strong></p>
 <blockquote>
-<div><p>storage for random numbers used in computing EI &amp; grad_ei, this is only used to setup unit test </p>
-<p></p>
+<div><p></p>
+<p>host storage for random numbers used by the GPU in computing ei &amp; grad_ei only used for testing </p>
 </div></blockquote>
 <p><span class="target" id="project0structoptimal__learning_1_1_cuda_expected_improvement_state_1a178df2bab6020cab0588bb18699984eb"></span>std::vector&lt; double &gt; <strong>random_number_grad_ei</strong></p>
 <blockquote>
@@ -1121,10 +1249,12 @@ CUDA C functions defined in gpu/gpp_cuda_math.cu.</p>
 <p><p id="project0namespaceoptimal__learning"><em>namespace</em> <strong>optimal_learning</strong></p>
 <blockquote>
 <div><p></p>
-<p></p>
+<p><p>Macro to allow <tt class="docutils literal"><span class="pre">restrict</span></tt> as a keyword for <tt class="docutils literal"><span class="pre">C++</span></tt> compilation and <tt class="docutils literal"><span class="pre">CUDA/nvcc</span></tt> compilation.
+See related entry in <tt class="docutils literal"><span class="pre">gpp_common.hpp</span></tt> for more details.</p>
+ </p>
 <em>Functions</em><blockquote>
-<div><p><span class="target" id="project0namespaceoptimal__learning_1ac72bfbc5060fee0806d5a5d9cb661a6b"></span><div class="line-block">
-<div class="line">void <strong>CudaEvaluateEIAtPointList</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, double *restrict function_values, double *restrict best_next_point)</div>
+<div><p><span class="target" id="project0namespaceoptimal__learning_1a122f33663e91ced6830cff0b63bf8aec"></span><div class="line-block">
+<div class="line">void <strong>CudaEvaluateEIAtPointList</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict initial_guesses, double const *restrict points_being_sampled, int num_multistarts, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_rng, double *restrict function_values, double *restrict best_next_point)</div>
 </div>
 </p>
 <blockquote>
@@ -1167,8 +1297,7 @@ max_num_threads (num cpu cores), schedule type (omp_sched_static), chunk_size (0
 </tr>
 <tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">the device ID of GPU used for computation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">a UniformRandomGenerator object that provide
-the (pesudo)random source for MC integration</td>
+<tr class="field-odd field"><th class="field-name">uniform_rng[1]:</th><td class="field-body">UniformRandomGenerator object used to seed the GPU PRNG(s)</td>
 </tr>
 </tbody>
 </table>
@@ -1196,9 +1325,9 @@ the (pesudo)random source for MC integration</td>
  </p>
 </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a6ad61ddc353c87d2639162be2aac6606"></span><div class="line-block">
+<p><span class="target" id="project0namespaceoptimal__learning_1af2c44e60ab27314dff65eb3ca0c64921"></span><div class="line-block">
 <div class="line">template &lt; typename DomainType &gt;</div>
-<div class="line">void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<div class="line">void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const DomainType &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>
@@ -1248,7 +1377,7 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
 <tr class="field-even field"><th class="field-name">which_gpu:</th><td class="field-body">device ID of GPU used for computation</td>
 </tr>
 <tr class="field-odd field"><th class="field-name" colspan="2">uniform_generator[1]:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">a UniformRandomGenerator object providing the random engine for uniform random numbers</td>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">UniformRandomGenerator object used to seed the GPU PRNG(s)</td>
 </tr>
 </tbody>
 </table>
@@ -1273,16 +1402,16 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
  </p>
 </p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1aad156db43b4ff6a3dd430aa0c1030b2c"></span><div class="line-block">
-<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1ab9e33ba6b9fc1d542923be9acc4bbf04"></span><div class="line-block">
+<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_tensor_product_domain"><em>TensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>
 <div><p></p>
 <p></p>
 </div></blockquote>
-<p><span class="target" id="project0namespaceoptimal__learning_1a6f4eea3669e85d400df76d065775ac1d"></span><div class="line-block">
-<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, bool *restrict found_flag, int which_gpu, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
+<p><span class="target" id="project0namespaceoptimal__learning_1a3245874fdf1644a952c6be4252730941"></span><div class="line-block">
+<div class="line">template void <strong>CudaComputeOptimalPointsToSample</strong>(const  <a class="reference internal" href="gpp_math.html#project0classoptimal__learning_1_1_gaussian_process"><em>GaussianProcess</em></a>  &amp; gaussian_process, const  <a class="reference internal" href="gpp_optimizer_parameters.html#project0structoptimal__learning_1_1_gradient_descent_parameters"><em>GradientDescentParameters</em></a>  &amp; optimizer_parameters, const  <a class="reference internal" href="gpp_domain.html#project0classoptimal__learning_1_1_simplex_intersect_tensor_product_domain"><em>SimplexIntersectTensorProductDomain</em></a>  &amp; domain, const  <a class="reference internal" href="gpp_optimization.html#project0structoptimal__learning_1_1_thread_schedule"><em>ThreadSchedule</em></a>  &amp; thread_schedule, double const *restrict points_being_sampled, int num_to_sample, int num_being_sampled, double best_so_far, int max_int_steps, bool lhc_search_only, int num_lhc_samples, int which_gpu, bool *restrict found_flag, <a class="reference internal" href="gpp_random.html#project0structoptimal__learning_1_1_uniform_random_generator"><em>UniformRandomGenerator</em></a>  * uniform_generator, double *restrict best_points_to_sample)</div>
 </div>
 </p>
 <blockquote>
@@ -1333,7 +1462,7 @@ max_num_threads (num cpu cores), schedule type (omp_sched_dynamic), chunk_size (
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

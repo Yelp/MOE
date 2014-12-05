@@ -1,0 +1,46 @@
+moe.tests.bandit.epsilon package
+================================
+
+Submodules
+----------
+
+moe.tests.bandit.epsilon.epsilon_first_test module
+--------------------------------------------------
+
+.. automodule:: moe.tests.bandit.epsilon.epsilon_first_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.epsilon.epsilon_greedy_test module
+---------------------------------------------------
+
+.. automodule:: moe.tests.bandit.epsilon.epsilon_greedy_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.epsilon.epsilon_test module
+--------------------------------------------
+
+.. automodule:: moe.tests.bandit.epsilon.epsilon_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+moe.tests.bandit.epsilon.epsilon_test_case module
+-------------------------------------------------
+
+.. automodule:: moe.tests.bandit.epsilon.epsilon_test_case
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: moe.tests.bandit.epsilon
+    :members:
+    :undoc-members:
+    :show-inheritance:

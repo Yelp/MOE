@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moe.tests.optimal_learning.python.python_version.log_likelihood_test &mdash; MOE 0.2.0 documentation</title>
+  <title>moe.tests.optimal_learning.python.python_version.log_likelihood_test &mdash; MOE 0.2.2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
     <link rel="stylesheet" href="../../../../../../_static/breathe.css" type="text/css" />
   
-    <link rel="top" title="MOE 0.2.0 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="MOE 0.2.2 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="moe" href="../../../../../moe.html"/> 
 
   
@@ -72,6 +72,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#building-boost">Building Boost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#linux-tips">Linux Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#cmake-tips">CMake Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../install.html#python-tips">Python Tips</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../moe_math.html">How does MOE work?</a><ul>
@@ -143,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.bandit_example">moe_examples.bandit_example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.blog_post_example_ab_testing">moe_examples.blog_post_example_ab_testing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.combined_example">moe_examples.combined_example module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.hyper_opt_of_gp_from_historical_data">moe_examples.hyper_opt_of_gp_from_historical_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../../moe_examples.html#module-moe_examples.mean_and_var_of_gp_from_historic_data">moe_examples.mean_and_var_of_gp_from_historic_data module</a></li>
@@ -240,8 +242,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">import</span> <span class="nn">testify</span> <span class="kn">as</span> <span class="nn">T</span>
-
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.geometry_utils</span> <span class="kn">import</span> <span class="n">ClosedInterval</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.covariance</span> <span class="kn">import</span> <span class="n">SquareExponential</span>
 <span class="kn">from</span> <span class="nn">moe.optimal_learning.python.python_version.domain</span> <span class="kn">import</span> <span class="n">TensorProductDomain</span>
@@ -251,7 +251,7 @@
 <span class="kn">from</span> <span class="nn">moe.tests.optimal_learning.python.gaussian_process_test_case</span> <span class="kn">import</span> <span class="n">GaussianProcessTestCase</span><span class="p">,</span> <span class="n">GaussianProcessTestEnvironmentInput</span>
 
 
-<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihoodTest"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest">[docs]</a><span class="k">class</span> <span class="nc">GaussianProcessLogMarginalLikelihoodTest</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="TestGaussianProcessLogMarginalLikelihood"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood">[docs]</a><span class="k">class</span> <span class="nc">TestGaussianProcessLogMarginalLikelihood</span><span class="p">(</span><span class="n">GaussianProcessTestCase</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Test cases for the Log Marginal Likelihood metric for model fit.</span>
 
@@ -281,7 +281,7 @@
 
     <span class="n">num_sampled_list</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_grad_log_likelihood_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_grad_log_likelihood_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestGaussianProcessLogMarginalLikelihood.test_grad_log_likelihood_pings"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_grad_log_likelihood_pings">[docs]</a>    <span class="k">def</span> <span class="nf">test_grad_log_likelihood_pings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ping test (compare analytic result to finite difference) the log likelihood gradient wrt hyperparameters.&quot;&quot;&quot;</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2014</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="mf">2.0e-4</span>
@@ -317,7 +317,7 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">assert_scalar_within_relative</span><span class="p">(</span><span class="n">fd_grad</span><span class="p">,</span> <span class="n">analytic_grad</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tolerance</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_evaluate_log_likelihood_at_points">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_log_likelihood_at_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestGaussianProcessLogMarginalLikelihood.test_evaluate_log_likelihood_at_points"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_evaluate_log_likelihood_at_points">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_log_likelihood_at_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that ``evaluate_log_likelihood_at_hyperparameter_list`` computes and orders results correctly.&quot;&quot;&quot;</span>
         <span class="n">num_sampled</span> <span class="o">=</span> <span class="mi">5</span>
 
@@ -337,9 +337,9 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_values</span><span class="p">):</span>
             <span class="n">lml</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparameters_to_evaluate</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
             <span class="n">truth</span> <span class="o">=</span> <span class="n">lml</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">()</span>
-            <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">truth</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">value</span> <span class="o">==</span> <span class="n">truth</span>
 </div>
-<div class="viewcode-block" id="GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.GaussianProcessLogMarginalLikelihoodTest.test_multistart_hyperparameter_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_hyperparameter_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TestGaussianProcessLogMarginalLikelihood.test_multistart_hyperparameter_optimization"><a class="viewcode-back" href="../../../../../../moe.tests.optimal_learning.python.python_version.html#moe.tests.optimal_learning.python.python_version.log_likelihood_test.TestGaussianProcessLogMarginalLikelihood.test_multistart_hyperparameter_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">test_multistart_hyperparameter_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that multistart optimization (gradient descent) can find the optimum hyperparameters.&quot;&quot;&quot;</span>
         <span class="n">random_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
         <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">87612</span><span class="p">)</span>
@@ -380,13 +380,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assert_vector_within_relative</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_hyperparameters</span><span class="p">),</span> <span class="n">tolerance</span><span class="p">)</span>
 
         <span class="c"># Check that output is in the domain</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_hyperparameters</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">domain</span><span class="o">.</span><span class="n">check_point_inside</span><span class="p">(</span><span class="n">best_hyperparameters</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span>
 
-        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">T</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -417,7 +413,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
