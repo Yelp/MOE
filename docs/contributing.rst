@@ -287,4 +287,6 @@ and the short description to be
 Updating Conda
 ..............
 
-TODO
+TODO(GH-427): Create a MOE or Yelp conda channel for binaries of MOE and its dependenceies.
+
+Unfortunately, right now MOE does not have an official conda channel for its binaries. Some third parties (e.g., https://conda.binstar.org/rmcgibbo) have set up their own channels. For a discussion of the conda build process, see the README at: https://github.com/Yelp/MOE/tree/master/conda-recipe. But at the moment, new MOE releases have no official steps for updating the conda build.
