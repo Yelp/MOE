@@ -75,6 +75,10 @@ class TensorProductDomain(DomainInterface):
         """Return a list of ClosedIntervals representing a bounding box for this domain."""
         return copy.copy(self._domain_bounds)
 
+    def get_constraint_list(self):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        raise NotImplementedError("Constraints are not yet implemented for C++.")
+
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 

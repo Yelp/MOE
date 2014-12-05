@@ -36,39 +36,39 @@ class SampleArm(object):
         """Pretty print this object as a dict."""
         return pprint.pformat(self.json_payload())
 
-    def __add__(self, other):
-        """Overload Add operator to add other sampled arm results to this arm.
+    def __add__(self, sample_arm_to_add):
+        """Overload Add operator to add ``sample_arm_to_add`` sampled arm results to this arm.
 
-        :param other: arm samples to add to this arm
-        :type other: a SampleArm object
+        :param sample_arm_to_add: arm samples to add to this arm
+        :type sample_arm_to_add: a SampleArm object
         :return: new SampleArm that is a result of adding two arms
         :rtype: SampleArm
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        if self._variance is not None or other.variance is not None:
+        if self._variance is not None or sample_arm_to_add.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
-        out = SampleArm(win=self._win + other.win, loss=self._loss + other.loss, total=self._total + other.total)
-        out.validate()
-        return out
+        result = SampleArm(win=self._win + sample_arm_to_add.win, loss=self._loss + sample_arm_to_add.loss, total=self._total + sample_arm_to_add.total)
+        result.validate()
+        return result
 
     __radd__ = __add__
 
-    def __iadd__(self, other):
-        """Overload in-place Add operator to add other sampled arm results to this arm in-place.
+    def __iadd__(self, sample_arm_to_add):
+        """Overload in-place Add operator to add ``sample_arm_to_add`` sampled arm results to this arm in-place.
 
-        :param other: arm samples to add to this arm
-        :type other: a SampleArm object
-        :return: this arm after adding other
+        :param sample_arm_to_add: arm samples to add to this arm
+        :type sample_arm_to_add: a SampleArm object
+        :return: this arm after adding ``sample_arm_to_add``
         :rtype: SampleArm
         :raise: ValueError when ``arm.variance`` or self.variance is not None.
 
         """
-        if self._variance is not None or other.variance is not None:
+        if self._variance is not None or sample_arm_to_add.variance is not None:
             raise ValueError('Cannot add arms when variance is not None! Please combine arms manually.')
-        self._win += other.win
-        self._loss += other.loss
-        self._total += other.total
+        self._win += sample_arm_to_add.win
+        self._loss += sample_arm_to_add.loss
+        self._total += sample_arm_to_add.total
         self.validate()
         return self
 

@@ -4,8 +4,6 @@ import pyramid.testing
 
 import simplejson as json
 
-import testify as T
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, GRADIENT_DESCENT_OPTIMIZER
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
@@ -21,7 +19,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
     precompute_gaussian_process_data = True
 
-    def _build_json_payload(self, domain, covariance, historical_data):
+    @staticmethod
+    def _build_json_payload(domain, covariance, historical_data):
         """Create a json_payload to POST to the /gp/hyper_opt endpoint with all needed info."""
         hyper_dim = domain.dim + 1
         dict_to_dump = {
@@ -63,7 +62,7 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         view = GpHyperOptView(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_domain_info'], json_payload['hyperparameter_domain_info'])
+        assert params['hyperparameter_domain_info'] == json_payload['hyperparameter_domain_info']
 
         # Test arbitrary parameters get passed through
         json_payload['hyperparameter_domain_info']['domain_bounds'] = []
@@ -78,7 +77,7 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         view = GpHyperOptView(request)
         params = view.get_params_from_request()
 
-        T.assert_dicts_equal(params['hyperparameter_domain_info'], json_payload['hyperparameter_domain_info'])
+        assert params['hyperparameter_domain_info'] == json_payload['hyperparameter_domain_info']
 
     def test_optimizer_params_passed_through(self):
         """Test that the optimizer parameters get passed through to the endpoint."""
@@ -96,19 +95,17 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        T.assert_equal(
-                optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS,
-                )
-
-        T.assert_equal(
-                optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps,
-                )
+        test_param_dict = TEST_GRADIENT_DESCENT_PARAMETERS._asdict()
+        test_param_dict['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS
+        assert optimizer_parameters._get_member_dict() == test_param_dict
 
         # Test arbitrary parameters get passed through
-        json_payload['optimizer_info']['num_multistarts'] = TEST_OPTIMIZER_MULTISTARTS + 5
-        json_payload['optimizer_info']['optimizer_parameters']['max_num_steps'] = TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10
+        for i, key in enumerate(test_param_dict.iterkeys()):
+            test_param_dict[key] /= 2
+        test_num_multistarts = test_param_dict.pop('num_multistarts')
+
+        json_payload['optimizer_info']['num_multistarts'] = test_num_multistarts
+        json_payload['optimizer_info']['optimizer_parameters'] = test_param_dict
 
         request = pyramid.testing.DummyRequest(post=json_payload)
         request.json_body = json_payload
@@ -116,15 +113,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         params = view.get_params_from_request()
         _, optimizer_parameters, num_random_samples = _make_optimizer_parameters_from_params(params)
 
-        T.assert_equal(
-                optimizer_parameters.num_multistarts,
-                TEST_OPTIMIZER_MULTISTARTS + 5,
-                )
-
-        T.assert_equal(
-                optimizer_parameters._python_max_num_steps,
-                TEST_GRADIENT_DESCENT_PARAMETERS.max_num_steps + 10,
-                )
+        test_param_dict['num_multistarts'] = test_num_multistarts
+        assert optimizer_parameters._get_member_dict() == test_param_dict
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/hyper_opt endpoint."""
@@ -138,12 +128,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
             resp_schema = GpHyperOptResponse()
             resp_dict = resp_schema.deserialize(json.loads(resp.body))
 
-            T.assert_in('covariance_info', resp_dict)
-            T.assert_equal(resp_dict['covariance_info']['covariance_type'], python_cov.covariance_type)
+            assert 'covariance_info' in resp_dict
+            assert resp_dict['covariance_info']['covariance_type'] == python_cov.covariance_type
             # The optimal hyperparameters should be greater than zero
             for hyperparameter in resp_dict['covariance_info']['hyperparameters']:
-                T.assert_gt(hyperparameter, 0.0)
-
-
-if __name__ == "__main__":
-    T.run()
+                assert hyperparameter >= 0.0

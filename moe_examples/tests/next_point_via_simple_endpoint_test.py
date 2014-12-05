@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """Integration test for next_point_via_simple_endpoint MOE example."""
-import testify as T
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_GRADIENT_DESCENT_PARAMETERS
 
 from moe_examples.tests.moe_example_test_case import MoeExampleTestCase
 from moe_examples.next_point_via_simple_endpoint import run_example
 
 
-class NextPointsViaSimpleEndpointTest(MoeExampleTestCase):
+class TestNextPointsViaSimpleEndpoint(MoeExampleTestCase):
 
     """Test the next_point_via_simple_endpoint MOE example."""
 
@@ -25,7 +23,3 @@ class NextPointsViaSimpleEndpointTest(MoeExampleTestCase):
                     },
                 rest_port=1337,
         )
-
-
-if __name__ == "__main__":
-    T.run()

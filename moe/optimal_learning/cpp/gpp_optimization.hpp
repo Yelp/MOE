@@ -551,6 +551,8 @@ struct OptimizationIOContainer final {
 };
 
 /*!\rst
+  TODO(GH-390): Implement Polyak-Ruppert Averaging for Gradient Descent
+
   Implements gradient-descrent to to find a locally optimal (maximal here) value of the specified objective function.
   Additional high-level discussion is provided in section 2a) in the header docs of this file.
 

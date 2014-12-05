@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Test cases to check that C++ and Python implementations of :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface` match."""
-import testify as T
-
 import moe.optimal_learning.python.cpp_wrappers.covariance
 import moe.optimal_learning.python.cpp_wrappers.log_likelihood
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
@@ -11,7 +9,7 @@ import moe.optimal_learning.python.python_version.log_likelihood
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
-class LogLikelihoodTest(GaussianProcessTestCase):
+class TestLogLikelihood(GaussianProcessTestCase):
 
     """Test that the C++ and Python implementations of the Log Marginal Likelihood match (value and gradient)."""
 
@@ -57,7 +55,3 @@ class LogLikelihoodTest(GaussianProcessTestCase):
             python_grad_log_like = python_lml.compute_grad_log_likelihood()
             cpp_grad_log_like = cpp_lml.compute_grad_log_likelihood()
             self.assert_vector_within_relative(python_grad_log_like, cpp_grad_log_like, tolerance_grad_log_like)
-
-
-if __name__ == "__main__":
-    T.run()

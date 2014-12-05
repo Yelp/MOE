@@ -7,10 +7,8 @@ to be more DRY (model after C++ test cases). We can set up one ping tester and j
 """
 import numpy
 
-import testify as T
 
-
-class OptimalLearningTestCase(T.TestCase):
+class OptimalLearningTestCase(object):
 
     """Base test case for the optimal_learning library.
 
@@ -19,7 +17,8 @@ class OptimalLearningTestCase(T.TestCase):
 
     """
 
-    def assert_scalar_within_absolute(self, value, truth, tol):
+    @staticmethod
+    def assert_scalar_within_absolute(value, truth, tol):
         """Check whether a scalar ``value`` is equal to ``truth``: ``|value - truth| <= tol``.
 
         :param value: scalar to check
@@ -31,14 +30,12 @@ class OptimalLearningTestCase(T.TestCase):
         :raise: AssertionError value, truth are not equal to within tolerance
 
         """
+        __tracebackhide__ = True
         diff = numpy.fabs(value - truth)
-        T.assert_lte(
-            diff,
-            tol,
-            message='value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol),
-        )
+        assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
-    def assert_scalar_within_relative(self, value, truth, tol):
+    @staticmethod
+    def assert_scalar_within_relative(value, truth, tol):
         """Check whether a scalar ``value`` is relatively equal to ``truth``: ``|value - truth|/|truth| <= tol``.
 
         :param value: scalar to check
@@ -50,37 +47,33 @@ class OptimalLearningTestCase(T.TestCase):
         :raise: AssertionError value, truth are not relatively equal
 
         """
+        __tracebackhide__ = True
         denom = numpy.fabs(truth)
         if denom < numpy.finfo(numpy.float64).tiny:
             denom = 1.0  # do not divide by 0
         diff = numpy.fabs((value - truth) / denom)
-        T.assert_lte(
-            diff,
-            tol,
-            message='value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol),
-        )
+        assert diff <= tol, 'value = {0:.18E}, truth = {1:.18E}, diff = {2:.18E}, tol = {3:.18E}'.format(value, truth, diff, tol)
 
-    def assert_vector_within_relative(self, value, truth, tol):
+    @staticmethod
+    def assert_vector_within_relative(value, truth, tol):
         """Check whether a vector is element-wise relatively equal to ``truth``: ``|value[i] - truth[i]|/|truth[i]| <= tol``.
 
-        :param value: scalar to check
-        :type value: float64
-        :param truth: exact/desired result
-        :type value: float64
+        :param value: vector to check
+        :type value: array of float64 with arbitrary shape
+        :param truth: exact/desired vector result
+        :type value: array of float64 with shape matching ``value``
         :param tol: max permissible relative difference
         :type tol: float64
         :raise: AssertionError value[i], truth[i] are not relatively equal for every i
 
         """
-        T.assert_equal(
-            value.shape,
-            truth.shape,
-            message='value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape),
-        )
+        __tracebackhide__ = True
+        assert value.shape == truth.shape, 'value.shape = {0} != truth.shape = {1}'.format(value.shape, truth.shape)
         for index in numpy.ndindex(value.shape):
-            self.assert_scalar_within_relative(value[index], truth[index], tol)
+            OptimalLearningTestCase.assert_scalar_within_relative(value[index], truth[index], tol)
 
-    def assert_points_distinct(self, point_list, tol):
+    @staticmethod
+    def assert_points_distinct(point_list, tol):
         """Check whether the distance between every pair of points is larger than tolerance.
 
         :param point_list: points to check
@@ -90,8 +83,9 @@ class OptimalLearningTestCase(T.TestCase):
         :raise: AssertionError when every point is not more than tolerance distance apart
 
         """
+        __tracebackhide__ = True
         for i in xrange(point_list.shape[0]):
             for j in xrange(i + 1, point_list.shape[0]):
                 temp = point_list[i, ...] - point_list[j, ...]
                 dist = numpy.linalg.norm(temp)
-                self.assert_scalar_within_relative(dist, 0.0, tol)
+                OptimalLearningTestCase.assert_scalar_within_relative(dist, 0.0, tol)

@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """Integration test for hyper_opt_of_gp_from_historical_data MOE example."""
-import testify as T
-
 from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_GRADIENT_DESCENT_PARAMETERS, GRADIENT_DESCENT_OPTIMIZER
 
 from moe_examples.tests.moe_example_test_case import MoeExampleTestCase
 from moe_examples.hyper_opt_of_gp_from_historical_data import run_example
 
 
-class HyperOptOfGpFromHistoricalDataTest(MoeExampleTestCase):
+class TestHyperOptOfGpFromHistoricalData(MoeExampleTestCase):
 
     """Test the hyper_opt_of_gp_from_historical_data MOE example."""
 
@@ -25,7 +23,3 @@ class HyperOptOfGpFromHistoricalDataTest(MoeExampleTestCase):
                     },
                 rest_port=1337,
         )
-
-
-if __name__ == "__main__":
-    T.run()

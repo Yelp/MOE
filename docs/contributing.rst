@@ -159,7 +159,7 @@ MOE uses ``doxygen`` (http://www.stack.nl/~dimitri/doxygen) to extract the C++ d
 Testing
 -------
 
-MOE currently uses ``testify`` (https://github.com/Yelp/Testify) to run all unit and integration tests.
+MOE currently uses ``pytest`` (http://pytest.org/) to run all unit and integration tests.
 
 Tests can be run using ``make test``. Continuous integration testing is provided by http://travis-ci.org. All builds are tested in a fresh ubuntu VM and need to be passing before being pulled into master.
 
@@ -207,6 +207,7 @@ When you are ready to mark a new release (stop and fix any issues encountered):
 2. Tag the release (`Tagging Releases`_).
 3. Update the documentation (`Building the documentation`_); in all likelihood the new code includes documentation changes. Be sure to double check the number of warnings is not increasing (see link).
 4. Create and push Docker containers for the new release (`Updating DockerHub`_).
+5. Update the ``version`` field in ``conda-recipe/moe/meta.yaml`` and rebuild the conda binaries (`Updating Conda`_).
 
 Tagging Releases
 ................
@@ -281,3 +282,11 @@ and the short description to be
     Version VERSION of MOE, the Metric Optimization Engine
 
     https://github.com/Yelp/MOE/releases/tag/VERSION
+
+
+Updating Conda
+..............
+
+TODO(GH-427): Create a MOE or Yelp conda channel for binaries of MOE and its dependenceies.
+
+Unfortunately, right now MOE does not have an official conda channel for its binaries. Some third parties (e.g., https://conda.binstar.org/rmcgibbo) have set up their own channels. For a discussion of the conda build process, see the README at: https://github.com/Yelp/MOE/tree/master/conda-recipe. But at the moment, new MOE releases have no official steps for updating the conda build.

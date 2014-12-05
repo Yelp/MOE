@@ -4,7 +4,7 @@ import copy
 
 import numpy
 
-import testify as T
+import pytest
 
 import moe.build.GPP as C_GP
 from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
@@ -13,14 +13,15 @@ from moe.optimal_learning.python.data_containers import HistoricalData, SamplePo
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 
 
-class GaussianProcessTest(GaussianProcessTestCase):
+class TestGaussianProcess(GaussianProcessTestCase):
 
     """Test C++ vs Python implementations of Gaussian Process properties (mean, variance, cholesky variance, and their gradients)."""
 
     precompute_gaussian_process_data = True
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Run the standard setup but seed the RNG first (for repeatability).
 
         It is easy to stumble into test cases where mean, var terms are very small (e.g., < 1.e-20),
@@ -28,7 +29,7 @@ class GaussianProcessTest(GaussianProcessTestCase):
 
         """
         numpy.random.seed(8794)
-        super(GaussianProcessTest, self).base_setup()
+        super(TestGaussianProcess, cls).base_setup()
 
     def test_sample_point_from_gp(self):
         """Test that sampling points from the GP works."""
@@ -64,7 +65,8 @@ class GaussianProcessTest(GaussianProcessTestCase):
         point_three = point_two
 
         historical_data = HistoricalData(len(point_one.point), [point_one, point_two, point_three])
-        T.assert_raises(C_GP.SingularMatrixException, GaussianProcess, gaussian_process.get_covariance_copy(), historical_data)
+        with pytest.raises(C_GP.SingularMatrixException):
+            GaussianProcess(gaussian_process.get_covariance_copy(), historical_data)
 
     def test_gp_add_sampled_points_singular_covariance_matrix(self):
         """Test that GaussianProcess.add_sampled_points indicates a singular covariance matrix when points_sampled contains duplicates (0 noise)."""
@@ -81,7 +83,8 @@ class GaussianProcessTest(GaussianProcessTestCase):
         # points one and two are different, so this is safe
         gaussian_process.add_sampled_points([point_one, point_two])
         # point_three is identical to point_one; this will produce a singular covariance matrix
-        T.assert_raises(C_GP.SingularMatrixException, gaussian_process.add_sampled_points, [point_three])
+        with pytest.raises(C_GP.SingularMatrixException):
+            gaussian_process.add_sampled_points([point_three])
 
     def test_python_and_cpp_return_same_mu_and_gradient(self):
         """Compare mu/grad mu results from Python & C++, checking seeral random points per test case."""
@@ -158,7 +161,3 @@ class GaussianProcessTest(GaussianProcessTestCase):
                     cpp_grad_var = cpp_gp.compute_grad_cholesky_variance_of_points(points_to_sample)
                     python_grad_var = python_gp.compute_grad_cholesky_variance_of_points(points_to_sample)
                     self.assert_vector_within_relative(python_grad_var, cpp_grad_var, grad_var_tolerance)
-
-
-if __name__ == "__main__":
-    T.run()

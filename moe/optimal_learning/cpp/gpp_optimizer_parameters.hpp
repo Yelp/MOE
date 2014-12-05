@@ -51,6 +51,20 @@ struct NullParameters {
   The total number of gradient descent steps is at most ``num_multistarts * max_num_steps * max_num_restarts``
   Generally, allowing more iterations leads to a better solution but costs more time.
 
+  **Averaging (TODO(GH-390): NOT IMPLEMTED YET)**
+
+  When optimizing stochastic objective functions, it can often be beneficial to average some number of gradient descent
+  steps to obtain the final result (vs just returning the last step).
+  Polyak-Ruppert averaging: postprocessing step where we replace ``x_n`` with:
+  ``\overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t``
+  ``n_0 = 0`` averages all steps; ``n_0 = n - 1`` is equivalent to returning ``x_n`` directly.
+  Here, num_steps_averaged is ``n - n_0``.
+
+  * ``num_steps_averaged`` < 0: averages all steps
+  * ``num_steps_averaged`` == 0: do not average
+  * ``num_steps_averaged`` > 0 and <= ``max_num_steps``: average the specified number of steps
+  * ``max_steps_averaged`` > ``max_num_steps``: average all steps
+
   **Learning Rate**
 
   GD may be implemented using a learning rate: ``pre_mult * (i+1)^{-\gamma}``, where i is the current iteration
@@ -74,10 +88,14 @@ struct GradientDescentParameters {
     INPUTS:
     See member declarations below for a description of each parameter.
   \endrst*/
-  GradientDescentParameters(int num_multistarts_in, int max_num_steps_in, int max_num_restarts_in, double gamma_in, double pre_mult_in, double max_relative_change_in, double tolerance_in)
+  GradientDescentParameters(int num_multistarts_in, int max_num_steps_in,
+                            int max_num_restarts_in, int num_steps_averaged_in,
+                            double gamma_in, double pre_mult_in,
+                            double max_relative_change_in, double tolerance_in)
       : num_multistarts(num_multistarts_in),
         max_num_steps(max_num_steps_in),
         max_num_restarts(max_num_restarts_in),
+        num_steps_averaged(num_steps_averaged_in),
         gamma(gamma_in),
         pre_mult(pre_mult_in),
         max_relative_change(max_relative_change_in),
@@ -93,6 +111,11 @@ struct GradientDescentParameters {
   int max_num_steps;
   //! maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 4-20)
   int max_num_restarts;
+
+  // polyak-ruppert averaging control
+  //! number of steps to use in polyak-ruppert averaging (see above)
+  //! (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise)
+  int num_steps_averaged;
 
   // learning rate control
   //! exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
@@ -138,7 +161,9 @@ struct NewtonParameters {
     INPUTS:
     See member declarations below for a description of each parameter.
   \endrst*/
-  NewtonParameters(int num_multistarts_in, int max_num_steps_in, double gamma_in, double time_factor_in, double max_relative_change_in, double tolerance_in)
+  NewtonParameters(int num_multistarts_in, int max_num_steps_in, double gamma_in,
+                   double time_factor_in, double max_relative_change_in,
+                   double tolerance_in)
       : num_multistarts(num_multistarts_in),
         max_num_steps(max_num_steps_in),
         gamma(gamma_in),

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Base test case for tests that manipulate Gaussian Process data and supporting structures."""
+import pytest
+
 import collections
 
 import numpy
-
-import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -147,29 +147,31 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
     num_sampled_list = (1, 2, 3, 5, 10, 16, 20, 42)
     num_to_sample_list = (1, 2, 3, 8)
 
-    @T.class_setup
-    def base_setup(self):
-        """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
+        """Build a Gaussian Process prior for each problem size in ``cls.num_sampled_list`` if precomputation is desired.
 
         **Requires**
 
-        * self.num_sampled_list: (*list of int*) problem sizes to consider
-        * self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
+        * cls.num_sampled_list: (*list of int*) problem sizes to consider
+        * cls.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
           gaussian process prior
 
         **Outputs**
 
-        * self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
-          specified problem sizes (``self.num_sampled_list``)
+        * cls.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
+          specified problem sizes (``cls.num_sampled_list``)
 
         """
-        if self.precompute_gaussian_process_data:
-            self.gp_test_environments = []
-            for num_sampled in self.num_sampled_list:
-                self.gp_test_environment_input.num_sampled = num_sampled
-                self.gp_test_environments.append(self._build_gaussian_process_test_data(self.gp_test_environment_input))
+        if cls.precompute_gaussian_process_data:
+            cls.gp_test_environments = []
+            for num_sampled in cls.num_sampled_list:
+                cls.gp_test_environment_input.num_sampled = num_sampled
+                cls.gp_test_environments.append(cls._build_gaussian_process_test_data(cls.gp_test_environment_input))
 
-    def _build_gaussian_process_test_data(self, test_environment):
+    @staticmethod
+    def _build_gaussian_process_test_data(test_environment):
         """Build up a Gaussian Process randomly by repeatedly drawing from and then adding to the prior.
 
         :param test_environment: parameters describing how to construct a GP prior

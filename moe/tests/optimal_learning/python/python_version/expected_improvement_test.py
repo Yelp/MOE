@@ -2,7 +2,7 @@
 """Test the Python implementation of Expected Improvement and its gradient."""
 import numpy
 
-import testify as T
+import pytest
 
 import moe
 from moe.optimal_learning.python.data_containers import HistoricalData, SamplePoint
@@ -16,7 +16,7 @@ from moe.optimal_learning.python.repeated_domain import RepeatedDomain
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase, GaussianProcessTestEnvironmentInput
 
 
-class ExpectedImprovementTest(GaussianProcessTestCase):
+class TestExpectedImprovement(GaussianProcessTestCase):
 
     """Verify that the "naive" and "vectorized" EI implementations in Python return the same result.
 
@@ -68,8 +68,9 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         epsilon,
     )
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Run the standard setup but seed the RNG first (for repeatability).
 
         It is easy to stumble into test cases where EI is very small (e.g., < 1.e-20),
@@ -77,7 +78,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         """
         numpy.random.seed(7859)
-        super(ExpectedImprovementTest, self).base_setup()
+        super(TestExpectedImprovement, cls).base_setup()
 
     def test_expected_improvement_and_gradient(self):
         """Test EI by comparing the vectorized and "naive" versions.
@@ -92,7 +93,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
 
         """
         num_points_p_q_list = ((1, 0), (1, 1), (2, 1), (1, 4), (5, 3))
-        ei_tolerance = numpy.finfo(numpy.float64).eps
+        ei_tolerance = 10.0 * numpy.finfo(numpy.float64).eps
         grad_ei_tolerance = 1.0e-13
         numpy.random.seed(78532)
 
@@ -154,7 +155,8 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 # Restore state
                 numpy.random.set_state(rng_state)
 
-    def _check_ei_symmetry(self, ei_eval, point_to_sample, shifts):
+    @classmethod
+    def _check_ei_symmetry(cls, ei_eval, point_to_sample, shifts):
         """Compute ei at each ``[point_to_sample +/- shift for shift in shifts]`` and check for equality.
 
         :param ei_eval: properly configured ExpectedImprovementEvaluator object
@@ -166,6 +168,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         :return: None; assertions fail if test conditions are not met
 
         """
+        __tracebackhide__ = True
         for shift in shifts:
             ei_eval.current_point = point_to_sample - shift
             left_ei = ei_eval.compute_expected_improvement()
@@ -175,8 +178,8 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
             right_ei = ei_eval.compute_expected_improvement()
             right_grad_ei = ei_eval.compute_grad_expected_improvement()
 
-            self.assert_scalar_within_relative(left_ei, right_ei, 0.0)
-            self.assert_vector_within_relative(left_grad_ei, -right_grad_ei, 0.0)
+            cls.assert_scalar_within_relative(left_ei, right_ei, 0.0)
+            cls.assert_vector_within_relative(left_grad_ei, -right_grad_ei, 0.0)
 
     def test_1d_analytic_ei_edge_cases(self):
         """Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds."""
@@ -230,7 +233,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         for i, value in enumerate(test_values):
             ei_eval.current_point = points_to_evaluate[i, ...]
             truth = ei_eval.compute_expected_improvement()
-            T.assert_equal(value, truth)
+            assert value == truth
 
     def test_multistart_analytic_expected_improvement_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 1D analytic EI)."""
@@ -273,7 +276,7 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         self.assert_vector_within_relative(gradient, numpy.zeros(gradient.shape), tolerance)
 
         # Check that output is in the domain
-        T.assert_equal(repeated_domain.check_point_inside(best_point), True)
+        assert repeated_domain.check_point_inside(best_point) is True
 
     def test_multistart_monte_carlo_expected_improvement_optimization(self):
         """Check that multistart optimization (gradient descent) can find the optimum point to sample (using 2-EI)."""
@@ -322,15 +325,15 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         self.assert_vector_within_relative(grad_ei_final, numpy.zeros(grad_ei_final.shape), tolerance)
 
         # Check that output is in the domain
-        T.assert_equal(repeated_domain.check_point_inside(best_point), True)
+        assert repeated_domain.check_point_inside(best_point) is True
 
         # Since we didn't really converge to the optimal EI (too costly), do some other sanity checks
         # EI should have improved
-        T.assert_gt(ei_final, ei_initial)
+        assert ei_final >= ei_initial
 
         # grad EI should have improved
         for index in numpy.ndindex(grad_ei_final.shape):
-            T.assert_lt(numpy.fabs(grad_ei_final[index]), numpy.fabs(grad_ei_initial[index]))
+            assert numpy.fabs(grad_ei_final[index]) <= numpy.fabs(grad_ei_initial[index])
 
     def test_multistart_qei_expected_improvement_dfo(self):
         """Check that multistart optimization (BFGS) can find the optimum point to sample (using 2-EI)."""
@@ -377,11 +380,11 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
         self.assert_vector_within_relative(finite_diff_grad, numpy.zeros(finite_diff_grad.shape), tolerance)
 
         # Check that output is in the domain
-        T.assert_true(repeated_domain.check_point_inside(best_point))
+        assert repeated_domain.check_point_inside(best_point) is True
 
         # Since we didn't really converge to the optimal EI (too costly), do some other sanity checks
         # EI should have improved
-        T.assert_gt(ei_final, ei_initial)
+        assert ei_final >= ei_initial
 
     def test_qd_ei_with_self(self):
         """Compare the 1D analytic EI results to the qD analytic EI results, checking several random points per test case.
@@ -450,7 +453,3 @@ class ExpectedImprovementTest(GaussianProcessTestCase):
                 python_1d_ei = python_ei_eval.compute_expected_improvement(force_1d_ei=True)
                 python_qd_ei = python_ei_eval.compute_expected_improvement()
                 self.assert_scalar_within_relative(python_1d_ei, python_qd_ei, ei_tolerance)
-
-
-if __name__ == "__main__":
-    T.run()

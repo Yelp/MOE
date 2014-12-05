@@ -6,10 +6,22 @@
   Thus changing missing/default fields in the output dict can modify the schema!
 
 """
+import inspect
+import warnings
+
 import colander
 
 from moe.optimal_learning.python.constant import GRADIENT_DESCENT_OPTIMIZER, L_BFGS_B_OPTIMIZER, TENSOR_PRODUCT_DOMAIN_TYPE, SQUARE_EXPONENTIAL_COVARIANCE_TYPE, NULL_OPTIMIZER, NEWTON_OPTIMIZER, DOMAIN_TYPES, OPTIMIZER_TYPES, COVARIANCE_TYPES
 from moe.optimal_learning.python.python_version.expected_improvement import DEFAULT_MVNDST_PARAMS
+
+
+# Several users have forgotten to run ``pip install -r requirements.txt`` and end up with
+# and old colander version. The error message looks like a syntax error (vs version mismatch),
+# so let's be more explicit.
+if len(inspect.getargspec(colander.SchemaNode.__init__).args) > 1:
+    warnings.warn("It looks like your version of colander is out of date.\n"
+                  "You will probably see the error quoted here: https://github.com/Yelp/MOE/issues/413\n"
+                  "Did you run 'pip install -r requirements.txt'?.")
 
 
 class StrictMappingSchema(colander.MappingSchema):

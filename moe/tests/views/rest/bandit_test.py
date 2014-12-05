@@ -4,8 +4,6 @@ import pyramid.testing
 
 import simplejson as json
 
-import testify as T
-
 from moe.bandit.linkers import BANDIT_ENDPOINTS_TO_SUBTYPES
 from moe.tests.bandit.bandit_test_case import BanditTestCase
 from moe.tests.views.rest_test_case import RestTestCase
@@ -21,7 +19,8 @@ class TestBanditViews(BanditTestCase, RestTestCase):
     _moe_route = None  # Define in a subclass
     _view = None  # Define in a subclass
 
-    def _build_json_payload(self, subtype, historical_info):
+    @staticmethod
+    def _build_json_payload(subtype, historical_info):
         """Create a json_payload to POST to the /bandit/* endpoint with all needed info."""
         dict_to_dump = {
             'subtype': subtype,
@@ -42,7 +41,7 @@ class TestBanditViews(BanditTestCase, RestTestCase):
                 view = self._view(request)
                 params = view.get_params_from_request()
 
-                T.assert_dicts_equal(params['historical_info'], json_payload['historical_info'])
+                assert params['historical_info'] == json_payload['historical_info']
 
     def _test_interface_returns_as_expected(self):
         """Integration test for the bandit endpoints."""
@@ -54,16 +53,12 @@ class TestBanditViews(BanditTestCase, RestTestCase):
                 resp_schema = BanditResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
                 resp_arm_names = set([arm_name for arm_name in resp_dict['arm_allocations'].iterkeys()])
-                T.assert_sets_equal(arm_names, resp_arm_names)
+                assert arm_names == resp_arm_names
                 # The allocations should be in range [0, 1]
                 # The sum of all allocations should be 1.0.
                 total_allocation = 0
                 for allocation in resp_dict['arm_allocations'].itervalues():
-                    T.assert_gte(allocation, 0)
-                    T.assert_lte(allocation, 1)
+                    assert allocation >= 0
+                    assert allocation <= 1
                     total_allocation += allocation
-                T.assert_equal(total_allocation, 1.0)
-
-
-if __name__ == "__main__":
-    T.run()
+                assert total_allocation == 1.0

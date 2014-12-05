@@ -4,6 +4,28 @@
 
 * Bugs
 
+## v0.2.2 (2014-12-5)
+
+SHA: ``83a71512e6a4aa553866e4301ef11f172d485e23``
+
+* Features
+
+  * Added startup message to REST server including tips for OSX users (#400)
+  * Added GPU support to ``cpp_wrappers.expected_improvement.multistart_expected_improvement_optimization``; requires ``max_num_threads == 1`` until future multi-GPU support (#368)
+  * Added the COBYLA optimizer to the expected improvement optimization class. (#370)
+  * OptimizerParameter struct members now directly readable/writeable from Python; added EqualityComparisonMixin (#138)
+  * C++ GradientDescentParameters object now stores ``num_steps_averaged`` (but does not use it yet) (#391)
+  * conda build system for MOE (#417)
+
+* Changes
+
+  * Switched from `testify` to `py.test` - http://pytest.org/ (#36)
+  * [cleanup] Moved bandits into their own sub directories (#375)
+  * Supply PYTHON_LIBRARY and PYTHON_INCLUDE_DIR vars to cmake automatically in ``setup.py`` (#412)
+  * Added warning when colander version is out of date (#413)
+
+* Bugs
+
 ## v0.2.1 (2014-09-22)
 
 SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
@@ -18,7 +40,8 @@ SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
 * Bugs
 
   * variance in a sample arm was dropped in _make_bandit_historical_info_from_params. (#385)
-  * SampleArm's __add__ and __str__ were broken. (#387)
+  * SampleArm's ``__add__`` and ``__str__`` were broken. (#387)
+  * Specifying ``max_num_threads`` on GPU compute paths caused a segfault (#394)
 
 ## v0.2.0 (2014-08-15)
 

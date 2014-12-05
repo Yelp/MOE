@@ -1,0 +1,63 @@
+package:
+  name: colander
+  version: !!str 1.0b1
+
+source:
+  fn: colander-1.0b1.tar.gz
+  url: https://pypi.python.org/packages/source/c/colander/colander-1.0b1.tar.gz
+  md5: 89f2cf4b5c87d43f7917d6a0d4872e6a
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+# build:
+  # preserve_egg_dir: True
+  # entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - colander = colander:main
+    #
+    # Would create an entry point called colander that calls colander.main()
+
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - translationstring
+
+  run:
+    - python
+    - translationstring
+
+test:
+  # Python imports
+  imports:
+    - colander
+    - colander.tests
+
+  # commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: http://docs.pylonsproject.org/projects/colander/en/latest/
+  license: BSD-derived (http://www.repoze.org/LICENSE.txt)
+  summary: 'A simple schema-based serialization and deserialization library'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
