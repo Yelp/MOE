@@ -26,6 +26,8 @@ SHA: ``83a71512e6a4aa553866e4301ef11f172d485e23``
 
 * Bugs
 
+  * Fixed UCB1 and UCB1-tuned algorithm confidence bound calculation (#432)
+
 ## v0.2.1 (2014-09-22)
 
 SHA: ``ab6f959c11a0cacbed6dad618fe6ffed71092116``
