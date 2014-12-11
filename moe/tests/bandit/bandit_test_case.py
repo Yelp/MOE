@@ -23,6 +23,7 @@ class BanditTestCase(object):
     three_arms_two_winners_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=2, loss=1, total=3), "arm3": SampleArm(win=0, loss=0, total=0)})
     three_arms_two_winners_no_unsampled_arm_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=3), "arm2": SampleArm(win=2, loss=1, total=3), "arm3": SampleArm(win=0, loss=1, total=1)})
     three_arms_with_variance_no_unsampled_arm_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=2, loss=1, total=500, variance=0.1), "arm2": SampleArm(win=2, loss=1, total=500, variance=0.01), "arm3": SampleArm(win=2, loss=1, total=500, variance=0.001)})
+    three_arms_ucb_value_test_case = HistoricalData(sample_arms={"arm1": SampleArm(win=15, total=20, loss=0), "arm2": SampleArm(win=30, total=40, loss=0), "arm3": SampleArm(win=29, total=40, loss=0)})
 
     bernoulli_historical_infos_to_test = [
                                 one_arm_test_case,
