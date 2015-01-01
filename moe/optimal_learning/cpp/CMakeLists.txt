@@ -75,7 +75,7 @@ endif()
 find_package(PythonLibs REQUIRED)
 find_package(Boost 1.51 COMPONENTS python REQUIRED)
 
-include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(SYSTEM ${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 
 #### Sources
