@@ -52,10 +52,7 @@ def _make_covariance_of_process_from_params(params, python_version=False):
 
     """
     covariance_info = params.get("covariance_info")
-    if python_version == False:
-        covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].cpp_covariance_class
-    else:
-        covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].python_covariance_class
+    covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].cpp_covariance_class if not python_version else COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].python_covariance_class
 
     hyperparameters = covariance_info.get('hyperparameters')
     if hyperparameters is None:
@@ -132,7 +129,7 @@ def _make_gp_from_params(params, python_version=False):
             )
         )
 
-    if python_version == False:
+    if not python_version:
         gaussian_process = GaussianProcess(
                 covariance_of_process,
                 HistoricalData(domain_info.get('dim'), sample_point_list),
