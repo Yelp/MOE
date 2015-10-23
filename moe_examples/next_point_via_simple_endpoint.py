@@ -17,6 +17,7 @@ import random
 from moe.easy_interface.experiment import Experiment
 from moe.easy_interface.simple_endpoint import gp_next_points
 from moe.optimal_learning.python.data_containers import SamplePoint
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 
 
 # Note: this function can be anything, the output of a batch, results of an A/B experiment, the value of a physical experiment etc.
@@ -48,4 +49,5 @@ def run_example(num_points_to_sample=20, verbose=True, **kwargs):
 
 
 if __name__ == '__main__':
-    run_example()
+    if CPP_COMPONENT_INSTALLED:
+        run_example()

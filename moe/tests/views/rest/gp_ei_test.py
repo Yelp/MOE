@@ -4,13 +4,16 @@ import numpy
 
 import simplejson as json
 
-from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
-from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
-from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_EI_ENDPOINT
 from moe.views.schemas.rest.gp_ei import GpEiResponse
+
+if CPP_COMPONENT_INSTALLED:
+    from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
+    from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+    from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 
 
 class TestGpEiView(GaussianProcessTestCase, RestTestCase):
@@ -35,6 +38,8 @@ class TestGpEiView(GaussianProcessTestCase, RestTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Test that the /gp/ei endpoint does the same thing as the C++ interface."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case

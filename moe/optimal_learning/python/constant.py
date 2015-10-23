@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Some default configuration parameters for optimal_learning components."""
 from collections import namedtuple
+import os
 
 import moe.optimal_learning.python.python_version.optimization as python_optimization
 import moe.views.constant as views_constant
@@ -299,3 +300,6 @@ DEFAULT_CONSTANT_LIAR_LIE_NOISE_VARIANCE = 1e-12
 # TODO(GH-257): Find a better default.
 DEFAULT_KRIGING_NOISE_VARIANCE = 1e-8
 DEFAULT_KRIGING_STD_DEVIATION_COEF = 0.0
+
+# Whether cpp components were installed
+CPP_COMPONENT_INSTALLED = os.environ.get('MOE_NO_BUILD_CPP', 'False') == 'False'

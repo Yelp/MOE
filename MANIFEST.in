@@ -5,10 +5,11 @@ include setup.py
 include *.ini
 # docs
 recursive-include doc *
-# optimal learning
-recursive-include moe/optimal_learning *
 # webapp
-recursive-include moe *
+recursive-include moe/templates * 
+recursive-include moe/static * 
+# cpp files
+recursive-include moe/optimal_learning/cpp *
 
 # remove what we don't want, kept in step with .gitignore
 # Logs

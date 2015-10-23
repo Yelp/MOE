@@ -19,6 +19,7 @@ import numpy
 
 from moe.easy_interface.experiment import Experiment
 from moe.easy_interface.simple_endpoint import gp_next_points, gp_hyper_opt, gp_mean_var
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 
 
 def function_to_minimize(x):
@@ -113,4 +114,5 @@ def run_example(
 
 
 if __name__ == '__main__':
-    run_example()
+    if CPP_COMPONENT_INSTALLED:
+        run_example()

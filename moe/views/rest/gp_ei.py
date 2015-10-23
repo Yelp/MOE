@@ -10,7 +10,7 @@ import numpy
 
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.cpp_wrappers.expected_improvement import ExpectedImprovement
+from moe.optimal_learning.python.python_version.expected_improvement import ExpectedImprovement
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_EI_ROUTE_NAME, GP_EI_PRETTY_ROUTE_NAME
 from moe.views.gp_pretty_view import GpPrettyView
@@ -74,7 +74,7 @@ class GpEiView(GpPrettyView):
         points_being_sampled = numpy.array(params.get('points_being_sampled'))
         num_mc_iterations = params.get('mc_iterations')
         max_num_threads = params.get('max_num_threads')
-        gaussian_process = _make_gp_from_params(params)
+        gaussian_process = _make_gp_from_params(params, python_version=True)
 
         expected_improvement_evaluator = ExpectedImprovement(
                 gaussian_process,

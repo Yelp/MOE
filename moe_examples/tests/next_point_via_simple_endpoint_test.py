@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Integration test for next_point_via_simple_endpoint MOE example."""
-from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_GRADIENT_DESCENT_PARAMETERS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_GRADIENT_DESCENT_PARAMETERS, CPP_COMPONENT_INSTALLED
 
 from moe_examples.tests.moe_example_test_case import MoeExampleTestCase
 from moe_examples.next_point_via_simple_endpoint import run_example
@@ -12,6 +12,8 @@ class TestNextPointsViaSimpleEndpoint(MoeExampleTestCase):
 
     def test_example_runs(self):
         """Simple integration test for example."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         run_example(
                 num_points_to_sample=1,
                 verbose=False,
