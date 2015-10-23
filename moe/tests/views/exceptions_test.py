@@ -11,6 +11,7 @@ import simplejson as json
 
 from webtest.app import AppError
 
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import ALL_REST_MOE_ROUTES, GP_MEAN_VAR_ENDPOINT, GP_NEXT_POINTS_EPI_ENDPOINT
@@ -39,12 +40,16 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
 
     def test_empty_json_payload_invalid(self):
         """Test empty json payload causes an AppError."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         for moe_route in ALL_REST_MOE_ROUTES:
             with pytest.raises(AppError):
                 self.testapp.post(moe_route.endpoint, {})
 
     def test_badly_formed_json_payload_invalid(self):
         """Test malformed json payload causes a ValueError."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         truth_result = self.testapp.post(GP_MEAN_VAR_ENDPOINT, '}', expect_errors=True)
         for moe_route in ALL_REST_MOE_ROUTES:
             test_result = self.testapp.post(moe_route.endpoint, '}', expect_errors=True)
@@ -52,6 +57,8 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
 
     def test_invalid_hyperparameters_input(self):
         """Test that invalid hyperparameters (via GP_MEAN_VAR_ENDPOINT) generate expected Response with error message."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         endpoint = GP_MEAN_VAR_ENDPOINT
         dict_payload = copy.deepcopy(GpMeanVarView._pretty_default_request)
 
@@ -69,6 +76,8 @@ class TestRestGaussianProcessWithExceptions(GaussianProcessTestCase, RestTestCas
 
     def test_invalid_points_sampled_input(self):
         """Test that duplicate points_sampled (via GP_NEXT_POINTS_EPI_ENDPOINT) generate expected Response with error message."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         endpoint = GP_NEXT_POINTS_EPI_ENDPOINT
         dict_payload = copy.deepcopy(GpNextPointsPrettyView._pretty_default_request)
 

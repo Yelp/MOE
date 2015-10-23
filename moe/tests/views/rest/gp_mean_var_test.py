@@ -4,13 +4,15 @@ import numpy
 
 import simplejson as json
 
-from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
-from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_MEAN_ENDPOINT, GP_VAR_ENDPOINT, GP_VAR_DIAG_ENDPOINT, GP_MEAN_VAR_ENDPOINT, GP_MEAN_VAR_DIAG_ENDPOINT
 from moe.views.schemas.rest.gp_mean_var import GpMeanResponse, GpVarResponse, GpVarDiagResponse, GpMeanVarResponse, GpMeanVarDiagResponse
 
+if CPP_COMPONENT_INSTALLED:
+    from moe.optimal_learning.python.cpp_wrappers.covariance import SquareExponential
+    from moe.optimal_learning.python.cpp_wrappers.gaussian_process import GaussianProcess
 
 class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
 
@@ -33,6 +35,8 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
 
     def test_mean_var_interface_returns_same_as_cpp(self):
         """Test that the /gp/mean_var endpoint does the same thing as the C++ interface."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         tolerance = 1.0e-11
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
@@ -95,6 +99,8 @@ class TestGpMeanVarView(GaussianProcessTestCase, RestTestCase):
 
     def test_interfaces_equivalent(self):
         """Test that the /gp/mean, var, mean_var, etc. endpoints are consistent."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         tolerance = numpy.finfo(numpy.float64).eps
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case

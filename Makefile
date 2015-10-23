@@ -3,6 +3,8 @@ all: production
 clean:
 		find . -name '*.pyc' -delete
 		rm -rf moe/build
+		rm -rf build
+		rm -rf MOE.egg-info
 
 production:
 		python setup.py install

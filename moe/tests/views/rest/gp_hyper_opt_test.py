@@ -4,7 +4,7 @@ import pyramid.testing
 
 import simplejson as json
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, GRADIENT_DESCENT_OPTIMIZER
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, GRADIENT_DESCENT_OPTIMIZER, CPP_COMPONENT_INSTALLED
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import GP_HYPER_OPT_MOE_ROUTE
@@ -49,6 +49,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
     def test_hyperparameters_passed_through(self):
         """Test that the hyperparameters get passed through to the endpoint."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         test_case = self.gp_test_environments[0]
 
         python_domain, python_gp = test_case
@@ -81,6 +83,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
     def test_optimizer_params_passed_through(self):
         """Test that the optimizer parameters get passed through to the endpoint."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         test_case = self.gp_test_environments[0]
 
         python_domain, python_gp = test_case
@@ -118,6 +122,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/hyper_opt endpoint."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         moe_route = GP_HYPER_OPT_MOE_ROUTE
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case

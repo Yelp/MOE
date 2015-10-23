@@ -84,6 +84,16 @@ def find_path(moe_executable):
 
     return path
 
+def find_custom_packages():
+    """ If MOE_NO_BUILD_CPP set to True, python modules that expose CPP functions
+    will not be installed.
+    :return: list of package names
+    """
+    env = os.environ.copy()
+    if env.get('MOE_NO_BUILD_CPP', 'False') == 'True':
+        return find_packages(exclude=['*cpp*'])
+    else:
+        return find_packages()
 
 class InstallCppComponents(install):
 
@@ -221,7 +231,7 @@ setup(name='MOE',
       author_email='opensource+moe@yelp.com',
       url='https://github.com/Yelp/MOE',
       keywords='bayesian global optimization optimal learning expected improvement experiment design',
-      packages=find_packages(),
+      packages=find_custom_packages(),
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,

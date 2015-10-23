@@ -11,6 +11,7 @@ The posterior mean and variance is then printed for every point.
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_mean_var
+from moe.optimal_learning.python.constant import CPP_COMPONENT_INSTALLED
 
 # Randomly generate some historical data
 # points_sampled is an iterable of iterables of the form [point_as_a_list, objective_function_value, value_variance]
@@ -36,4 +37,5 @@ def run_example(verbose=True, testapp=None, **kwargs):
 
 
 if __name__ == '__main__':
-    run_example()
+    if CPP_COMPONENT_INSTALLED:
+        run_example()

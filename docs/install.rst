@@ -77,6 +77,8 @@ Requires:
 
    .. Warning:: Boost, MOE, and the virtualenv must be built with the same python. (OS X users: we recommend using the MacPorts Python: ``/opt/local/bin/python``.)
 
+9. Should you have difficulty in compiling the C++ library and cannot work around, you could set environmental variable ```MOE_NO_BUILD_CPP=True``` to skip installation of C++ components. Note that if you choose to go this route, please do not use optimal learning modules in REST interface for now, as this part is not compatible with no C++ components build yet.
+
 OSX Tips
 --------
 

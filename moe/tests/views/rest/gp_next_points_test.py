@@ -4,7 +4,7 @@ import pyramid.testing
 
 import simplejson as json
 
-from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_LBFGSB_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS
+from moe.optimal_learning.python.constant import TEST_OPTIMIZER_MULTISTARTS, TEST_GRADIENT_DESCENT_PARAMETERS, TEST_LBFGSB_PARAMETERS, TEST_OPTIMIZER_NUM_RANDOM_SAMPLES, TEST_EXPECTED_IMPROVEMENT_MC_ITERATIONS, CONSTANT_LIAR_METHODS, CPP_COMPONENT_INSTALLED
 from moe.tests.optimal_learning.python.gaussian_process_test_case import GaussianProcessTestCase
 from moe.tests.views.rest_test_case import RestTestCase
 from moe.views.constant import ALL_NEXT_POINTS_MOE_ROUTES, GP_NEXT_POINTS_CONSTANT_LIAR_ROUTE_NAME, GP_NEXT_POINTS_CONSTANT_LIAR_ENDPOINT, GP_NEXT_POINTS_EPI_ROUTE_NAME
@@ -65,6 +65,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
         """Test that the optimizer parameters get passed through to the endpoint."""
         # TODO(GH-305): turn this into a unit test by going through OptimizableGpPrettyView
         # and mocking out dependencies (instead of awkwardly constructing a more complex object).
+        if not CPP_COMPONENT_INSTALLED:
+            return
         test_case = self.gp_test_environments[0]
         num_to_sample = 1
 
@@ -108,6 +110,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
 
     def test_all_constant_liar_methods_function(self):
         """Test that each contant liar ``lie_method`` runs to completion. This is an integration test."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         for test_case in self.gp_test_environments:
             python_domain, python_gp = test_case
             python_cov, historical_data = python_gp.get_core_data_copy()
@@ -136,6 +140,8 @@ class TestGpNextPointsViews(GaussianProcessTestCase, RestTestCase):
 
     def test_interface_returns_same_as_cpp(self):
         """Integration test for the /gp/next_points/* endpoints."""
+        if not CPP_COMPONENT_INSTALLED:
+            return
         for moe_route in ALL_NEXT_POINTS_MOE_ROUTES:
             for test_case in self.gp_test_environments:
                 for num_to_sample in (1, 2, 4):

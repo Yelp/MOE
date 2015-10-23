@@ -8,8 +8,7 @@ Includes:
 """
 from pyramid.view import view_config
 
-from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE
-from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
+from moe.optimal_learning.python.constant import OPTIMIZER_TYPE_AND_OBJECTIVE_TO_DEFAULT_PARAMETERS, ENDPOINT_TO_DEFAULT_OPTIMIZER_TYPE, CPP_COMPONENT_INSTALLED
 from moe.optimal_learning.python.linkers import LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 from moe.optimal_learning.python.timing import timing_context
 from moe.views.constant import GP_HYPER_OPT_ROUTE_NAME, GP_HYPER_OPT_PRETTY_ROUTE_NAME
@@ -18,6 +17,9 @@ from moe.views.optimizable_gp_pretty_view import OptimizableGpPrettyView
 from moe.views.pretty_view import PRETTY_RENDERER
 from moe.views.schemas.rest.gp_hyper_opt import GpHyperOptRequest, GpHyperOptResponse
 from moe.views.utils import _make_domain_from_params, _make_gp_from_params, _make_optimizer_parameters_from_params
+
+if CPP_COMPONENT_INSTALLED:
+    from moe.optimal_learning.python.cpp_wrappers.log_likelihood import multistart_hyperparameter_optimization
 
 
 MODEL_SELECTION_TIMING_LABEL = 'model selection time'
@@ -104,6 +106,8 @@ class GpHyperOptView(OptimizableGpPrettyView):
            :status 500: server error
 
         """
+        if not CPP_COMPONENT_INSTALLED:
+            return
         params = self.get_params_from_request()
 
         max_num_threads = params.get('max_num_threads')

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test class for bandit views."""
 import pyramid.testing
-
 import simplejson as json
 
 from moe.bandit.linkers import BANDIT_ENDPOINTS_TO_SUBTYPES
