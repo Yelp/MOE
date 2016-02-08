@@ -92,6 +92,23 @@ PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python
   CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
 }
 
+PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python::list& hyperparameters_in, const boost::python::list& points_sampled_in, const boost::python::list& points_sampled_value_in, const boost::python::list& noise_variance_in, const boost::python::list& points_to_sample_in, int dim_in, int num_sampled_in, int num_to_sample_in, int num_IS_in)
+    : dim(dim_in),
+      num_IS(num_IS_in),
+      num_sampled(num_sampled_in),
+      hyperparameters(dim*(num_IS+1)),
+      num_to_sample(num_to_sample_in),
+      points_sampled(dim*num_sampled),
+      points_sampled_value(num_sampled),
+      noise_variance(num_sampled),
+      points_to_sample(0) {
+  CopyPylistToVector(hyperparameters_in, dim*(num_IS+1), hyperparameters);
+  CopyPylistToVector(points_sampled_in, dim*num_sampled, points_sampled);
+  CopyPylistToVector(points_sampled_value_in, num_sampled, points_sampled_value);
+  CopyPylistToVector(noise_variance_in, num_sampled, noise_variance);
+  CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
+}
+
 RandomnessSourceContainer::RandomnessSourceContainer(int num_threads)
     : uniform_generator(kUniformDefaultSeed),
       normal_rng_vec(num_threads),

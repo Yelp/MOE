@@ -21,6 +21,7 @@
 
 #include <limits>
 #include <vector>
+#include <iostream>
 
 #include "gpp_common.hpp"
 #include "gpp_exception.hpp"
@@ -197,6 +198,76 @@ void SquareExponential::HyperparameterHessianCovariance(double const * restrict 
 
 CovarianceInterface * SquareExponential::Clone() const {
   return new SquareExponential(*this);
+}
+
+MixedSquareExponential::MixedSquareExponential(int dim, int num_IS, std::vector<double> hyperparameters)
+    : dim_(dim), num_IS_(num_IS), hyperparameters_(hyperparameters) {
+}
+
+MixedSquareExponential::MixedSquareExponential(const MixedSquareExponential& OL_UNUSED(source)) = default;
+
+double MixedSquareExponential::Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept {
+//  std::cout << dim_ << "\n";
+//  for (int i = 0; i < (num_IS_+1)*dim_; ++i) {
+//    std::cout << hyperparameters_[i] << " ";
+//  }
+//  std::cout << "\n";
+//  std::cout << "point one\n";
+//  for (int i = 0; i < dim_; ++i)
+//    std::cout << point_one[i] << " ";
+//  std::cout << "\n";
+//  std::cout << "point two\n";
+//  for (int i = 0; i < dim_; ++i)
+//    std::cout << point_two[i] << " ";
+//  std::cout << "\n";
+  double norm_val = 0.0;
+  for (int i = 1; i < dim_; ++i) {
+    norm_val += (point_one[i] - point_two[i]) * (point_one[i] - point_two[i]) / hyperparameters_[i] / hyperparameters_[i];
+  }
+  double value = hyperparameters_[0] * std::exp(-0.5*norm_val);
+  if (std::abs(point_one[0] - point_two[0]) < 1e-10) {
+    int idx = int(point_one[0]);
+    norm_val = 0.0;
+    for (int i = 1; i < dim_; ++i) {
+      norm_val += (point_one[i] - point_two[i]) * (point_one[i] - point_two[i]) / hyperparameters_[i+idx*dim_] / hyperparameters_[i+idx*dim_];
+    }
+    value += hyperparameters_[idx*dim_] * std::exp(-0.5*norm_val);
+  }
+//  std::cout << value << "\n";
+  return value;
+}
+
+void MixedSquareExponential::GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                       double * restrict grad_cov) const noexcept {
+  double norm_val_0 = 0.0;
+  for (int i = 1; i < dim_; ++i) {
+    norm_val_0 += (point_one[i] - point_two[i]) * (point_one[i] - point_two[i]) / hyperparameters_[i] / hyperparameters_[i];
+  }
+  grad_cov[0] = 0.0;
+  for (int i = 1; i < dim_; ++i) {
+    grad_cov[i] = (point_two[i] - point_one[i]) / hyperparameters_[i] / hyperparameters_[i] * hyperparameters_[0] * std::exp(-0.5*norm_val_0);
+  }
+  if (std::abs(point_one[0] - point_two[0]) < 1e-10) {
+    int idx = int(point_one[0]);
+    double norm_val_l = 0.0;
+    for (int i = 1; i < dim_; ++i) {
+      norm_val_l += (point_one[i] - point_two[i]) * (point_one[i] - point_two[i]) / hyperparameters_[i+idx*dim_] / hyperparameters_[i+idx*dim_];
+    }
+    for (int i = 1; i < dim_; ++i) {
+      grad_cov[i] += (point_two[i] - point_one[i]) / hyperparameters_[i+idx*dim_] / hyperparameters_[i+idx*dim_] * hyperparameters_[idx*dim_] * std::exp(-0.5*norm_val_l);
+    }
+  }
+}
+
+
+void MixedSquareExponential::HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                                     double * restrict grad_hyperparameter_cov) const noexcept {}
+
+void MixedSquareExponential::HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                                        double * restrict hessian_hyperparameter_cov) const noexcept {}
+
+CovarianceInterface * MixedSquareExponential::Clone() const {
+  return new MixedSquareExponential(*this);
 }
 
 namespace {

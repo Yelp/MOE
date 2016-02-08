@@ -106,11 +106,15 @@ struct PythonInterfaceInputContainer {
   \endrst*/
   PythonInterfaceInputContainer(const boost::python::list& hyperparameters_in, const boost::python::list& points_sampled_in, const boost::python::list& points_sampled_value_in, const boost::python::list& noise_variance_in, const boost::python::list& points_to_sample_in, int dim_in, int num_sampled_in, int num_to_sample_in);
 
+  PythonInterfaceInputContainer(const boost::python::list& hyperparameters_in, const boost::python::list& points_sampled_in, const boost::python::list& points_sampled_value_in, const boost::python::list& noise_variance_in, const boost::python::list& points_to_sample_in, int dim_in, int num_sampled_in, int num_to_sample_in, int num_IS_in);
+
   int dim;
+  int num_IS;
   int num_sampled;
   int num_to_sample;
   int num_being_sampled;
   double alpha;
+  std::vector<double> hyperparameters;
   std::vector<double> lengths;
   std::vector<double> points_sampled;
   std::vector<double> points_sampled_value;
