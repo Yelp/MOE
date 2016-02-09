@@ -47,3 +47,4 @@ def cppify_hyperparameters(hyperparameters):
 
     """
     return [numpy.float64(hyperparameters[0]), cppify(hyperparameters[1:])]
+

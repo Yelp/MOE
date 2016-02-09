@@ -535,6 +535,51 @@ class MaternNu2p5 final : public CovarianceInterface {
   OL_DISALLOW_DEFAULT_AND_ASSIGN(MaternNu2p5);
 };
 
+
+class MixedSquareExponential final : public CovarianceInterface {
+ public:
+  MixedSquareExponential(int dim, int num_IS, std::vector<double> hypers);
+
+  virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept override OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
+
+  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                              double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
+
+  virtual int GetNumberOfHyperparameters() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
+    return dim_*(num_IS_+1);
+  }
+
+  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                            double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+
+  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                               double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+
+  virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept override OL_NONNULL_POINTERS {
+    for (int i = 0; i < dim_*(num_IS_+1); ++i) {
+      hyperparameters_[i] = hyperparameters[i];
+    }
+  }
+
+  virtual void GetHyperparameters(double * restrict hyperparameters) const noexcept override OL_NONNULL_POINTERS {
+    for (int i = 0; i < dim_*(num_IS_+1); ++i) {
+      hyperparameters[i] = hyperparameters_[i];
+    }
+  }
+
+  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT;
+
+ private:
+  explicit MixedSquareExponential(const MixedSquareExponential& source);
+
+  //! dimension of the problem
+  int dim_;
+  int num_IS_;
+  //! ``\sigma_f^2``, signal variance
+  //! length scales, one per dimension
+  std::vector<double> hyperparameters_;
+};
+
 }  // end namespace optimal_learning
 
 #endif  // MOE_OPTIMAL_LEARNING_CPP_GPP_COVARIANCE_HPP_

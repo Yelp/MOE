@@ -96,3 +96,70 @@ class SquareExponential(CovarianceInterface):
 
         """
         raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
+
+
+class MixedSquareExponential(CovarianceInterface):
+
+    covariance_type = SQUARE_EXPONENTIAL_COVARIANCE_TYPE
+
+    def __init__(self, hyperparameters):
+        self._hyperparameters = numpy.copy(hyperparameters)
+
+    @property
+    def num_hyperparameters(self):
+        """Return the number of hyperparameters of this covariance function."""
+        return self._hyperparameters.size
+
+    @staticmethod
+    def make_default_hyperparameters(len_params):
+        """Return a default set up hyperparameters given the dimension of the space."""
+        return numpy.ones(len_params)
+
+    def get_hyperparameters(self):
+        """Get the hyperparameters (array of float64 with shape (num_hyperparameters)) of this covariance."""
+        return numpy.copy(self._hyperparameters)
+
+    def set_hyperparameters(self, hyperparameters):
+        """Set hyperparameters to the specified hyperparameters; ordering must match."""
+        self._hyperparameters = numpy.copy(hyperparameters)
+
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
+
+    def get_json_serializable_info(self):
+        """Create and return a covariance_info dictionary of this covariance object."""
+        return {
+            'covariance_type': self.covariance_type,
+            'hyperparameters': self.hyperparameters.tolist(),
+        }
+
+    def covariance(self, point_one, point_two):
+        r"""Compute the covariance function of two points, cov(``point_one``, ``point_two``).
+
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.covariance_interface` for interface specification.
+
+        """
+        raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
+
+    def grad_covariance(self, point_one, point_two):
+        r"""Compute the gradient of self.covariance(point_one, point_two) with respect to the FIRST argument, point_one.
+
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.covariance_interface` for interface specification.
+
+        """
+        raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
+
+    def hyperparameter_grad_covariance(self, point_one, point_two):
+        r"""Compute the gradient of self.covariance(point_one, point_two) with respect to its hyperparameters.
+
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.covariance_interface` for interface specification.
+
+        """
+        raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
+
+    def hyperparameter_hessian_covariance(self, point_one, point_two):
+        r"""Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.
+
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.covariance_interface` for interface specification.
+
+        """
+        raise NotImplementedError("C++ wrapper currently does not support computing covariance quantities.")
