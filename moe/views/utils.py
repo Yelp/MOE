@@ -34,7 +34,7 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
     return domain_class(domain_bounds_iterable)
 
 
-def _make_covariance_of_process_from_params(params):
+def _make_covariance_of_process_from_params(params, covariance_class = "cpp"):
     """Create and return a C++ backed covariance_of_process from the request params as a dict.
 
     ``params`` has the following form::
@@ -49,7 +49,10 @@ def _make_covariance_of_process_from_params(params):
 
     """
     covariance_info = params.get("covariance_info")
-    covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].cpp_covariance_class
+    if covariance_class == "cpp":
+        covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].cpp_covariance_class
+    elif covariance_class == "python":
+        covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].python_covariance_class
 
     hyperparameters = covariance_info.get('hyperparameters')
     if hyperparameters is None:
@@ -58,32 +61,6 @@ def _make_covariance_of_process_from_params(params):
 
     covariance_of_process = covariance_class(hyperparameters)
     return covariance_of_process
-
-def _make_python_covariance_of_process_from_params(params):
-    """Create and return a C++ backed covariance_of_process from the request params as a dict.
-
-    ``params`` has the following form::
-
-        params = {
-            'covariance_info': <instance of :class:`moe.views.schemas.base_schemas.CovarianceInfo`>,
-            ...
-            }
-
-    :param params: The request params dict
-    :type params: dict
-
-    """
-    covariance_info = params.get("covariance_info")
-    covariance_class = COVARIANCE_TYPES_TO_CLASSES[covariance_info.get('covariance_type')].python_covariance_class
-
-    hyperparameters = covariance_info.get('hyperparameters')
-    if hyperparameters is None:
-        domain_info = params.get("domain_info")
-        hyperparameters = covariance_class.make_default_hyperparameters(dim=domain_info.get('dim'))
-
-    covariance_of_process = covariance_class(hyperparameters)
-    return covariance_of_process
-
 
 def _make_optimizer_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
@@ -139,8 +116,6 @@ def _make_gp_from_params(params):
     domain_info = params.get("domain_info")
     points_sampled = gp_historical_info.get('points_sampled')
 
-    covariance_of_process = _make_covariance_of_process_from_params(params)
-
     sample_point_list = []
     for point in points_sampled:
         sample_point_list.append(
@@ -150,24 +125,23 @@ def _make_gp_from_params(params):
                 point['value_var'],
             )
         )
-    optimizer_type = None
-    if params.has_key('optimizer_info'):
-        optimizer_info = params.get('optimizer_info')
-        optimizer_type = optimizer_info.get('optimizer_type')
+    optimizer_info = params.get('optimizer_info', {})
+    optimizer_type = optimizer_info.get('optimizer_type', None)
 
     if optimizer_type == L_BFGS_B_OPTIMIZER:
-        covariance_of_process = _make_python_covariance_of_process_from_params(params)
+        covariance_of_process = _make_covariance_of_process_from_params(params, "python")
         gaussian_process = pythonGaussianProcess(
             covariance_of_process,
             HistoricalData(domain_info.get('dim'), sample_point_list),
-            )
-        return gaussian_process
+        )
     else:
+        covariance_of_process = _make_covariance_of_process_from_params(params)
         gaussian_process = GaussianProcess(
             covariance_of_process,
             HistoricalData(domain_info.get('dim'), sample_point_list),
-            )
-        return gaussian_process
+        )
+
+    return gaussian_process
 
 
 def _make_bandit_historical_info_from_params(params, arm_type=SampleArm):
