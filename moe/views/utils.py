@@ -34,7 +34,7 @@ def _make_domain_from_params(params, domain_info_key="domain_info", python_versi
     return domain_class(domain_bounds_iterable)
 
 
-def _make_covariance_of_process_from_params(params, covariance_class = "cpp"):
+def _make_covariance_of_process_from_params(params, covariance_class="cpp"):
     """Create and return a C++ backed covariance_of_process from the request params as a dict.
 
     ``params`` has the following form::
@@ -61,6 +61,7 @@ def _make_covariance_of_process_from_params(params, covariance_class = "cpp"):
 
     covariance_of_process = covariance_class(hyperparameters)
     return covariance_of_process
+
 
 def _make_optimizer_parameters_from_params(params):
     """Figure out which cpp_wrappers.* objects to construct from params, validate and return them.
