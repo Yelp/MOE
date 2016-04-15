@@ -2,7 +2,8 @@
     <img src="https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png" alt="MOE Logo">
 </p>
 
-[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)
+`[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)`
+Note: travis link temporarily disabled. The last major MOE commit built successfully but our travis flow appears to be broken (out of date packages perhaps?). Tests and docker still pass/build locally and MOE still works.
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
