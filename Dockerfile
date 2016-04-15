@@ -2,7 +2,7 @@ FROM yelpmoe/min_reqs
 MAINTAINER Scott Clark <sclark@yelp.com> and Eric Liu <eliu@yelp.com>
 
 # Install pip systemwide for Python.
-ADD https://raw.github.com/pypa/pip/master/contrib/get-pip.py /tmp/get-pip.py
+ADD https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
 RUN python /tmp/get-pip.py
 
 # Install python requirements (these should be all in yelpmoe/min_reqs, but it is done again here to be safe)
