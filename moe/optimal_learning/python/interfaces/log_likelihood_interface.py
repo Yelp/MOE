@@ -89,7 +89,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from moe.optimal_learning.python.interfaces.gaussian_process_interface import GaussianProcessDataInterface
 
 
-class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface):
+class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface, metaclass=ABCMeta):
 
     r"""Interface for computation of log likelihood (and log likelihood-like) measures of model fit along with its gradient and hessian.
 
@@ -102,8 +102,6 @@ class GaussianProcessLogLikelihoodInterface(GaussianProcessDataInterface):
     See gpp_model_selection.hpp/cpp for further overview and in-depth discussion, respectively.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def dim(self):

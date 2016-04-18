@@ -29,7 +29,7 @@ def fill_random_covariance_hyperparameters(hyperparameter_interval, num_hyperpar
 
     """
     hyper = [numpy.random.uniform(hyperparameter_interval.min, hyperparameter_interval.max)
-             for _ in xrange(num_hyperparameters)]
+             for _ in range(num_hyperparameters)]
     return covariance_type(hyper)
 
 

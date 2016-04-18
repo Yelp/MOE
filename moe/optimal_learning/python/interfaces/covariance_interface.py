@@ -27,7 +27,7 @@ optimizing and evaluating model fit, respectively.
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 
-class CovarianceInterface(object):
+class CovarianceInterface(object, metaclass=ABCMeta):
 
     r"""Interface for a covariance function: covariance of two points and spatial/hyperparameter derivatives.
 
@@ -47,8 +47,6 @@ class CovarianceInterface(object):
     TODO(GH-71): getter/setter for hyperparameters.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def num_hyperparameters(self):

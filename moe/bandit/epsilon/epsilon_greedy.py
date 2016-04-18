@@ -75,7 +75,7 @@ class EpsilonGreedy(EpsilonInterface):
         arms_to_allocations = {}
 
         # With probability epsilon, choose a winning arm at random. Therefore, we split the allocation epsilon among all arms.
-        for arm_name in arms_sampled.iterkeys():
+        for arm_name in arms_sampled.keys():
             arms_to_allocations[arm_name] = epsilon_allocation
 
         # With probability 1-epsilon, split allocation among winning arms.

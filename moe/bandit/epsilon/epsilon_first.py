@@ -95,7 +95,7 @@ class EpsilonFirst(EpsilonInterface):
         if not arms_sampled:
             raise ValueError('sample_arms is empty!')
 
-        num_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.itervalues()])
+        num_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.values()])
         # Exploration phase, trials 1,2,..., epsilon * T
         # Allocate equal probability to all arms
         if num_sampled < self._total_samples * self._epsilon:
