@@ -225,7 +225,7 @@ double MixedSquareExponential::Covariance(double const * restrict point_one, dou
     norm_val += (point_one[i] - point_two[i]) * (point_one[i] - point_two[i]) / hyperparameters_[i] / hyperparameters_[i];
   }
   double value = hyperparameters_[0] * std::exp(-0.5*norm_val);
-  if (std::abs(point_one[0] - point_two[0]) < 1e-10) {
+  if (std::abs(point_one[0] - point_two[0]) < 1e-10 && int(point_one[0]) > 0) {
     int idx = int(point_one[0]);
     norm_val = 0.0;
     for (int i = 1; i < dim_; ++i) {
@@ -247,7 +247,7 @@ void MixedSquareExponential::GradCovariance(double const * restrict point_one, d
   for (int i = 1; i < dim_; ++i) {
     grad_cov[i] = (point_two[i] - point_one[i]) / hyperparameters_[i] / hyperparameters_[i] * hyperparameters_[0] * std::exp(-0.5*norm_val_0);
   }
-  if (std::abs(point_one[0] - point_two[0]) < 1e-10) {
+  if (std::abs(point_one[0] - point_two[0]) < 1e-10 && int(point_one[0]) > 0) {
     int idx = int(point_one[0]);
     double norm_val_l = 0.0;
     for (int i = 1; i < dim_; ++i) {
