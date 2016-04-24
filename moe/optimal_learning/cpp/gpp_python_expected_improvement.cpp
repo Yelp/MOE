@@ -47,7 +47,7 @@ double ComputeExpectedImprovementWrapper(const GaussianProcess& gaussian_process
                                          const boost::python::list& points_being_sampled,
                                          int num_to_sample, int num_being_sampled,
                                          int max_int_steps, double best_so_far,
-                                         bool force_monte_carlo,
+                                         bool force_monte_carlo, bool use_gpu, int which_gpu,
                                          RandomnessSourceContainer& randomness_source) {
   PythonInterfaceInputContainer input_container(points_to_sample, points_being_sampled,
                                                 gaussian_process.dim(), num_to_sample, num_being_sampled);
@@ -60,14 +60,29 @@ double ComputeExpectedImprovementWrapper(const GaussianProcess& gaussian_process
                                                                        configure_for_gradients);
     return ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
-    ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
-                                                     input_container.points_being_sampled.data(),
-                                                     input_container.num_to_sample,
-                                                     input_container.num_being_sampled,
-                                                     configure_for_gradients,
-                                                     randomness_source.normal_rng_vec.data());
-    return ei_evaluator.ComputeExpectedImprovement(&ei_state);
+    if (use_gpu == true) {
+#ifdef OL_GPU_ENABLED
+      CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+      CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
+                                                           input_container.points_being_sampled.data(),
+                                                           input_container.num_to_sample,
+                                                           input_container.num_being_sampled,
+                                                           configure_for_gradients,
+                                                           &randomness_source.uniform_generator);
+      return ei_evaluator.ComputeExpectedImprovement(&ei_state);
+#else
+      OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
+#endif
+    } else {
+      ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
+      ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
+                                                       input_container.points_being_sampled.data(),
+                                                       input_container.num_to_sample,
+                                                       input_container.num_being_sampled,
+                                                       configure_for_gradients,
+                                                       randomness_source.normal_rng_vec.data());
+      return ei_evaluator.ComputeExpectedImprovement(&ei_state);
+    }
   }
 }
 
@@ -76,7 +91,7 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
                                                           const boost::python::list& points_being_sampled,
                                                           int num_to_sample, int num_being_sampled,
                                                           int max_int_steps, double best_so_far,
-                                                          bool force_monte_carlo,
+                                                          bool force_monte_carlo, bool use_gpu, int which_gpu,
                                                           RandomnessSourceContainer& randomness_source) {
   PythonInterfaceInputContainer input_container(points_to_sample, points_being_sampled, gaussian_process.dim(),
                                                 num_to_sample, num_being_sampled);
@@ -90,14 +105,29 @@ boost::python::list ComputeGradExpectedImprovementWrapper(const GaussianProcess&
                                                                        configure_for_gradients);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
   } else {
-    ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
-                                                     input_container.points_being_sampled.data(),
-                                                     input_container.num_to_sample,
-                                                     input_container.num_being_sampled,
-                                                     configure_for_gradients,
-                                                     randomness_source.normal_rng_vec.data());
-    ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
+    if (use_gpu == true) {
+#ifdef OL_GPU_ENABLED
+      CudaExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far, which_gpu);
+      CudaExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
+                                                           input_container.points_being_sampled.data(),
+                                                           input_container.num_to_sample,
+                                                           input_container.num_being_sampled,
+                                                           configure_for_gradients,
+                                                           &randomness_source.uniform_generator);
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
+#else
+      OL_THROW_EXCEPTION(OptimalLearningException, "GPU is not installed or enabled!");
+#endif
+    } else {
+      ExpectedImprovementEvaluator ei_evaluator(gaussian_process, max_int_steps, best_so_far);
+      ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, input_container.points_to_sample.data(),
+                                                       input_container.points_being_sampled.data(),
+                                                       input_container.num_to_sample,
+                                                       input_container.num_being_sampled,
+                                                       configure_for_gradients,
+                                                       randomness_source.normal_rng_vec.data());
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_EI.data());
+    }
   }
 
   return VectorToPylist(grad_EI);
@@ -498,6 +528,10 @@ void ExportExpectedImprovementFunctions() {
     :type best_so_far: float64
     :param force_monte_carlo: true to force monte carlo evaluation of EI
     :type force_monte_carlo: bool
+    :param use_gpu: true to use GPU
+    :type use_gpu: bool
+    :param which_gpu: GPU device no.
+    :type which_gpu: int
     :param randomness_source: object containing randomness sources; only thread 0's source is used
     :type randomness_source: GPP.RandomnessSourceContainer
     :return: computed EI
@@ -527,6 +561,10 @@ void ExportExpectedImprovementFunctions() {
     :type best_so_far: float64
     :param force_monte_carlo: true to force monte carlo evaluation of EI
     :type force_monte_carlo: bool
+    :param use_gpu: true to use GPU
+    :type use_gpu: bool
+    :param which_gpu: GPU device no.
+    :type which_gpu: int
     :param randomness_source: object containing randomness sources; only thread 0's source is used
     :type randomness_source: GPP.RandomnessSourceContainer
     :return: gradient of EI (computed at points_to_sample + points_being_sampled, wrt points_to_sample)

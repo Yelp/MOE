@@ -503,7 +503,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         )
         return numpy.array(ei_values)
 
-    def compute_expected_improvement(self, force_monte_carlo=False):
+    def compute_expected_improvement(self, force_monte_carlo=False, use_gpu=False, which_gpu=0):
         r"""Compute the expected improvement at ``points_to_sample``, with ``points_being_sampled`` concurrent points being sampled.
 
         .. Note:: These comments were copied from
@@ -549,12 +549,14 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._num_mc_iterations,
             self._best_so_far,
             force_monte_carlo,
+            use_gpu,
+            which_gpu,
             self._randomness,
         )
 
     compute_objective_function = compute_expected_improvement
 
-    def compute_grad_expected_improvement(self, force_monte_carlo=False):
+    def compute_grad_expected_improvement(self, force_monte_carlo=False, use_gpu=False, which_gpu=0):
         r"""Compute the gradient of expected improvement at ``points_to_sample`` wrt ``points_to_sample``, with ``points_being_sampled`` concurrent samples.
 
         .. Note:: These comments were copied from
@@ -590,6 +592,8 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             self._num_mc_iterations,
             self._best_so_far,
             force_monte_carlo,
+            use_gpu,
+            which_gpu,
             self._randomness,
         )
         return cpp_utils.uncppify(grad_ei, (self.num_to_sample, self.dim))
