@@ -2,7 +2,8 @@
     <img src="https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png" alt="MOE Logo">
 </p>
 
-[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)
+`[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)`
+Note: travis link temporarily disabled. The last major MOE commit built successfully but our travis flow appears to be broken (out of date packages perhaps?). Tests and docker still pass/build locally and MOE still works.
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
@@ -167,7 +168,7 @@ See [Contributing Documentation][8]
 
 MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
-[0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
+[0]: https://www.youtube.com/watch?v=CC6qvzWp9_A
 [1]: http://yelp.github.io/MOE/
 [2]: http://yelp.github.io/MOE/moe.views.rest.html
 [3]: http://github.com/Yelp/MOE/pulls
@@ -177,7 +178,7 @@ MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/lic
 [7]: http://yelp.github.io/MOE/install.html
 [8]: http://yelp.github.io/MOE/contributing.html
 [9]: http://yelp.github.io/MOE/moe.optimal_learning.python.python_version.html
-[10]: http://www.youtube.com/watch?v=qAN6iyYPbEE
+[10]: http://www.youtube.com/watch?v=CC6qvzWp9_A
 [11]: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 [12]: http://yelp.github.io/MOE/cpp_tree.html
 [13]: http://yelp.github.io/MOE/examples.html

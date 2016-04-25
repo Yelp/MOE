@@ -137,7 +137,7 @@ This example was refrenced in
     * `15 min MOE intro video`_
     * `MOE intro slides`_
 
-.. _15 min MOE intro video: http://www.youtube.com/watch?v=qAN6iyYPbEE
+.. _15 min MOE intro video: http://www.youtube.com/watch?v=CC6qvzWp9_A
 
 .. _MOE intro slides: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
 

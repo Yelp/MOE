@@ -76,4 +76,4 @@ class UCB1Tuned(UCBInterface):
         else:
             variance = sampled_arm.variance
         avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
-        return avg_payoff + math.sqrt(math.log(sampled_arm.total) / number_sampled * min(MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE, variance + math.sqrt(2.0 * math.log(sampled_arm.total) / number_sampled)))
+        return avg_payoff + math.sqrt(math.log(number_sampled) / sampled_arm.total) * min(MAX_BERNOULLI_RANDOM_VARIABLE_VARIANCE, variance + math.sqrt(2.0 * math.log(number_sampled) / sampled_arm.total))

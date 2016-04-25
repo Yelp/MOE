@@ -22,3 +22,8 @@ class UCBTestCase(BanditTestCase):
         """Check that the three-arms cases with two winners return the expected arm allocations. This tests num_arms > num_winning_arms > 1."""
         bandit = self.bandit_class(self.three_arms_two_winners_no_unsampled_arm_test_case)
         assert bandit.allocate_arms() == {"arm1": 0.5, "arm2": 0.5, "arm3": 0.0}
+
+    def test_three_arms_ucb_value(self):
+        """Check that the three-arms case returns the correct upper confidence bound (that arms with fewer trials can beat arms with more trials)."""
+        bandit = self.bandit_class(self.three_arms_ucb_value_test_case)
+        assert bandit.allocate_arms() == {"arm1": 1.0, "arm2": 0.0, "arm3": 0.0}

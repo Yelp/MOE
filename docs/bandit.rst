@@ -81,6 +81,6 @@ Other policies include:
 Pointers
 --------
 
-You can learn more about multi-armed bandits at: http://www.youtube.com/watch?v=qAN6iyYPbEE
+You can learn more about multi-armed bandits at: http://www.youtube.com/watch?v=CC6qvzWp9_A
 
 The slides for the talk is available at: http://slidesha.re/1zOrOJy

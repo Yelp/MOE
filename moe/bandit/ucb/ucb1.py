@@ -62,4 +62,4 @@ class UCB1(UCBInterface):
             return 0.0
 
         avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
-        return avg_payoff + math.sqrt(2.0 * math.log(sampled_arm.total) / number_sampled)
+        return avg_payoff + math.sqrt(2.0 * math.log(number_sampled) / sampled_arm.total)
