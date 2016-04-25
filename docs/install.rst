@@ -15,9 +15,9 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
     $ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
     $ docker run -p 6543:6543 yelpmoe/latest
 
-   .. Note:: ``docker pull yelpmoe/foo`` downloads a docker image from `DockherHub`_. This is independent from your local MOE directory and will not see any local changes.
+.. Note:: ``docker pull yelpmoe/foo`` downloads a docker image from `DockherHub`_. This is independent from your local MOE directory and will not see any local changes.
 
-.. _DockerHub: https://hub.docker.com/
+.. _DockherHub: https://hub.docker.com/
 
 If you are on OSX, or want a build based on the current master branch you may need to build this manually.
 
@@ -28,7 +28,7 @@ If you are on OSX, or want a build based on the current master branch you may ne
     $ docker build -t moe_container .
     $ docker run -p 6543:6543 moe_container
 
-   .. Note:: If you want a "stock" version of MOE, you must run these commands in a *CLEAN* MOE repo (e.g., ``git clone`` into ``MOE_clean``). Unlike the ``docker pull`` use case above, this docker container will see any local changes in the directory from which ``docker build`` is run.
+.. Note:: If you want a "stock" version of MOE, you must run these commands in a **clean** MOE repo (e.g., ``git clone`` into ``MOE_clean``). Unlike the ``docker pull`` use case above, this docker container will see any local changes in the directory from which ``docker build`` is run.
    
 The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
 
@@ -41,7 +41,7 @@ If you want to build a specific version of the container locally then use::
     $ docker build -t moe_container_v0.1.0 .
     $ docker run -p 6543:6543 moe_container_v0.1.0
 
-   .. Note:: As with the previous example, this ``docker build`` will see local changes (e.g., files not checked into ``git``). If you want a "stock" build, you must run these commands in a *CLEAN* MOE repo.
+.. Note:: As with the previous example, this ``docker build`` will see local changes (e.g., files not checked into ``git``). If you want a "stock" build, you must run these commands in a **clean** MOE repo.
 
 Install from source
 -------------------
