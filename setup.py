@@ -43,6 +43,7 @@ CLASSIFIERS = """
 
 # If you change something here, change it in requirements.txt
 requires = [
+    'future',
     'pyramid',
     'pyramid_mako',
     'WebError',

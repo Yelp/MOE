@@ -1,4 +1,5 @@
 # If you add/remove requirements here, update ``requires`` in ``setup.py`` (root directory)
+future
 pyramid==1.5.1
 pyramid_mako==1.0.2
 WebError==0.10.3
