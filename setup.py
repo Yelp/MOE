@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup for the MOE webapp."""
 from __future__ import print_function
-from __future__ import absolute_import
 import os
 import shlex
 import shutil
@@ -10,7 +9,7 @@ import sys
 import warnings
 from collections import namedtuple
 
-from .moe import __version__
+from moe import __version__
 
 from setuptools import setup, find_packages
 from setuptools.command.install import install
