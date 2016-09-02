@@ -15,6 +15,7 @@ We then update the hyperparameters of the GP (model selection)
 This process is repeated until we have sampled 20 points in total
 We then calculate the posterior mean and variance of the GP at several points
 """
+from __future__ import print_function
 import numpy
 
 from moe.easy_interface.experiment import Experiment
@@ -83,7 +84,7 @@ def run_example(
             covariance_info = gp_hyper_opt(exp.historical_data.to_list_of_sample_points(), testapp=testapp, **gp_hyper_opt_kwargs)
 
             if verbose:
-                print "Updated covariance_info with {0:s}".format(str(covariance_info))
+                print("Updated covariance_info with {0:s}".format(str(covariance_info)))
         # Use MOE to determine what is the point with highest Expected Improvement to use next
         next_point_to_sample = gp_next_points(
                 exp,
@@ -95,7 +96,7 @@ def run_example(
         value_of_next_point = function_to_minimize(next_point_to_sample)
 
         if verbose:
-            print "Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point)
+            print("Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point))
 
         # Add the information about the point to the experiment historical data to inform the GP
         exp.historical_data.append_sample_points([[next_point_to_sample, value_of_next_point, 0.01]])  # We can add some noise
@@ -109,7 +110,7 @@ def run_example(
             )
 
     if verbose:
-        print "GP mean at (0, 0), (0.1, 0.1), ...: {0:s}".format(str(mean))
+        print("GP mean at (0, 0), (0.1, 0.1), ...: {0:s}".format(str(mean)))
 
 
 if __name__ == '__main__':

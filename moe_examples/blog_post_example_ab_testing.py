@@ -4,6 +4,7 @@
 Blog post: http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html
 
 """
+from __future__ import print_function
 import copy
 
 import numpy
@@ -158,7 +159,7 @@ def find_new_points_to_sample(experiment, num_points=1, verbose=False):
 
     """
     if verbose:
-        print "Getting {0} new suggested point(s) to sample from MOE...".format(num_points)
+        print("Getting {0} new suggested point(s) to sample from MOE...".format(num_points))
 
     # Query MOE for the next points to sample
     next_points_to_sample = gp_next_points(
@@ -172,7 +173,7 @@ def find_new_points_to_sample(experiment, num_points=1, verbose=False):
             )
 
     if verbose:
-        print "Optimal points to sample next: {0}".format(next_points_to_sample)
+        print("Optimal points to sample next: {0}".format(next_points_to_sample))
 
     return next_points_to_sample
 
@@ -220,7 +221,7 @@ def get_allocations(active_arms, sample_arms, verbose=False):
         arm_allocations[tuple([float(arm_name_as_string)])] = allocation
 
     if verbose:
-        print "Optimal arm allocations: {0}".format(arm_allocations)
+        print("Optimal arm allocations: {0}".format(arm_allocations))
 
     return arm_allocations
 
@@ -266,7 +267,7 @@ def prune_arms(active_arms, sample_arms, verbose=False):
                 )
         if sample_arm.total > 0 and arm_value + 2.0 * numpy.sqrt(arm_variance) < best_arm_val:
             if verbose:
-                print "Removing underperforming arm: {0}".format(sample_arm_point)
+                print("Removing underperforming arm: {0}".format(sample_arm_point))
             pruned_arms.remove(sample_arm_point)
 
     return pruned_arms
@@ -568,9 +569,9 @@ def run_time_consuming_experiment(allocations, sample_arms, verbose=False):
         sample_arms[arm_point] = sample_arms[arm_point] + sample_arm_for_day
 
     if verbose:
-        print "Updated the samples with:"
+        print("Updated the samples with:")
         for arm_name, sample_arm in arm_updates.iteritems():
-            print "\t{0}: {1}".format(arm_name, sample_arm)
+            print("\t{0}: {1}".format(arm_name, sample_arm))
 
     return sample_arms, arm_updates
 

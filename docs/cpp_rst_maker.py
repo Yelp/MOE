@@ -80,13 +80,13 @@ def create_rst_file(file_base, files):
     )
     index_count = 1
     for file_type in CPP_FILE_TYPES:
-        if files.has_key(file_type):
+        if file_type in files:
             fout.write('    {0:d}. `{1:s}`_\n'.format(index_count, files[file_type]))
             index_count += 1
     fout.write('\n')
 
     for file_type in CPP_FILE_TYPES:
-        if files.has_key(file_type):
+        if file_type in files:
             fout.write("""
 {0:s}
 {1:s}

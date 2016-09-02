@@ -7,6 +7,7 @@ The function requires some historical information to inform the Gaussian Process
 
 The optimal hyperparameters are returned.
 """
+from __future__ import print_function
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_hyper_opt
@@ -27,7 +28,7 @@ def run_example(verbose=True, **kwargs):
             )
 
     if verbose:
-        print covariance_info
+        print(covariance_info)
 
 
 if __name__ == '__main__':
