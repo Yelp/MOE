@@ -6,6 +6,7 @@ just verify that objects are created & behave as expected.
 MOE does not yet support the ability to optimize arbitrary Python functions through C++-coded optimizers.
 
 """
+from builtins import object
 import copy
 
 import pytest

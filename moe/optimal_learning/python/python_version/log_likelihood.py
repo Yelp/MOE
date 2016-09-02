@@ -34,6 +34,7 @@ go through with marginal likelihood optimization, obtain an "optimal" set of hyp
 realizing that our fundamental assumptions are wrong.  So care is always needed.
 
 """
+from builtins import range
 import copy
 
 import numpy
@@ -331,7 +332,7 @@ class GaussianProcessLogMarginalLikelihood(GaussianProcessLogLikelihoodInterface
             self._points_sampled,
         )
         grad_log_marginal = numpy.empty(self.num_hyperparameters)
-        for k in xrange(self.num_hyperparameters):
+        for k in range(self.num_hyperparameters):
             grad_cov_block = grad_hyperparameter_cov_matrix[..., k]
             # computing 0.5 * \alpha^T * grad_hyperparameter_cov_matrix * \alpha, where \alpha = K^-1 * y (aka K_inv_y)
             # temp_vec := grad_hyperparameter_cov_matrix * K_inv_y

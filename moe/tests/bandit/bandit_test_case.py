@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base test case class for bandit tests; includes different historical infos (different sampled arms)."""
+from builtins import object
 from moe.bandit.data_containers import BernoulliArm, HistoricalData, SampleArm
 
 

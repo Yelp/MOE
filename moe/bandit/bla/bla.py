@@ -44,7 +44,7 @@ class BLA(BanditInterface):
         self._historical_info = copy.deepcopy(historical_info)
         self._subtype = subtype
         # Validate that every arm is a Bernoulli arm.
-        for arm in self._historical_info.arms_sampled.itervalues():
+        for arm in self._historical_info.arms_sampled.values():
             if not isinstance(arm, BernoulliArm):
                 raise ValueError('All arms have to be Bernoulli arms!')
 
@@ -122,5 +122,5 @@ class BLA(BanditInterface):
         if not arms_sampled:
             raise ValueError('arms_sampled is empty!')
 
-        bla_payoff_arm_name_list = [(self.get_bla_payoff(sampled_arm), arm_name) for arm_name, sampled_arm in arms_sampled.iteritems()]
+        bla_payoff_arm_name_list = [(self.get_bla_payoff(sampled_arm), arm_name) for arm_name, sampled_arm in arms_sampled.items()]
         return get_winning_arm_names_from_payoff_arm_name_list(bla_payoff_arm_name_list)

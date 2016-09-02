@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Classes for MOE optimizable experiments."""
+from builtins import object
 import pprint
 
 from moe.optimal_learning.python.data_containers import HistoricalData

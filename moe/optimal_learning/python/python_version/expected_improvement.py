@@ -5,6 +5,8 @@ See :mod:`moe.optimal_learning.python.interfaces.expected_improvement_interface`
 gpp_math.hpp/cpp for further details on expected improvement.
 
 """
+from __future__ import division
+from builtins import range
 from collections import namedtuple
 import logging
 
@@ -364,7 +366,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 sum_term += cov_k[0, k] * singlevar_norm_pdf(m_k[0], cov_k[0, 0], b_k[0])
             else:
                 for i in range(0, num_points):
-                    index_no_i = range(0, i) + range(i + 1, num_points)
+                    index_no_i = list(range(0, i)) + list(range(i + 1, num_points))
 
                     # c_k introduced on top of page 4
                     c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
@@ -469,7 +471,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
             improvement_this_iter = numpy.amax(self._best_so_far - mu_star - numpy.dot(chol_var, normal_draws.T))
             if improvement_this_iter > 0.0:
                 aggregate += improvement_this_iter
-        return aggregate / float(self._num_mc_iterations)
+        return aggregate / self._num_mc_iterations
 
     def _compute_expected_improvement_monte_carlo(self, mu_star, var_star):
         r"""Compute EI using (vectorized) monte-carlo integration; this is a general method that works for any input.
@@ -551,7 +553,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         best_improvement_each_iter = numpy.amax(improvement_each_iter, axis=1)
         # Only keep the *positive* improvements
         best_improvement_each_iter = numpy.ma.masked_less_equal(best_improvement_each_iter, 0.0, copy=False)
-        result = best_improvement_each_iter.sum(dtype=numpy.float64) / float(self._num_mc_iterations)
+        result = best_improvement_each_iter.sum(dtype=numpy.float64) / self._num_mc_iterations
         # If all iterations yielded non-positive improvement, sum returns numpy.ma.masked (instead of 0.0)
         if result is numpy.ma.masked:
             return 0.0
@@ -595,11 +597,11 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 winner = numpy.argmax(improvements_this_iter)
                 if winner < self.num_to_sample:
                     aggregate_dx[winner, ...] -= grad_mu[winner, ...]
-                for diff_index in xrange(self.num_to_sample):
+                for diff_index in range(self.num_to_sample):
                     # grad_chol_decomp_{diff_index, winner, i, j} * normal_draws_{i}
                     aggregate_dx[diff_index, ...] -= numpy.dot(grad_chol_decomp[diff_index, winner, ...].T, normal_draws)
 
-        return aggregate_dx / float(self._num_mc_iterations)
+        return aggregate_dx / self._num_mc_iterations
 
     def _compute_grad_expected_improvement_monte_carlo(self, mu_star, var_star, grad_mu, grad_chol_decomp):
         r"""Compute the gradient of EI using (vectorized) monte-carlo integration; this is a general method that works for any input.
@@ -700,9 +702,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         # will never be very large.
         # This tradeoff may change when GH-60 is done.
         grad_chol_decomp_tiled = numpy.empty((normals_compressed.shape[0], grad_chol_decomp.shape[2], grad_chol_decomp.shape[3]))
-        for diff_index in xrange(self.num_to_sample):
+        for diff_index in range(self.num_to_sample):
             grad_chol_decomp_tiled[...] = 0.0
-            for i in xrange(num_points):
+            for i in range(num_points):
                 # Only track the iterations where point i had the best improvement (winner)
                 winner_indexes_equal_to_i = winner_indexes_tiled_equal_to_diff_index[i, ...]
 

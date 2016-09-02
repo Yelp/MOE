@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for the C++-defined Python exception type objects."""
+from builtins import object
 import pytest
 
 import moe.build.GPP as C_GP

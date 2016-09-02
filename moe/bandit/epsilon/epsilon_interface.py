@@ -4,6 +4,7 @@
 See :mod:`moe.bandit.bandit_interface` for further details on bandit.
 
 """
+from __future__ import division
 import copy
 
 import numpy
@@ -62,7 +63,7 @@ class EpsilonInterface(BanditInterface):
             raise ValueError('arms_sampled is empty!')
 
         avg_payoff_arm_name_list = []
-        for arm_name, sampled_arm in arms_sampled.iteritems():
+        for arm_name, sampled_arm in arms_sampled.items():
             avg_payoff = numpy.float64(sampled_arm.win - sampled_arm.loss) / sampled_arm.total if sampled_arm.total > 0 else 0
             avg_payoff_arm_name_list.append((avg_payoff, arm_name))
 

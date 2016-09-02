@@ -6,6 +6,8 @@ we rely more on :mod:`moe.tests.optimal_learning.python.cpp_wrappers.covariance_
 comparison with C++ for verification of the Python code.
 
 """
+from __future__ import division
+from builtins import range
 import numpy
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
@@ -61,7 +63,7 @@ class TestGaussianProcessLogMarginalLikelihood(GaussianProcessTestCase):
             lml = GaussianProcessLogMarginalLikelihood(python_cov, historical_data)
 
             analytic_grad = lml.compute_grad_log_likelihood()
-            for k in xrange(lml.num_hyperparameters):
+            for k in range(lml.num_hyperparameters):
                 hyperparameters_old = lml.hyperparameters
 
                 # hyperparamter + h

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests that linkers contain all possible types defined in constants."""
+from builtins import object
 from moe.optimal_learning.python.constant import COVARIANCE_TYPES, DOMAIN_TYPES, OPTIMIZER_TYPES, LIKELIHOOD_TYPES
 from moe.optimal_learning.python.linkers import COVARIANCE_TYPES_TO_CLASSES, DOMAIN_TYPES_TO_DOMAIN_LINKS, OPTIMIZER_TYPES_TO_OPTIMIZER_METHODS, LOG_LIKELIHOOD_TYPES_TO_LOG_LIKELIHOOD_METHODS
 

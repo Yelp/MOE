@@ -58,7 +58,7 @@ class UCBInterface(BanditInterface):
         if not arms_sampled:
             raise ValueError('arms_sampled is empty!')
 
-        unsampled_arm_name_list = [name for name, sampled_arm in arms_sampled.iteritems() if sampled_arm.total == 0]
+        unsampled_arm_name_list = [name for name, sampled_arm in arms_sampled.items() if sampled_arm.total == 0]
         return frozenset(unsampled_arm_name_list)
 
     @abstractmethod
@@ -131,8 +131,8 @@ class UCBInterface(BanditInterface):
         if unsampled_arm_names:
             return unsampled_arm_names
 
-        number_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.itervalues()])
+        number_sampled = sum([sampled_arm.total for sampled_arm in arms_sampled.values()])
 
-        ucb_payoff_arm_name_list = [(self.get_ucb_payoff(sampled_arm, number_sampled), arm_name) for arm_name, sampled_arm in arms_sampled.iteritems()]
+        ucb_payoff_arm_name_list = [(self.get_ucb_payoff(sampled_arm, number_sampled), arm_name) for arm_name, sampled_arm in arms_sampled.items()]
 
         return get_winning_arm_names_from_payoff_arm_name_list(ucb_payoff_arm_name_list)

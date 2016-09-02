@@ -6,6 +6,7 @@ https://docs.python.org/2/library/functools.html#functools.total_ordering
 to fill out additional comparison functionality.
 
 """
+from builtins import object
 import inspect
 
 
@@ -86,7 +87,7 @@ class EqualityComparisonMixin(object):
         """
         return '{0:s}({1:s})'.format(
             self.__class__.__name__,
-            ', '.join(map(lambda pair: '{0}={1}'.format(pair[0], pair[1]), self._get_comparable_members())),
+            ', '.join(['{0}={1}'.format(pair[0], pair[1]) for pair in self._get_comparable_members()]),
         )
 
     def __eq__(self, other):

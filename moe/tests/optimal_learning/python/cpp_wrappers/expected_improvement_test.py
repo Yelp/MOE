@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test the C++ implementation of expected improvement against the Python implementation."""
+from builtins import range
 import numpy
 
 import pytest
@@ -77,7 +78,7 @@ class TestExpectedImprovement(GaussianProcessTestCase):
             cpp_gp = moe.optimal_learning.python.cpp_wrappers.gaussian_process.GaussianProcess(cpp_cov, historical_data)
             cpp_ei_eval = moe.optimal_learning.python.cpp_wrappers.expected_improvement.ExpectedImprovement(cpp_gp, points_to_sample)
 
-            for _ in xrange(num_tests_per_case):
+            for _ in range(num_tests_per_case):
                 points_to_sample = domain.generate_random_point_in_domain()
                 cpp_ei_eval.current_point = points_to_sample
                 python_ei_eval.current_point = points_to_sample

@@ -11,6 +11,7 @@ The function requires some historical information to inform bandit.
 We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.
 """
 from __future__ import print_function
+from builtins import str
 from moe.bandit.data_containers import BernoulliArm
 from moe.bandit.linkers import BANDIT_ROUTE_NAMES_TO_SUBTYPES
 from moe.easy_interface.bandit_simple_endpoint import bandit
@@ -47,15 +48,15 @@ def run_example(
     bandit_kwargs = {}
     if bandit_bla_kwargs is None:
         bandit_bla_kwargs = {}
-    bandit_kwargs[BANDIT_BLA_ROUTE_NAME] = dict(kwargs.items() + bandit_bla_kwargs.items())
+    bandit_kwargs[BANDIT_BLA_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_bla_kwargs.items()))
 
     if bandit_epsilon_kwargs is None:
         bandit_epsilon_kwargs = {}
-    bandit_kwargs[BANDIT_EPSILON_ROUTE_NAME] = dict(kwargs.items() + bandit_epsilon_kwargs.items())
+    bandit_kwargs[BANDIT_EPSILON_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_epsilon_kwargs.items()))
 
     if bandit_ucb_kwargs is None:
         bandit_ucb_kwargs = {}
-    bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(kwargs.items() + bandit_ucb_kwargs.items())
+    bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_ucb_kwargs.items()))
 
     # A BernoulliArm has payoff 1 for a success and 0 for a failure.
     # See :class:`~moe.bandit.data_containers.BernoulliArm` for more details.

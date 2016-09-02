@@ -12,6 +12,8 @@ The result is the next best set of point(s) to sample
     This file is copied in ``README.md`` and ``docs/index.rst``. Any changes here should be made there as well.
 """
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import math
 import random
 

@@ -9,10 +9,12 @@ See the file comments for gpp_optimization.hpp for further dicussion of optimiza
 through the C++ interface.
 
 """
+from builtins import object
 from abc import ABCMeta, abstractmethod, abstractproperty
+from future.utils import with_metaclass
 
 
-class OptimizableInterface(object):
+class OptimizableInterface(with_metaclass(ABCMeta, object)):
 
     r"""Interface that an object must fulfill to be optimized by an implementation of OptimizerInterface.
 
@@ -36,8 +38,6 @@ class OptimizableInterface(object):
     TODO(GH-71): getter/setter for current_point.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def problem_size(self):
@@ -93,7 +93,7 @@ class OptimizableInterface(object):
         pass
 
 
-class OptimizerInterface(object):
+class OptimizerInterface(with_metaclass(ABCMeta, object)):
 
     r"""Interface to *maximize* any object implementing OptimizableInterface (defined above).
 
@@ -105,8 +105,6 @@ class OptimizerInterface(object):
        FooParameters container class for their FooOptimizer implementation of this interface.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def optimize(self, **kwargs):

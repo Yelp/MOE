@@ -75,7 +75,7 @@ class OptimizableGpPrettyView(GpPrettyView):
         # Override the defaults with information that may be in the optimizer parameters
         optimizer_parameters_dict = default_optimizer_parameters.optimizer_parameters._asdict()
         if params['optimizer_info']['optimizer_parameters']:
-            for param, val in params['optimizer_info']['optimizer_parameters'].iteritems():
+            for param, val in params['optimizer_info']['optimizer_parameters'].items():
                 optimizer_parameters_dict[param] = val
 
         # Find the schema class that corresponds to the ``optimizer_type`` of the request

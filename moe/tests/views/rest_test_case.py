@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base class for testing the REST interface against the C++ interface."""
+from builtins import object
 import pytest
 
 

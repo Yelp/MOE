@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test the Python implementation of Expected Improvement and its gradient."""
+from __future__ import division
+from builtins import range
 import numpy
 
 import pytest
@@ -446,7 +448,7 @@ class TestExpectedImprovement(GaussianProcessTestCase):
             points_to_sample = domain.generate_random_point_in_domain()
             python_ei_eval = moe.optimal_learning.python.python_version.expected_improvement.ExpectedImprovement(python_gp, points_to_sample)
 
-            for _ in xrange(num_tests_per_case):
+            for _ in range(num_tests_per_case):
                 points_to_sample = domain.generate_random_point_in_domain()
                 python_ei_eval.current_point = points_to_sample
 

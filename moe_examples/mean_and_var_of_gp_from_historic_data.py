@@ -9,6 +9,7 @@ and a set of points to calculate the posterior mean and variance at.
 The posterior mean and variance is then printed for every point.
 """
 from __future__ import print_function
+from builtins import str
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_mean_var

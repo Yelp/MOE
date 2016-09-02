@@ -5,6 +5,9 @@ TODO(GH-175): Generalize ping testing code used in some derivative tests (e.g., 
 to be more DRY (model after C++ test cases). We can set up one ping tester and just pass it objective functions.
 
 """
+from __future__ import division
+from builtins import range
+from builtins import object
 import numpy
 
 
@@ -84,8 +87,8 @@ class OptimalLearningTestCase(object):
 
         """
         __tracebackhide__ = True
-        for i in xrange(point_list.shape[0]):
-            for j in xrange(i + 1, point_list.shape[0]):
+        for i in range(point_list.shape[0]):
+            for j in range(i + 1, point_list.shape[0]):
                 temp = point_list[i, ...] - point_list[j, ...]
                 dist = numpy.linalg.norm(temp)
                 OptimalLearningTestCase.assert_scalar_within_relative(dist, 0.0, tol)

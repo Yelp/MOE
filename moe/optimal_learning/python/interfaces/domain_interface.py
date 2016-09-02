@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization)."""
+from builtins import object
 from abc import ABCMeta, abstractmethod, abstractproperty
+from future.utils import with_metaclass
 
 
-class DomainInterface(object):
+class DomainInterface(with_metaclass(ABCMeta, object)):
 
     """Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization)."""
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def dim(self):

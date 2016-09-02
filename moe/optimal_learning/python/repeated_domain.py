@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """RepeatedDomain class for handling manipulating sets of points in a (kernel) domain simultaneously."""
+from builtins import range
 import numpy
 
 from moe.optimal_learning.python.interfaces.domain_interface import DomainInterface
@@ -90,7 +91,7 @@ class RepeatedDomain(DomainInterface):
 
         """
         constraints = []
-        for i in xrange(self.num_repeats):
+        for i in range(self.num_repeats):
             # Using start_index, start each domain at the correct index when flattening out points in COBYLA.
             constraints.extend(self._domain.get_constraint_list(start_index=self.dim * i))
         return constraints
@@ -109,7 +110,7 @@ class RepeatedDomain(DomainInterface):
 
         """
         return numpy.array([self._domain.generate_random_point_in_domain(random_source=random_source)
-                            for _ in xrange(self.num_repeats)])
+                            for _ in range(self.num_repeats)])
 
     def generate_uniform_random_points_in_domain(self, num_points, random_source=None):
         r"""Generate AT MOST ``num_points`` uniformly distributed points from the domain.
@@ -139,7 +140,7 @@ class RepeatedDomain(DomainInterface):
         # Then we "transpose" the output ordering: the i-th point in RepeatedDomain is constructed
         # from the i-th points of LHC_1 ... LHC_{num_repeats}
         num_points_array = numpy.empty(self.num_repeats, dtype=numpy.int64)
-        for i in xrange(self.num_repeats):
+        for i in range(self.num_repeats):
             temp = self._domain.generate_uniform_random_points_in_domain(num_points, random_source=random_source)
             # Since generate_uniform_random_points_in_domain() may not always return num_points
             # points, we need to make sure we only use the valid results
@@ -178,4 +179,4 @@ class RepeatedDomain(DomainInterface):
             max_relative_change,
             current_point[i, ...],
             update_vector[i, ...])
-                            for i in xrange(self.num_repeats)])
+                            for i in range(self.num_repeats)])

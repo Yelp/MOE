@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Data containers convenient for/used to interact with optimal_learning.python members."""
+from builtins import range
+from builtins import object
 import collections
 import pprint
 
@@ -199,7 +201,7 @@ class HistoricalData(object):
             raise ValueError('Input arrays do not have the same leading dimension: (points_sampled, value, noise) = ({0:d}, {1:d}, {2:d})'.format(points_sampled.shape[0], points_sampled_value.size, points_sampled_noise_variance.size))
 
         if points_sampled.shape[0] > 0:
-            for i in xrange(points_sampled.shape[0]):
+            for i in range(points_sampled.shape[0]):
                 temp = SamplePoint(points_sampled[i], points_sampled_value[i], points_sampled_noise_variance[i])
                 temp.validate(dim=dim)
 
@@ -262,7 +264,7 @@ class HistoricalData(object):
 
         """
         return [SamplePoint(numpy.copy(self._points_sampled[i]), self._points_sampled_value[i], noise_variance=self._points_sampled_noise_variance[i])
-                for i in xrange(self.num_sampled)]
+                for i in range(self.num_sampled)]
 
     def _update_historical_data(self, offset, sample_points):
         """Copy (in "transposed" order) data from ``sample_points`` into this object's data members, starting at index ``offset``.

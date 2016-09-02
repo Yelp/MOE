@@ -102,7 +102,7 @@ def create_rst_files_for_cpp():
     """Generate all rst files."""
     cpp_files = get_cpp_files()
     create_cpp_tree(cpp_files)
-    for file_base, files in cpp_files.iteritems():
+    for file_base, files in cpp_files.items():
         create_rst_file(file_base, files)
 
 

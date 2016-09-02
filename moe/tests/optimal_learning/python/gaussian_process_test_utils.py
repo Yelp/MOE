@@ -5,6 +5,7 @@ By default, the functions in this file use the Python optimal_learning library (
 can override this behavior with any implementation of the ABCs in the interfaces package.
 
 """
+from builtins import range
 import numpy
 
 from moe.optimal_learning.python.data_containers import HistoricalData, SamplePoint
@@ -29,7 +30,7 @@ def fill_random_covariance_hyperparameters(hyperparameter_interval, num_hyperpar
 
     """
     hyper = [numpy.random.uniform(hyperparameter_interval.min, hyperparameter_interval.max)
-             for _ in xrange(num_hyperparameters)]
+             for _ in range(num_hyperparameters)]
     return covariance_type(hyper)
 
 

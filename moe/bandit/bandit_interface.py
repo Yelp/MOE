@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 r"""Interface for Bandit functions, supports allocate arms and choose arm."""
+from builtins import object
 import numpy
 
 from abc import ABCMeta, abstractmethod
+from future.utils import with_metaclass
 
 
-class BanditInterface(object):
+class BanditInterface(with_metaclass(ABCMeta, object)):
 
     r"""Interface for a bandit algorithm.
 
@@ -15,8 +17,6 @@ class BanditInterface(object):
     Implementers of this ABC are required to manage their own hyperparameters.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def allocate_arms(self):
@@ -46,9 +46,9 @@ class BanditInterface(object):
         if not arms_to_allocations:
             raise ValueError('arms_to_allocations is empty!')
 
-        allocations = numpy.array(arms_to_allocations.values())
+        allocations = numpy.array(list(arms_to_allocations.values()))
         # The winning arm is chosen based on the distribution of arm allocations.
         winner = numpy.argmax(numpy.random.dirichlet(allocations))
         # While the internal order of a dict is unknowable a priori, the order presented by the various iterators
         # and list-ify methods is always the same as long as the dict is not modified between calls to these methods.
-        return arms_to_allocations.keys()[winner]
+        return list(arms_to_allocations.keys())[winner]

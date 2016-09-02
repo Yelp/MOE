@@ -19,6 +19,7 @@ fact, we could improve performance further by caching [certain] components of th
 covariance computation for use with the derivative computations.
 
 """
+from __future__ import division
 import numpy
 
 from moe.optimal_learning.python.constant import SQUARE_EXPONENTIAL_COVARIANCE_TYPE

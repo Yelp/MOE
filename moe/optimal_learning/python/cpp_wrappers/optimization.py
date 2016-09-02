@@ -184,6 +184,7 @@ can have exceptionally poor convergence characteristics or run too slowly.  In c
 fail, we commonly fall back to 'dumb' search.
 
 """
+from builtins import object
 import collections
 
 import moe.build.GPP as C_GP

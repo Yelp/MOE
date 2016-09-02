@@ -16,6 +16,8 @@ This process is repeated until we have sampled 20 points in total
 We then calculate the posterior mean and variance of the GP at several points
 """
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import numpy
 
 from moe.easy_interface.experiment import Experiment
@@ -61,15 +63,15 @@ def run_example(
     # Note that the more specific kwargs take precedence (and will override general kwargs)
     if gp_next_points_kwargs is None:
         gp_next_points_kwargs = {}
-    gp_next_points_kwargs = dict(kwargs.items() + gp_next_points_kwargs.items())
+    gp_next_points_kwargs = dict(list(kwargs.items()) + list(gp_next_points_kwargs.items()))
 
     if gp_hyper_opt_kwargs is None:
         gp_hyper_opt_kwargs = {}
-    gp_hyper_opt_kwargs = dict(kwargs.items() + gp_hyper_opt_kwargs.items())
+    gp_hyper_opt_kwargs = dict(list(kwargs.items()) + list(gp_hyper_opt_kwargs.items()))
 
     if gp_mean_var_kwargs is None:
         gp_mean_var_kwargs = {}
-    gp_mean_var_kwargs = dict(kwargs.items() + gp_mean_var_kwargs.items())
+    gp_mean_var_kwargs = dict(list(kwargs.items()) + list(gp_mean_var_kwargs.items()))
 
     exp = Experiment([[0, 2], [0, 4]])
     # Bootstrap with some known or already sampled point(s)

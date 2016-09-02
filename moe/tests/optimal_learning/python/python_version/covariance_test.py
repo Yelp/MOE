@@ -9,6 +9,8 @@ TODO(GH-175): Ping testing for spatial gradients and hyperparameter gradients/he
 TODO(GH-176): Make test structure general enough to support other covariance functions automatically.
 
 """
+from __future__ import division
+from builtins import range
 import numpy
 
 import pytest
@@ -180,7 +182,7 @@ class TestSquareExponential(OptimalLearningTestCase):
         points1 = domain.generate_uniform_random_points_in_domain(num_tests)
         points2 = domain.generate_uniform_random_points_in_domain(num_tests)
 
-        for i in xrange(num_tests):
+        for i in range(num_tests):
             point_one = points1[i, ...]
             point_two = points2[i, ...]
 
@@ -191,7 +193,7 @@ class TestSquareExponential(OptimalLearningTestCase):
             )
 
             analytic_grad = covariance.hyperparameter_grad_covariance(point_one, point_two)
-            for k in xrange(covariance.num_hyperparameters):
+            for k in range(covariance.num_hyperparameters):
                 hyperparameters_old = covariance.hyperparameters
 
                 # hyperparamter + h
