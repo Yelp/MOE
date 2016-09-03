@@ -73,7 +73,27 @@ endif()
 
 #### External dependencies
 find_package(PythonLibs REQUIRED)
-find_package(Boost 1.51 COMPONENTS python REQUIRED)
+string(SUBSTRING ${PYTHONLIBS_VERSION_STRING} 0 1 PYTHON_MAJOR)
+string(SUBSTRING ${PYTHONLIBS_VERSION_STRING} 2 1 PYTHON_MINOR)
+
+if (${PYTHON_MAJOR} MATCHES "3")
+    message(STATUS "Searching for Boost Python 3 component")
+    #check e.g. libboost_python-py35.so first
+    find_package(Boost 1.51 COMPONENTS python-py${PYTHON_MAJOR}${PYTHON_MINOR})
+    set(BOOST_FOUND ${Boost_PYTHON-PY}${PYTHON_MAJOR}${PYTHON_MINOR}"_FOUND")
+
+    if (NOT ${BOOST_FOUND})
+        find_package(Boost 1.51 COMPONENTS python-py34)
+        set(BOOST_FOUND ${Boost_PYTHON-PY34_FOUND})
+    endif()
+    if (NOT ${BOOST_FOUND})
+        #check libboost_python3.so
+        find_package(Boost 1.51 COMPONENTS python3 REQUIRED)
+    endif()
+else()
+    message(STATUS "Searching for Boost Python 2 component")
+    find_package(Boost 1.51 COMPONENTS python REQUIRED)
+endif()
 
 include_directories(SYSTEM ${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
