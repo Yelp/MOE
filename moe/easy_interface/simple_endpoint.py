@@ -51,7 +51,8 @@ def gp_next_points(
     if 'domain_info' not in raw_payload:
         raw_payload['domain_info'] = experiment_payload.get('domain_info')
 
-    json_payload = json.dumps(raw_payload)
+    #payload must be a byte object
+    json_payload = json.dumps(raw_payload).encode('utf-8')
 
     json_response = call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, testapp)
 
