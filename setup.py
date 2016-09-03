@@ -45,8 +45,9 @@ CLASSIFIERS = """
 requires = [
     'future',
     'pyramid',
+    'pyramid_debugtoolbar',
     'pyramid_mako',
-    'WebError',
+    'waitress',
     'pytest',
     'webtest',
     'simplejson',
