@@ -29,10 +29,11 @@ requirements:
     - scipy
     - pyramid
     - pyramid_mako
+    - pyramid_debugtoolbar
+    - waitress
     - colander
     - libstdcplusplus
     - simplejson
-    - webtest
     - pytest
 
 test:
