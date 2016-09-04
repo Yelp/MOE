@@ -4,7 +4,7 @@ pyramid==1.5.1
 pyramid_debugtoolbar
 pyramid_mako==1.0.2
 waitress
-pytest==2.6.3
+pytest==2.9.2
 webtest==2.0.15
 simplejson==3.5.3
 numpy==1.8.1
