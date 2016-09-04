@@ -80,13 +80,10 @@ if (${PYTHON_MAJOR} MATCHES "3")
     message(STATUS "Searching for Boost Python 3 component")
     #check e.g. libboost_python-py35.so first
     find_package(Boost 1.51 COMPONENTS python-py${PYTHON_MAJOR}${PYTHON_MINOR})
-    set(BOOST_FOUND ${Boost_PYTHON-PY}${PYTHON_MAJOR}${PYTHON_MINOR}"_FOUND")
-
-    if (NOT ${BOOST_FOUND})
+    if (NOT Boost_FOUND)
         find_package(Boost 1.51 COMPONENTS python-py34)
-        set(BOOST_FOUND ${Boost_PYTHON-PY34_FOUND})
     endif()
-    if (NOT ${BOOST_FOUND})
+    if (NOT Boost_FOUND)
         #check libboost_python3.so
         find_package(Boost 1.51 COMPONENTS python3 REQUIRED)
     endif()
