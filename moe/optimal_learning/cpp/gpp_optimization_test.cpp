@@ -59,6 +59,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <numeric> //std::iota
 
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
