@@ -7,6 +7,7 @@ cache:
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y build-essential libblas-dev liblapack-dev gfortran make libedit-dev
+    - test `python -c "import sys;print(sys.version_info[0])"` -eq 3 && sudo apt-get install -y python3-dev
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -q && sudo apt-get install -y gcc-4.7 g++-4.7 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 20 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.7 20 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
     - sudo add-apt-repository -y ppa:boost-latest/ppa && sudo apt-get update -q && sudo apt-get install -y boost1.55
     - sudo add-apt-repository -y ppa:kalakris/cmake && sudo apt-get update -q && sudo apt-get install -y cmake
