@@ -85,7 +85,7 @@ def generate_grid_points(points_per_dimension, domain_bounds):
     # vstack stacks inputs vertically: so for our 1D arrays, the i-th input becomes
     # the i-th row in a matrix. And since each mesh_grid output has *every* coordinate
     # of the grid in that dimension, the *columns* of the stack contain every grid point.
-    return numpy.vstack(list(map(numpy.ravel, mesh_grid))).T
+    return numpy.vstack(map(numpy.ravel, mesh_grid)).T
 
 
 # See ClosedInterval (below) for docstring.

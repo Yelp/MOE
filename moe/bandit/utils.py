@@ -25,8 +25,8 @@ def get_winning_arm_names_from_payoff_arm_name_list(payoff_arm_name_list):
         # Filter out arms that have payoff less than the best payoff
         winning_arm_payoff_name_list = [payoff_arm_name for payoff_arm_name in payoff_arm_name_list if payoff_arm_name[0] == best_payoff]
         # Extract a list of winning arm names from a list of (payoff, arm name) tuples.
-        _, winning_arm_name_list = list(map(list, list(zip(*winning_arm_payoff_name_list))))
-        winning_arm_names = frozenset(winning_arm_name_list)
+        _, winning_arm_name_iter  = map(list, zip(*winning_arm_payoff_name_list))
+        winning_arm_names = frozenset(winning_arm_name_iter)
         return winning_arm_names
 
 
