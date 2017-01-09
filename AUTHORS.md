@@ -6,7 +6,7 @@ MOE was developed at [Yelp Inc][0] and [Cornell University][1]. It spawned from 
 Co-Devlopers
 ------------
 
-- Scott Clark (sclark@yelp.com, [@DrScottClark][3], http://scottclark.io)
+- Scott Clark (scott@sigopt.com, [@DrScottClark][3], http://sigopt.com/about#scott)
 - Eric Liu (eliu@yelp.com, [@ehliu][4])
 
 Contributors
