@@ -193,15 +193,6 @@ bool CheckMatrixIsSymmetric(double const * restrict matrix, int size, double tol
   return symmetric_flag;
 }
 
-void ZeroUpperTriangle(int size, double * restrict matrix) noexcept {
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < i; ++j) {
-      matrix[j] = 0.0;
-    }
-    matrix += size;
-  }
-}
-
 namespace {
 
 /*!\rst
@@ -271,11 +262,15 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
     double cholesky_B_computed[kSize2*kSize2];
 
     std::copy(matrix_A, matrix_A + kSize1*kSize1, cholesky_A_computed);
-    ComputeCholeskyFactorL(kSize1, cholesky_A_computed);
+    if (ComputeCholeskyFactorL(kSize1, cholesky_A_computed) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(kSize1, cholesky_A_computed);
 
     std::copy(matrix_B, matrix_B + kSize2*kSize2, cholesky_B_computed);
-    ComputeCholeskyFactorL(kSize2, cholesky_B_computed);
+    if (ComputeCholeskyFactorL(kSize2, cholesky_B_computed) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(kSize2, cholesky_B_computed);
 
     for (int i = 0; i < kSize1*kSize1; ++i) {
@@ -308,7 +303,9 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
     BuildRandomSPDMatrix(sizes[i], &uniform_generator, spd_matrix.data());
 
     std::copy(spd_matrix.begin(), spd_matrix.end(), cholesky_factor.begin());
-    ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+    if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+      ++total_errors;
+    }
     ZeroUpperTriangle(sizes[i], cholesky_factor.data());
     MatrixTranspose(cholesky_factor.data(), sizes[i], sizes[i], cholesky_factor_T.data());
 
@@ -348,12 +345,54 @@ OL_WARN_UNUSED_RESULT int TestCholesky() {
   3. Construct RHS by doing ``A*x``.
   4. Solve ``Ax = b`` using backsolve and direct-inverse; check the size of ``\|b - Ax\|``.
 
-  TODO: add a small (well-conditioned) example with analytic solution
-
   \return
     number of test cases where the solver error is too large
 \endrst*/
 OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
+  int total_errors = 0;
+
+  // simple/small case where numerical factors are not present.
+  // taken from: http://en.wikipedia.org/wiki/Cholesky_decomposition#Example
+  {
+    constexpr int size = 3;
+    std::vector<double> matrix =
+        {  4.0,   12.0, -16.0,
+          12.0,   37.0, -43.0,
+         -16.0,  -43.0,  98.0};
+
+    const std::vector<double> cholesky_factor_L_truth =
+        { 2.0, 6.0, -8.0,
+          0.0, 1.0, 5.0,
+          0.0, 0.0, 3.0};
+    std::vector<double> rhs = {-20.0, -43.0, 192.0};
+    std::vector<double> solution_truth = {1.0, 2.0, 3.0};
+
+    int local_errors = 0;
+    // check factorization is correct; only check lower-triangle
+    if (ComputeCholeskyFactorL(size, matrix.data()) != 0) {
+      ++total_errors;
+    }
+    for (int i = 0; i < size; ++i) {
+      for (int j = 0; j < size; ++j) {
+        if (j >= i) {
+          if (!CheckDoubleWithinRelative(matrix[i*size + j], cholesky_factor_L_truth[i*size + j], 0.0)) {
+            ++local_errors;
+          }
+        }
+      }
+    }
+
+    // check the solve is correct
+    CholeskyFactorLMatrixVectorSolve(matrix.data(), size, rhs.data());
+    for (int i = 0; i < size; ++i) {
+      if (!CheckDoubleWithinRelative(rhs[i], solution_truth[i], 0.0)) {
+        ++local_errors;
+      }
+    }
+
+    total_errors += local_errors;
+  }
+
   const int num_tests = 10;
   const int num_test_sizes = 3;
   const int sizes[num_test_sizes] = {5, 11, 20};
@@ -367,10 +406,9 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
       };
   const double tolerance_inverse_max_list[3][num_test_sizes] =
       { {1.0e-13, 1.0e-9, 1.0e-2},  // prolate
-        {5.0e-13, 1.0e-8, 1.0e1},   // moler
-        {5.0e-10, 5.0e-6, 1.0e2}    // random
+        {5.0e-13, 2.0e-8, 1.0e1},   // moler
+        {7.0e-10, 7.0e-6, 1.0e2}    // random
       };
-  int total_errors = 0;
 
   UniformRandomGenerator uniform_generator(34187);
   // In each iteration, we form some an ill-conditioned SPD matrix.  We are using
@@ -417,7 +455,9 @@ OL_WARN_UNUSED_RESULT int TestSPDLinearSolvers() {
       }
       // cholesky-factor A, form A^-1
       std::copy(matrix.begin(), matrix.end(), cholesky_factor.begin());
-      ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+      if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+        ++total_errors;
+      }
       SPDMatrixInverse(cholesky_factor.data(), sizes[i], inverse_matrix.data());
 
       // set b = A*random_vector.  This way we know the solution explicitly.
@@ -643,7 +683,7 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
     GeneralMatrixMatrixMultiply(matrix_A, 'N', matrix_B, 1.0, 0.0, kSize_m, kSize_k, kSize_n, matrix_AB_computed);
 
     for (int i = 0; i < kSize_m*kSize_n; ++i) {
-      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], std::numeric_limits<double>::epsilon())) {
+      if (!CheckDoubleWithinRelative(matrix_AB_computed[i], matrix_AB_exact[i], 3.0 * std::numeric_limits<double>::epsilon())) {
         ++total_errors;
       }
     }
@@ -700,7 +740,9 @@ OL_WARN_UNUSED_RESULT int TestGeneralMatrixMatrixMultiply() noexcept {
     ModifyMatrixDiagonal(sizes[i], static_cast<double>(sizes[i]), spd_matrix.data());
 
     std::copy(spd_matrix.begin(), spd_matrix.end(), cholesky_factor.begin());
-    ComputeCholeskyFactorL(sizes[i], cholesky_factor.data());
+    if (ComputeCholeskyFactorL(sizes[i], cholesky_factor.data()) != 0) {
+      ++total_errors;
+    }
     SPDMatrixInverse(cholesky_factor.data(), sizes[i], inverse_spd_matrix.data());
     GeneralMatrixMatrixMultiply(spd_matrix.data(), 'N', inverse_spd_matrix.data(), 1.0, 0.0, sizes[i], sizes[i], sizes[i], product_matrix.data());
     VectorAXPY(sizes[i]*sizes[i], -1.0, identity_matrix.data(), product_matrix.data());

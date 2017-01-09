@@ -2,7 +2,7 @@
   \file gpp_exception.cpp
   \rst
   This file contains definitions for the constructors of the various exception classes in gpp_exception.hpp. These ctors
-  generally set the message_ member with some debugging information about what the error is and where it occurred.
+  generally set the ``message_`` member with some debugging information about what the error is and where it occurred.
 
   In most cases, we use boost::lexical_cast<std::string> to convert from numbers to strings. std::to_string's formatting
   for floating point types is absolutely terrible (but it works fine for integral types, which is where we use it).
@@ -23,45 +23,46 @@
 
 namespace optimal_learning {
 
-namespace {
-
-/*!\rst
-  Utility function to append some additional info (file/line number, function name,
-  and/or a custom message) to a specified string.
-  This is meant to be used for constructing what() messages for the exception classes
-  in gpp_exception.hpp.
-
-  \param
-    :line_info[]: ptr to char array containing __FILE__ and __LINE__ info; e.g., from OL_STRINGIFY_FILE_AND_LINE
-    :func_info[]: optional ptr to char array from OL_CURRENT_FUNCTION_NAME or similar
-    :custom_message[]: optional ptr to char array with any additional text/info to print/log
-    :message[1]: a valid std::string object
-  \output
-    :message[1]: string with additional info appended
-\endrst*/
-void AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info, char const * custom_message, std::string * message) {
+void OptimalLearningException::AppendCustomMessageAndDebugInfo(char const * line_info, char const * func_info,
+                                                               char const * custom_message) {
   if (custom_message) {
-    *message += custom_message;
-    *message += " ";
+    message_ += custom_message;
+    message_ += " ";
   }
   if (func_info) {
-    *message += func_info;
-    *message += " ";
+    message_ += func_info;
+    message_ += " ";
   }
-  *message += line_info;
+  message_ += line_info;
 }
 
-}  // end unnamed namespace
-
-RuntimeException::RuntimeException(char const * line_info, char const * func_info, char const * custom_message) : message_(kName) {
+OptimalLearningException::OptimalLearningException(char const * line_info, char const * func_info,
+                                                   char const * custom_message) : message_(kName) {
   message_ += ": ";
-  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message, &message_);
+  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
+}
+
+OptimalLearningException::OptimalLearningException(char const * name) : message_(name) {
 }
 
 template <typename ValueType>
-BoundsException<ValueType>::BoundsException(char const * name_in, char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType min_in, ValueType max_in) : value_(value_in), min_(min_in), max_(max_in), message_(name_in) {
-  message_ += ": value: " + boost::lexical_cast<std::string>(value_) + " is not in range [" + boost::lexical_cast<std::string>(min_) + ", " + boost::lexical_cast<std::string>(max_) + "]\n";
-  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message, &message_);
+BoundsException<ValueType>::BoundsException(char const * name_in, char const * line_info,
+                                            char const * func_info, char const * custom_message,
+                                            ValueType value_in, ValueType min_in, ValueType max_in)
+    : OptimalLearningException(name_in),
+      value_(value_in),
+      min_(min_in),
+      max_(max_in) {
+  message_ += ": value: " + boost::lexical_cast<std::string>(value_) + " is not in range [" +
+      boost::lexical_cast<std::string>(min_) + ", " + boost::lexical_cast<std::string>(max_) + "]\n";
+  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
+}
+
+template <typename ValueType>
+BoundsException<ValueType>::BoundsException(char const * line_info, char const * func_info,
+                                            char const * custom_message, ValueType value_in,
+                                            ValueType min_in, ValueType max_in)
+    : BoundsException(kName, line_info, func_info, custom_message, value_in, min_in, max_in) {
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
@@ -69,26 +70,41 @@ template class BoundsException<int>;
 template class BoundsException<double>;
 
 template <typename ValueType>
-InvalidValueException<ValueType>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in) : value_(value_in), truth_(truth_in), tolerance_(0), message_(kName) {
-  message_ += ": " + boost::lexical_cast<std::string>(value_) + " != " + boost::lexical_cast<std::string>(truth_) + " (value != truth)\n";
-  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message, &message_);
+InvalidValueException<ValueType>::InvalidValueException(char const * line_info, char const * func_info,
+                                                        char const * custom_message, ValueType value_in,
+                                                        ValueType truth_in)
+    : OptimalLearningException(kName), value_(value_in), truth_(truth_in), tolerance_(0) {
+  message_ += ": " + boost::lexical_cast<std::string>(value_) + " != " +
+      boost::lexical_cast<std::string>(truth_) + " (value != truth)\n";
+  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
 }
 
 template <typename ValueType>
 template <typename ValueTypeIn, typename>
-InvalidValueException<ValueType>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, ValueType value_in, ValueType truth_in, ValueType tolerance_in) : value_(value_in), truth_(truth_in), tolerance_(tolerance_in), message_(kName) {
-  message_ += ": " + boost::lexical_cast<std::string>(value_) + " != " + boost::lexical_cast<std::string>(truth_) + " \u00b1 " + boost::lexical_cast<std::string>(tolerance_) + " (value != truth \u00b1 tolerance)\n";
-  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message, &message_);
+InvalidValueException<ValueType>::InvalidValueException(char const * line_info, char const * func_info,
+                                                        char const * custom_message, ValueType value_in,
+                                                        ValueType truth_in, ValueType tolerance_in)
+    : OptimalLearningException(kName), value_(value_in), truth_(truth_in), tolerance_(tolerance_in) {
+  message_ += ": " + boost::lexical_cast<std::string>(value_) + " != " + boost::lexical_cast<std::string>(truth_) +
+      " \u00b1 " + boost::lexical_cast<std::string>(tolerance_) + " (value != truth \u00b1 tolerance)\n";
+  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
 }
 
 // template explicit instantiation definitions, see gpp_common.hpp header comments, item 6
 template class InvalidValueException<int>;
 template class InvalidValueException<double>;
-template InvalidValueException<double>::InvalidValueException(char const * line_info, char const * func_info, char const * custom_message, double value_in, double truth_in, double tolerance_in);
+template InvalidValueException<double>::InvalidValueException(
+    char const * line_info, char const * func_info, char const * custom_message, double value_in,
+    double truth_in, double tolerance_in);
 
-SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info, char const * custom_message, double const * matrix_in, int num_rows_in, int num_cols_in) : num_rows_(num_rows_in), num_cols_(num_cols_in), matrix_(matrix_in, matrix_in + num_rows_*num_cols_), message_(kName) {
-  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_cols_) + " matrix is singular.\n";
-  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message, &message_);
+SingularMatrixException::SingularMatrixException(char const * line_info, char const * func_info,
+                                                 char const * custom_message, double const * matrix_in,
+                                                 int num_rows_in, int leading_minor_index_in)
+    : OptimalLearningException(kName), num_rows_(num_rows_in), leading_minor_index_(leading_minor_index_in),
+      matrix_(matrix_in, matrix_in + Square(num_rows_)) {
+  message_ += ": " + std::to_string(num_rows_) + " x " + std::to_string(num_rows_) + " matrix is singular; " +
+      std::to_string(leading_minor_index_) + "-th leading minor is not SPD.\n";
+  AppendCustomMessageAndDebugInfo(line_info, func_info, custom_message);
 }
 
 }  // end namespace optimal_learning

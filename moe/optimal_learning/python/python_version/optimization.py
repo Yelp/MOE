@@ -47,7 +47,7 @@ In this way, we can make the local and global optimizers completely agonistic to
 **2a. GRADIENT DESCENT (GD)**
 
 .. Note:: Below there is some discussion of "restarted" Gradient Descent; this is not yet implemented in Python.
-    See cpp_wrappers/optimization.py if you want to use this feature.
+    See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2a, i. OVERVIEW**
 
@@ -87,7 +87,7 @@ loop, where we fire off another GD run from the current location unless converge
 
 **2b. NEWTON'S METHOD:**
 
-.. Note:: Newton's method is not yet implemented in Python. See cpp_wrappers/optimization.py if you want to use this feature.
+.. Note:: Newton's method is not yet implemented in Python. See :mod:`moe.optimal_learning.python.cpp_wrappers.optimization` if you want to use this feature.
 
 **2b, i. OVERVIEW**
 
@@ -102,7 +102,7 @@ step size and direction to ensure rapid\*\* convergence.
 \*, \*\* See "IMPLEMENTATION DETAILS" comments section for details.
 
 Recall that Newton indiscriminately finds solutions where ``f'(x) = 0``; the eigenvalues of the Hessian classify these
-``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.
 
@@ -163,7 +163,9 @@ Multistarting is NOT GUARANTEED to find global optima.  But it can increase the 
 
 Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where "more stuff is happening" or any
-other heuristics.  TODO(eliu): improve multistart heuristics (#57985).
+other heuristics.
+
+TODO(GH-165): Improve multistart heuristics.
 
 Finally, MultistartOptimizer::MultistartOptimize() is also used to provide 'dumb' search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
@@ -171,9 +173,13 @@ can have exceptionally poor convergence characteristics or run too slowly.  In c
 fail, we commonly fall back to 'dumb' search.
 
 """
+from abc import abstractmethod
+
 import collections
 
 import numpy
+
+import scipy.optimize
 
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
@@ -189,12 +195,10 @@ def multistart_optimize(optimizer, starting_points=None, num_multistarts=None):
 
     :param optimizer: object that will perform the optimization
     :type optimizer: interfaces.optimization_interface.OptimizerInterface subclass
-    :param points_to_evaluate: points at which to compute the objective
-    :type points_to_evaluate: array of float64 with shape (num_points, evaluator.problem_size)
+    :param starting_points: points at which to initialize optimization runs
+    :type starting_points: array of float64 with shape (num_points, evaluator.problem_size)
     :return: (best point found, objective function values at the end of each optimization run)
     :rtype: tuple: (array of float64 with shape (optimizer.dim), array of float64 with shape (starting_points.shape[0]) or (num_multistarts))
-    :return: objective function value at each specified point
-    :rtype: array of float64 with shape (points_to_evaluate.shape[0])
     :raises: ValueError: if both ``starting_points`` and ``num_multistarts`` are None
 
     """
@@ -224,7 +228,7 @@ _BaseNewtonParameters = collections.namedtuple('_BaseNewtonParameters', [
 
 class NewtonParameters(_BaseNewtonParameters):
 
-    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization`."""
+    """See docstring at :class:`moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters`."""
 
     __slots__ = ()
 
@@ -293,6 +297,77 @@ class GradientDescentParameters(_BaseGradientDescentParameters):
     __slots__ = ()
 
 
+# See LBFGSBParameters (below) for docstring.
+_BaseLBFGSBParameters = collections.namedtuple('_BaseLBFGSBParameters', [
+    'approx_grad',
+    'max_func_evals',
+    'max_metric_correc',
+    'factr',
+    'pgtol',
+    'epsilon',
+])
+
+
+class LBFGSBParameters(_BaseLBFGSBParameters):
+
+    r"""Container to hold parameters that specify the behavior of L-BFGS-B.
+
+    Suggested values come from scipy documentation for ``scipy.optimize.fmin_l_bfgs_b``:
+    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
+
+    :ivar approx_grad: (*bool*) if true, BFGS will approximate the gradient
+    :ivar max_func_evals: (*int > 0*) maximum number of objective function calls to make (suggest: 15000)
+    :ivar max_metric_correc: (*int > 0*) maximum number of variable metric corrections used to define the limited memorty matrix (suggest: 10)
+    :ivar factr: (*float64 > 1.0*) 1e12 for low accuracy, 1e7 for moderate accuracy, and 10 for extremely high accuracy (suggest: 1000.0)
+    :ivar pgtol: (*float64 > 0.0*) cutoff for highest component of gradient to be considered a critical point (suggest: 1.0e-5)
+    :ivar epsilon: (*float64 > 0.0*) step size for approximating the gradient (suggest: 1.0e-8)
+
+    """
+
+    __slots__ = ()
+
+    def scipy_kwargs(self):
+        """Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_l_bfgs_b``.
+
+        :return: kwargs for controlling the behavior of fmin_l_bfgs_b
+        :rtype: dict
+
+        """
+        out_dict = dict(self._asdict())
+        out_dict['m'] = out_dict.pop('max_metric_correc')
+        out_dict['maxfun'] = out_dict.pop('max_func_evals')
+        return out_dict
+
+
+# See COBYLAParameters (below) for docstring.
+_BaseCOBYLAParameters = collections.namedtuple('_BaseCOBYLAParameters', [
+    'rhobeg',
+    'rhoend',
+    'maxfun',
+    'catol',
+])
+
+
+class COBYLAParameters(_BaseCOBYLAParameters):
+
+    r"""Container to hold parameters that specify the behavior of COBYLA.
+
+    Suggested values come from scipy documentation for scipy.optimize.fmin_cobyla:
+    http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.fmin_cobyla.html
+
+    :ivar rhobeg: (*float64 > 0.0*) reasonable initial changes to the variables (suggest: 1.0)
+    :ivar rhoend: (*float64 > 0.0*) final accuracy in the optimization (not precisely guaranteed), which is a lower bound on the size of the trust region (suggest: 1.0e-4)
+    :ivar maxfun: (*int > 0*) maximum number of objective function calls to make (suggest: 1000)
+    :ivar catol: (*float64 > 0.0*) absolute tolerance for constraint violations (suggest: 2.0e-4)
+
+    """
+
+    __slots__ = ()
+
+    # Return a dict that can be unpacked as kwargs to ``scipy.optimize.fmin_cobyla``.
+    scipy_kwargs = _BaseCOBYLAParameters._asdict
+
+
 class NullOptimizer(OptimizerInterface):
 
     """A "null" or identity optimizer: this does nothing. It is used to perform "dumb" search with MultistartOptimizer."""
@@ -322,20 +397,20 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
-        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: python_version.optimization.GradientDescentParameters object
+        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimizer_parameters: python_version.optimization.GradientDescentParameters object
 
         """
         self.domain = domain
         self.objective_function = optimizable
-        self.optimization_parameters = optimization_parameters
+        self.optimizer_parameters = optimizer_parameters
 
     @staticmethod
     def _get_averaging_range(num_steps_averaged, num_steps_total):
@@ -419,22 +494,22 @@ class GradientDescentOptimizer(OptimizerInterface):
         Finally, GD terminates if updates are very small.
 
         """
-        # TODO(eliu): implement restarts like in the C++ code (GH-59)
-        initial_guess = self.objective_function.get_current_point()
+        # TODO(GH-59): Implement restarts like in the C++ code.
+        initial_guess = self.objective_function.current_point
         x_hat = initial_guess
-        x_path = numpy.empty((self.optimization_parameters.max_num_steps + 1, ) + initial_guess.shape)
+        x_path = numpy.empty((self.optimizer_parameters.max_num_steps + 1, ) + initial_guess.shape)
         x_path[0, ...] = initial_guess
 
         step_counter = 1
-        while step_counter <= self.optimization_parameters.max_num_steps:
-            alpha_n = self.optimization_parameters.pre_mult * numpy.power(float(step_counter), -self.optimization_parameters.gamma)
+        while step_counter <= self.optimizer_parameters.max_num_steps:
+            alpha_n = self.optimizer_parameters.pre_mult * numpy.power(float(step_counter), -self.optimizer_parameters.gamma)
 
-            self.objective_function.set_current_point(x_path[step_counter - 1, ...])
+            self.objective_function.current_point = x_path[step_counter - 1, ...]
             orig_step = self.objective_function.compute_grad_objective_function(**kwargs)
 
             orig_step *= alpha_n
             fixed_step = self.domain.compute_update_restricted_to_domain(
-                self.optimization_parameters.max_relative_change,
+                self.optimizer_parameters.max_relative_change,
                 x_path[step_counter - 1, ...],
                 orig_step,
             )
@@ -442,14 +517,14 @@ class GradientDescentOptimizer(OptimizerInterface):
             x_path[step_counter, ...] = fixed_step + x_path[step_counter - 1, ...]
 
             step_counter += 1
-            # TODO(eliu): tolerance control: if step is too small, stop (??). This goes at the loop's end, AFTER incrementing step_counter! (GH-59)
+            # TODO(GH-59): tolerance control: if step is too small, stop. This goes at the loop's end, AFTER incrementing step_counter!
 
         # Polyak-Ruppert averaging: postprocessing step where we replace x_n with:
         # \overbar{x} = \frac{1}{n - n_0} \sum_{t=n_0 + 1}^n x_t
         # n_0 = 0 averages all steps; n_0 = n - 1 is equivalent to returning x_n directly.
-        start, end = self._get_averaging_range(self.optimization_parameters.num_steps_averaged, step_counter - 1)
+        start, end = self._get_averaging_range(self.optimizer_parameters.num_steps_averaged, step_counter - 1)
         x_hat = numpy.mean(x_path[start:end, ...], axis=0)
-        self.objective_function.set_current_point(x_hat)
+        self.objective_function.current_point = x_hat
 
 
 class MultistartOptimizer(OptimizerInterface):
@@ -475,12 +550,12 @@ class MultistartOptimizer(OptimizerInterface):
     """
 
     def __init__(self, optimizer, num_multistarts):
-        """Construct a MultistartOptimizer for multistarting any implementation of OptimizationInterface.
+        """Construct a MultistartOptimizer for multistarting any implementation of OptimizerInterface.
 
         :param optimizer: object representing the optimization method to be multistarted
         :type optimizer: interfaces.optimization_interface.OptimizableInterface subclass (except itself)
-        :param optimization_parameters:
-        :type optimization_parameters:
+        :param optimizer_parameters:
+        :type optimizer_parameters:
 
         """
         self.optimizer = optimizer
@@ -500,13 +575,13 @@ class MultistartOptimizer(OptimizerInterface):
         reported.  It will otherwise report the overall best improvement (through io_container) as well as the result of every
         individual multistart run if desired (through function_values).
 
-        :param starting_points: points from which to multistart ``self.optimizer``; if None, points are chosen randomly
-        :type starting_points: array of float64 with shape (num_points, dim) or None
+        :param random_starts: points from which to multistart ``self.optimizer``; if None, points are chosen randomly
+        :type random_starts: array of float64 with shape (num_points, dim) or None
         :return: (best point found, objective function values at the end of each optimization run)
         :rtype: tuple: (array of float64 with shape (self.optimizer.dim), array of float64 with shape (self.num_multistarts))
 
         """
-        # TODO(eliu): pass the best point, fcn value, etc. in thru an IOContainer-like structure (GH-59)
+        # TODO(GH-59): Pass the best point, fcn value, etc. in thru an IOContainer-like structure.
         if random_starts is None:
             random_starts = self.optimizer.domain.generate_uniform_random_points_in_domain(self.num_multistarts, None)
 
@@ -515,13 +590,188 @@ class MultistartOptimizer(OptimizerInterface):
         function_value_list = numpy.empty(random_starts.shape[0])
 
         for i, point in enumerate(random_starts):
-            self.optimizer.objective_function.set_current_point(point)
+            self.optimizer.objective_function.current_point = point
             self.optimizer.optimize(**kwargs)
             function_value = self.optimizer.objective_function.compute_objective_function(**kwargs)
             function_value_list[i] = function_value
 
             if function_value > best_function_value:
                 best_function_value = function_value
-                best_point = self.optimizer.objective_function.get_current_point()
+                best_point = self.optimizer.objective_function.current_point
 
         return best_point, function_value_list
+
+
+class _ScipyOptimizerWrapper(OptimizerInterface):
+
+    """Wrapper class to construct an optimizer from scipy optimization methods.
+
+    Requires the implementation of the :func:`~moe.optimal_learning.python.python_interface.optimization._ScipyOptimizerWrapper._optimize_core` method.
+
+    """
+
+    # Type of the optimization_parameters object, specified in subclass
+    optimization_parameters_type = None
+
+    def __init__(self, domain, optimizable, optimization_parameters):
+        """Construct the optimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: ``python_version.optimization.*Parameters`` object, matching optimization_parameters_type
+
+        """
+        self.domain = domain
+        self.objective_function = optimizable
+
+        if not isinstance(optimization_parameters, self.optimization_parameters_type):
+            raise TypeError('optimization_paramters is of type: {0:s}, expected {1:s}'.format(optimization_parameters.__class__, self.optimization_parameters_type))
+        else:
+            self.optimization_parameters = optimization_parameters
+
+        self._num_points = 1
+        if hasattr(self.domain, 'num_repeats'):
+            self._num_points = self.domain.num_repeats
+
+    def _scipy_decorator(self, func, **kwargs):
+        """Wrapper function for expected improvement calculation to feed into the optimizer function.
+
+        func should be of the form ``compute_*`` in :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface`.
+
+        """
+        def decorated(point):
+            """Decorator for compute_* functions in interfaces.optimization_interface.OptimizableInterface.
+
+            Converts the point to proper format (array with dim (self._num_points, self.domain.dim) instead of flat array)
+            and sets the current point before calling the compute function.
+
+            :param point: the point on which to do the calculation
+            :type point: array of float64 with shape (self._num_points * self.domain.dim, )
+
+            """
+            shaped_point = point.reshape(self._num_points, self.domain.dim)
+            self.objective_function.current_point = shaped_point
+            value = -func(**kwargs)
+            if isinstance(value, (numpy.ndarray)):
+                return value.flatten()
+            else:
+                return value
+
+        return decorated
+
+    def optimize(self, **kwargs):
+        """Perform optimization with :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` and shape the output point.
+
+        Calls the :func:`~moe.optimal_learning.python.interfaces.optimization_interface._ScipyOptimizerWrapper._optimize_core` method.
+        ``objective_function.current_point`` will be set to the optimal point found.
+
+        """
+        unshaped_point = self._optimize_core(**kwargs)
+
+        if self._num_points == 1:
+            shaped_point = unshaped_point
+        else:
+            shaped_point = unshaped_point.reshape(self._num_points, self.domain.dim)
+        self.objective_function.current_point = shaped_point
+
+    @abstractmethod
+    def _optimize_core(self, **kwargs):
+        """Should return an unshaped point corresponding to the output of the optimizer function from scipy.
+
+        See :func:`~moe.optimal_learning.python.python_version.optimization.LBFGSOptimizer._optimize_core` or
+        :func:`~moe.optimal_learning.python.python_version.optimization.COBYLAOptimizer._optimize_core` function for examples.
+
+        :return: The unshaped optimal point from calling the scipy optimization method.
+        :rtype: array of float64 with shape (self._num_points * self.domain.dim, )
+
+        """
+        pass
+
+
+class LBFGSBOptimizer(_ScipyOptimizerWrapper):
+
+    r"""Optimizes an objective function over the specified domain with the L-BFGS-B method.
+
+    The BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm is a quasi-Newton algorithm for optimization. It can
+    be used for DFO (Derivative-Free Optimization) when the gradient is not available, such as is the case for
+    the analytic qEI algorithm.
+
+    L-BFGS is a memory efficient version of BFGS, and BFGS-B is a variant that handles simple box constraints.
+    We use L-BFGS-B, which is a combination of the two, and is often the optimization algorithm of choice for
+    these types of problems.
+
+    For more information, visit the scipy docs and the wikipedia page on BFGS:
+    http://en.wikipedia.org/wiki/Limited-memory_BFGS
+    http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html
+
+    """
+
+    optimization_parameters_type = LBFGSBParameters
+
+    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+        """Construct a LBFGSBOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` object
+
+        """
+        super(LBFGSBOptimizer, self).__init__(domain, optimizable, optimization_parameters)
+
+    def _optimize_core(self, **kwargs):
+        """Perform an L-BFGS-B optimization given the parameters in ``self.optimization_parameters``."""
+        domain_bounding_box = self.domain.get_bounding_box()
+        domain_list = [(interval.min, interval.max) for interval in domain_bounding_box]
+        domain_numpy = numpy.array(domain_list * self._num_points)
+
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.LBFGSBParameters` class.
+        return scipy.optimize.fmin_l_bfgs_b(
+            func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
+            x0=self.objective_function.current_point.flatten(),
+            bounds=domain_numpy,
+            fprime=self._scipy_decorator(self.objective_function.compute_grad_objective_function, **kwargs),
+            **self.optimization_parameters.scipy_kwargs()
+        )[0]
+
+
+class COBYLAOptimizer(_ScipyOptimizerWrapper):
+
+    r"""Optimizes an objective function over the specified contraints with the COBYLA method.
+
+    For more information, visit the scipy docs page and the original paper by Powell:
+    http://docs.scipy.org/doc/scipy-0.13.0/reference/generated/scipy.optimize.fmin_cobyla.html
+    http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2007_03.pdf
+
+    """
+
+    optimization_parameters_type = COBYLAParameters
+
+    def __init__(self, domain, optimizable, optimization_parameters):
+        """Construct a COBYLAOptimizer.
+
+        :param domain: the domain that this optimizer operates over
+        :type domain: :class:`~moe.optimal_learning.python.interfaces.domain_interface.DomainInterface` subclass. Only supports TensorProductDomain for now.
+        :param optimizable: object representing the objective function being optimized
+        :type optimizable: :class:`~moe.optimal_learning.python.interfaces.optimization_interface.OptimizableInterface` subclass
+        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimization_parameters: :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` object
+
+        """
+        super(COBYLAOptimizer, self).__init__(domain, optimizable, optimization_parameters)
+
+    def _optimize_core(self, **kwargs):
+        """Perform a COBYLA optimization given the parameters in ``self.optimization_parameters``."""
+        # Parameters defined above in :class:`~moe.optimal_learning.python.python_version.optimization.COBYLAParameters` class.
+        return scipy.optimize.fmin_cobyla(
+            func=self._scipy_decorator(self.objective_function.compute_objective_function, **kwargs),
+            x0=self.objective_function.current_point.flatten(),
+            cons=self.domain.get_constraint_list(),
+            disp=0,  # Suppresses output from the routine.
+            **self.optimization_parameters.scipy_kwargs()
+        )

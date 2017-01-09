@@ -1,0 +1,7 @@
+package:
+  name: libstdcplusplus
+  version: 3.4.15
+
+about:
+  home: 
+  license: LGPL

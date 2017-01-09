@@ -6,10 +6,10 @@
 * High-level functions (e.g., optimization of EI or log likelihood) are only loosely tested, only checking that outputs
   are valid (vs trying to verify them).
 
-Note that the Python implementation is additionally tested against the C++ (same inputs, same results for the various
-optimal_learning features) implementation (see moe/tests/optimal_learning/python/cpp_wrappers).
+.. Note:: the Python implementation is additionally tested against the C++ (same inputs, same results for the various
+  optimal_learning features) implementation (see moe/tests/optimal_learning/python/cpp_wrappers).
 
-TODO(eliu): in general, the Python test suite is lacking and we rely on comparison against the more extensively tested
-C++ implementation to check the Python.
+TODO(GH-178): in general, the Python test suite is lacking and we rely on comparison against
+the more extensively tested C++ implementation to check the Python.
 
 """

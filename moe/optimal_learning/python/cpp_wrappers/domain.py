@@ -39,6 +39,24 @@ class TensorProductDomain(DomainInterface):
         """Return the number of spatial dimensions."""
         return len(self._domain_bounds)
 
+    def get_json_serializable_info(self, minimal=False):
+        """Create and return a domain_info dictionary of this domain object.
+
+        :param minimal: True for all domain contents; False for ``domain_type`` and ``dim`` only
+        :type minimal: bool
+        :return: dict representation of this domain
+        :rtype: dict
+
+        """
+        response = {
+            'domain_type': self.domain_type,
+            'dim': self.dim,
+        }
+        if not minimal:
+            response['domain_bounds'] = self._domain_bounds
+
+        return response
+
     # HACK: Until we can build C++ domain objects from Python, we need to be able to hand C++ enough data to reconstruct domains.
     @property
     def domain_bounds(self):
@@ -48,15 +66,23 @@ class TensorProductDomain(DomainInterface):
     def check_point_inside(self, point):
         r"""Check if a point is inside the domain/on its boundary or outside.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
 
+    def get_bounding_box(self):
+        """Return a list of ClosedIntervals representing a bounding box for this domain."""
+        return copy.copy(self._domain_bounds)
+
+    def get_constraint_list(self):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA."""
+        raise NotImplementedError("Constraints are not yet implemented for C++.")
+
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
@@ -64,7 +90,7 @@ class TensorProductDomain(DomainInterface):
     def generate_uniform_random_points_in_domain(self, num_points, random_source=None):
         r"""Generate ``num_points`` uniformly distributed points from the domain.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
@@ -72,7 +98,7 @@ class TensorProductDomain(DomainInterface):
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
@@ -125,7 +151,7 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
     def check_point_inside(self, point):
         r"""Check if a point is inside the domain/on its boundary or outside.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
@@ -133,7 +159,7 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
     def generate_uniform_random_points_in_domain(self, num_points, random_source):
         r"""Generate AT MOST ``num_points`` uniformly distributed points from the domain.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")
@@ -141,7 +167,7 @@ class SimplexIntersectTensorProductDomain(DomainInterface):
     def compute_update_restricted_to_domain(self, max_relative_change, current_point, update_vector):
         r"""Compute a new update so that CheckPointInside(``current_point`` + ``new_update``) is true.
 
-        We do not currently expose a C++ endpoint for this call; see domain_interface.py for interface specification.
+        We do not currently expose a C++ endpoint for this call; see :mod:`moe.optimal_learning.python.interfaces.domain_interface` for interface specification.
 
         """
         raise NotImplementedError("C++ wrapper currently does not support domain member functions.")

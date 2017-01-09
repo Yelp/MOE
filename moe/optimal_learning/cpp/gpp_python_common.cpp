@@ -19,6 +19,7 @@
 
 #include <vector>  // NOLINT(build/include_order)
 
+#include <boost/python/args.hpp>  // NOLINT(build/include_order)
 #include <boost/python/class.hpp>  // NOLINT(build/include_order)
 #include <boost/python/enum.hpp>  // NOLINT(build/include_order)
 #include <boost/python/extract.hpp>  // NOLINT(build/include_order)
@@ -27,8 +28,8 @@
 #include "gpp_common.hpp"
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
-#include "gpp_model_selection_and_hyperparameter_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_model_selection.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 
 namespace optimal_learning {
@@ -91,6 +92,37 @@ PythonInterfaceInputContainer::PythonInterfaceInputContainer(const boost::python
   CopyPylistToVector(points_to_sample_in, dim*num_to_sample, points_to_sample);
 }
 
+RandomnessSourceContainer::RandomnessSourceContainer(int num_threads)
+    : uniform_generator(kUniformDefaultSeed),
+      normal_rng_vec(num_threads),
+      num_normal_rng_(num_threads) {
+  SetExplicitNormalRNGSeed(kNormalDefaultSeed);
+}
+
+void RandomnessSourceContainer::SetExplicitUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
+  uniform_generator.SetExplicitSeed(seed);
+}
+
+void RandomnessSourceContainer::SetRandomizedUniformGeneratorSeed(NormalRNG::EngineType::result_type seed) {
+  uniform_generator.SetRandomizedSeed(seed, 0);  // single instance, so thread_id = 0
+}
+
+void RandomnessSourceContainer::ResetUniformGeneratorState() {
+  uniform_generator.ResetToMostRecentSeed();
+}
+
+void RandomnessSourceContainer::SetExplicitNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
+  for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
+    normal_rng_vec[i].SetExplicitSeed(seed + i);
+  }
+}
+
+void RandomnessSourceContainer::SetRandomizedNormalRNGSeed(NormalRNG::EngineType::result_type seed) {
+  for (IdentifyType<decltype(normal_rng_vec)>::type::size_type i = 0, size = normal_rng_vec.size(); i < size; ++i) {
+    normal_rng_vec[i].SetRandomizedSeed(seed, i);
+  }
+}
+
 bool RandomnessSourceContainer::SetNormalRNGSeedPythonList(const boost::python::list& seed_list, const boost::python::list& seed_flag_list) {
   auto seed_list_len = boost::python::len(seed_list);
   auto seed_flag_list_len = boost::python::len(seed_flag_list);
@@ -112,6 +144,12 @@ bool RandomnessSourceContainer::SetNormalRNGSeedPythonList(const boost::python::
     }
   }
   return true;
+}
+
+void RandomnessSourceContainer::ResetNormalRNGState() {
+  for (auto& entry : normal_rng_vec) {
+    entry.ResetToMostRecentSeed();
+  }
 }
 
 void RandomnessSourceContainer::PrintState() {
@@ -166,8 +204,9 @@ void ExportEnumTypes() {
       ;  // NOLINT, this is boost style
 }
 
-void ExportOptimizationParameterStructs() {
-  boost::python::class_<GradientDescentParameters, boost::noncopyable>("GradientDescentParameters", boost::python::init<int, int, int, double, double, double, double>(R"%%(
+void ExportOptimizerParameterStructs() {
+  boost::python::class_<GradientDescentParameters, boost::noncopyable>("GradientDescentParameters", boost::python::init<int, int, int, int, double, double, double, double>(
+      (boost::python::arg("num_multistarts"), "max_num_steps", "max_num_restarts", "num_steps_averaged", "gamma", "pre_mult", "max_relative_change", "tolerance"), R"%%(
     Constructor for a GradientDescentParameters object.
 
     :param num_multistarts: number of initial guesses to try in multistarted gradient descent (suggest: a few hundred)
@@ -176,6 +215,8 @@ void ExportOptimizationParameterStructs() {
     :type max_num_steps: int > 0
     :param max_num_restarts: maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 4-20)
     :type max_num_restarts: int > 0
+    :param num_steps_averaged: number of steps to use in polyak-ruppert averaging (see above) (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise) (UNUSED)
+    :type num_steps_averaged: int (range is clamped as described above)
     :param gamma: exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)
     :type gamma: float64 > 1.0
     :param pre_mult: scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)
@@ -186,9 +227,19 @@ void ExportOptimizationParameterStructs() {
     :param tolerance: when the magnitude of the gradient falls below this value OR we will not move farther than tolerance
         (e.g., at a boundary), stop.  (suggest: 1.0e-7)
     :type tolerance: float64 >= 0.0
-    )%%"));
+    )%%"))
+      .def_readwrite("num_multistarts", &GradientDescentParameters::num_multistarts, "number of initial guesses to try in multistarted gradient descent (suggest: a few hundred)")
+      .def_readwrite("max_num_steps", &GradientDescentParameters::max_num_steps, "maximum number of gradient descent iterations per restart (suggest: 200-1000)")
+      .def_readwrite("max_num_restarts", &GradientDescentParameters::max_num_restarts, "maximum number of gradient descent restarts, the we are allowed to call gradient descent.  Should be >= 2 as a minimum (suggest: 4-20)")
+      .def_readwrite("num_steps_averaged", &GradientDescentParameters::num_steps_averaged, "number of steps to use in polyak-ruppert averaging (suggest: 10-50% of max_num_steps for stochastic problems, 0 otherwise)")
+      .def_readwrite("gamma", &GradientDescentParameters::gamma, "exponent controlling rate of step size decrease (see struct docs or GradientDescentOptimizer) (suggest: 0.5-0.9)")
+      .def_readwrite("pre_mult", &GradientDescentParameters::pre_mult, "scaling factor for step size (see struct docs or GradientDescentOptimizer) (suggest: 0.1-1.0)")
+      .def_readwrite("max_relative_change", &GradientDescentParameters::max_relative_change, "max change allowed per GD iteration (as a relative fraction of current distance to wall), see ctor docstring")
+      .def_readwrite("tolerance", &GradientDescentParameters::tolerance, "when the magnitude of the gradient falls below this value OR we will not move farther than tolerance")
+      ;  // NOLINT, this is boost style
 
-  boost::python::class_<NewtonParameters, boost::noncopyable>("NewtonParameters", boost::python::init<int, int, double, double, double, double>(R"%%(
+  boost::python::class_<NewtonParameters, boost::noncopyable>("NewtonParameters", boost::python::init<int, int, double, double, double, double>(
+      (boost::python::arg("num_multistarts"), "max_num_steps", "gamma", "time_factor", "max_relative_change", "tolerance"), R"%%(
     Constructor for a NewtonParameters object.
 
     :param num_multistarts: number of initial guesses to try in multistarted newton (suggest: a few hundred)
@@ -203,7 +254,14 @@ void ExportOptimizationParameterStructs() {
     :type max_relative_change: float64 in [0, 1]
     :param tolerance: when the magnitude of the gradient falls below this value, stop (suggest: 1.0e-10)
     :type tolerance: float64 >= 0.0
-    )%%"));
+    )%%"))
+      .def_readwrite("num_multistarts", &NewtonParameters::num_multistarts, "number of initial guesses to try in multistarted gradient descent (suggest: a few hundred)")
+      .def_readwrite("max_num_steps", &NewtonParameters::max_num_steps, "maximum number of gradient descent iterations per restart (suggest: 200-1000)")
+      .def_readwrite("gamma", &NewtonParameters::gamma, "exponent controlling rate of time_factor growth (see class docs and NewtonOptimizer) (suggest: 1.01-1.1)")
+      .def_readwrite("time_factor", &NewtonParameters::time_factor, "initial amount of additive diagonal dominance (see class docs and NewtonOptimizer) (suggest: 1.0e-3-1.0e-1)")
+      .def_readwrite("max_relative_change", &NewtonParameters::max_relative_change, "max change allowed per update (as a relative fraction of current distance to wall) (Newton may ignore this) (suggest: 1.0)")
+      .def_readwrite("tolerance", &NewtonParameters::tolerance, "when the magnitude of the gradient falls below this value, stop (suggest: 1.0e-10)")
+      ;  // NOLINT, this is boost style
 }
 
 void ExportRandomnessContainer() {
@@ -217,6 +275,11 @@ void ExportRandomnessContainer() {
     :param num_threads: the max number of threads this object will be used with (sets the number of randomness sources)
     :type num_threads: int
     )%%"))
+      .add_property("num_normal_rng", &RandomnessSourceContainer::num_normal_rng, R"%%(
+    Return the number of NormalRNG objects being tracked.
+
+    This is the maximum number of EI evaluations (threads) this object can support.
+      )%%")
       .def("SetExplicitUniformGeneratorSeed", &RandomnessSourceContainer::SetExplicitUniformGeneratorSeed, R"%%(
     Seeds uniform generator with the specified seed value.
 

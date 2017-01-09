@@ -8,7 +8,7 @@
   * CheckPointInDomain: specify a domain, point list, and truth values.  checks that points are/are not inside
   * GeneratePointInDomain: generates some random points, checks that they are inside the domain
   * GenerateUniformPointsInDomain: generates uniformly distributed points, checks that they are inside the domain
-    TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
+    TODO(GH-128): Test whether computed point distribution is actually uniform
   * LimitUpdate: starting from points within the domain, checks that:
 
     * updates to another point in the domain remain unchanged
@@ -51,14 +51,7 @@
 #include <boost/random/uniform_int.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
-// HACK: temporarily disable printing (this will go away when we switch to GoogleTest)
-#define OL_TEMP_ERROR_PRINT OL_ERROR_PRINT
-#define OL_TEMP_WARNING_PRINT OL_WARNING_PRINT
-#undef OL_ERROR_PRINT
-#undef OL_WARNING_PRINT
 #include "gpp_domain.hpp"
-#define OL_ERROR_PRINT OL_TEMP_ERROR_PRINT
-#define OL_WARNING_PRINT OL_TEMP_WARNING_PRINT
 #include "gpp_geometry.hpp"
 #include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
@@ -309,7 +302,7 @@ OL_WARN_UNUSED_RESULT int GeneratePointInDomainTest(const DomainTestFixture& dom
 /*!\rst
   Check whether GenerateUniformPointsInDomain generates points that are inside the input domain.
 
-  TODO(eliu): Test whether computed point distribution is actually uniform (ADS-3099)
+  TODO(GH-128): Test whether computed point distribution is actually uniform
 
   \return
     number of test failures
@@ -855,9 +848,9 @@ OL_WARN_UNUSED_RESULT int CheckDomain(const std::vector<ClosedInterval>& domain_
   try {
     DomainType domain(domain_bounds.data(), domain_bounds.size());
     domain_valid = true;
-  } catch (const RuntimeException& exception) {
-    domain_valid = false;
   } catch (const BoundsException<double>& exception) {
+    domain_valid = false;
+  } catch (const OptimalLearningException& exception) {
     domain_valid = false;
   }
   return domain_valid;

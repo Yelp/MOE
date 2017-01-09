@@ -22,7 +22,8 @@ class RepeatedDomain(DomainInterface):
 
     In general, kernel domain operations need be performed ``num_repeats`` times, once
     for each point. This class hides the looping logic so that use cases like various
-    OptimizerInterface subclasses (optimization.py) do not need to be explicitly aware
+    :class:`moe.optimal_learning.python.interfaces.optimization_interface.OptimizerInterface`
+    subclasses do not need to be explicitly aware
     of whether they are optimizing 1 point or 50 points. Instead, the OptimizableInterface
     implementation provides problem_size() and appropriately sized gradient information.
     Coupled with RepeatedDomain, Optimizers can remain oblivious.
@@ -73,6 +74,26 @@ class RepeatedDomain(DomainInterface):
 
         """
         return all([self._domain.check_point_inside(point) for point in points])
+
+    def get_bounding_box(self):
+        """Return a list of ClosedIntervals representing a bounding box for this domain."""
+        return self._domain.get_bounding_box()
+
+    def get_constraint_list(self):
+        """Return a list of lambda functions expressing the domain bounds as linear constraints. Used by COBYLA.
+
+        Calls ``self._domain.get_constraint_list()`` for each repeat, writing the results sequentially.
+        So output[0:2*dim] is from the first repeated domain, output[2*dim:4*dim] is from the second, etc.
+
+        :return: a list of lambda functions corresponding to constraints
+        :rtype: array of lambda functions with shape (num_repeats * dim * 2)
+
+        """
+        constraints = []
+        for i in xrange(self.num_repeats):
+            # Using start_index, start each domain at the correct index when flattening out points in COBYLA.
+            constraints.extend(self._domain.get_constraint_list(start_index=self.dim * i))
+        return constraints
 
     def generate_random_point_in_domain(self, random_source=None):
         """Generate ``point`` uniformly at random such that ``self.check_point_inside(point)`` is True.

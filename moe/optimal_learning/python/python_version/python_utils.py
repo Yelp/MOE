@@ -40,7 +40,7 @@ def build_covariance_matrix(covariance, points_sampled, noise_variance=None):
             cov_mat[i, j] = covariance.covariance(point_one, point_two)
 
     # Copy into the (strict) upper triangle.
-    # TODO(eliu): we could avoid this step entirely and only fill the lower triangle (GH-62)
+    # TODO(GH-62): We could avoid this step entirely and only fill the lower triangle.
     cov_mat += numpy.tril(cov_mat, k=-1).T
 
     if noise_variance is not None:
@@ -89,7 +89,7 @@ def build_mix_covariance_matrix(covariance, points_sampled, points_to_sample):
 def build_hyperparameter_grad_covariance_matrix(covariance, points_sampled):
     r"""Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``.
 
-    .. NOTE:: These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection_and_hyperparameter_optimization.cpp.
+    .. NOTE:: These comments are copied from BuildHyperparameterGradCovarianceMatrix() in gpp_model_selection.cpp.
 
     Build ``A_{jik} = \pderiv{K_{ij}}{\theta_k}``
     Hence the outer loop structure is identical to BuildCovarianceMatrix().

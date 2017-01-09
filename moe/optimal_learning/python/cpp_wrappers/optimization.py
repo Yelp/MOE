@@ -5,15 +5,15 @@ See cpp/gpp_optimization.hpp for more details on optimization techniques.
 
 C++ optimization tools are templated, so it doesn't make much sense to expose their members to Python (unless we built a
 C++ optimizable object that could call Python). So the classes in this file track the data necessary
-for C++ calls to construct the matching C++ optimization object and the appropriate optimization parameters.
+for C++ calls to construct the matching C++ optimization object and the appropriate optimizer parameters.
 
 C++ expects input objects to have a certain format; the classes in this file make it convenient to put data into the expected
 format. Generally the C++ optimizers want to know the objective function (what), optimization method (how), domain (where, etc.
 along with paramters like number of iterations, tolerances, etc.
 
-These Python classes/functions wrap the C++ structs in: gpp_optimization_parameters.hpp.
+These Python classes/functions wrap the C++ structs in: gpp_optimizer_parameters.hpp.
 
-The \*OptimizationParameters structs contain the high level details--what to optimize, how to do it, etc. explicitly. And the hold
+The \*OptimizerParameters structs contain the high level details--what to optimize, how to do it, etc. explicitly. And the hold
 a reference to a C++ struct containing parameters for the specific optimizer. The build_*_parameters() helper functions provide
 wrappers around these C++ objects' constructors.
 
@@ -113,7 +113,7 @@ step size and direction to ensure rapid\*\* convergence.
 \*, \*\* See "IMPLEMENTATION DETAILS" comments section for details.
 
 Recall that Newton indiscriminately finds solutions where ``f'(x) = 0``; the eigenvalues of the Hessian classify these
-``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection_and_hyperparameter_optimization)
+``x`` as optima, saddle points, or indeterminate. We multistart Newton (e.g., gpp_model_selection)
 but just take the best objective value without classifying solutions.
 The MultistartOptimizer template class in this file provides generic multistart functionality.
 
@@ -174,7 +174,9 @@ Multistarting is NOT GUARANTEED to find global optima.  But it can increase the 
 
 Currently we let the user specify the initial guesses.  In practice, this typically means a random sampling of points.
 We do not (yet) make any effort to say sample more heavily from regions where "more stuff is happening" or any
-other heuristics.  TODO(eliu): improve multistart heuristics (#57985).
+other heuristics.
+
+TODO(GH-165): Improve multistart heuristics.
 
 Finally, MultistartOptimizer::MultistartOptimize() is also used to provide 'dumb' search functionality (optimization
 by just evaluating the objective at numerous points).  For sufficiently complex problems, gradient descent, Newton, etc.
@@ -184,40 +186,34 @@ fail, we commonly fall back to 'dumb' search.
 """
 import collections
 
-import numpy
-
 import moe.build.GPP as C_GP
+from moe.optimal_learning.python.comparison import EqualityComparisonMixin
 from moe.optimal_learning.python.interfaces.optimization_interface import OptimizerInterface
 
 
-class NullParameters(collections.namedtuple('NullParameters', [])):
+# TODO(GH-167): Kill 'num_multistarts' when you reoganize num_multistarts for C++.
+class NullParameters(collections.namedtuple('NullParameters', ['num_multistarts'])):
 
     """Empty container for optimizers that do not require any parameters (e.g., the null optimizer)."""
 
     __slots__ = ()
 
 
-class NewtonParameters(object):
+class NewtonParameters(C_GP.NewtonParameters, EqualityComparisonMixin):
 
     """Container to hold parameters that specify the behavior of Newton in a C++-readable form.
 
-    See __init__ docstring for more information.
+    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.NewtonParameters.__init__` docstring for more information.
 
     """
 
-    def __init__(
-            self,
-            num_multistarts,
-            max_num_steps,
-            gamma,
-            time_factor,
-            max_relative_change,
-            tolerance,
-    ):
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
         r"""Build a NewtonParameters (C++ object) via its ctor; this object specifies multistarted Newton behavior and is required by C++ Newton optimization.
 
-        .. Note:: See gpp_optimization_parameters.hpp for more details.
-            The following comments are copied from NewtonParameters struct in gpp_optimization_parameters.hpp.
+        .. Note:: See gpp_optimizer_parameters.hpp for more details.
+            The following comments are copied from NewtonParameters struct in gpp_optimizer_parameters.hpp.
 
         **Diagonal dominance control: ``gamma`` and ``time_factor``**
 
@@ -247,40 +243,24 @@ class NewtonParameters(object):
         :type tolerance: float64 >= 0.0
 
         """
-        self.num_multistarts = num_multistarts
-        self.parameters = C_GP.NewtonParameters(
-            num_multistarts,
-            max_num_steps,
-            numpy.float64(gamma),
-            numpy.float64(time_factor),
-            numpy.float64(max_relative_change),
-            numpy.float64(tolerance),
-        )
+        super(NewtonParameters, self).__init__(*args, **kwargs)
 
 
-class GradientDescentParameters(object):
+class GradientDescentParameters(C_GP.GradientDescentParameters, EqualityComparisonMixin):
 
     """Container to hold parameters that specify the behavior of Gradient Descent in a C++-readable form.
 
-    See __init__ docstring for more information.
+    See :func:`~moe.optimal_learning.python.cpp_wrappers.optimization.GradientDescentParameters.__init__` docstring for more information.
 
     """
 
-    def __init__(
-            self,
-            num_multistarts,
-            max_num_steps,
-            max_num_restarts,
-            num_steps_averaged,
-            gamma,
-            pre_mult,
-            max_relative_change,
-            tolerance,
-    ):
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
         r"""Build a GradientDescentParameters (C++ object) via its ctor; this object specifies multistarted GD behavior and is required by C++ GD optimization.
 
-        .. Note:: See gpp_optimization_parameters.hpp for more details.
-            The following comments are copied from GradientDescentParameters struct in gpp_optimization_parameters.hpp.
+        .. Note:: See gpp_optimizer_parameters.hpp for more details.
+            The following comments are copied from GradientDescentParameters struct in gpp_optimizer_parameters.hpp.
             And they are copied to python_version.optimization.GradientDescentParameters.
 
         **Iterations**
@@ -335,21 +315,10 @@ class GradientDescentParameters(object):
         :type tolerance: float64 >= 0.0
 
         """
-        self.num_multistarts = num_multistarts
-        self.parameters = C_GP.GradientDescentParameters(
-            num_multistarts,
-            max_num_steps,
-            max_num_restarts,
-            numpy.float64(gamma),
-            numpy.float64(pre_mult),
-            numpy.float64(max_relative_change),
-            numpy.float64(tolerance),
-        )
-        # TODO(eliu GH-138) Expose the internal data from the above object for testing in python
-        self._python_max_num_steps = max_num_steps
+        super(GradientDescentParameters, self).__init__(*args, **kwargs)
 
 
-class _CppOptimizationParameters(object):
+class _CppOptimizerParameters(object):
 
     r"""Container for parameters that specify what & how to optimize in C++.
 
@@ -386,14 +355,14 @@ class _CppOptimizationParameters(object):
             num_random_samples=None,
             optimizer_parameters=None,
     ):
-        """Construct CppOptimizationParameters that specifies optimization behavior to C++."""
+        """Construct CppOptimizerParameters that specifies optimization behavior to C++."""
         # see gpp_python_common.cpp for .*_type enum definitions. .*_type variables must be from those enums (NOT integers)
         self.domain_type = domain_type
         self.objective_type = objective_type
         self.optimizer_type = optimizer_type
         self.num_random_samples = num_random_samples  # number of samples to 'dumb' search over
         if optimizer_parameters:
-            self.optimizer_parameters = optimizer_parameters.parameters  # must match the optimizer_type
+            self.optimizer_parameters = optimizer_parameters  # must match the optimizer_type
         else:
             self.optimizer_parameters = None
 
@@ -402,15 +371,15 @@ class NullOptimizer(OptimizerInterface):
 
     """A "null" or identity optimizer: this does nothing. It is used to perform "dumb" search with MultistartOptimizer."""
 
-    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a NullOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass
-        :param optimization_parameters: None
-        :type optimization_parameters: None
+        :param optimizer_parameters: None
+        :type optimizer_parameters: None
         :params num_random_samples: number of random samples to use if performing 'dumb' search
         :type num_random_sampes: int >= 0
 
@@ -418,7 +387,7 @@ class NullOptimizer(OptimizerInterface):
         self.domain = domain
         self.objective_function = optimizable
         self.optimizer_type = C_GP.OptimizerTypes.null
-        self.optimization_parameters = _CppOptimizationParameters(
+        self.optimizer_parameters = _CppOptimizerParameters(
             domain_type=domain._domain_type,
             objective_type=optimizable.objective_type,
             optimizer_type=self.optimizer_type,
@@ -440,15 +409,15 @@ class GradientDescentOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a GradientDescentOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass from cpp_wrappers
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass from cpp_wrappers
-        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: cpp_wrappers.optimization.GradientDescentParameters object
+        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimizer_parameters: cpp_wrappers.optimization.GradientDescentParameters object
         :params num_random_samples: number of random samples to use if performing 'dumb' search
         :type num_random_sampes: int >= 0
 
@@ -456,12 +425,12 @@ class GradientDescentOptimizer(OptimizerInterface):
         self.domain = domain
         self.objective_function = optimizable
         self.optimizer_type = C_GP.OptimizerTypes.gradient_descent
-        self.optimization_parameters = _CppOptimizationParameters(
+        self.optimizer_parameters = _CppOptimizerParameters(
             domain_type=domain._domain_type,
             objective_type=optimizable.objective_type,
             optimizer_type=self.optimizer_type,
             num_random_samples=num_random_samples,
-            optimizer_parameters=optimization_parameters,
+            optimizer_parameters=optimizer_parameters,
         )
 
     def optimize(self, **kwargs):
@@ -478,15 +447,15 @@ class NewtonOptimizer(OptimizerInterface):
 
     """
 
-    def __init__(self, domain, optimizable, optimization_parameters, num_random_samples=None):
+    def __init__(self, domain, optimizable, optimizer_parameters, num_random_samples=None):
         """Construct a NewtonOptimizer.
 
         :param domain: the domain that this optimizer operates over
         :type domain: interfaces.domain_interface.DomainInterface subclass from cpp_wrappers
         :param optimizable: object representing the objective function being optimized
         :type optimizable: interfaces.optimization_interface.OptimizableInterface subclass from cpp_wrappers
-        :param optimization_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
-        :type optimization_parameters: cpp_wrappers.optimization.NewtonParameters object
+        :param optimizer_parameters: parameters describing how to perform optimization (tolerances, iterations, etc.)
+        :type optimizer_parameters: cpp_wrappers.optimization.NewtonParameters object
         :params num_random_samples: number of random samples to use if performing 'dumb' search
         :type num_random_sampes: int >= 0
 
@@ -494,12 +463,12 @@ class NewtonOptimizer(OptimizerInterface):
         self.domain = domain
         self.objective_function = optimizable
         self.optimizer_type = C_GP.OptimizerTypes.newton
-        self.optimization_parameters = _CppOptimizationParameters(
+        self.optimizer_parameters = _CppOptimizerParameters(
             domain_type=domain._domain_type,
             objective_type=optimizable.objective_type,
             optimizer_type=self.optimizer_type,
             num_random_samples=num_random_samples,
-            optimizer_parameters=optimization_parameters,
+            optimizer_parameters=optimizer_parameters,
         )
 
     def optimize(self, **kwargs):

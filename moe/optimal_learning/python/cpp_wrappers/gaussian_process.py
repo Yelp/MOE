@@ -3,7 +3,7 @@
 
 This file contains a class to manipulate a Gaussian Process through the C++ implementation (gpp_math.hpp/cpp).
 
-See interfaces.gaussian_process_interface.py for more details.
+See :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface` for more details.
 
 """
 import copy
@@ -19,7 +19,8 @@ class GaussianProcess(GaussianProcessInterface):
 
     r"""Implementation of a GaussianProcess via C++ wrappers: mean, variance, gradients thereof, and data I/O.
 
-    .. Note:: Comments in this class are copied from this object's superclass in interfaces.gaussian_process_interface.py.
+    .. Note:: Comments in this class are copied from
+      :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface`
 
     Object that encapsulates Gaussian Process Priors (GPPs).  A GPP is defined by a set of
     (sample point, function value, noise variance) triples along with a covariance function that relates the points.
@@ -56,9 +57,10 @@ class GaussianProcess(GaussianProcessInterface):
         """Construct a GaussianProcess object that knows how to call C++ for evaluation of member functions.
 
         :param covariance_function: covariance object encoding assumptions about the GP's behavior on our data
-        :type covariance_function: Covariance object exposing hyperparameters (e.g., from cpp_wrappers.covariance)
+        :type covariance_function: :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface` subclass
+          (e.g., from :mod:`moe.optimal_learning.python.cpp_wrappers.covariance`).
         :param historical_data: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
-        :type historical_data: HistoricalData object
+        :type historical_data: :class:`moe.optimal_learning.python.data_containers.HistoricalData` object
 
         """
         self._covariance = copy.deepcopy(covariance_function)
@@ -67,30 +69,54 @@ class GaussianProcess(GaussianProcessInterface):
 
         # C++ will maintain its own copy of the contents of hyperparameters and historical_data
         self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
+            cpp_utils.cppify_hyperparameters(self._covariance.hyperparameters),
             cpp_utils.cppify(historical_data.points_sampled),
             cpp_utils.cppify(historical_data.points_sampled_value),
             cpp_utils.cppify(historical_data.points_sampled_noise_variance),
-            self.dim,
-            self.num_sampled,
+            self._historical_data.dim,
+            self._historical_data.num_sampled,
         )
 
     @property
     def dim(self):
         """Return the number of spatial dimensions."""
-        return self._historical_data.dim
+        return self._gaussian_process.dim
 
     @property
     def num_sampled(self):
         """Return the number of sampled points."""
-        return self._historical_data.num_sampled
+        return self._gaussian_process.num_sampled
+
+    def get_covariance_copy(self):
+        """Return a copy of the covariance object specifying the Gaussian Process.
+
+        :return: covariance object encoding assumptions about the GP's behavior on our data
+        :rtype: interfaces.covariance_interface.CovarianceInterface subclass
+
+        """
+        return copy.deepcopy(self._covariance)
+
+    @property
+    def _points_sampled_value(self):
+        """Return the function values measured at each of points_sampled; see :class:`moe.optimal_learning.python.data_containers.HistoricalData`."""
+        return self._historical_data.points_sampled_value
+
+    def get_historical_data_copy(self):
+        """Return the data (points, function values, noise) specifying the prior of the Gaussian Process.
+
+        :return: object specifying the already-sampled points, the objective value at those points, and the noise variance associated with each observation
+        :rtype: data_containers.HistoricalData
+
+        """
+        return copy.deepcopy(self._historical_data)
 
     def compute_mean_of_points(self, points_to_sample):
         r"""Compute the mean of this GP at each of point of ``Xs`` (``points_to_sample``).
 
         ``points_to_sample`` may not contain duplicate points. Violating this results in singular covariance matrices.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_mean_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -98,8 +124,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: array of float64 with shape (num_to_sample)
 
         """
-        mu = C_GP.get_mean(
-            self._gaussian_process,
+        mu = self._gaussian_process.compute_mean_of_points(
             cpp_utils.cppify(points_to_sample),
             points_to_sample.shape[0],
         )
@@ -116,7 +141,8 @@ class GaussianProcess(GaussianProcessInterface):
         (See references or implementation for further details.)
         Thus, ``grad_mu`` is stored in a reduced form which only tracks the nonzero entries.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_mean_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -128,8 +154,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
-        grad_mu = C_GP.get_grad_mean(
-            self._gaussian_process,
+        grad_mu = self._gaussian_process.compute_grad_mean_of_points(
             cpp_utils.cppify(points_to_sample[:num_derivatives, ...]),
             num_derivatives,
         )
@@ -142,7 +167,8 @@ class GaussianProcess(GaussianProcessInterface):
 
         The variance matrix is symmetric although we currently return the full representation.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -151,8 +177,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_to_sample = points_to_sample.shape[0]
-        variance = C_GP.get_var(
-            self._gaussian_process,
+        variance = self._gaussian_process.compute_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
@@ -170,8 +195,7 @@ class GaussianProcess(GaussianProcessInterface):
 
         """
         num_to_sample = points_to_sample.shape[0]
-        cholesky_variance = C_GP.get_chol_var(
-            self._gaussian_process,
+        cholesky_variance = self._gaussian_process.compute_cholesky_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
         )
@@ -185,7 +209,8 @@ class GaussianProcess(GaussianProcessInterface):
         This function is similar to compute_grad_cholesky_variance_of_points() (below), except this does not include
         gradient terms from the cholesky factorization. Description will not be duplicated here.
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -198,8 +223,7 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        grad_variance = C_GP.get_grad_var(
-            self._gaussian_process,
+        grad_variance = self._gaussian_process.compute_grad_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
             num_derivatives,
@@ -219,7 +243,8 @@ class GaussianProcess(GaussianProcessInterface):
         Let this be indexed ``grad_chol[k][j][i][d]``, which is read the derivative of ``var[j][i]``
         with respect to ``x_{k,d}`` (x = ``points_to_sample``)
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.compute_grad_cholesky_variance_of_points`
 
         :param points_to_sample: num_to_sample points (in dim dimensions) being sampled from the GP
         :type points_to_sample: array of float64 with shape (num_to_sample, dim)
@@ -234,8 +259,7 @@ class GaussianProcess(GaussianProcessInterface):
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         num_to_sample = points_to_sample.shape[0]
 
-        grad_chol_decomp = C_GP.get_grad_chol_var(
-            self._gaussian_process,
+        grad_chol_decomp = self._gaussian_process.compute_grad_cholesky_variance_of_points(
             cpp_utils.cppify(points_to_sample),
             num_to_sample,
             num_derivatives,
@@ -247,22 +271,22 @@ class GaussianProcess(GaussianProcessInterface):
 
         Also forces recomputation of all derived quantities for GP to remain consistent.
 
-        TOOD(eliu): figure out how to deal with single or list of points (or not deal with it)
-
-        :param sampled_points: SampledPoint objects to load into the GP (containing point, function value, and noise variance)
-        :type sampled_points: single SampledPoint or list of SampledPoint objects
+        :param sampled_points: :class:`moe.optimal_learning.python.SamplePoint` objects to load
+          into the GP (containing point, function value, and noise variance)
+        :type sampled_points: list of :class:`~moe.optimal_learning.python.SamplePoint` objects (or SamplePoint-like iterables)
 
         """
-        # TODO(eliu): add hook to actual C++ function to make this more efficient than rebuilding the whole GP object
+        # TODO(GH-159): When C++ can pass back numpy arrays, we can stop keeping a duplicate in self._historical_data.
+        num_sampled_prev = self.num_sampled
+        num_to_add = len(sampled_points)
         self._historical_data.append_sample_points(sampled_points)
 
-        self._gaussian_process = C_GP.GaussianProcess(
-            cpp_utils.cppify_hyperparameters(self._covariance.get_hyperparameters()),
-            cpp_utils.cppify(self._historical_data.points_sampled),
-            cpp_utils.cppify(self._historical_data.points_sampled_value),
-            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance),
-            self.dim,
-            self.num_sampled,
+        # new_historical_data = HistoricalData(self.dim, sampled_points)
+        self._gaussian_process.add_sampled_points(
+            cpp_utils.cppify(self._historical_data.points_sampled[num_sampled_prev:, ...]),
+            cpp_utils.cppify(self._historical_data.points_sampled_value[num_sampled_prev:]),
+            cpp_utils.cppify(self._historical_data.points_sampled_noise_variance[num_sampled_prev:]),
+            num_to_add,
         )
 
     def sample_point_from_gp(self, point_to_sample, noise_variance=0.0):
@@ -271,14 +295,15 @@ class GaussianProcess(GaussianProcessInterface):
         Uses the formula ``function_value = gpp_mean + sqrt(gpp_variance) * w1 + sqrt(noise_variance) * w2``, where ``w1, w2``
         are draws from N(0,1).
 
-        Implementers are responsible for providing a N(0,1) source.
+        Normal RNG source is held within the C++ GaussianProcess object.
 
         .. NOTE::
              Set noise_variance to 0 if you want "accurate" draws from the GP.
              BUT if the drawn (point, value) pair is meant to be added back into the GP (e.g., for testing), then this point
              MUST be drawn with noise_variance equal to the noise associated with "point" as a member of "points_sampled"
 
-        .. Note:: Comments in this class are copied from this's superclass in interfaces.gaussian_process_interface.py.
+        .. Note:: Comments are copied from
+          :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface.GaussianProcessInterface.sample_point_from_gp`
 
         :param point_to_sample: point (in dim dimensions) at which to sample from this GP
         :type points_to_sample: array of float64 with shape (dim)
@@ -288,9 +313,7 @@ class GaussianProcess(GaussianProcessInterface):
         :rtype: float64
 
         """
-        # TODO(eliu): C++ has a native implementation of this function; make a wrapper and call that directly
-        point = numpy.array(point_to_sample, copy=False, ndmin=2)
-        mean = self.compute_mean_of_points(point)[0]
-        variance = self.compute_variance_of_points(point)[0][0]
-
-        return mean + numpy.sqrt(variance) * numpy.random.normal() + numpy.sqrt(noise_variance) * numpy.random.normal()
+        return self._gaussian_process.sample_point_from_gp(
+            cpp_utils.cppify(point_to_sample),
+            noise_variance,
+        )

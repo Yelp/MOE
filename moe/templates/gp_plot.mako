@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_mean_var"><strong><code>gp_mean_var</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#moe.views.rest.gp_mean_var.GpMeanVarDiagView"><strong><code>gp_mean_var_diag</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-6 middle-text">
                         Endpoint(s):
-                        <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
+                        <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei"><strong><code>gp_ei</code></strong></a> and <a href="http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_next_points_epi"><strong><code>gp_next_points_epi</code></strong></a>
                         <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="The endpoint(s) (and docs) used to generate the below graph." data-placement="top"><span>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <span class="glyphicon glyphicon-question-sign tooltip-rdy small" data-original-title="Controls how many Gradient Descent (GD) steps the SGD algorithm will take for each multistart. Higher values will resolve individual local optima more." data-placement="bottom"><span>
                 </label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimization_parameters.max_num_steps }">
+                  <input class="form-control" id="opt-gd-iterations" value="${ default_ei_optimizer_parameters.max_num_steps }">
                 </div>
               </div>
             </form>
@@ -129,58 +129,55 @@
     </div>
 </div>
 
+<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/gp_plot.js')}"></script>
+<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/exception.js')}"></script>
 <script>
-var points_sampled = [];
+var optimalLearning = optimalLearning || {};
 
-function update_points_sampled(){
-    $('#points-sampled ul').html('');
-    for (i in points_sampled){
-        point = points_sampled[i];
-        $('#points-sampled ul').append('<li id=' + i + '>f(' + point.point[0].toFixed(4) + ') = ' + point.value.toFixed(4) + ' &plusmn ' + point.value_var.toFixed(4) + ' <a class="itemDelete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></li>');
-    }
-    update_graphs();
+/*
+ *  normRand: returns normally distributed random numbers
+ */
+optimalLearning.normRand = function() {
+  var x1, x2, rad;
 
-    $('.itemDelete').click(function() {
-        var idx = $.parseJSON($(this).closest('li')[0].id);
-        points_sampled.splice(idx, 1);
-        console.log(points_sampled);
-        update_points_sampled();
-    });
-}
+  do {
+      x1 = 2 * Math.random() - 1;
+      x2 = 2 * Math.random() - 1;
+      rad = x1 * x1 + x2 * x2;
+  } while(rad >= 1 || rad == 0);
 
-$("#add-point").click(function() {
-    points_sampled.push(
-        {
-            'point': [
-                $.parseJSON($("#x1").val())
-                ],
-            'value': $.parseJSON($("#y1").val()),
-            'value_var': $.parseJSON($("#v1").val()),
-        }
-    );
-    console.log(points_sampled);
-    update_points_sampled();
-});
+  var c = Math.sqrt(-2 * Math.log(rad) / rad);
 
-update_points_sampled();
+  return x1 * c;
+};
 
-console.log(points_sampled);
+optimalLearning.pointsSampled = [];
 
-$("#submit").click(function() {
-    update_graphs();
-});
-
-function update_graphs(){
+optimalLearning.updateGraphs = function() {
     var xvals = [];
     for (i = 0; i <= 200; i++) {
         xvals.push( [i / 200.0] );
     }
 
-    var post_data = {
-        'points_to_sample': xvals,
+    var gp_post_data = {
         'points_to_evaluate': xvals,
         'gp_historical_info': {
-            'points_sampled': points_sampled,
+            'points_sampled': optimalLearning.pointsSampled,
+            },
+        'domain_info': {
+            'dim': 1,
+            },
+        'covariance_info': {
+            'covariance_type': 'square_exponential',
+            'hyperparameters': [
+                $.parseJSON($('#hyperparameters-alpha').val()),
+                $.parseJSON($('#hyperparameters-length').val())
+                ],
+            },
+        }
+    var gp_optimize_post_data = {
+        'gp_historical_info': {
+            'points_sampled': optimalLearning.pointsSampled,
             },
         'domain_info': {
             'dim': 1,
@@ -195,52 +192,44 @@ function update_graphs(){
                 $.parseJSON($('#hyperparameters-length').val())
                 ],
             },
-        'optimization_info':{
-            'optimization_type': 'gradient_descent_optimizer',
+        'optimizer_info':{
+            'optimizer_type': 'gradient_descent_optimizer',
             'num_multistarts': $.parseJSON($('#opt-num-multistarts').val()),
             'num_random_samples': 400,
-            'optimization_parameters': {
+            'optimizer_parameters': {
                 'max_num_steps': $.parseJSON($('#opt-gd-iterations').val()),
                 },
             },
         }
 
-    console.log(post_data);
-
     var gp_data, ei_raw_data, next_points_raw_data, single_point_gp_data;
     var jqxhr1 = $.post(
-        "${request.route_url('gp_mean_var')}",
-        JSON.stringify(post_data),
+        "${request.route_url('gp_mean_var_diag')}",
+        JSON.stringify(gp_post_data),
         function( data ) {
             gp_data = data;
         }
     );
-    jqxhr1.fail(function() {
-        alert("500 error gp_mean_var");
-    });
+    jqxhr1.fail(optimalLearning.errorAlert);
 
     var jqxhr2 = $.post(
         "${request.route_url('gp_ei')}",
-        JSON.stringify(post_data),
+        JSON.stringify(gp_post_data),
         function( data ) {
             ei_raw_data = data;
         }
     );
-    jqxhr2.fail(function() {
-        alert("500 error gp_ei");
-    });
+    jqxhr2.fail(optimalLearning.errorAlert);
 
-    post_data['num_to_sample'] = 1;
+    gp_optimize_post_data['num_to_sample'] = 1;
     var jqxhr3 = $.post(
         "${request.route_url('gp_next_points_epi')}",
-        JSON.stringify(post_data),
+        JSON.stringify(gp_optimize_post_data),
         function( data ) {
             next_points_raw_data = data;
         }
     );
-    jqxhr3.fail(function() {
-        alert("500 error gp_next_points_epi");
-    });
+    jqxhr3.fail(optimalLearning.errorAlert);
 
     $("#loading-screen").html('<h1>Processing...</h1><div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">100% Complete</span></div></div>');
     
@@ -253,50 +242,70 @@ function update_graphs(){
             jqxhr2.done(function() {
                 $(".gp-graph").html("");
                 $(".ei-graph").html("");
-                plot_graphs(gp_data, ei_raw_data, xvals, points_sampled, next_points_raw_data['points_to_sample'][0][0]);
+                optimalLearning.plotGraphs(gp_data, ei_raw_data, xvals, optimalLearning.pointsSampled, next_points_raw_data['points_to_sample'][0][0]);
             });
         });
 
         var single_point_gp_data;
-        post_data['points_to_sample'] = next_points_raw_data['points_to_sample'];
+        gp_post_data['points_to_evaluate'] = next_points_raw_data['points_to_sample'];
         var jqxhr4 = $.post(
-            "${request.route_url('gp_mean_var')}",
-            JSON.stringify(post_data),
+            "${request.route_url('gp_mean_var_diag')}",
+            JSON.stringify(gp_post_data),
             function( data ) {
                 single_point_gp_data = data;
             }
         );
-        jqxhr4.fail(function() {
-            alert("500 error gp_mean_var of gp_next_points_epi");
-        });
+        jqxhr4.fail(optimalLearning.errorAlert);
 
         jqxhr4.done(function() {
-            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0][0]) * normRand();
+            var y_value = $.parseJSON(single_point_gp_data['mean'][0]) + $.parseJSON(single_point_gp_data['var'][0]) * optimalLearning.normRand();
             $("#y1").val(y_value.toFixed(4));
             $("#v1").val('0.1000');
         });
     });
-}
-
-/*
- *  normRand: returns normally distributed random numbers
- */
-function normRand() {
-    var x1, x2, rad;
- 
-    do {
-        x1 = 2 * Math.random() - 1;
-        x2 = 2 * Math.random() - 1;
-        rad = x1 * x1 + x2 * x2;
-    } while(rad >= 1 || rad == 0);
- 
-    var c = Math.sqrt(-2 * Math.log(rad) / rad);
- 
-    return x1 * c;
 };
+
+optimalLearning.updatePointsSampled = function() {
+    $('#points-sampled ul').html('');
+    for (i in optimalLearning.pointsSampled){
+        point = optimalLearning.pointsSampled[i];
+        $('#points-sampled ul').append('<li id=' + i + '>f(' + point.point[0].toFixed(4) + ') = ' + point.value.toFixed(4) + ' &plusmn ' + point.value_var.toFixed(4) + ' <a class="itemDelete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></li>');
+    }
+    optimalLearning.updateGraphs();
+
+    $('.itemDelete').click(function() {
+        var idx = $.parseJSON($(this).closest('li')[0].id);
+        optimalLearning.pointsSampled.splice(idx, 1);
+        console.log(optimalLearning.pointsSampled);
+        optimalLearning.updatePointsSampled();
+    });
+};
+
+optimalLearning.addPointClickAction = function() {
+  optimalLearning.pointsSampled.push(
+      {
+          'point': [
+              $.parseJSON($("#x1").val())
+              ],
+          'value': $.parseJSON($("#y1").val()),
+          'value_var': $.parseJSON($("#v1").val()),
+      }
+  );
+  console.log(optimalLearning.pointsSampled);
+  optimalLearning.updatePointsSampled();
+};
+
+$("#add-point").click(optimalLearning.addPointClickAction);
+
+optimalLearning.updatePointsSampled();
+
+console.log(optimalLearning.pointsSampled);
+
+$("#submit").click(function() {
+    optimalLearning.updateGraphs();
+});
 
 $(document).ready(function() {
     $(".tooltip-rdy").tooltip();
 });
 </script>
-<script language="javascript" type="text/javascript" src="${request.static_url('moe:static/js/gp_plot.js')}"></script>

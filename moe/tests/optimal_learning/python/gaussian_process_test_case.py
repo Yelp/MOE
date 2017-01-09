@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Base test case for tests that manipulate Gaussian Process data and supporting structures."""
+import pytest
+
 import collections
 
 import numpy
-
-import testify as T
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -17,7 +17,6 @@ from moe.tests.optimal_learning.python.optimal_learning_test_case import Optimal
 # See GaussianProcessTestEnvironment (below) for docstring.
 _BaseGaussianProcessTestEnvironment = collections.namedtuple('GaussianProcessTestEnvironment', [
     'domain',
-    'covariance',
     'gaussian_process',
 ])
 
@@ -27,7 +26,6 @@ class GaussianProcessTestEnvironment(_BaseGaussianProcessTestEnvironment):
     """An object for representing a (randomly generated) Gaussian Process.
 
     :ivar domain: (*interfaces.domain_interface.DomainInterface subclass*) domain the GP was built on
-    :ivar covariance: (*interfaces.covariance_interface.CovarianceInterface subclass*) covariance function of the GP
     :ivar gaussian_process: (*interfaces.gaussian_process_interface.GaussianProcessInterface subclass*) the constructed GP
 
     """
@@ -45,7 +43,20 @@ class GaussianProcessTestEnvironmentInput(object):
 
     """
 
-    def __init__(self, dim, num_hyperparameters, num_sampled, noise_variance_base=0.0, hyperparameter_interval=ClosedInterval(0.2, 1.3), lower_bound_interval=ClosedInterval(-2.0, 0.5), upper_bound_interval=ClosedInterval(2.0, 3.5), covariance_class=SquareExponential, spatial_domain_class=TensorProductDomain, hyperparameter_domain_class=TensorProductDomain, gaussian_process_class=GaussianProcess):
+    def __init__(
+            self,
+            dim,
+            num_hyperparameters,
+            num_sampled,
+            noise_variance_base=0.0,
+            hyperparameter_interval=ClosedInterval(0.2, 1.3),
+            lower_bound_interval=ClosedInterval(-2.0, 0.5),
+            upper_bound_interval=ClosedInterval(2.0, 3.5),
+            covariance_class=SquareExponential,
+            spatial_domain_class=TensorProductDomain,
+            hyperparameter_domain_class=TensorProductDomain,
+            gaussian_process_class=GaussianProcess,
+    ):
         """Create a test environment: object with enough info to construct a Gaussian Process prior from repeated random draws.
 
         :param dim: number of (expected) spatial dimensions; None to skip check
@@ -133,32 +144,34 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
         gaussian_process_class=GaussianProcess,
     )
 
-    num_sampled_list = [1, 2, 3, 5, 10, 16, 20, 42]
-    num_to_sample_list = [1, 2, 3, 8]
+    num_sampled_list = (1, 2, 3, 5, 10, 16, 20, 42)
+    num_to_sample_list = (1, 2, 3, 8)
 
-    @T.class_setup
-    def base_setup(self):
-        """Build a Gaussian Process prior for each problem size in ``self.num_sampled_list`` if precomputation is desired.
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
+        """Build a Gaussian Process prior for each problem size in ``cls.num_sampled_list`` if precomputation is desired.
 
         **Requires**
 
-        * self.num_sampled_list: (*list of int*) problem sizes to consider
-        * self.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
+        * cls.num_sampled_list: (*list of int*) problem sizes to consider
+        * cls.gp_test_environment_input: (*GaussianProcessTestEnvironmentInput*) specification of how to build the
           gaussian process prior
 
         **Outputs**
 
-        * self.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
-          specified problem sizes (``self.num_sampled_list``)
+        * cls.gp_test_environments: (*list of GaussianProcessTestEnvironment*) gaussian process data for each of the
+          specified problem sizes (``cls.num_sampled_list``)
 
         """
-        if self.precompute_gaussian_process_data:
-            self.gp_test_environments = []
-            for num_sampled in self.num_sampled_list:
-                self.gp_test_environment_input.num_sampled = num_sampled
-                self.gp_test_environments.append(self._build_gaussian_process_test_data(self.gp_test_environment_input))
+        if cls.precompute_gaussian_process_data:
+            cls.gp_test_environments = []
+            for num_sampled in cls.num_sampled_list:
+                cls.gp_test_environment_input.num_sampled = num_sampled
+                cls.gp_test_environments.append(cls._build_gaussian_process_test_data(cls.gp_test_environment_input))
 
-    def _build_gaussian_process_test_data(self, test_environment):
+    @staticmethod
+    def _build_gaussian_process_test_data(test_environment):
         """Build up a Gaussian Process randomly by repeatedly drawing from and then adding to the prior.
 
         :param test_environment: parameters describing how to construct a GP prior
@@ -173,7 +186,11 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             covariance_type=test_environment.covariance_class,
         )
 
-        domain_bounds = gp_utils.fill_random_domain_bounds(test_environment.lower_bound_interval, test_environment.upper_bound_interval, test_environment.dim)
+        domain_bounds = gp_utils.fill_random_domain_bounds(
+            test_environment.lower_bound_interval,
+            test_environment.upper_bound_interval,
+            test_environment.dim,
+        )
         domain = test_environment.spatial_domain_class(ClosedInterval.build_closed_intervals_from_list(domain_bounds))
         points_sampled = domain.generate_uniform_random_points_in_domain(test_environment.num_sampled)
 
@@ -183,4 +200,4 @@ class GaussianProcessTestCase(OptimalLearningTestCase):
             noise_variance=test_environment.noise_variance,
             gaussian_process_type=test_environment.gaussian_process_class,
         )
-        return GaussianProcessTestEnvironment(domain, covariance, gaussian_process)
+        return GaussianProcessTestEnvironment(domain, gaussian_process)

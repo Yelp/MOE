@@ -1,6 +1,8 @@
 /*!
   \file gpp_expected_improvement_demo.cpp
   \rst
+  ``moe/optimal_learning/cpp/gpp_expected_improvement_demo.cpp``
+
   This is a demo for the Gaussian Process and (optimization of) Expected Improvement
   capabilities present in this project.  These capabilities live in gpp_math.
 
@@ -43,7 +45,8 @@
 #include "gpp_domain.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimization.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"
 
@@ -79,6 +82,7 @@ int main() {
 
   // multithreading
   int max_num_threads = 1;  // feel free to experiment with different numbers
+  ThreadSchedule thread_schedule(max_num_threads, omp_sched_dynamic);
 
   // set up RNG containers
   int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};  // arbitrarily used digits of pi as seeds
@@ -148,9 +152,11 @@ int main() {
   domain.GenerateUniformPointsInDomain(num_sampled, &uniform_generator, points_sampled.data());
 
   // build an empty GP: since num_sampled (last arg) is 0, none of the data arrays will be used here
-  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, 0);
+  GaussianProcess gp_generator(covariance_original, points_sampled.data(), points_sampled_value.data(),
+                               noise_variance.data(), dim, 0);
   // fill the GP with randomly generated data
-  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled, points_sampled_value.data(), &gp_generator);
+  FillRandomGaussianProcess(points_sampled.data(), noise_variance.data(), dim, num_sampled,
+                            points_sampled_value.data(), &gp_generator);
 
   // set points_being_sampled
   // doing this arbitrarily here, but you could imagine running EI opt once with 0 points_being_sampled,
@@ -173,12 +179,14 @@ int main() {
   std::vector<double> hyperparameters_perturbed(covariance_original.GetNumberOfHyperparameters());
   boost::uniform_real<double> uniform_double_for_wrong_hyperparameter(0.01, 5.0);
   CovarianceClass covariance_perturbed(dim, 1.0, 1.0);
-  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator, &hyperparameters_perturbed, &covariance_perturbed);
+  FillRandomCovarianceHyperparameters(uniform_double_for_wrong_hyperparameter, &uniform_generator,
+                                      &hyperparameters_perturbed, &covariance_perturbed);
 
   // Note: with random data generation, technically we already have the GP ready since
   // we have been progressively adding new points to it.  Still we will construct a new GP
   // for the purpose of demonstration
-  GaussianProcess gp(covariance_perturbed, points_sampled.data(), points_sampled_value.data(), noise_variance.data(), dim, num_sampled);
+  GaussianProcess gp(covariance_perturbed, points_sampled.data(), points_sampled_value.data(),
+                     noise_variance.data(), dim, num_sampled);
 
   // remaining inputs to EI optimization
   double best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());  // this is simply the best function value seen to date
@@ -191,7 +199,10 @@ int main() {
   int num_multistarts = 30;  // max number of multistarted locations
   int max_num_steps = 500;  // maximum number of GD iterations per restart
   int max_num_restarts = 20;  // number of restarts to run with GD
-  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  int num_steps_averaged = 0;  // number of steps to use in polyak-ruppert averaging
+  GradientDescentParameters gd_params(num_multistarts, max_num_steps, max_num_restarts,
+                                      num_steps_averaged, gamma,
+                                      pre_mult, max_relative_change, tolerance);
   // so the total number of GD iterations is at most:
   // num_multistarts * max_num_restarts * max_num_steps
 
@@ -217,7 +228,11 @@ int main() {
   printf(OL_ANSI_COLOR_CYAN "OPTIMIZING EXPECTED IMPROVEMENT...\n" OL_ANSI_COLOR_RESET);
   std::vector<double> next_point_winner(dim);
   bool found_flag = false;
-  ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, best_so_far, max_int_steps, max_num_threads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point_winner.data());
+  ComputeOptimalPointsToSampleWithRandomStarts(gp, gd_params, domain, thread_schedule,
+                                               points_being_sampled.data(), num_to_sample,
+                                               num_being_sampled, best_so_far, max_int_steps,
+                                               &found_flag, &uniform_generator, normal_rng_vec.data(),
+                                               next_point_winner.data());
   printf(OL_ANSI_COLOR_CYAN "EI OPTIMIZATION FINISHED. Success status: %s\n" OL_ANSI_COLOR_RESET, found_flag ? "True" : "False");
   printf("Next best sample point according to EI:\n");
   PrintMatrix(next_point_winner.data(), 1, dim);

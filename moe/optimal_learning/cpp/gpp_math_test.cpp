@@ -11,7 +11,7 @@
         evaluating those functions + their spatial gradients.
 
         Some Pingable classes for GP functions are less general than their gpp_covariance_test or
-        gpp_model_selection_and_hyperparameter_optimization_test counterparts, since GP derivative functions sometimes return sparse
+        gpp_model_selection_test counterparts, since GP derivative functions sometimes return sparse
         or incomplete data (e.g., gradient of mean returned as a vector instead of a diagonal matrix; gradient of variance
         only differentiates wrt a single point at a time); hence we need specialized handlers for testing.
      b. Ping for derivative accuracy (PingGPComponentTest, PingEITest); these unit test the analytic derivatives.
@@ -35,6 +35,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -46,12 +47,12 @@
 #include "gpp_domain.hpp"
 #include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
-#include "gpp_linear_algebra_test.hpp"
+#include "gpp_linear_algebra.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_math.hpp"
 #include "gpp_mock_optimization_objective_functions.hpp"
 #include "gpp_optimization.hpp"
-#include "gpp_optimization_parameters.hpp"
+#include "gpp_optimizer_parameters.hpp"
 #include "gpp_random.hpp"
 #include "gpp_test_utils.hpp"
 
@@ -125,7 +126,7 @@ class PingGPPMean final : public PingableMatrixInputVectorOutputInterface {
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPMean::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     if (column_index == output_index) {
@@ -219,13 +220,13 @@ class PingGPPVariance final : public PingableMatrixInputVectorOutputInterface {
     gaussian_process_.ComputeGradVarianceOfPoints(&points_to_sample_state, grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -318,18 +319,18 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> variance_of_points(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, variance_of_points.data());
-    ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, variance_of_points.data());
 
     gaussian_process_.ComputeGradCholeskyVarianceOfPoints(&points_to_sample_state, variance_of_points.data(), grad_variance_.data());
 
     if (gradients != nullptr) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::EvaluateAndStoreAnalyticGradient() does not support direct gradient output.");
     }
   }
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int output_index) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingGPPCholeskyVariance::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_variance_[column_index*Square(num_to_sample_)*dim_ + output_index*dim_ + row_index];
@@ -340,7 +341,7 @@ class PingGPPCholeskyVariance final : public PingableMatrixInputVectorOutputInte
     GaussianProcess::StateType points_to_sample_state(gaussian_process_, points_to_sample, num_to_sample_, num_derivatives);
     std::vector<double> chol_temp(Square(num_to_sample_));
     gaussian_process_.ComputeVarianceOfPoints(&points_to_sample_state, chol_temp.data());
-    ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
+    int OL_UNUSED(chol_info) = ComputeCholeskyFactorL(num_to_sample_, chol_temp.data());
     ZeroUpperTriangle(num_to_sample_, chol_temp.data());
     MatrixTranspose(chol_temp.data(), num_to_sample_, num_to_sample_, function_values);
   }
@@ -429,7 +430,7 @@ class PingExpectedImprovement final : public PingableMatrixInputVectorOutputInte
 
   virtual double GetAnalyticGradient(int row_index, int column_index, int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[column_index*dim_ + row_index];
@@ -532,7 +533,7 @@ class PingOnePotentialSampleExpectedImprovement final : public PingableMatrixInp
 
   virtual double GetAnalyticGradient(int row_index, int OL_UNUSED(column_index), int OL_UNUSED(output_index)) const override OL_WARN_UNUSED_RESULT {
     if (gradients_already_computed_ == false) {
-      OL_THROW_EXCEPTION(RuntimeException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
+      OL_THROW_EXCEPTION(OptimalLearningException, "PingOnePotentialSampleExpectedImprovement::GetAnalyticGradient() called BEFORE EvaluateAndStoreAnalyticGradient. NO DATA!");
     }
 
     return grad_EI_[row_index];
@@ -648,7 +649,6 @@ int PingGPMeanTest() {
     number of ping/test failures
 \endrst*/
 int PingGPVarianceTest() {
-  // TODO(eliu): look at improving ping testing so that we can improve tolerances to ~1.0e-3 or better (#43006)
   double epsilon_gp_variance[2] = {5.32879e-3, 0.942478e-3};
   int total_errors = PingGPComponentTest<PingGPPVariance>(epsilon_gp_variance, 2.0e-2, 4.0e-1, 1.0e-18);
   return total_errors;
@@ -661,7 +661,6 @@ int PingGPVarianceTest() {
     number of ping/test failures
 \endrst*/
 int PingGPCholeskyVarianceTest() {
-  // TODO(eliu): look at improving ping testing so that we can improve tolerances to ~1.0e-3 or better (#43006)
   double epsilon_gp_variance[2] = {5.5e-3, 0.932e-3};
   int total_errors = PingGPComponentTest<PingGPPCholeskyVariance>(epsilon_gp_variance, 9.0e-3, 3.0e-1, 1.0e-18);
   return total_errors;
@@ -757,6 +756,116 @@ int PingEIOnePotentialSampleTest() {
 }
 
 /*!\rst
+  Test cases where analytic EI would attempt to compute 0/0 without variance lower bounds.
+
+  The bounds are OnePotentialSampleExpectedImprovementEvaluator::kMinimumVarianceEI and
+  kMinimumVarianceGradEI. See those class docs for more details.
+
+  These particular test cases arose from plotting EI (easy since dim = 1) and checking
+  that EI and grad_EI were being computed appropriately at the specified locations.
+  The test cases are purposely simple; the requirement was that they trigger behavior
+  that would result in 0/0 without minimum variance thresholds.
+
+  Without the aforementioned thresholds, 1D analytic EI could attempt
+  ``0/0 = (best_so_far - gp_mean) / sqrt(gp_variance)``
+  The easiest way to do cause these conditions is to compute EI at (or near) one of
+  points_sampled such that ``gp_mean == best_so_far`` and ``gp_variance == 0``.
+  (Although these conditions can arise elsewhere; try plotting the test case in the code.)
+
+  \return
+    number of test failures
+\endrst*/
+int EIOnePotentialSampleEdgeCasesTest() {
+  int total_errors = 0;
+
+  const int dim = 1;
+  const double base_coord = 0.5;
+  std::vector<double> points_sampled = {base_coord, 2.0 * base_coord};
+  std::vector<double> points_sampled_value = {-1.809342, -1.09342};
+  std::vector<double> noise_variance = {0.0, 0.0};
+  auto best_so_far = *std::min_element(points_sampled_value.begin(), points_sampled_value.end());
+
+  SquareExponential covariance(dim, 0.2, 0.3);
+  // First a symmetric case: only one historical point
+  GaussianProcess gaussian_process(covariance, points_sampled.data(), points_sampled_value.data(),
+                                   noise_variance.data(), dim, 1);
+
+  double point_to_sample = base_coord;
+
+  OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(gaussian_process, best_so_far);
+  bool configure_for_gradients = true;
+  OnePotentialSampleExpectedImprovementState ei_state(ei_evaluator, &point_to_sample,
+                                                      configure_for_gradients);
+
+  double ei;
+  double grad_ei;
+
+  ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+  ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &grad_ei);
+
+  // check that EI and gradient are 0 when computed at the one historical data point
+  double tolerance = 4.0 * std::numeric_limits<double>::epsilon();
+  if (!CheckDoubleWithinRelative(ei, 0.0, tolerance)) {
+    ++total_errors;
+  }
+  if (!CheckDoubleWithinRelative(grad_ei, 0.0, tolerance)) {
+    ++total_errors;
+  }
+
+  // Compute ei at point_to_sample +/- shifts and check for equality
+  {
+    double left_ei, right_ei;
+    double left_grad_ei, right_grad_ei;
+    std::vector<double> shifts = {1.0e-15, 4.0e-11, 3.14e-6, 8.89e-1, 2.71};
+
+    for (auto shift : shifts) {
+      point_to_sample = base_coord - shift;
+      ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
+      left_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &left_grad_ei);
+
+      point_to_sample = base_coord + shift;
+      ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
+      right_ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+      ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &right_grad_ei);
+
+      if (!CheckDoubleWithinRelative(left_ei, right_ei, 0.0)) {
+        ++total_errors;
+      }
+      if (!CheckDoubleWithinRelative(left_grad_ei, -right_grad_ei, 0.0)) {
+          ++total_errors;
+      }
+    }  // end for shift : shifts
+  }  // end ei symmetry check
+
+  // Now introduce some asymmetry with a second point
+  // Right side has a larger objetive value, so the EI minimum
+  // is shifted *slightly* to the left of best_so_far.
+  gaussian_process.AddPointsToGP(points_sampled.data() + dim, &points_sampled_value[1], &noise_variance[1], 1);
+
+  double shift = 3.0e-12;
+  point_to_sample = base_coord - shift;
+  ei_state.SetCurrentPoint(ei_evaluator, &point_to_sample);
+  ei = ei_evaluator.ComputeExpectedImprovement(&ei_state);
+  ei_evaluator.ComputeGradExpectedImprovement(&ei_state, &grad_ei);
+
+  if (!CheckDoubleWithinRelative(ei, 0.0, 0.0)) {
+    ++total_errors;
+  }
+  if (!CheckDoubleWithinRelative(grad_ei, 0.0, 0.0)) {
+    ++total_errors;
+  }
+
+  if (total_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("1D analytic EI 0/0 edge case tests failed with %d errors\n", total_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("1D analytic EI 0/0 edge case tests passed\n");
+  }
+
+  return total_errors;
+}
+
+/*!\rst
   Generates a set of 50 random test cases for expected improvement with only one potential sample.
   The general EI (which uses MC integration) is evaluated to reasonably high accuracy (while not taking too long to run)
   and compared against the analytic formula version for consistency.  The gradients (spatial) of EI are also checked.
@@ -842,7 +951,7 @@ int RunEIConsistencyTests() {
   return total_errors;
 }
 
-int RunGPPingTests() {
+int RunGPTests() {
   int total_errors = 0;
   int current_errors = 0;
 
@@ -886,10 +995,18 @@ int RunGPPingTests() {
     total_errors += current_errors;
   }
 
+  {
+    current_errors = EIOnePotentialSampleEdgeCasesTest();
+    if (current_errors != 0) {
+      OL_PARTIAL_FAILURE_PRINTF("analytic (one potential sample) EI 0/0 cases failed with %d errors\n", current_errors);
+    }
+    total_errors += current_errors;
+  }
+
   if (total_errors != 0) {
-    OL_PARTIAL_FAILURE_PRINTF("Pinging GP functions failed with %d errors\n\n", total_errors);
+    OL_PARTIAL_FAILURE_PRINTF("GP functions failed with %d errors\n\n", total_errors);
   } else {
-    OL_PARTIAL_SUCCESS_PRINTF("Pinging GP functions passed\n");
+    OL_PARTIAL_SUCCESS_PRINTF("GP functions passed\n");
   }
 
   return total_errors;
@@ -934,7 +1051,10 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
 
   const int max_gradient_descent_steps = 250;
   const int max_num_restarts = 3;
-  GradientDescentParameters gd_params(0, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  const int num_steps_averaged = 0;
+  GradientDescentParameters gd_params(0, max_gradient_descent_steps, max_num_restarts,
+                                      num_steps_averaged, gamma, pre_mult,
+                                      max_relative_change, tolerance);
 
   int max_mc_iterations = 967;
 
@@ -947,7 +1067,10 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
   boost::uniform_real<double> uniform_double_upper_bound(2.5, 5.5);
 
   std::vector<double> noise_variance(num_sampled, 0.0003);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(kDim, 1.0, 1.0), noise_variance, kDim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(kDim, 1.0, 1.0), noise_variance, kDim,
+                                                        num_sampled, uniform_double_lower_bound,
+                                                        uniform_double_upper_bound, uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   for (int j = 0; j < num_being_sampled; ++j) {
     mock_gp_data.domain_ptr->GeneratePointInDomain(&uniform_generator, points_being_sampled.data() + j*kDim);
@@ -976,16 +1099,31 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
   bool found_flag = false;
   std::vector<double> best_next_point_single_thread(kDim*num_to_sample*kMaxNumThreads*kMaxNumThreads);
   int num_threads = 1;
+  ThreadSchedule thread_schedule(num_threads, omp_sched_static);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     NormalRNG normal_rng(pi_array[j]);
     int one_multistart = 1;  // truth values come from single threaded execution
-    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, starting_points.data() + j*kDim*num_to_sample, points_being_sampled.data(), one_multistart, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_mc_iterations, num_threads, &normal_rng, &found_flag, best_next_point_single_thread.data() + j*kDim*num_to_sample);
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                             domain, thread_schedule,
+                                                             starting_points.data() + j*kDim*num_to_sample,
+                                                             points_being_sampled.data(), one_multistart,
+                                                             num_to_sample, num_being_sampled,
+                                                             mock_gp_data.best_so_far, max_mc_iterations,
+                                                             &normal_rng, &found_flag,
+                                                             best_next_point_single_thread.data() + j*kDim*num_to_sample);
     if (!found_flag) {
       ++total_errors;
     }
 
     normal_rng.SetExplicitSeed(pi_array[kMaxNumThreads - j - 1]);
-    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, starting_points.data() + j*kDim*num_to_sample, points_being_sampled.data(), one_multistart, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_mc_iterations, num_threads, &normal_rng, &found_flag, best_next_point_single_thread.data() + j*kDim*num_to_sample + kDim*kMaxNumThreads*num_to_sample);
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                             domain, thread_schedule,
+                                                             starting_points.data() + j*kDim*num_to_sample,
+                                                             points_being_sampled.data(), one_multistart,
+                                                             num_to_sample, num_being_sampled,
+                                                             mock_gp_data.best_so_far, max_mc_iterations,
+                                                             &normal_rng, &found_flag,
+                                                             best_next_point_single_thread.data() + j*kDim*num_to_sample + kDim*kMaxNumThreads*num_to_sample);
     if (!found_flag) {
       ++total_errors;
     }
@@ -993,9 +1131,15 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
 
   // now multithreaded to generate test data
   std::vector<double> best_next_point_multithread(kDim*num_to_sample);
-  num_threads = 2;
+  thread_schedule.max_num_threads = kMaxNumThreads;
   found_flag = false;
-  ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, starting_points.data(), points_being_sampled.data(), kMaxNumThreads, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_mc_iterations, num_threads, normal_rng_vec.data(), &found_flag, best_next_point_multithread.data());
+  ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                           domain, thread_schedule, starting_points.data(),
+                                                           points_being_sampled.data(), kMaxNumThreads,
+                                                           num_to_sample, num_being_sampled,
+                                                           mock_gp_data.best_so_far,
+                                                           max_mc_iterations, normal_rng_vec.data(),
+                                                           &found_flag, best_next_point_multithread.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1007,7 +1151,9 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
       error[i*kMaxNumThreads + j] = 0.0;
       for (int k = 0; k < num_to_sample; ++k) {
         for (int d = 0; d < kDim; ++d) {
-          error[i*kMaxNumThreads + j] += std::fabs(best_next_point_single_thread[i*kDim*kMaxNumThreads*num_to_sample + j*kDim*num_to_sample + k*kDim + d] - best_next_point_multithread[k*kDim + d]);
+          error[i*kMaxNumThreads + j] += std::fabs(best_next_point_multithread[k*kDim + d] -
+                                                   best_next_point_single_thread[i*kDim*kMaxNumThreads*num_to_sample +
+                                                                                 j*kDim*num_to_sample + k*kDim + d]);
         }
       }
     }
@@ -1044,7 +1190,13 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
 
   // check multithreaded results again
   found_flag = false;
-  ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, starting_points_flip.data(), points_being_sampled.data(), kMaxNumThreads, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_mc_iterations, num_threads, normal_rng_vec.data(), &found_flag, best_next_point_multithread.data());
+  ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                           domain, thread_schedule, starting_points_flip.data(),
+                                                           points_being_sampled.data(), kMaxNumThreads,
+                                                           num_to_sample, num_being_sampled,
+                                                           mock_gp_data.best_so_far,
+                                                           max_mc_iterations, normal_rng_vec.data(),
+                                                           &found_flag, best_next_point_multithread.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1054,7 +1206,9 @@ int MultithreadedEIOptimizationTest(ExpectedImprovementEvaluationMode ei_mode) {
       error[i*kMaxNumThreads + j] = 0.0;
       for (int k = 0; k < num_to_sample; ++k) {
         for (int d = 0; d < kDim; ++d) {
-          error[i*kMaxNumThreads + j] += std::fabs(best_next_point_single_thread[i*kDim*kMaxNumThreads*num_to_sample + j*kDim*num_to_sample + k*kDim + d] - best_next_point_multithread[k*kDim + d]);
+          error[i*kMaxNumThreads + j] += std::fabs(best_next_point_multithread[k*kDim + d] -
+                                                   best_next_point_single_thread[i*kDim*kMaxNumThreads*num_to_sample +
+                                                                                 j*kDim*num_to_sample + k*kDim + d]);
         }
       }
     }
@@ -1108,8 +1262,11 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   const double tolerance = 1.0e-7;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
-  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
+                                      max_num_restarts, num_steps_averaged,
+                                      gamma, pre_mult, max_relative_change, tolerance);
 
   // grid search parameters
   int num_grid_search_points = 10000;
@@ -1127,6 +1284,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
@@ -1135,7 +1293,11 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   int num_sampled = 20;
 
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance,
+                                                        dim, num_sampled, uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   // we will optimize over the expanded region
   std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
@@ -1161,7 +1323,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     // likely be masked (making for a bad test)
     bool found_flag = false;
     for (int j = 0; j < num_being_sampled; ++j) {
-      ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_to_sample, j, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr,
+                                                   gd_params, domain, thread_schedule,
+                                                   points_being_sampled.data(),
+                                                   num_to_sample, j, mock_gp_data.best_so_far,
+                                                   max_int_steps, &found_flag,
+                                                   &uniform_generator, normal_rng_vec.data(),
+                                                   points_being_sampled.data() + j*dim);
     }
     printf("setup complete, points_being_sampled:\n");
     PrintMatrixTrans(points_being_sampled.data(), num_being_sampled, dim);
@@ -1170,7 +1338,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   // optimize EI
   bool found_flag = false;
   std::vector<double> grid_search_best_point(dim*num_to_sample);
-  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
+  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain,
+                                                      thread_schedule, points_being_sampled.data(),
+                                                      num_grid_search_points, num_to_sample,
+                                                      num_being_sampled, mock_gp_data.best_so_far,
+                                                      max_int_steps, &found_flag,
+                                                      &uniform_generator, normal_rng_vec.data(),
+                                                      grid_search_best_point.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1178,7 +1352,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   std::vector<double> next_point(dim*num_to_sample);
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     found_flag = false;
-    ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                 domain, thread_schedule, points_being_sampled.data(),
+                                                 num_to_sample, num_being_sampled,
+                                                 mock_gp_data.best_so_far, max_int_steps,
+                                                 &found_flag,
+                                                 &uniform_generator, normal_rng_vec.data(),
+                                                 next_point.data());
     if (!found_flag) {
       ++total_errors;
     }
@@ -1190,7 +1370,16 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
     domain.GenerateUniformPointsInDomain(num_multistarts_mc - 1, &uniform_generator, initial_guesses.data() + dim);
     std::copy(grid_search_best_point.begin(), grid_search_best_point.end(), initial_guesses.begin());
 
-    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, initial_guesses.data(), points_being_sampled.data(), num_multistarts_mc, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, normal_rng_vec.data(), &found_flag, next_point.data());
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr,
+                                                             gd_params, domain, thread_schedule,
+                                                             initial_guesses.data(),
+                                                             points_being_sampled.data(),
+                                                             num_multistarts_mc, num_to_sample,
+                                                             num_being_sampled,
+                                                             mock_gp_data.best_so_far,
+                                                             max_int_steps,
+                                                             normal_rng_vec.data(), &found_flag,
+                                                             next_point.data());
     if (!found_flag) {
       ++total_errors;
     }
@@ -1207,25 +1396,31 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationTestCore(ExpectedImprov
   double tolerance_result = tolerance;
   bool configure_for_gradients = true;
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
-    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), configure_for_gradients);
+    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                                                mock_gp_data.best_so_far);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(),
+                                                                       configure_for_gradients);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
     max_int_steps = 1000000;
     tolerance_result = 2.0e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
-    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
+    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                              max_int_steps, mock_gp_data.best_so_far);
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(),
+                                                     points_being_sampled.data(), num_to_sample,
+                                                     num_being_sampled, configure_for_gradients,
+                                                     normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1269,8 +1464,11 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   const double tolerance = 1.0e-7;
   const int max_gradient_descent_steps = 1000;
   const int max_num_restarts = 10;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
-  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
+                                      max_num_restarts, num_steps_averaged, gamma, pre_mult,
+                                      max_relative_change, tolerance);
 
   // grid search parameters
   int num_grid_search_points = 10000;
@@ -1288,6 +1486,7 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
@@ -1296,7 +1495,12 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   int num_sampled = 20;
 
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0),
+                                                        noise_variance, dim, num_sampled,
+                                                        uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   // we will optimize over the expanded region
   std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
@@ -1328,7 +1532,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     // likely be masked (making for a bad test)
     bool found_flag = false;
     for (int j = 0; j < num_being_sampled; ++j) {
-      ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_to_sample, j, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), points_being_sampled.data() + j*dim);
+      ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr,
+                                                   gd_params, domain, thread_schedule,
+                                                   points_being_sampled.data(),
+                                                   num_to_sample, j, mock_gp_data.best_so_far,
+                                                   max_int_steps, &found_flag,
+                                                   &uniform_generator, normal_rng_vec.data(),
+                                                   points_being_sampled.data() + j*dim);
     }
     printf("setup complete, points_being_sampled:\n");
     PrintMatrixTrans(points_being_sampled.data(), num_being_sampled, dim);
@@ -1337,7 +1547,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   // optimize EI
   bool found_flag = false;
   std::vector<double> grid_search_best_point(dim*num_to_sample);
-  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point.data());
+  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain,
+                                                      thread_schedule, points_being_sampled.data(),
+                                                      num_grid_search_points, num_to_sample,
+                                                      num_being_sampled, mock_gp_data.best_so_far,
+                                                      max_int_steps, &found_flag,
+                                                      &uniform_generator, normal_rng_vec.data(),
+                                                      grid_search_best_point.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1345,7 +1561,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   std::vector<double> next_point(dim*num_to_sample);
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
     found_flag = false;
-    ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), next_point.data());
+    ComputeOptimalPointsToSampleWithRandomStarts(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                 domain, thread_schedule,
+                                                 points_being_sampled.data(), num_to_sample,
+                                                 num_being_sampled, mock_gp_data.best_so_far,
+                                                 max_int_steps, &found_flag,
+                                                 &uniform_generator, normal_rng_vec.data(),
+                                                 next_point.data());
     if (!found_flag) {
       ++total_errors;
     }
@@ -1360,7 +1582,13 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
     }
     std::copy(grid_search_best_point.begin(), grid_search_best_point.end(), initial_guesses.begin());
 
-    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params, domain, initial_guesses.data(), points_being_sampled.data(), num_multistarts_mc, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, normal_rng_vec.data(), &found_flag, next_point.data());
+    ComputeOptimalPointsToSampleViaMultistartGradientDescent(*mock_gp_data.gaussian_process_ptr, gd_params,
+                                                             domain, thread_schedule, initial_guesses.data(),
+                                                             points_being_sampled.data(), num_multistarts_mc,
+                                                             num_to_sample, num_being_sampled,
+                                                             mock_gp_data.best_so_far, max_int_steps,
+                                                             normal_rng_vec.data(),
+                                                             &found_flag, next_point.data());
     if (!found_flag) {
       ++total_errors;
     }
@@ -1377,25 +1605,31 @@ OL_WARN_UNUSED_RESULT int ExpectedImprovementOptimizationSimplexTestCore(Expecte
   double tolerance_result = tolerance;
   bool configure_for_gradients = true;
   if (ei_mode == ExpectedImprovementEvaluationMode::kAnalytic) {
-    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, mock_gp_data.best_so_far);
-    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), configure_for_gradients);
+    OnePotentialSampleExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                                                mock_gp_data.best_so_far);
+    OnePotentialSampleExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(),
+                                                                       configure_for_gradients);
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   } else {
     max_int_steps = 1000000;
     tolerance_result = 3.5e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
-    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
+    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                              max_int_steps, mock_gp_data.best_so_far);
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, next_point.data(),
+                                                     points_being_sampled.data(),
+                                                     num_to_sample, num_being_sampled,
+                                                     configure_for_gradients, normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ei_state.UpdateCurrentPoint(ei_evaluator, grid_search_best_point.data());
+    ei_state.SetCurrentPoint(ei_evaluator, grid_search_best_point.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state);
   }
 
@@ -1445,8 +1679,11 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   const double tolerance = 1.0e-5;
   const int max_gradient_descent_steps = 250;
   const int max_num_restarts = 3;
+  const int num_steps_averaged = 0;
   const int num_multistarts = 20;
-  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps, max_num_restarts, gamma, pre_mult, max_relative_change, tolerance);
+  GradientDescentParameters gd_params(num_multistarts, max_gradient_descent_steps,
+                                      max_num_restarts, num_steps_averaged, gamma, pre_mult,
+                                      max_relative_change, tolerance);
 
   // grid search parameters
   int num_grid_search_points = 1000;
@@ -1466,6 +1703,7 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
@@ -1473,7 +1711,12 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
 
   const int num_sampled = 20;
   std::vector<double> noise_variance(num_sampled, 0.002);
-  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0), noise_variance, dim, num_sampled, uniform_double_lower_bound, uniform_double_upper_bound, uniform_double_hyperparameter, &uniform_generator);
+  MockGaussianProcessPriorData<DomainType> mock_gp_data(SquareExponential(dim, 1.0, 1.0),
+                                                        noise_variance, dim, num_sampled,
+                                                        uniform_double_lower_bound,
+                                                        uniform_double_upper_bound,
+                                                        uniform_double_hyperparameter,
+                                                        &uniform_generator);
 
   // we will optimize over the expanded region
   std::vector<ClosedInterval> domain_bounds(mock_gp_data.domain_bounds);
@@ -1483,7 +1726,13 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   // optimize EI using grid search to set the baseline
   bool found_flag = false;
   std::vector<double> grid_search_best_point_set(dim*num_to_sample);
-  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain, points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, &uniform_generator, normal_rng_vec.data(), grid_search_best_point_set.data());
+  ComputeOptimalPointsToSampleViaLatinHypercubeSearch(*mock_gp_data.gaussian_process_ptr, domain,
+                                                      thread_schedule, points_being_sampled.data(),
+                                                      num_grid_search_points, num_to_sample,
+                                                      num_being_sampled, mock_gp_data.best_so_far,
+                                                      max_int_steps, &found_flag,
+                                                      &uniform_generator, normal_rng_vec.data(),
+                                                      grid_search_best_point_set.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1492,7 +1741,12 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
   found_flag = false;
   bool lhc_search_only = false;
   std::vector<double> best_points_to_sample(dim*num_to_sample);
-  ComputeOptimalPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain, points_being_sampled.data(), num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, lhc_search_only, num_grid_search_points, &found_flag, &uniform_generator, normal_rng_vec.data(), best_points_to_sample.data());
+  ComputeOptimalPointsToSample(*mock_gp_data.gaussian_process_ptr, gd_params, domain,
+                               thread_schedule, points_being_sampled.data(),
+                               num_to_sample, num_being_sampled, mock_gp_data.best_so_far,
+                               max_int_steps, lhc_search_only,
+                               num_grid_search_points, &found_flag, &uniform_generator,
+                               normal_rng_vec.data(), best_points_to_sample.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1534,13 +1788,21 @@ int ExpectedImprovementOptimizationMultipleSamplesTest() {
     tolerance_result = 2.0e-3;  // reduce b/c we cannot achieve full accuracy in the monte-carlo case
     // while still having this test run in a reasonable amt of time
     bool configure_for_gradients = true;
-    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr, max_int_steps, mock_gp_data.best_so_far);
-    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
+    ExpectedImprovementEvaluator ei_evaluator(*mock_gp_data.gaussian_process_ptr,
+                                              max_int_steps, mock_gp_data.best_so_far);
+    ExpectedImprovementEvaluator::StateType ei_state(ei_evaluator, best_points_to_sample.data(),
+                                                     points_being_sampled.data(), num_to_sample,
+                                                     num_being_sampled, configure_for_gradients,
+                                                     normal_rng_vec.data());
 
     ei_optimized = ei_evaluator.ComputeExpectedImprovement(&ei_state);
     ei_evaluator.ComputeGradExpectedImprovement(&ei_state, grad_ei.data());
 
-    ExpectedImprovementEvaluator::StateType ei_state_grid_search(ei_evaluator, grid_search_best_point_set.data(), points_being_sampled.data(), num_to_sample, num_being_sampled, configure_for_gradients, normal_rng_vec.data());
+    ExpectedImprovementEvaluator::StateType ei_state_grid_search(ei_evaluator,
+                                                                 grid_search_best_point_set.data(),
+                                                                 points_being_sampled.data(), num_to_sample,
+                                                                 num_being_sampled, configure_for_gradients,
+                                                                 normal_rng_vec.data());
     ei_grid_search = ei_evaluator.ComputeExpectedImprovement(&ei_state_grid_search);
   }
 
@@ -1584,6 +1846,7 @@ int EvaluateEIAtPointListTest() {
 
   const int64_t pi_array[] = {314, 3141, 31415, 314159, 3141592, 31415926, 314159265, 3141592653, 31415926535, 314159265359};
   static const int kMaxNumThreads = 4;
+  ThreadSchedule thread_schedule(kMaxNumThreads, omp_sched_static);
   std::vector<NormalRNG> normal_rng_vec(kMaxNumThreads);
   for (int j = 0; j < kMaxNumThreads; ++j) {
     normal_rng_vec[j].SetExplicitSeed(pi_array[j]);
@@ -1603,7 +1866,10 @@ int EvaluateEIAtPointListTest() {
   std::vector<double> initial_guesses(dim*num_to_sample*num_grid_search_points);
   num_grid_search_points = mock_gp_data.domain_ptr->GenerateUniformPointsInDomain(num_grid_search_points, &uniform_generator, initial_guesses.data());
 
-  EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, *mock_gp_data.domain_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, kMaxNumThreads, &found_flag, normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
+  EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, thread_schedule, initial_guesses.data(),
+                        points_being_sampled.data(), num_grid_search_points, num_to_sample,
+                        num_being_sampled, mock_gp_data.best_so_far, max_int_steps, &found_flag,
+                        normal_rng_vec.data(), function_values.data(), grid_search_best_point.data());
   if (!found_flag) {
     ++total_errors;
   }
@@ -1623,9 +1889,15 @@ int EvaluateEIAtPointListTest() {
   {
     std::vector<double> grid_search_best_point_single_thread(dim*num_to_sample);
     std::vector<double> function_values_single_thread(num_grid_search_points);
-    int single_thread = 1;
+    ThreadSchedule single_thread_schedule(1, omp_sched_static);
     found_flag = false;
-    EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, *mock_gp_data.domain_ptr, initial_guesses.data(), points_being_sampled.data(), num_grid_search_points, num_to_sample, num_being_sampled, mock_gp_data.best_so_far, max_int_steps, single_thread, &found_flag, normal_rng_vec.data(), function_values_single_thread.data(), grid_search_best_point_single_thread.data());
+    EvaluateEIAtPointList(*mock_gp_data.gaussian_process_ptr, single_thread_schedule,
+                          initial_guesses.data(), points_being_sampled.data(),
+                          num_grid_search_points, num_to_sample, num_being_sampled,
+                          mock_gp_data.best_so_far, max_int_steps,
+                          &found_flag, normal_rng_vec.data(),
+                          function_values_single_thread.data(),
+                          grid_search_best_point_single_thread.data());
 
     // check against multi-threaded result matches single
     for (int i = 0; i < dim*num_to_sample; ++i) {

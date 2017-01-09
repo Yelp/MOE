@@ -1,68 +1,59 @@
-# MOE
+<p align="center">
+    <img src="https://github.com/yelp/MOE/raw/master/moe/static/img/MOE_full_logo.png" alt="MOE Logo">
+</p>
+
+`[![Build Status](https://travis-ci.org/Yelp/MOE.svg?branch=master)](https://travis-ci.org/Yelp/MOE)`
+Note: travis link temporarily disabled. The last major MOE commit built successfully but our travis flow appears to be broken (out of date packages perhaps?). Tests and docker still pass/build locally and MOE still works.
 
 Metric Optimization Engine. A global, black box optimization engine for real world metric optimization.
 
-  * [15 min video introduction][0]
   * [Full documentation][1]
   * [REST documentation][2]
 
+Or, build the documentation locally with `make docs`.
 
-Or, build the documentation locally with `make docs-no-tox`.
+## What is MOE?
 
-## Running MOE
+MOE (Metric Optimization Engine) is an *efficient* way to optimize a system's parameters, when evaluating parameters is *time-consuming* or *expensive*.
 
-### REST/web server and interactive demo
+Here are some examples of when you could use MOE:
 
-from the directory MOE is installed:
+* **Optimizing a system's click-through rate (CTR).**  MOE is useful when evaluating CTR requires running an A/B test on real user traffic, and getting statistically significant results requires running this test for a substantial amount of time (hours, days, or even weeks).
 
-```bash
-$ pserve --reload development.ini
-```
+* **Optimizing tunable parameters of a machine-learning prediction method.**  MOE is useful if calculating the prediction error for one choice of the parameters takes a long time, which might happen because the prediction method is complex and takes a long time to train, or because the data used to evaluate the error is huge.
 
-In your favorite browser go to: http://127.0.0.1:6543/
+* **Optimizing the design of an engineering system** (an airplane, the traffic network in a city, a combustion engine, a hospital).  MOE is useful if evaluating a design requires running a complex physics-based numerical simulation on a supercomputer. 
 
-OR
+* **Optimizing the parameters of a real-world experiment** (a chemistry, biology, or physics experiment, a drug trial).  MOE is useful when every experiment needs to be physically created in a lab, or very few experiments can be run in parallel.
 
-```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"points_to_evaluate": [[0.06727463396075942], [0.5067300380945079], [0.9698763624056982], [0.6741416078606629], [0.3413945823872875], [0.8293462326458892], [0.1895850103202945], [0.29784241725123095], [0.7611434260204735], [0.4050181259320824]], "points_being_sampled": [], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": -2.014556917682888, "point": [0.8356251271367201]}, {"value_var": 0.01, "value": -1.3556680509922945, "point": [0.5775274088974685]}, {"value_var": 0.01, "value": -0.17644452034270924, "point": [0.1299624124365485]}, {"value_var": 0.01, "value": 0.3125023458503953, "point": [0.02303611187965965]}, {"value_var": 0.01, "value": -0.5899125641251172, "point": [0.3938472181674687]}, {"value_var": 0.01, "value": -1.8568254250899945, "point": [0.9894680586912427]}, {"value_var": 0.01, "value": -1.0638344140121117, "point": [0.45444660991161895]}, {"value_var": 0.01, "value": -0.28576907668798884, "point": [0.20420919931329756]}, {"value_var": 0.01, "value": -1.568109287685418, "point": [0.6404744671911634]}, {"value_var": 0.01, "value": -1.8418398343184625, "point": [0.7168047658371041]}], "domain": [[0, 1]]}}' http://127.0.0.1:6543/gp/ei
-```
-[`gp_ei` endpoint documentation.][4]
+MOE is ideal for problems in which the optimization problem's objective function is a black box, not necessarily convex or concave, derivatives are unavailable, and we seek a global optimum, rather than just a local one. This ability to handle black-box objective functions allows us to use MOE to optimize nearly any system, without requiring any internal knowledge or access. To use MOE, we simply need to specify some [objective function][14], some set of [parameters][15], and any historical data we may have from previous evaluations of the objective function. MOE then finds the set of parameters that maximize (or minimize) the objective function, while evaluating the objective function as little as possible. 
 
-### From ipython
+Inside, MOE uses *Bayesian global optimization*, which performs optimization using Bayesian statistics and *optimal learning*. 
 
-```bash
-$ ipython
-> from moe.easy_interface.experiment import Experiment
-> from moe.easy_interface.simple_endpoint import gp_next_points
-> exp = Experiment([[0, 2], [0, 4]])
-> exp.add_point([0, 0], 1.0, 0.01)
-> next_point_to_sample = gp_next_points(exp)
-> print next_point_to_sample
-```
-[`easy_interface` documentation.][5]
+Optimal learning is the study of efficient methods for collecting information, particularly when doing so is time-consuming or expensive, and was developed and popularized from its roots in decision theory by [Prof. Peter Frazier][16] ([Cornell, Operations Research and Information Engineering][17]) and [Prof. Warren Powell][18] ([Princeton, Operations Research and Financial Engineering][19]). For more information about the mathematics of optimal learning, and more real-world applications like heart surgery, drug discovery, and materials science, see these [intro slides][20] to optimal learning.
 
-### Within python
+[Why do we need MOE?][21]
 
-```python
-from moe.easy_interface.experiment import Experiment
-from moe.easy_interface.simple_endpoint import gp_next_points
+Video and slidedeck introduction to MOE:
 
-import math, random
-def function_to_minimize(x):
-    """This function has a minimum near [1, 2.6]."""
-    return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
+* [15 min MOE intro video][10]
+* [MOE intro slides][11]
+* [Full documentation][1]
 
-exp = Experiment([[0, 2], [0, 4]])
-exp.add_point([0, 0], 1.0, 0.01) # Bootstrap with some known or already sampled point
+MOE does this internally by:
 
-# Sample 20 points
-for i in xrange(20):
-    next_point_to_sample = gp_next_points(exp)[0] # By default we only ask for one point
-    value_of_next_point = function_to_minimize(next_point_to_sample)
-    exp.add_point(next_point_to_sample, value_of_next_point, 0.01) # We can add some noise
+1. Building a Gaussian Process (GP) with the historical data
+2. Optimizing the hyperparameters of the Gaussian Process (model selection)
+3. Finding the points of highest Expected Improvement (EI)
+4. Returning the points to sample, then repeat
 
-print exp.best_point
-```
+Externally you can use MOE through:
+
+1. [The REST interface][2]
+2. [The Python interface][9]
+3. [The C++ interface][12]
+
+You can be up and optimizing in a matter of minutes. [Examples of using MOE][13]
 
 # Install
 
@@ -73,128 +64,129 @@ This is the recommended way to run the MOE REST server. All dependencies and bui
 [Docker (http://docs.docker.io/)][6] is a container based virtualization framework. Unlike traditional virtualization Docker is fast, lightweight and easy to use. Docker allows you to create containers holding all the dependencies for an application. Each container is kept isolated from any other, and nothing gets shared.
 
 ```bash
-$ git clone https://github.com/sc932/MOE.git
+$ docker pull yelpmoe/latest # You can also pull specific versions like yelpmoe/v0.1.0
+$ docker run -p 6543:6543 yelpmoe/latest
+```
+If you are on OSX, or want a build based on the current master branch you may need to build this manually.
+
+```bash
+$ git clone https://github.com/Yelp/MOE.git
 $ cd MOE
 $ docker build -t moe_container .
 $ docker run -p 6543:6543 moe_container
 ```
 
-The webserver and REST interface is now running on port 6543 from within the container.
+The webserver and REST interface is now running on port 6543 from within the container. http://localhost:6543
 
 ## Install from source:
 
-Requires:
+See [Install Documentation][7]
 
-1. `python 2.6.7+` - http://python.org/download/
-2. `gcc 4.7.3+` - http://gcc.gnu.org/install/
-3. `cmake 2.8.9+` - http://www.cmake.org/cmake/help/install.html
-4. `boost 1.51+` - http://www.boost.org/users/download/
-5. `pip 1.2.1+` - http://pip.readthedocs.org/en/latest/installing.html
-6. `doxygen 1.8.5+` - http://www.stack.nl/~dimitri/doxygen/index.html
-7. We recommend using a virtualenv http://www.jontourage.com/2011/02/09/virtualenv-pip-basics/
+# Running MOE
+
+## REST/web server and interactive demo
+
+from the directory MOE is installed:
 
 ```bash
-$ git clone https://github.com/sc932/MOE.git
-$ cd MOE
-$ pip install -e .
-$ python setup.py install
+$ pserve --reload development.ini # MOE server is now running at http://localhost:6543
 ```
 
-### OSX Tips (<=10.8. For 10.9, see separate instructions below):
+[The REST interface documentation][2]
 
-0. Are you sure you wouldn't rather be running linux?
-1. Download MacPorts - http://www.macports.org/install.php (If you change the install directory from `/opt/local`, don't forget to update the cmake invocation.)
-2. MacPorts can resolve most dependencies. Make sure you set your `PATH` env var.
-3. Download xQuartz (needed for X11, needed for matplotlib) - http://xquartz.macosforge.org/landing/ (Also available through MacPorts, see item 5.)
-4. Getting gcc, boost, matplotlib, and xQuartz (`xorg-server`) reqs (before installing MOE):
-5. Make sure you create your virtualenv with the correct python `--python=/opt/local/bin/python` if you are using MacPorts
-6. If you are using another package manager (like homebrew) you may need to modify `opt/local` below to point to your `Cellar` directory.
-7. For the following commands, order matters, especially when selecting the proper gcc compiler.
+Or, from the command line,
 
 ```bash
-$ sudo port selfupdate
-$ sudo port install gcc47
-$ sudo port select --set gcc mp-gcc47
-$ sudo port install boost
-$ sudo port install xorg-server
-$ sudo port install py-matplotlib
-$ sudo port install doxygen
-$ export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/opt/local && export MOE_CC_PATH=/opt/local/bin/gcc && export MOE_CXX_PATH=/opt/local/bin/g++
+$ curl -X POST -H "Content-Type: application/json" -d '{"domain_info": {"dim": 1}, "points_to_evaluate": [[0.1], [0.5], [0.9]], "gp_historical_info": {"points_sampled": [{"value_var": 0.01, "value": 0.1, "point": [0.0]}, {"value_var": 0.01, "value": 0.2, "point": [1.0]}]}}' http://127.0.0.1:6543/gp/ei
 ```
+[`gp_ei` endpoint documentation.][4]
 
-#### Additional Tips for 10.9
-
-To ensure consistency, be sure to use full paths throughout the installation.
-
-1. Currently, Boost should not be installed with MacPorts. You should build it from source (see section "Building Boost").
-2. Boost, MOE, and the virtualenv must be built with the same python. We recommend using MacPorts Python: `/opt/local/bin/python`. 
-
-Under OS X 10.9, Apple switched their canonical C++ library from `libstdc++` (GNU) to `libc++` (LLVM); they are not ABI-compatible. To remain consistent, package managers are linking against `libc++`. Since MOE is built with gcc, we need `libstdc++`; thus dependencies must also be built with that C++ library. Currently, package managers do not have enough flexibility to operate several C++ libraries at once, and we do not expect this to change. Ignoring this condition leads to binary incompatibilities; e.g., see:
-http://stackoverflow.com/questions/20134223/building-a-boost-python-application-on-macos-10-9-mavericks/
-
-#### Building Boost
-
-1. Download the Boost source (http://sourceforge.net/projects/boost/files/boost/1.55.0/ has been verfied to work).
-2. From within the main directory, run (after checking additional options below):
-
-    ```bash
-    $ sudo ./bootstrap.sh --with-python=PYTHON
-    $ sudo ./b2 install
-    ```
-
-2. Make sure `which gcc` is `/opt/local/bin/gcc` (macport installed) or whatever C++11 compliant gcc you want (similarly, `which g++` should be `/opt/local/bin/g++`), and make sure Python is `/opt/local/bin/python` if using MacPorts or whichever Python you want to use. 
-3. When building MOE, add to `MOE_CMAKE_OPTS` the `BOOST_ROOT` variable containing the location of the Boost that you have installed when running CMake and verify that CMake finds it (e.g., check a link.txt file in a `moe/build/CMakeFiles/*.dir/` dir and verify the location of `libboost_python-mt` or `libboost_python`, whichever is appropriate)  
-4. You might need to prepend `BOOST_ROOT` to `CMAKE_FIND_ROOT_PATH=/opt/local` to make this work if you have separate Boost installation(s). `BOOST_ROOT` is the `path/to/your/boost_1_55_0`.
-
-    ```bash
-    $ export MOE_CMAKE_OPTS='-D BOOST_ROOT=/path/to/boost -D Boost_NO_SYSTEM_PATHS=ON -D CMAKE_FIND_ROOT_PATH=/path/to/boost:/opt/local'
-    ```
-
-5. If you elected to use a different Python than the one from MacPorts, make sure CMake is finding it (e.g., set the `-DPYTHON_LIBRARIES=path/to/python.dylib` env variable when running CMake). Check `link.txt` (see item above) to see if Python was found correctly.
-
-Additional options for `./boostrap.sh`:
-
-1. `--with-libraries=python,math,random,program_options,exception,system` compiles only the libraries we need.
-2. `--prefix=path/to/install/dir` builds Boost and pulls the libraries in the specified path. Default is `/usr/local` (recommended, especially if you already have system Boost installations; remember to set `BOOST_ROOT`).
-
-Additional options for `./b2`: 
-
-1. `--build-dir=/path/to/build/dir` builds the Boost files in a separate location instead of mixed into the source tree (recommended).
-2. `-j4` uses 4 threads to compile (faster).
-
-### Linux Tips:
-
-1. You can apt-get everything you need. Yay for real package managers!
+## From ipython
 
 ```bash
-$ apt-get update
-$ apt-get install python python-dev gcc cmake libboost-all-dev python-pip doxygen libblas-dev liblapack-dev gfortran git
+$ ipython
+> from moe.easy_interface.experiment import Experiment
+> from moe.easy_interface.simple_endpoint import gp_next_points
+> exp = Experiment([[0, 2], [0, 4]])
+> exp.historical_data.append_sample_points([[[0, 0], 1.0, 0.01]])
+> next_point_to_sample = gp_next_points(exp)
+> print next_point_to_sample
+```
+[`easy_interface` documentation.][5]
+
+## Within Python
+
+See ``examples/next_point_via_simple_endpoint.py`` for this code or http://yelp.github.io/MOE/examples.html for more examples.
+
+```python
+import math
+import random
+
+from moe.easy_interface.experiment import Experiment
+from moe.easy_interface.simple_endpoint import gp_next_points
+from moe.optimal_learning.python.data_containers import SamplePoint
+
+
+# Note: this function can be anything, the output of a batch, results of an A/B experiment, the value of a physical experiment etc.
+def function_to_minimize(x):
+    """Calculate an aribitrary 2-d function with some noise with minimum near [1, 2.6]."""
+    return math.sin(x[0]) * math.cos(x[1]) + math.cos(x[0] + x[1]) + random.uniform(-0.02, 0.02)
+
+if __name__ == '__main__':
+    exp = Experiment([[0, 2], [0, 4]])  # 2D experiment, we build a tensor product domain
+    # Bootstrap with some known or already sampled point(s)
+    exp.historical_data.append_sample_points([
+        SamplePoint([0, 0], function_to_minimize([0, 0]), 0.05),  # Iterables of the form [point, f_val, f_var] are also allowed
+        ])
+
+    # Sample 20 points
+    for i in range(20):
+        # Use MOE to determine what is the point with highest Expected Improvement to use next
+        next_point_to_sample = gp_next_points(exp)[0]  # By default we only ask for one point
+        # Sample the point from our objective function, we can replace this with any function
+        value_of_next_point = function_to_minimize(next_point_to_sample)
+
+        print "Sampled f({0:s}) = {1:.18E}".format(str(next_point_to_sample), value_of_next_point)
+
+        # Add the information about the point to the experiment historical data to inform the GP
+        exp.historical_data.append_sample_points([SamplePoint(next_point_to_sample, value_of_next_point, 0.01)])  # We can add some noise
 ```
 
-### CMake Tips:
+More examples can be found in the `<MOE_DIR>/examples` directory.
 
-1. Do you have dependencies installed in non-standard places? e.g., did you build your own boost? Set the env var: `export MOE_CMAKE_OPTS=-DCMAKE_FIND_ROOT_PATH=/path/to/stuff ...` (OS X users with MacPorts should set `/opt/local`) This can be used to set any number of cmake arguments.
-2. Are you using the right compiler? e.g., for `gcc`, run `export MOE_CC_PATH=gcc && export MOE_CXX_PATH=g++` (OS X users need to explicitly set this.)
+## Within C++
+
+Expected Improvement Demo - http://yelp.github.io/MOE/gpp_expected_improvement_demo.html
+Gaussian Process Hyperparameter Optimization Demo - http://yelp.github.io/MOE/gpp_hyperparameter_optimization_demo.html
+Combined Demo - http://yelp.github.io/MOE/gpp_hyper_and_EI_demo.html
 
 # Contributing
 
-1. Fork it.
-2. Create a branch (`git checkout -b my_moe_branch`)
-3. Develop your feature/fix (don't forget to add tests!)
-4. Run tests (`tox`)
-5. Test against styleguide (`tox -e pep8`)
-6. Commit your changes (`git commit -am "Added Some Mathemagics"`)
-7. Push to the branch (`git push origin my_moe_branch`)
-8. Open a [Pull Request][3]
-9. Optimize locally while you wait
+See [Contributing Documentation][8]
 
-[0]: https://www.youtube.com/watch?v=qAN6iyYPbEE
-[1]: http://sc932.github.io/MOE/
-[2]: http://sc932.github.io/MOE/moe.views.rest.html
-[3]: http://github.com/sc932/MOE/pulls
-[4]: http://sc932.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
-[5]: http://sc932.github.io/MOE/moe.easy_interface.html
+# License
+
+MOE is licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
+[0]: https://www.youtube.com/watch?v=CC6qvzWp9_A
+[1]: http://yelp.github.io/MOE/
+[2]: http://yelp.github.io/MOE/moe.views.rest.html
+[3]: http://github.com/Yelp/MOE/pulls
+[4]: http://yelp.github.io/MOE/moe.views.rest.html#module-moe.views.rest.gp_ei
+[5]: http://yelp.github.io/MOE/moe.easy_interface.html
 [6]: http://docs.docker.io/
-
-
-
+[7]: http://yelp.github.io/MOE/install.html
+[8]: http://yelp.github.io/MOE/contributing.html
+[9]: http://yelp.github.io/MOE/moe.optimal_learning.python.python_version.html
+[10]: http://www.youtube.com/watch?v=CC6qvzWp9_A
+[11]: http://www.slideshare.net/YelpEngineering/optimal-learning-for-fun-and-profit-with-moe
+[12]: http://yelp.github.io/MOE/cpp_tree.html
+[13]: http://yelp.github.io/MOE/examples.html
+[14]: http://yelp.github.io/MOE/objective_functions.html
+[15]: http://yelp.github.io/MOE/objective_functions.html#parameters
+[16]: http://people.orie.cornell.edu/pfrazier/
+[17]: http://www.orie.cornell.edu/
+[18]: http://optimallearning.princeton.edu/
+[19]: http://orfe.princeton.edu/
+[20]: http://people.orie.cornell.edu/pfrazier/Presentations/2014.01.Lancaster.BGO.pdf
+[21]: http://yelp.github.io/MOE/why_moe.html

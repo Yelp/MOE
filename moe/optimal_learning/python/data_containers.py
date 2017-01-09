@@ -26,7 +26,7 @@ class SamplePoint(_BaseSamplePoint):
 
     :ivar point: (*iterable of dim float64*) The point sampled (in the domain of the function)
     :ivar value: (*float64*) The value returned by the function
-    :ivar noise_variance: (*float64 >= 0.0*) The noise/measurement variance (if any) associated with ``value``
+    :ivar noise_variance: (*float64 >= 0.0*) The noise/measurement variance (if any) associated with :attr`value`
 
     """
 
@@ -46,7 +46,7 @@ class SamplePoint(_BaseSamplePoint):
     def json_payload(self):
         """Convert the sample_point into a dict to be consumed by json for a REST request."""
         return {
-                'point': self.point,
+                'point': list(self.point),  # json needs a list (e.g., this may be a ndarray)
                 'value': self.value,
                 'value_var': self.noise_variance,
                 }
@@ -77,14 +77,14 @@ class HistoricalData(object):
 
     """A data container for storing the historical data from an entire experiment in a layout convenient for this library.
 
-    Users will likely find it most convenient to store experiment historical data in "tuples" of
+    Users will likely find it most convenient to store experiment historical data in tuples of
     (coordinates, value, noise); for example, these could be the columns of a database row, part of an ORM, etc.
-    The SamplePoint class (above) provides a convenient representation of this input format, but users are *not* required
+    The :class:`moe.optimal_learning.python.SamplePoint` class (above) provides a convenient representation of this input format, but users are *not* required
     to use it.
 
     But the internals of optimal_learning will generally do computations on all coordinates at once, all values at once,
     and/or all noise measurements at once. So this object reads the input data and "transposes" the ordering so that
-    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of SampledPoint,
+    we have a matrix of coordinates and vectors of values and noises. Compared to storing a list of :class:`moe.optimal_learning.python.SamplePoint`,
     these internals save on redundant data transformations and improve locality.
 
     Note that the points in HistoricalData are *not* associated to any particular domain. HistoricalData could be (and is)
@@ -94,10 +94,6 @@ class HistoricalData(object):
     HistoricalData. Users may also optimize within a subdomain of the points already sampled. Thus, we are not including
     domain in HistoricalData so as to place no restriction on how users can use optimal_learning and think about their
     experiments.
-
-    TODO(eliu): it'd be cool if this inherited from namedtuple (since adding new points makes sense, but changing dim or
-    arbitrarily changing the referrant of noise_variance does not). Not 100% sure how to do this since __new__ and
-    __init__ would need to take different arguments.
 
     :ivar _points_sampled: (*array of float64 with shape (self.num_sampled, self.dim)*) already-sampled points
     :ivar _points_sampled_value: (*array of float64 with shape (self.num_sampled)*) function value measured at each point
@@ -113,7 +109,7 @@ class HistoricalData(object):
         :param dim: number of spatial dimensions; must line up with len(sample_points[0]) if sample_points is empty
         :type dim: int > 0
         :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance
-        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint
+        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`
         :param validate: whether to sanity-check the input sample_points
         :type validate: boolean
 
@@ -156,13 +152,7 @@ class HistoricalData(object):
 
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
-        json_points_sampled = []
-        for point in self.to_list_of_sample_points():
-            json_points_sampled.append({
-                    'point': point.point.tolist(),  # json needs the numpy array to be a list
-                    'value': point.value,
-                    'value_var': point.noise_variance,
-                    })
+        json_points_sampled = [point.json_payload() for point in self.to_list_of_sample_points()]
         return {'points_sampled': json_points_sampled}
 
     @staticmethod
@@ -172,7 +162,7 @@ class HistoricalData(object):
         :param dim: number of (expected) spatial dimensions
         :type dim: int > 0
         :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance
-        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint
+        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`
         :return: True if inputs are valid
         :rtype: boolean
 
@@ -217,7 +207,7 @@ class HistoricalData(object):
         """Append the contents of ``sample_points`` to the data members of this class.
 
         :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance
-        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint
+        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`
         :param validate: whether to sanity-check the input sample_points
         :type validate: boolean
 
@@ -240,7 +230,7 @@ class HistoricalData(object):
         """Append lists of points_sampled, their values, and their noise variances to the data members of this class.
 
         This class (see class docstring) stores its data members as numpy arrays; this method provides a way for users
-        who already have data in this format to append directly instead of creating an intermediate SamplePoint list.
+        who already have data in this format to append directly instead of creating an intermediate :class:`moe.optimal_learning.python.SamplePoint` list.
 
         :param points_sampled: already-sampled points
         :type points_sampled: array of float64 with shape (num_sampled, dim)
@@ -268,7 +258,7 @@ class HistoricalData(object):
         The list of SamplePoint format is more convenient for human consumption/introspection.
 
         :return: list where i-th SamplePoint has data from the i-th entry of each self.points_sampled* member.
-        :rtype: list of SamplePoint
+        :rtype: list of :class:`moe.optimal_learning.python.SamplePoint`
 
         """
         return [SamplePoint(numpy.copy(self._points_sampled[i]), self._points_sampled_value[i], noise_variance=self._points_sampled_noise_variance[i])
@@ -280,7 +270,7 @@ class HistoricalData(object):
         :param offset: the index offset to the internal arrays at which to copy in sample_points
         :type offset: int >= 0
         :param sample_points: the already-sampled points: coordinates, objective function values, and noise variance
-        :type sample_points: iterable of iterables with the same structure as a list of SamplePoint
+        :type sample_points: iterable of iterables with the same structure as a list of :class:`moe.optimal_learning.python.SamplePoint`
 
         """
         for i, sample_point in enumerate(sample_points):

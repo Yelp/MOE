@@ -16,6 +16,7 @@
 #include <boost/random/uniform_real.hpp>  // NOLINT(build/include_order)
 
 #include "gpp_common.hpp"
+#include "gpp_exception.hpp"
 #include "gpp_geometry.hpp"
 #include "gpp_logging.hpp"
 #include "gpp_random.hpp"
@@ -66,6 +67,7 @@ OL_WARN_UNUSED_RESULT int RandomPointInDomainTest() {
 
 /*!\rst
   Just your basic bubble sort.
+
   Need the ability to sort matrices ``A_{ij}`` in blocks of ``A_{i*}``, doing comparisons only on
   ``j``-th entries.  This is (as far as I know) awkward with STL vectors/sort.
 \endrst*/
@@ -237,11 +239,11 @@ namespace {
 
   \input
     :input_vector: vector to be checked
-  \output
+  \return
     true if all elements are distinct
 \endrst*/
 template <typename T>
-OL_WARN_UNUSED_RESULT int CheckAllElementsUnique(const std::vector<T>& input_vector) {
+OL_WARN_UNUSED_RESULT bool CheckAllElementsUnique(const std::vector<T>& input_vector) {
   return std::unordered_set<T>(input_vector.begin(), input_vector.end()).size() == input_vector.size();
 }
 
@@ -314,14 +316,14 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
     current_errors = 0;
     RNGContainer rng;
 
-    typename RNGContainer::EngineType original_engine(rng.engine);  // copy ctor
-    rng.engine.discard(13);
-    if (rng.engine == original_engine) {
+    typename RNGContainer::EngineType original_engine(rng.GetEngine());  // copy ctor
+    rng.GetEngine().discard(13);
+    if (rng.GetEngine() == original_engine) {
       ++current_errors;  // engine state should have changed
     }
 
     rng.ResetToMostRecentSeed();
-    if (rng.engine != original_engine) {
+    if (rng.GetEngine() != original_engine) {
       ++current_errors;  // engine state should have been reset
     }
 
@@ -364,6 +366,53 @@ OL_WARN_UNUSED_RESULT int RandomNumberGeneratorContainerTestCore() {
   return total_errors;
 }
 
+/*!\rst
+  Checks that NormalRNGSimulator is behaving correctly:
+
+  * Tests index increments as expected
+  * Tests ResetToMostRecentSeed reset index to 0
+  * Tests exception handling when number of queries of random numbers exceeds
+  * size of the random table
+
+  \return
+    number of test failures: 0 if NormalRNGSimulator behaving correctly
+\endrst*/
+int NormalRNGSimulatorTest() {
+  int total_errors = 0;
+  int random_table_size = 500;
+  std::vector<double> random_table(random_table_size);
+  for (int i = 0; i < random_table_size; ++i) {
+    random_table[i] = static_cast<double>(i);
+  }
+  NormalRNGSimulator rng_simulator(random_table);
+
+  for (int n = 0; n < 40; ++n) {
+    int current_idx = rng_simulator.index();
+    rng_simulator();
+    int next_idx = rng_simulator.index();
+    total_errors = ((next_idx - current_idx) == 1) ? total_errors : (total_errors+1);
+  }
+
+  rng_simulator.ResetToMostRecentSeed();
+  total_errors = (rng_simulator.index() == 0) ? total_errors : (total_errors+1);
+
+  for (int n = 0; n < random_table_size; ++n) {
+    rng_simulator();
+  }
+
+  ++total_errors;
+
+  try {
+    rng_simulator();
+  } catch (const InvalidValueException<int>& exception) {
+    if ((exception.value() == random_table_size) && (exception.truth() == random_table_size)) {
+      --total_errors;
+    }
+  }
+
+  return total_errors;
+}
+
 }  // end unnamed namespace
 
 /*!\rst
@@ -387,6 +436,14 @@ int RandomNumberGeneratorContainerTest() {
     OL_PARTIAL_FAILURE_PRINTF("NormalRNG failed with %d errors\n", current_errors);
   } else {
     OL_PARTIAL_SUCCESS_PRINTF("NormalRNG passed all tests\n");
+  }
+  total_errors += current_errors;
+
+  current_errors = NormalRNGSimulatorTest();
+  if (current_errors != 0) {
+    OL_PARTIAL_FAILURE_PRINTF("NormalRNGSimulator failed with %d errors\n", current_errors);
+  } else {
+    OL_PARTIAL_SUCCESS_PRINTF("NormalRNGSimulator passed all tests\n");
   }
   total_errors += current_errors;
 

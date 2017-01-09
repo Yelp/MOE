@@ -1,0 +1,33 @@
+
+package:
+    name: boost
+    version: 1.55.0
+
+source:
+    fn: boost_1_55_0.tar.bz2 [unix]
+    url: http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2 [unix]
+    fn: boost_1_55_0-msvc-10.0-64.exe [win64]
+    url: http://downloads.sourceforge.net/project/boost/boost-binaries/1.55.0-build2/boost_1_55_0-msvc-10.0-64.exe [win64]
+    fn: boost_1_55_0-msvc-10.0-32.exe [win32]
+    url: http://download.sourceforge.net/project/boost/boost-binaries/1.55.0-build2/boost_1_55_0-msvc-10.0-32.exe [win32]
+    patches:
+      - e4bde20f.patch [osx]
+      - 6bb71fdd.patch [osx]
+
+build:
+    number: 3
+
+requirements:
+    build:
+      - zlib [unix]
+      - bzip2 [unix]
+      - python [unix]
+    run:	
+      - zlib [unix]
+      - bzip2 [unix]
+      - python [unix]
+
+about:
+    home: http://www.boost.org/
+    license: Boost-1.0
+

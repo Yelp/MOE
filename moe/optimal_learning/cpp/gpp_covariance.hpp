@@ -20,12 +20,12 @@
   two random variables change in relation to each other--more explicitly, in a GP they specify how similar two points are.
   The choice of covariance function is important because it encodes our assumptions about how the "world" behaves.
 
-  Currently, all covariance functions in this file require dim+1 hyperparameters: \alpha, L_1, ... L_d.  \alpha
-  is \sigma_f^2, the signal variance.  L_1, ... , L_d are the length scales, one per spatial dimension.  We do not
+  Currently, all covariance functions in this file require ``dim+1`` hyperparameters: ``\alpha, L_1, ... L_d``. ``\alpha``
+  is ``\sigma_f^2``, the signal variance. ``L_1, ... , L_d`` are the length scales, one per spatial dimension.  We do not
   currently support non-axis-aligned anisotropy.
 
   Specifying hyperparameters is tricky because changing them fundamentally changes the behavior of the GP.
-  gpp_model_selection_and_hyperparameter_optimization.hpp provides some functions for optimizing
+  gpp_model_selection.hpp provides some functions for optimizing
   hyperparameters based on the current training data.
 
   For more details, see:
@@ -114,11 +114,13 @@ class CovarianceInterface {
   virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept OL_NONNULL_POINTERS = 0;
 
   /*!\rst
-    The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as:
-    ``[ \ppderiv{cov}{\theta_0^2}              \mixpderiv{cov}{\theta_0}{\theta_1}    ... \mixpderiv{cov}{\theta_0}{\theta_{n-1}} ]``
-    ``[ \mixpderiv{cov}{\theta_1}{\theta_0}    \ppderiv{cov}{\theta_1^2 }             ... \mixpderiv{cov}{\theta_1}{\theta_{n-1}} ]``
-    ``[      ...                                                                                     ...                          ]``
-    ``[ \mixpderiv{cov}{\theta_{n-1}{\theta_0} \mixpderiv{cov}{\theta_{n-1}{\theta_1} ... \ppderiv{cov}{\theta_{n-1}^2}           ]``
+    The Hessian matrix of the covariance evaluated at x_1, x_2 with respect to the hyperparameters.  The Hessian is defined as::
+
+      [ \ppderiv{cov}{\theta_0^2}              \mixpderiv{cov}{\theta_0}{\theta_1}    ... \mixpderiv{cov}{\theta_0}{\theta_{n-1}} ]
+      [ \mixpderiv{cov}{\theta_1}{\theta_0}    \ppderiv{cov}{\theta_1^2 }             ... \mixpderiv{cov}{\theta_1}{\theta_{n-1}} ]
+      [      ...                                                                                     ...                          ]
+      [ \mixpderiv{cov}{\theta_{n-1}{\theta_0} \mixpderiv{cov}{\theta_{n-1}{\theta_1} ... \ppderiv{cov}{\theta_{n-1}^2}           ]
+
     where "cov" abbreviates covariance(x_1, x_2) and "n" refers to the number of hyperparameters.
 
     Unless noted otherwise in subclasses, the Hessian is symmetric (due to the equality of mixed derivatives when a function
@@ -129,6 +131,7 @@ class CovarianceInterface {
     For further details: http://en.wikipedia.org/wiki/Hessian_matrix
 
     Let n_hyper = this.GetNumberOfHyperparameters()
+
     \param
       :point_one[dim]: first spatial coordinate
       :point_two[dim]: second spatial coordinate
@@ -181,8 +184,7 @@ class SquareExponential final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
       :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
-  SquareExponential(int dim, double alpha, double length) : SquareExponential(dim, alpha, std::vector<double>(dim, length)) {
-  }
+  SquareExponential(int dim, double alpha, double length);
 
   /*!\rst
     Constructs a SquareExponential object with the specified hyperparameters.
@@ -192,8 +194,7 @@ class SquareExponential final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  SquareExponential(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : SquareExponential(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
-  }
+  SquareExponential(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS;
 
   /*!\rst
     Constructs a SquareExponential object with the specified hyperparameters.
@@ -203,21 +204,22 @@ class SquareExponential final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  SquareExponential(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
-    Initialize();
-  }
+  SquareExponential(int dim, double alpha, std::vector<double> lengths);
 
   virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept override OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
-  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                              double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual int GetNumberOfHyperparameters() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return 1 + dim_;
   }
 
-  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                            double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
-  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                               double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept override OL_NONNULL_POINTERS {
     alpha_ = hyperparameters[0];
@@ -237,14 +239,12 @@ class SquareExponential final : public CovarianceInterface {
     }
   }
 
-  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT {
-    return new SquareExponential(*this);
-  }
+  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT;
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(SquareExponential);
 
  private:
-  explicit SquareExponential(const SquareExponential& OL_UNUSED(source)) = default;
+  explicit SquareExponential(const SquareExponential& source);
 
   /*!\rst
     Validate and initialize class data members.
@@ -285,26 +285,26 @@ class SquareExponentialSingleLength final : public CovarianceInterface {
 
     Note: for pointer or vector length, length[0] must be a valid expression.
   \endrst*/
-  SquareExponentialSingleLength(int dim, double alpha, double length) : dim_(dim), alpha_(alpha), length_(length), length_sq_(length*length) {
-  }
+  SquareExponentialSingleLength(int dim, double alpha, double length);
 
-  SquareExponentialSingleLength(int dim, double alpha, double const * restrict length) OL_NONNULL_POINTERS : SquareExponentialSingleLength(dim, alpha, length[0]) {
-  }
+  SquareExponentialSingleLength(int dim, double alpha, double const * restrict length) OL_NONNULL_POINTERS;
 
-  SquareExponentialSingleLength(int dim, double alpha, std::vector<double> length) : SquareExponentialSingleLength(dim, alpha, length[0]) {
-  }
+  SquareExponentialSingleLength(int dim, double alpha, std::vector<double> length);
 
   virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept override OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
-  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                              double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual int GetNumberOfHyperparameters() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return 2;
   }
 
-  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                            double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
-  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                               double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept override OL_NONNULL_POINTERS {
     alpha_ = hyperparameters[0];
@@ -317,14 +317,12 @@ class SquareExponentialSingleLength final : public CovarianceInterface {
     hyperparameters[1] = length_;
   }
 
-  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT {
-    return new SquareExponentialSingleLength(*this);
-  }
+  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT;
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(SquareExponentialSingleLength);
 
  private:
-  explicit SquareExponentialSingleLength(const SquareExponentialSingleLength& OL_UNUSED(source)) = default;
+  explicit SquareExponentialSingleLength(const SquareExponentialSingleLength& source);
 
   //! dimension of the problem
   int dim_;
@@ -361,8 +359,7 @@ class MaternNu1p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
       :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
-  MaternNu1p5(int dim, double alpha, double length) : MaternNu1p5(dim, alpha, std::vector<double>(dim, length)) {
-  }
+  MaternNu1p5(int dim, double alpha, double length);
 
   /*!\rst
     Constructs a MaternNu1p5 object with the specified hyperparameters.
@@ -372,8 +369,7 @@ class MaternNu1p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  MaternNu1p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : MaternNu1p5(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
-  }
+  MaternNu1p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS;
 
   /*!\rst
     Constructs a MaternNu1p5 object with the specified hyperparameters.
@@ -383,21 +379,22 @@ class MaternNu1p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  MaternNu1p5(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
-    Initialize();
-  }
+  MaternNu1p5(int dim, double alpha, std::vector<double> lengths);
 
   virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept override OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
-  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                              double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual int GetNumberOfHyperparameters() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim_ + 1;
   }
 
-  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                            double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
-  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                               double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept override OL_NONNULL_POINTERS {
     alpha_ = hyperparameters[0];
@@ -417,14 +414,12 @@ class MaternNu1p5 final : public CovarianceInterface {
     }
   }
 
-  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT {
-    return new MaternNu1p5(*this);
-  }
+  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT;
 
   OL_DISALLOW_DEFAULT_AND_ASSIGN(MaternNu1p5);
 
  private:
-  explicit MaternNu1p5(const MaternNu1p5& OL_UNUSED(source)) = default;
+  explicit MaternNu1p5(const MaternNu1p5& source);
 
   /*!\rst
     Validate and initialize class data members.
@@ -459,8 +454,7 @@ class MaternNu2p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha`` (e.g., signal variance, ``\sigma_f^2``)
       :length: the constant length scale to use for all hyperparameter length scales
   \endrst*/
-  MaternNu2p5(int dim, double alpha, double length) : MaternNu2p5(dim, alpha, std::vector<double>(dim, length)) {
-  }
+  MaternNu2p5(int dim, double alpha, double length);
 
   /*!\rst
     Constructs a MaternNu2p5 object with the specified hyperparameters.
@@ -470,8 +464,7 @@ class MaternNu2p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths[dim]: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  MaternNu2p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS : MaternNu2p5(dim, alpha, std::vector<double>(lengths, lengths + dim)) {
-  }
+  MaternNu2p5(int dim, double alpha, double const * restrict lengths) OL_NONNULL_POINTERS;
 
   /*!\rst
     Constructs a MaternNu2p5 object with the specified hyperparameters.
@@ -481,15 +474,14 @@ class MaternNu2p5 final : public CovarianceInterface {
       :alpha: the hyperparameter ``\alpha``, (e.g., signal variance, ``\sigma_f^2``)
       :lengths: the hyperparameter length scales, one per spatial dimension
   \endrst*/
-  MaternNu2p5(int dim, double alpha, std::vector<double> lengths) : dim_(dim), alpha_(alpha), lengths_(lengths), lengths_sq_(dim) {
-    Initialize();
-  }
+  MaternNu2p5(int dim, double alpha, std::vector<double> lengths);
 
   // covariance of point_one and point_two
   virtual double Covariance(double const * restrict point_one, double const * restrict point_two) const noexcept override OL_PURE_FUNCTION OL_NONNULL_POINTERS OL_WARN_UNUSED_RESULT;
 
   // gradient of the covariance wrt point_one (array)
-  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void GradCovariance(double const * restrict point_one, double const * restrict point_two,
+                              double * restrict grad_cov) const noexcept override OL_NONNULL_POINTERS;
 
   // number of hyperparameters
   virtual int GetNumberOfHyperparameters() const noexcept override OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
@@ -497,9 +489,11 @@ class MaternNu2p5 final : public CovarianceInterface {
   }
 
   // hyperparameter gradients
-  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterGradCovariance(double const * restrict point_one, double const * restrict point_two,
+                                            double * restrict grad_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
-  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two, double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
+  virtual void HyperparameterHessianCovariance(double const * restrict point_one, double const * restrict point_two,
+                                               double * restrict hessian_hyperparameter_cov) const noexcept override OL_NONNULL_POINTERS;
 
   virtual void SetHyperparameters(double const * restrict hyperparameters) noexcept override OL_NONNULL_POINTERS {
     alpha_ = hyperparameters[0];
@@ -519,12 +513,10 @@ class MaternNu2p5 final : public CovarianceInterface {
     }
   }
 
-  virtual CovarianceInterface * Clone() const override OL_WARN_UNUSED_RESULT {
-    return new MaternNu2p5(*this);
-  }
+  virtual CovarianceInterface * Clone() const override;
 
  private:
-  explicit MaternNu2p5(const MaternNu2p5& OL_UNUSED(source)) = default;
+  explicit MaternNu2p5(const MaternNu2p5& source);
 
   /*!\rst
     Validate and initialize class data members.

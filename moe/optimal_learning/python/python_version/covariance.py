@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Implementations of covariance functions for use with python_version/log_likelihood.py and gaussian_process.py.
+"""Implementations of covariance functions for use with :mod:`moe.optimal_learning.python.python_version.log_likelihood` and :mod:`moe.optimal_learning.python.python_version.gaussian_process`.
 
 This file contains implementations of CovarianceInterface. Currently, we have
 SquareExponential, supporting:
@@ -29,7 +29,7 @@ class SquareExponential(CovarianceInterface):
 
     r"""Implement the square exponential covariance function.
 
-    .. Note:: comments are copied from SquareExponential in cpp_wrappers/covariance.py
+    .. Note:: comments are copied from :class:`moe.optimal_learning.python.cpp_wrappers.covariance.SquareExponential`.
 
     The function:
     ``cov(x_1, x_2) = \alpha * \exp(-1/2 * ((x_1 - x_2)^T * L * (x_1 - x_2)) )``
@@ -49,7 +49,7 @@ class SquareExponential(CovarianceInterface):
         :type hyperparameters: array-like of size dim+1
 
         """
-        self.set_hyperparameters(hyperparameters)
+        self.hyperparameters = hyperparameters
 
     @property
     def num_hyperparameters(self):
@@ -66,12 +66,22 @@ class SquareExponential(CovarianceInterface):
         self._lengths_sq = numpy.copy(self._hyperparameters[1:])
         self._lengths_sq *= self._lengths_sq
 
+    hyperparameters = property(get_hyperparameters, set_hyperparameters)
+
+    def get_json_serializable_info(self):
+        """Create and return a covariance_info dictionary of this covariance object."""
+        return {
+                'covariance_type': self.covariance_type,
+                'hyperparameters': self.hyperparameters.tolist(),
+                }
+
     def covariance(self, point_one, point_two):
         r"""Compute the square exponential covariance function of two points, cov(``point_one``, ``point_two``).
 
         Square Exponential: ``cov(x_1, x_2) = \alpha * \exp(-1/2 * ((x_1 - x_2)^T * L * (x_1 - x_2)) )``
 
-        .. Note:: comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py
+        .. Note:: comments are copied from the matching method comments of
+          :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface`.
 
         The covariance function is guaranteed to be symmetric by definition: ``covariance(x, y) = covariance(y, x)``.
         This function is also positive definite by definition.
@@ -95,7 +105,8 @@ class SquareExponential(CovarianceInterface):
         Gradient of Square Exponential (wrt ``x_1``):
         ``\pderiv{cov(x_1, x_2)}{x_{1,i}} = (x_{2,i} - x_{1,i}) / L_{i}^2 * cov(x_1, x_2)``
 
-        .. Note:: comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py
+        .. Note:: comments are copied from the matching method comments of
+          :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface`.
 
         This distinction is important for maintaining the desired symmetry.  ``Cov(x, y) = Cov(y, x)``.
         Additionally, ``\pderiv{Cov(x, y)}{x} = \pderiv{Cov(y, x)}{x}``.
@@ -125,7 +136,8 @@ class SquareExponential(CovarianceInterface):
         ``\pderiv{cov(x_1, x_2)}{\theta_0} = [(x_{1,i} - x_{2,i}) / L_i]^2 / L_i * cov(x_1, x_2)``
         Note: ``\theta_0 = \alpha`` and ``\theta_{1:d} = L_{0:d-1}``
 
-        .. Note:: comments are copied from the matching method comments of CovarianceInterface in interfaces/covariance_interface.py
+        .. Note:: comments are copied from the matching method comments of
+          :class:`moe.optimal_learning.python.interfaces.covariance_interface.CovarianceInterface`.
 
         Unlike GradCovariance(), the order of point_one and point_two is irrelevant here (since we are not differentiating against
         either of them).  Thus the matrix of grad covariances (wrt hyperparameters) is symmetric.
@@ -153,7 +165,7 @@ class SquareExponential(CovarianceInterface):
     def hyperparameter_hessian_covariance(self, point_one, point_two):
         r"""Compute the hessian of self.covariance(point_one, point_two) with respect to its hyperparameters.
 
-        TODO(eliu): implement Hessians in Python (GH-57).
+        TODO(GH-57): Implement Hessians in Python.
 
         """
         raise NotImplementedError("Python implementation does not support computing the hessian covariance wrt hyperparameters.")

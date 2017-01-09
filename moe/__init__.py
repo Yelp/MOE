@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
 """Base pyramid app for MOE."""
 from pyramid.config import Configurator
-from pyramid.events import NewRequest
 
 from moe.resources import Root
 from moe.views.constant import ALL_MOE_ROUTES
+
+
+#: Following the versioning system at http://semver.org/
+#: See also docs/contributing.rst, section ``Versioning``
+#: MAJOR: incremented for incompatible API changes
+MAJOR = 0
+#: MINOR: incremented for adding functionality in a backwards-compatible manner
+MINOR = 2
+#: PATCH: incremented for backward-compatible bug fixes and minor capability improvements
+PATCH = 2
+#: Latest release version of MOE
+__version__ = "{0:d}.{1:d}.{2:d}".format(MAJOR, MINOR, PATCH)
 
 
 def main(global_config, **settings):
@@ -23,32 +34,26 @@ def main(global_config, **settings):
                 moe_route.endpoint
                 )
 
-    # MongoDB
-    if settings['use_mongo'] == 'true':
-        import pymongo
-
-        def add_mongo_db(event):
-            settings = event.request.registry.settings
-            db_name = settings['mongodb.db_name']
-            db = settings['mongodb_conn'][db_name]
-            event.request.db = db
-        db_uri = settings['mongodb.url']
-        db_port = int(settings['mongodb.port'])
-        mongodb = pymongo.Connection
-        if 'pyramid_debugtoolbar' in set(settings.values()):
-            class MongoDB(pymongo.Connection):
-                def __html__(self):
-                    return 'MongoDB: <b>{}></b>'.format(self)
-        conn = mongodb(
-                db_uri,
-                db_port,
-                )
-        config.registry.settings['mongodb_conn'] = conn
-        config.add_subscriber(add_mongo_db, NewRequest)
     config.scan(
             ignore=[
                 'moe.optimal_learning.python.lib.cuda_linkers',
                 'moe.tests',
                 ],
             )
-    return config.make_wsgi_app()
+
+    app = config.make_wsgi_app()
+
+    # Message to the user
+    print """
+    Congratulations! MOE is now running.
+
+    You can access the web interface at: http://localhost:6543
+
+    Repo: https://github.com/Yelp/MOE
+    Docs: http://yelp.github.io/MOE
+
+    Note: If you installed MOE within a docker container you may need to specify the IP address of the VM instead of localhost.
+    In OSX and Windows this is the startup information when you run boot2docker, or can be set in $DOCKER_HOST.
+    """
+
+    return app

@@ -19,7 +19,8 @@
      memory is released appropriately.
 
      In fact, ``new`` and ``delete`` (as they pertain to memory) should almost NEVER be used.
-       Exception: ``Clone()`` functions and inputs to std::unique_ptr's ctor may use ``new``.
+
+     Exception: ``Clone()`` functions and inputs to std::unique_ptr's ctor may use ``new``.
 
      Finally, ``malloc``/``free`` should be AVOIDED ENTIRELY.  Use std::vector instead of malloc'd arrays and
      std::unique_ptr when singleton object allocation is desired.  If you *ABSOLUTELY* must, use ``new``/``delete``
@@ -31,18 +32,26 @@
      However, for convenience, C multi-dimensional indexing will be used to describe
      matrices: e.g., A[dim1][dim2] is a matrix with dim1 rows and dim2 columns.  But
      dim1 is the most rapidly-varying index here.
-     for example: ``A[3][4] =``
-     ``[4  32  5  2``
-     `` 53 12  8  1``
-     `` 81  2  93 0]``
+     for example::
+
+       A[3][4] =
+         [4  32  5  2
+          53 12  8  1
+          81  2  93 0]
+
       would be FLATTENED into an array:
+
       ``A_flat[12] = [4 53 81 32 12 2 5 8 93 2 1 0]``
 
       So ``A[dim_1][dim_2]...[dim_n]`` would be represented as an array of size
+
       ``dim_1*dim_2*...*dim_n``.
+
       If I wanted to access ``A[i_1][i_2]...[i_n]`` in a multi-dimensional array, I would perform the following
       in a flat array:
+
       ``A[i_n*dim_1*dim_2*...*dim_{n-1} + ... + i_2*dim_1 + i_1]`` (note that ``dim_n`` never appears in the index!)
+
       (See gpp_math.cpp header comments for more details on a more efficient way of array accessing.)
 
    3. The meaning of ``lda, ldb, ldc``.  ``lda``, for example, is short for
@@ -162,18 +171,23 @@
          The State's constructor must size them properly, but their contents can be *anything*.
          DO NOT rely on the values in these members!  Set before using!
 
-      List of classes implementing this relationship:
-      ``Class                                           State``
-      ``GaussianProcess                                 PointsToSampleState``
-      ``ExpectedImprovementEvaluator                    ExpectedImprovementState``
-      ``OnePotentialSampleExpectedImprovementEvaluator  OnePotentialSampleExpectedImprovementState``
-      ``LogMarginalLikelihoodEvaluator                  LogMarginalLikelihoodState``
-      ``LeaveOneOutLogLikelihoodEvaluator               LeaveOneOutLogLikelihoodState``
+      =================================================  ===============================================
+      List of classes implementing the Evaluator/State relationship
+      --------------------------------------------------------------------------------------------------
+      Class                                               State
+      =================================================  ===============================================
+      GaussianProcess                                     PointsToSampleState
+      ExpectedImprovementEvaluator                        ExpectedImprovementState
+      OnePotentialSampleExpectedImprovementEvaluator      OnePotentialSampleExpectedImprovementState
+      LogMarginalLikelihoodEvaluator                      LogMarginalLikelihoodState
+      LeaveOneOutLogLikelihoodEvaluator                   LeaveOneOutLogLikelihoodState
+      =================================================  ===============================================
 
       One set of noteable exceptions to this 'rule' is the RNG classes.  These objects' sole purpose
       is to hold mutable state so there's nothing to be gained from just splitting code and data members.
 
    6. Explicit [template] Instantiation.
+
       Summarizing the syntax briefly:
 
       **FOR FUNCTIONS**
@@ -197,6 +211,7 @@
 
         template void SomeFunction(int, SPECIFIC_TYPE arg2, ...);  // explicit instantiation DEFINITION
         // this is identical to explicit instantiation line in the HPP file, except no "extern" keyword
+
       END CPP FILE
 
 
@@ -211,6 +226,7 @@
 
         extern template class SomeClass<SPECIFIC_TYPE>;  // extern declaration telling compiler NOT to instantiate the
                                                          // current translation unit
+
       END HPP FILE
 
 
@@ -268,44 +284,7 @@
       http://msdn.microsoft.com/en-us/library/7k8twfx7.aspx
       http://stackoverflow.com/questions/2351148/explicit-instantiation-when-is-it-used
 
-   7. chunk_size in #pragma omp for
-      When we ask openmp to parallelize a for loop, we can give it additional information on how to do so.  In particular,
-      the overall work (N iterations) needs to be divided up amongst the threads.  We have two major ways to affect how
-      openmp structures the loop: schedule and chunk_size.  chunk_size changes meaning depending on schedule:
-
-      a. static: work is divided into N/chunk_size chunks and distributed amongst the threads statically.  Use when you are
-         confident all chunks will take the same amount of time.  Low control overhead but high waste if one thread is very slow
-         (since the others will sit idle).
-      b. dynamic: work is divided into N/chunk_size chunks and distributed to threads as they complete their work,
-         first-come first-serve. Now if there is a chunk that is very slow, the other threads can finish all remaining work
-         instead of sitting idle.  High control overhead, use when you have no idea how long each chunk will take.
-      c. guided: Work is divided into progressively smaller chunks; chunk_size sets the minimum value.  As with dynamic,
-         chunks are assigned on a first-come, first-serve basis.  Less overhead than dynamic (b/c of chunk_size scale down).
-         Useful when iteration times are similar but not identical.  Less overhead than dynamic while guaranteeing the waste
-         case of static doesn't arise.
-
-      **Setting chunk_size**
-
-      If we have more threads than things to do, we want to use as many threads as possible (size = 1);
-      in particular, multi-threaded unit tests become single threaded tests (b/c the work count is low to keep runtime low).
-      In the other extreme (much more work than threads), we do not want to assign too much work to a thread at a time or
-      too little. Too much = if any thread finishes early, it sits idle; too little = lots of extra overhead.
-
-      The values used in the implementation are from a little testing; better than doing nothing but definitely not optimal.
-      Usually the chunk_size settings look like:
-      int chunk_size = std::max(std::min(15, std::max(1, num_iterations/max_num_threads)), gd_parameters.num_iterations/(max_num_threads*20));
-
-      * A = std::max(1, num_iterations/max_num_threads): divide the work evenly (as evenly as possible), triggers when there
-            are tiny numbers of iterations.  (mostly for testing so that parallel tests don't serialize through chunk_size)
-      * B = std::min(15, A): for "middle" sized problems, pick a "reasonable" chunk_size
-
-      chunk = std::max(B, num_iterations/(max_num_threads*20)): for very large numbers of iterations, scale chunk_size up so
-          we don't end up with too much loop overhead
-
-      Further documentation:
-      http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8a.doc%2Fcompiler%2Fref%2Fruompfor.htm
-
-   8. Matrix-loop Idiom
+   7. Matrix-loop Idiom
       The matrix looping idioms used in this file deserve some explanation; we'll use matrix-vector-multiply
       as an example.  One common implementation of ``y = A * x``, with a ``m x n``, row-major matrix is::
 
@@ -346,7 +325,7 @@
          dereference unallocated space.
       c. Is not the most common idiom and may feel unfamiliar to some programmers.
 
-   9. RAII (Resource Acquisition Is Initialization)
+   8. RAII (Resource Acquisition Is Initialization)
       We use RAII, no exceptions.
       RAII ensures (amongst other things) that allocation/deallocation are always tightly coupled (through dtors): when
       an object goes out of scope, its resources are released. So it is impossible to forget to call delete after new and
@@ -359,7 +338,7 @@
       http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization
       http://www.stroustrup.com/except.pdf
 
-   10. Exception Safety
+   9. Exception Safety
       All library components provide "basic" exception safety. "Basic" safety means that all invariants of the component
       are preserved and no resources are leaked. See references below for more details/definitions. RAII (see item 9)
       makes providing the basic guarantee all but trivial.
@@ -371,8 +350,8 @@
 
         struct State {
           void ComputationWithBasicGuarantee(...);
-          void UpdateCurrentPoint(double *);
-          void GetCurrentPoint(doubl e*);
+          void SetCurrentPoint(double *);
+          void GetCurrentPoint(double *);
           int GetProblemSize();
         };
 
@@ -383,15 +362,15 @@
             try {
               ComputationWithBasicGuarantee(...);
             } catch (const std::exception& e) {
-              UpdateCurrentPoint(point.data());  // reset state
+              SetCurrentPoint(point.data());  // reset state
               throw;
             }
           }
         };
 
       .. Note:: if State has a random number generator, then its internal state may need to be saved as well. Generally this
-      is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
-      the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_random.hpp can save state.)
+        is NOT necessary! The RNG is guaranteed to be in a valid state, and users should have no reason to care what
+        the precise state of the RNG is. (Still if you do care, the RNG wrappers in gpp_random.hpp can save state.)
 
       See here for further information on the different types of exception safety:
       http://en.wikipedia.org/wiki/Exception_safety
@@ -399,18 +378,26 @@
 
   Lastly, some general mathematical notation:
   A vector "x" of length size may be represented: (LOWER CASE letters)
+
   ``x[size], x_i``
 
   A matrix "A" of size size_1 x size_2 (#rows x #columns) may be represented: (UPPER CASE letters)
+
   ``A[size_1][size_2], A_{i,j}, A_ij``
+
   ``A_i`` may also be used to refer to the i-th column of a matrix A.
+
   Matrices are stored flat in column-major (implementation note 2).  So the concept ``A[i][j]`` is actually accessed via:
+
   ``A[j*size_1 + i]``
 
   Finally, a note about function comment style:
 
   a. comments go above the function declaration or definition they describe
   b. declaration comments should individually describe all inputs/ouputs/returns using RST markdown; e.g., ::
+
+       BEGIN_COMMENT!\rst
+       Compute all the stuff.
 
        \param
          :size: number of variables
@@ -420,15 +407,18 @@
          :y[size]: vector of computed results
        \return
          returns the confidence score of the results, y
-     double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);
+       \endrstEND_COMMENT
+       double ComputeStuff(int size, double const * restrict x, double const * restrict A, double * restrict y);
 
      Here, ``A[size][size]`` indicates the size and data-ordering of ``A``: it has size rows and size columns, and is stored
      column-major (see implementation note 2).
 
      .. NOTE:: if we have a ``char*`` argument, ``my_str``, we will generally not specify the
        array size, instead writing:
-     ``my_str[]: a pointer to a char array``
-     since std::strlen() can be used to find the length.
+
+       ``my_str[]: a pointer to a char array``
+
+       since std::strlen() can be used to find the length.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_COMMON_HPP_
@@ -690,14 +680,11 @@ namespace optimal_learning {
 #endif
 
 /*!\rst
-  icc ``C++11`` support is incomplete as of v13.x.x and does not include the ``override`` or ``final`` specifiers. At the
-  moment, "final" appears to work (emulation of Visual Studio's implementation), but override does not.
-  TODO(eliu): when icc includes the override and final specifiers, remove this ifdef.  This is expected to happen
-  around Dec 2013:
-  http://software.intel.com/en-us/forums/topic/343118
-  http://software.intel.com/en-us/forums/topic/346579
+  icc ``C++11`` support before v14.x.x is incomplete and does not support the ``override`
+  or ``final`` specifiers (although "final" appears to work). See:
+  https://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
 \endrst*/
-#ifdef __INTEL_COMPILER
+#if defined(__INTEL_COMPILER) && (__INTEL_COMPILER < 1400)
 #define override
 #endif
 
@@ -713,11 +700,13 @@ namespace optimal_learning {
   This means SQ will fail with non-constexpr inputs.
 
   .. WARNING:: this is pass-by-VALUE.  In combination with constexpr, this fcn is only meant for very simple operations.
-  (i.e., this shouldn't be used with a matrix class supporting operator*, and it probably wouldn't compile anyway.)
-  If you need pass-by-reference, be warned that it ``Square(const T&)`` may fail in icc:
-  http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
-  http://software.intel.com/en-us/forums/topic/391885
-  They claim it'll be available in the 14.0 compiler.
+    (i.e., this shouldn't be used with a matrix class supporting operator*, and it probably wouldn't compile anyway.)
+    If you need pass-by-reference, be warned that it ``Square(const T&)`` may fail in icc:
+
+    http://software.intel.com/en-us/articles/c0x-features-supported-by-intel-c-compiler
+    http://software.intel.com/en-us/forums/topic/391885
+
+    They claim it'll be available in the 14.0 compiler.
 
   \param
     :value: value to be squared

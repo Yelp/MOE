@@ -2,16 +2,16 @@
 """Test cases for the Square Exponential covariance function and its spatial gradient.
 
 Testing is sparse at the moment. The C++ implementations are tested thoroughly (gpp_covariance_test.hpp/cpp) and
-we rely more on cpp_wrappers/covariance_test.py's comparison with C++ for verification of the Python code.
-x
-TODO(eliu): test hyperparameter gradient
-TODO(eliu): ping testing for spatial gradients
-TODO(eliu): make test structure general enough to support other covariance functions automatically
+we rely more on :mod:`moe.tests.optimal_learning.python.cpp_wrappers.covariance_test`'s comparison
+with C++ for verification of the Python code.
+
+TODO(GH-175): Ping testing for spatial gradients and hyperparameter gradients/hessian.
+TODO(GH-176): Make test structure general enough to support other covariance functions automatically.
 
 """
 import numpy
 
-import testify as T
+import pytest
 
 from moe.optimal_learning.python.geometry_utils import ClosedInterval
 from moe.optimal_learning.python.python_version.covariance import SquareExponential
@@ -20,7 +20,7 @@ import moe.tests.optimal_learning.python.gaussian_process_test_utils as gp_utils
 from moe.tests.optimal_learning.python.optimal_learning_test_case import OptimalLearningTestCase
 
 
-class SquareExponentialTest(OptimalLearningTestCase):
+class TestSquareExponential(OptimalLearningTestCase):
 
     """Tests for the computation of the SquareExponential covariance and spatial gradient of covariance.
 
@@ -28,13 +28,14 @@ class SquareExponentialTest(OptimalLearningTestCase):
 
     """
 
-    @T.class_setup
-    def base_setup(self):
+    @classmethod
+    @pytest.fixture(autouse=True, scope='class')
+    def base_setup(cls):
         """Set up parameters for test cases."""
-        self.epsilon = 2.0 * numpy.finfo('float64').eps
-        self.CovarianceClass = SquareExponential
+        cls.epsilon = 2.0 * numpy.finfo(numpy.float64).eps
+        cls.CovarianceClass = SquareExponential
 
-        self.one_dim_test_sets = numpy.array([
+        cls.one_dim_test_sets = numpy.array([
             [1.0, 0.1],
             [2.0, 0.1],
             [1.0, 1.0],
@@ -43,7 +44,7 @@ class SquareExponentialTest(OptimalLearningTestCase):
             [0.1, 10.0],
         ])
 
-        self.three_dim_test_sets = numpy.array([
+        cls.three_dim_test_sets = numpy.array([
             [1.0, 0.1, 0.1, 0.1],
             [1.0, 0.1, 0.2, 0.1],
             [1.0, 0.1, 0.2, 0.3],
@@ -162,12 +163,12 @@ class SquareExponentialTest(OptimalLearningTestCase):
             grad_cov2 = covariance.grad_covariance(numpy.array([0.0, 0.0, length[2]]), numpy.array([0.0, 0.0, 0.0]))
             self.assert_vector_within_relative(grad_cov2, truth2, self.epsilon)
 
-            T.assert_equal(grad_cov1[2], -grad_cov2[2])
+            assert grad_cov1[2] == -grad_cov2[2]
 
     def test_hyperparameter_gradient_pings(self):
         """Ping test (compare analytic result to finite difference) the gradient wrt hyperparameters."""
         h = 2.0e-3
-        tolerance = 1.0e-5
+        tolerance = 4.0e-5
         num_tests = 10
 
         dim = 3
@@ -191,27 +192,23 @@ class SquareExponentialTest(OptimalLearningTestCase):
 
             analytic_grad = covariance.hyperparameter_grad_covariance(point_one, point_two)
             for k in xrange(covariance.num_hyperparameters):
-                hyperparameters_old = covariance.get_hyperparameters()
+                hyperparameters_old = covariance.hyperparameters
 
                 # hyperparamter + h
                 hyperparameters_p = numpy.copy(hyperparameters_old)
                 hyperparameters_p[k] += h
-                covariance.set_hyperparameters(hyperparameters_p)
+                covariance.hyperparameters = hyperparameters_p
                 cov_p = covariance.covariance(point_one, point_two)
-                covariance.set_hyperparameters(hyperparameters_old)
+                covariance.hyperparameters = hyperparameters_old
 
                 # hyperparamter - h
                 hyperparameters_m = numpy.copy(hyperparameters_old)
                 hyperparameters_m[k] -= h
-                covariance.set_hyperparameters(hyperparameters_m)
+                covariance.hyperparameters = hyperparameters_m
                 cov_m = covariance.covariance(point_one, point_two)
-                covariance.set_hyperparameters(hyperparameters_old)
+                covariance.hyperparameters = hyperparameters_old
 
                 # calculate finite diff
                 fd_grad = (cov_p - cov_m) / (2.0 * h)
 
                 self.assert_scalar_within_relative(fd_grad, analytic_grad[k], tolerance)
-
-
-if __name__ == "__main__":
-    T.run()

@@ -11,19 +11,19 @@
   Evaluator class to be "optimizable."
 
   Since perfomance is irrelevant for these test functions, we will define pure abstract Evaluator classes that can
-  be used to test optimizers in gpp_optimization.hpp.  Generally the usage should be to subclass say PolynomialEvaluator
+  be used to test optimizers in gpp_optimization.hpp.  Generally the usage should be to subclass say SimpleObjectiveFunctionEvaluator
   and override the pure virtuals.  Then we only end up compiling one version of the [templated] optimization code
   for running tests.  See gpp_optimization_test.cpp for examples.
 
   Following the style laid out in gpp_common.hpp (file comments, item 5), we currently define:
 
-  * ``class PolynomialEvaluator;``
-  * ``struct PolynomialState;``
+  * ``class SimpleObjectiveFunctionEvaluator;``
+  * ``struct SimpleObjectiveFunctionState;``
 
-  PolynomialEvaluator defines a pure abstract base class with interface consistent with the interface that all
+  SimpleObjectiveFunctionEvaluator defines a pure abstract base class with interface consistent with the interface that all
   .\*Evaluator classes must provide (e.g., ExpectedImprovementEvaluator, LogMarginalLikelihoodEvaluator).
 
-  PolynomialState is simple: it's just a container class that holds a point at which to evaluate the polynomial.
+  SimpleObjectiveFunctionState is simple: it's just a container class that holds a point at which to evaluate the polynomial.
 \endrst*/
 
 #ifndef MOE_OPTIMAL_LEARNING_CPP_GPP_MOCK_OPTIMIZATION_OBJECTIVE_FUNCTIONS_HPP_
@@ -36,17 +36,17 @@
 
 namespace optimal_learning {
 
-struct PolynomialState;
+struct SimpleObjectiveFunctionState;
 
 /*!\rst
   Class to evaluate the function ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2, i = 1..dim``.
   This is a simple quadratic form with maxima at ``(s_1, ..., s_{dim})``.
 \endrst*/
-class PolynomialEvaluator {
+class SimpleObjectiveFunctionEvaluator {
  public:
-  using StateType = PolynomialState;
+  using StateType = SimpleObjectiveFunctionState;
 
-  virtual ~PolynomialEvaluator() = default;
+  virtual ~SimpleObjectiveFunctionEvaluator() = default;
 
   virtual int dim() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT = 0;
 
@@ -54,7 +54,7 @@ class PolynomialEvaluator {
     Helpful for testing so we know what the optimum is.  This value should be the result of::
 
       GetOptimumPoint(point);
-      state.UpdateCurrentPoint(point);
+      state.SetCurrentPoint(point);
       optimum_value = ComputeObjectiveFunction(state);
 
     Then ``optimum_value == GetOptimumValue()``.
@@ -80,7 +80,7 @@ class PolynomialEvaluator {
     Compute the quadratic objective function: ``f(x_1,...,x_{dim}) = -\sum_i (x_i - s_i)^2``.
 
     \param
-      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)
     \output
       quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
     \return
@@ -92,7 +92,7 @@ class PolynomialEvaluator {
     Compute the gradient of the objective function: ``f'(x_1,...,x_{dim})_i = -2 * (x_i - s_i)``.
 
     \param
-      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)
     \output
       quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
       grad_polynomial[dim]: gradient of the objective
@@ -103,26 +103,28 @@ class PolynomialEvaluator {
     Compute the gradient of the objective function: ``f''(x_1,...,x_{dim})_{i,j} = -2 * \delta_{i,j}``.
 
     \param
-      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., PolynomialState)
+      quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType (e.g., SimpleObjectiveFunctionState)
     \output
       quadratic_dummy_state[1]: ptr to a FULLY CONFIGURED StateType; only temporary state may be mutated
       hessian_polynomial[dim][dim]: hessian of the objective
   \endrst*/
   virtual void ComputeHessianObjectiveFunction(StateType * quadratic_dummy_state, double * restrict hessian_polynomial) const OL_NONNULL_POINTERS = 0;
 
-  OL_DISALLOW_COPY_AND_ASSIGN(PolynomialEvaluator);
+  OL_DISALLOW_COPY_AND_ASSIGN(SimpleObjectiveFunctionEvaluator);
 
  protected:
-  PolynomialEvaluator() = default;
+  SimpleObjectiveFunctionEvaluator() = default;
 };
 
-struct PolynomialState final {
-  using EvaluatorType = PolynomialEvaluator;
+struct SimpleObjectiveFunctionState final {
+  using EvaluatorType = SimpleObjectiveFunctionEvaluator;
 
-  PolynomialState(const EvaluatorType& quadratic_eval, double const * restrict current_point_in)
+  SimpleObjectiveFunctionState(const EvaluatorType& quadratic_eval, double const * restrict current_point_in)
       : dim(quadratic_eval.dim()),
         current_point(current_point_in, current_point_in + dim) {
   }
+
+  SimpleObjectiveFunctionState(SimpleObjectiveFunctionState&& OL_UNUSED(other)) = default;
 
   int GetProblemSize() const noexcept OL_PURE_FUNCTION OL_WARN_UNUSED_RESULT {
     return dim;
@@ -132,7 +134,7 @@ struct PolynomialState final {
     std::copy(current_point.begin(), current_point.end(), current_point_in);
   }
 
-  void UpdateCurrentPoint(const EvaluatorType& OL_UNUSED(ei_eval), double const * restrict current_point_in) noexcept OL_NONNULL_POINTERS {
+  void SetCurrentPoint(const EvaluatorType& OL_UNUSED(ei_eval), double const * restrict current_point_in) noexcept OL_NONNULL_POINTERS {
     std::copy(current_point_in, current_point_in + dim, current_point.begin());
   }
 
@@ -143,7 +145,7 @@ struct PolynomialState final {
   //! the point at which to evaluate the associated objective
   std::vector<double> current_point;
 
-  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(PolynomialState);
+  OL_DISALLOW_DEFAULT_AND_COPY_AND_ASSIGN(SimpleObjectiveFunctionState);
 };
 
 }  // end namespace optimal_learning
