@@ -364,7 +364,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 sum_term += cov_k[0, k] * singlevar_norm_pdf(m_k[0], cov_k[0, 0], b_k[0])
             else:
                 for i in range(0, num_points):
-                    index_no_i = range(0, i) + range(i + 1, num_points)
+                    index_no_i = list(range(0, i)) + list(range(i + 1, num_points))
 
                     # c_k introduced on top of page 4
                     c_k = (b_k - m_k) - (b_k[i] - m_k[i]) * cov_k[i, :] / cov_k[i, i]
@@ -595,7 +595,7 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
                 winner = numpy.argmax(improvements_this_iter)
                 if winner < self.num_to_sample:
                     aggregate_dx[winner, ...] -= grad_mu[winner, ...]
-                for diff_index in xrange(self.num_to_sample):
+                for diff_index in range(self.num_to_sample):
                     # grad_chol_decomp_{diff_index, winner, i, j} * normal_draws_{i}
                     aggregate_dx[diff_index, ...] -= numpy.dot(grad_chol_decomp[diff_index, winner, ...].T, normal_draws)
 
@@ -700,9 +700,9 @@ class ExpectedImprovement(ExpectedImprovementInterface, OptimizableInterface):
         # will never be very large.
         # This tradeoff may change when GH-60 is done.
         grad_chol_decomp_tiled = numpy.empty((normals_compressed.shape[0], grad_chol_decomp.shape[2], grad_chol_decomp.shape[3]))
-        for diff_index in xrange(self.num_to_sample):
+        for diff_index in range(self.num_to_sample):
             grad_chol_decomp_tiled[...] = 0.0
-            for i in xrange(num_points):
+            for i in range(num_points):
                 # Only track the iterations where point i had the best improvement (winner)
                 winner_indexes_equal_to_i = winner_indexes_tiled_equal_to_diff_index[i, ...]
 

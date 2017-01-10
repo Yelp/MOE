@@ -36,7 +36,7 @@ def generate_latin_hypercube_points(num_points, domain_bounds):
         ordering = numpy.arange(num_points)
         numpy.random.shuffle(ordering)
 
-        for j in xrange(num_points):
+        for j in range(num_points):
             point_base = interval.min + subcube_edge_length * ordering[j]
             points[j, i] = point_base + numpy.random.uniform(0.0, subcube_edge_length)
 
@@ -82,7 +82,7 @@ def generate_grid_points(points_per_dimension, domain_bounds):
     # vstack stacks inputs vertically: so for our 1D arrays, the i-th input becomes
     # the i-th row in a matrix. And since each mesh_grid output has *every* coordinate
     # of the grid in that dimension, the *columns* of the stack contain every grid point.
-    return numpy.vstack(map(numpy.ravel, mesh_grid)).T
+    return numpy.vstack(list(map(numpy.ravel, mesh_grid))).T
 
 
 # See ClosedInterval (below) for docstring.

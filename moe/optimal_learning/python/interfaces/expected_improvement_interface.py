@@ -30,7 +30,7 @@ to an optimizer (:mod:`moe.optimal_learning.python.interfaces.optimization_inter
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 
-class ExpectedImprovementInterface(object):
+class ExpectedImprovementInterface(object, metaclass=ABCMeta):
 
     r"""Interface for Expected Improvement computation: EI and its gradient at specified point(s) sampled from a GaussianProcess.
 
@@ -49,8 +49,6 @@ class ExpectedImprovementInterface(object):
     :type points_being_sampled: array of float64 with shape (num_being_sampled, dim)
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def dim(self):

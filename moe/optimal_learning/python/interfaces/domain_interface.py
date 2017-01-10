@@ -3,11 +3,9 @@
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 
-class DomainInterface(object):
+class DomainInterface(object, metaclass=ABCMeta):
 
     """Interface for a domain: in/out test, random point generation, and update limiting (for constrained optimization)."""
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def dim(self):

@@ -84,8 +84,8 @@ class OptimalLearningTestCase(object):
 
         """
         __tracebackhide__ = True
-        for i in xrange(point_list.shape[0]):
-            for j in xrange(i + 1, point_list.shape[0]):
+        for i in range(point_list.shape[0]):
+            for j in range(i + 1, point_list.shape[0]):
                 temp = point_list[i, ...] - point_list[j, ...]
                 dist = numpy.linalg.norm(temp)
                 OptimalLearningTestCase.assert_scalar_within_relative(dist, 0.0, tol)

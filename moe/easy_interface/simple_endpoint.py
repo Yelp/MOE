@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Simple functions for hitting the REST endpoints of a MOE service."""
 import contextlib
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 import simplejson as json
 
@@ -20,8 +20,8 @@ def call_endpoint_with_payload(rest_host, rest_port, endpoint, json_payload, tes
     """Send a POST request to a ``url`` with a given ``json_payload``, return the response as a dict."""
     if testapp is None:
         url = "http://{0}:{1:d}{2}".format(rest_host, rest_port, endpoint)
-        request = urllib2.Request(url, json_payload, {'Content-Type': 'application/json'})
-        with contextlib.closing(urllib2.urlopen(request)) as f:
+        request = urllib.request.Request(url, json_payload, {'Content-Type': 'application/json'})
+        with contextlib.closing(urllib.request.urlopen(request)) as f:
             response = f.read()
     else:
         response = testapp.post(endpoint, json_payload).body

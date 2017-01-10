@@ -48,16 +48,16 @@ class TestBanditViews(BanditTestCase, RestTestCase):
         for subtype in BANDIT_ENDPOINTS_TO_SUBTYPES[self._endpoint]:
             for historical_info in self._historical_infos:
                 json_payload = self._build_json_payload(subtype, historical_info)
-                arm_names = set([arm_name for arm_name in historical_info.arms_sampled.iterkeys()])
+                arm_names = set([arm_name for arm_name in historical_info.arms_sampled.keys()])
                 resp = self.testapp.post(self._moe_route.endpoint, json_payload)
                 resp_schema = BanditResponse()
                 resp_dict = resp_schema.deserialize(json.loads(resp.body))
-                resp_arm_names = set([arm_name for arm_name in resp_dict['arm_allocations'].iterkeys()])
+                resp_arm_names = set([arm_name for arm_name in resp_dict['arm_allocations'].keys()])
                 assert arm_names == resp_arm_names
                 # The allocations should be in range [0, 1]
                 # The sum of all allocations should be 1.0.
                 total_allocation = 0
-                for allocation in resp_dict['arm_allocations'].itervalues():
+                for allocation in resp_dict['arm_allocations'].values():
                     assert allocation >= 0
                     assert allocation <= 1
                     total_allocation += allocation

@@ -31,7 +31,7 @@ class ArmAllocations(colander.MappingSchema):
 
         """
         total_allocation = 0.0
-        for arm_name, allocation in cstruct.iteritems():
+        for arm_name, allocation in cstruct.items():
             total_allocation += allocation
             if not 0.0 <= allocation <= 1.0:
                 raise colander.Invalid(node, msg='Allocation = {:f} must be in range [0,1].'.format(allocation))
@@ -59,12 +59,12 @@ class ArmsSampled(colander.MappingSchema):
         :type cstruct: dictionary of (arm name, SingleArm) key-value pairs
 
         """
-        for arm_name, sample_arm in cstruct.iteritems():
+        for arm_name, sample_arm in cstruct.items():
             if 'loss' not in sample_arm:
                 sample_arm['loss'] = 0
             if 'variance' not in sample_arm:
                 sample_arm['variance'] = None
-            if not (set(sample_arm.keys()) == set(map(lambda s: s.lstrip('_'), SampleArm.__slots__))):
+            if not (set(sample_arm.keys()) == set([s.lstrip('_') for s in SampleArm.__slots__])):
                 raise colander.Invalid(node, msg='Value = {:s} must be a valid SampleArm.'.format(sample_arm))
             SampleArm(sample_arm['win'], sample_arm['loss'], sample_arm['total'], sample_arm['variance'])
 
