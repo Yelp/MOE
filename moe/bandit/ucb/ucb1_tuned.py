@@ -4,6 +4,7 @@
 See :class:`moe.bandit.ucb.ucb_interface.UCBInterface` for further details on this bandit.
 
 """
+from __future__ import division
 import math
 
 import numpy

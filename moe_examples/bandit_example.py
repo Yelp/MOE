@@ -10,6 +10,8 @@ The function requires some historical information to inform bandit.
 
 We compute arm allocations for all bandit type and subtypes with the simple example of Bernoulli arms.
 """
+from __future__ import print_function
+from builtins import str
 from moe.bandit.data_containers import BernoulliArm
 from moe.bandit.linkers import BANDIT_ROUTE_NAMES_TO_SUBTYPES
 from moe.easy_interface.bandit_simple_endpoint import bandit
@@ -46,15 +48,15 @@ def run_example(
     bandit_kwargs = {}
     if bandit_bla_kwargs is None:
         bandit_bla_kwargs = {}
-    bandit_kwargs[BANDIT_BLA_ROUTE_NAME] = dict(kwargs.items() + bandit_bla_kwargs.items())
+    bandit_kwargs[BANDIT_BLA_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_bla_kwargs.items()))
 
     if bandit_epsilon_kwargs is None:
         bandit_epsilon_kwargs = {}
-    bandit_kwargs[BANDIT_EPSILON_ROUTE_NAME] = dict(kwargs.items() + bandit_epsilon_kwargs.items())
+    bandit_kwargs[BANDIT_EPSILON_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_epsilon_kwargs.items()))
 
     if bandit_ucb_kwargs is None:
         bandit_ucb_kwargs = {}
-    bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(kwargs.items() + bandit_ucb_kwargs.items())
+    bandit_kwargs[BANDIT_UCB_ROUTE_NAME] = dict(list(kwargs.items()) + list(bandit_ucb_kwargs.items()))
 
     # A BernoulliArm has payoff 1 for a success and 0 for a failure.
     # See :class:`~moe.bandit.data_containers.BernoulliArm` for more details.
@@ -75,13 +77,13 @@ def run_example(
     # We have implemented 3 bandit types: BLA (Bayesian Learning Optimization), Epsilon, and UCB (Upper Confidence Bound).
     for type in BANDIT_ROUTE_NAMES:
         if verbose:
-            print "Running Bandit: {0:s}...".format(type)
+            print("Running Bandit: {0:s}...".format(type))
         # Each bandit type has different subtypes. If a user does not specify a subtype, we use the default subtype.
         # For example, the bandit type Epsilon has two subtypes: epsilon-first and epsilon-greedy.
         # See :class:`~moe.bandit.epsilon.epsilon_first.EpsilonFirst` and :class:`~moe.bandit.epsilon.epsilon_greedy.EpsilonGreedy` for more details.
         for subtype in BANDIT_ROUTE_NAMES_TO_SUBTYPES[type]:
             if verbose:
-                print "Running subtype: {0:s}...".format(subtype)
+                print("Running subtype: {0:s}...".format(subtype))
             bandit_kwargs[type]['subtype'] = subtype
             # Compute and return arm allocations given the sample history of bandit arms.
             # For example, the allocations {arm1: 0.3, arm2: 0.7} means
@@ -89,7 +91,7 @@ def run_example(
             # See :func:`moe.bandit.bandit_interface.BanditInterface.allocate_arms` for more details.
             arm_allocations = bandit(historical_info, type=type, testapp=testapp, **bandit_kwargs[type])
             if verbose:
-                print "Arm allocations {0:s}".format(str(arm_allocations))
+                print("Arm allocations {0:s}".format(str(arm_allocations)))
 
 
 if __name__ == '__main__':

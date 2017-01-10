@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Resources class."""
+from builtins import object
 
 
 class Root(object):

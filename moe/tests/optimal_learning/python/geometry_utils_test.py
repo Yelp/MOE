@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Tests for the functions/classes in geometry_utils."""
+from __future__ import division
+from builtins import range
 import numpy
 
 import pytest
@@ -60,7 +62,7 @@ class TestLatinHypercubeRandomPointGeneration(OptimalLearningTestCase):
     def test_make_rand_point_within_domain(self):
         """Test that domain.generate_random_point_in_domain returns a point in the domain."""
         for domain in self.domains_to_test:
-            for _ in xrange(10):
+            for _ in range(10):
                 point = domain.generate_random_point_in_domain()
                 assert domain.check_point_inside(point) is True
 
@@ -77,9 +79,9 @@ class TestLatinHypercubeRandomPointGeneration(OptimalLearningTestCase):
                 domain_bounds = domain._domain_bounds
                 points = generate_latin_hypercube_points(num_points, domain_bounds)
 
-                for dim in xrange(domain.dim):
+                for dim in range(domain.dim):
                     # This size of each slice
-                    sub_domain_width = domain_bounds[dim].length / float(num_points)
+                    sub_domain_width = domain_bounds[dim].length / num_points
                     # Sort in dim dimension
                     points = sorted(points, key=lambda points: points[dim])
                     for i, point in enumerate(points):

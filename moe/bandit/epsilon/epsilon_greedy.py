@@ -4,6 +4,7 @@
 See :class:`moe.bandit.epsilon.epsilon_interface.EpsilonInterface` for further details on this bandit.
 
 """
+from __future__ import division
 from moe.bandit.constant import DEFAULT_EPSILON, EPSILON_SUBTYPE_GREEDY
 from moe.bandit.epsilon.epsilon_interface import EpsilonInterface
 
@@ -75,7 +76,7 @@ class EpsilonGreedy(EpsilonInterface):
         arms_to_allocations = {}
 
         # With probability epsilon, choose a winning arm at random. Therefore, we split the allocation epsilon among all arms.
-        for arm_name in arms_sampled.iterkeys():
+        for arm_name in arms_sampled.keys():
             arms_to_allocations[arm_name] = epsilon_allocation
 
         # With probability 1-epsilon, split allocation among winning arms.

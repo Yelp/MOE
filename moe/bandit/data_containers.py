@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Data containers convenient for/used to interact with bandit members."""
+from builtins import object
 import pprint
 
 import numpy
@@ -202,7 +203,7 @@ class HistoricalData(object):
     def json_payload(self):
         """Construct a json serializeable and MOE REST recognizeable dictionary of the historical data."""
         json_arms_sampled = {}
-        for name, arm in self._arms_sampled.iteritems():
+        for name, arm in self._arms_sampled.items():
             json_arms_sampled[name] = arm.json_payload()
         return {'arms_sampled': json_arms_sampled}
 
@@ -217,7 +218,7 @@ class HistoricalData(object):
 
         """
         if sample_arms:
-            for arm in sample_arms.itervalues():
+            for arm in sample_arms.values():
                 arm.validate()
 
     def append_sample_arms(self, sample_arms, validate=True):
@@ -246,7 +247,7 @@ class HistoricalData(object):
         :param sample_arms: the already-sampled arms: wins, losses, and totals
         :type sample_arms: dictionary of (arm name, SampleArm) key-value pairs
         """
-        for name, arm in sample_arms.iteritems():
+        for name, arm in sample_arms.items():
             if name in self._arms_sampled:
                 self._arms_sampled[name] += arm
             else:

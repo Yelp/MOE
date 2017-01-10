@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base class for testing the moe examples."""
+from builtins import object
 import pytest
 
 

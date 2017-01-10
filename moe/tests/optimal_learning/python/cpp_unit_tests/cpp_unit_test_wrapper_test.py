@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Dummy test case that invokes all of the C++ unit tests."""
+from builtins import object
 import moe.build.GPP as C_GP
 
 

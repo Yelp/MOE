@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for the functions/classes in ``comparison.py``."""
+from builtins import object
 import copy
 
 import pytest

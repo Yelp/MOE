@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base test case for tests that manipulate Gaussian Process data and supporting structures."""
+from builtins import object
 import pytest
 
 import collections

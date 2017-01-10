@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests that linkers contain all possible types defined in constants."""
+from builtins import object
 from moe.bandit.constant import BANDIT_ENDPOINTS, EPSILON_SUBTYPES, UCB_SUBTYPES
 from moe.bandit.linkers import BANDIT_ENDPOINTS_TO_SUBTYPES, EPSILON_SUBTYPES_TO_BANDIT_METHODS, UCB_SUBTYPES_TO_BANDIT_METHODS
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Base pyramid app for MOE."""
+from __future__ import print_function
 from pyramid.config import Configurator
 
 from moe.resources import Root
@@ -44,7 +45,7 @@ def main(global_config, **settings):
     app = config.make_wsgi_app()
 
     # Message to the user
-    print """
+    print("""
     Congratulations! MOE is now running.
 
     You can access the web interface at: http://localhost:6543
@@ -54,6 +55,6 @@ def main(global_config, **settings):
 
     Note: If you installed MOE within a docker container you may need to specify the IP address of the VM instead of localhost.
     In OSX and Windows this is the startup information when you run boot2docker, or can be set in $DOCKER_HOST.
-    """
+    """)
 
     return app

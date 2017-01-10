@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup for the MOE webapp."""
+from __future__ import print_function
 import os
 import shlex
 import shutil
@@ -42,9 +43,11 @@ CLASSIFIERS = """
 
 # If you change something here, change it in requirements.txt
 requires = [
+    'future',
     'pyramid',
+    'pyramid_debugtoolbar',
     'pyramid_mako',
-    'WebError',
+    'waitress',
     'pytest',
     'webtest',
     'simplejson',
@@ -79,7 +82,7 @@ def find_path(moe_executable):
         potential_path = os.path.join(prefix, moe_executable.exe_name)
         if os.path.isfile(potential_path):
             path = potential_path
-            print "Could not find env var {0:s} for {1:s}, using {2:s} from $PATH".format(moe_executable.env_var, moe_executable.exe_name, path)
+            print("Could not find env var {0:s} for {1:s}, using {2:s} from $PATH".format(moe_executable.env_var, moe_executable.exe_name, path))
             break
 
     return path
@@ -111,9 +114,9 @@ class InstallCppComponents(install):
 
         cmake_options = env.get('MOE_CMAKE_OPTS', '')
         if cmake_options == '':
-            print "MOE_CMAKE_OPTS not set. Passing no extra args to cmake."
+            print("MOE_CMAKE_OPTS not set. Passing no extra args to cmake.")
         else:
-            print "Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake.".format(cmake_options)
+            print("Passing '{0:s}' args from MOE_CMAKE_OPTS to cmake.".format(cmake_options))
 
         # Set env dict with cc and/or cxx path
         # To find C/C++ compilers, we first try read MOE_CC/CXX_PATH and if they exist, we write to CC/CXX.
@@ -123,9 +126,9 @@ class InstallCppComponents(install):
         if 'MOE_CXX_PATH' in env:
             env['CXX'] = env['MOE_CXX_PATH']
         if 'CC' in env:
-            print "Passing CC={0:s} to cmake.".format(env['CC'])
+            print("Passing CC={0:s} to cmake.".format(env['CC']))
         if 'CXX' in env:
-            print "Passing CXX={0:s} to cmake.".format(env['CXX'])
+            print("Passing CXX={0:s} to cmake.".format(env['CXX']))
 
         # rm the build directory if it exists
         if os.path.exists(build_dir):
@@ -181,8 +184,8 @@ class InstallCppComponents(install):
         moe_python_library = os.path.join(moe_python_library_base, instsoname)
 
         # Print the Python paths we found so that the user can verify them if something goes wrong.
-        print 'PYTHON_INCLUDE_DIR (Expected full path to where Python.h is found): {0:s}'.format(moe_python_include_dir)
-        print 'PYTHON_LIBRARY (Expected path to Python shared object; e.g., libpython2.7.so or .dylib): {0:s}'.format(moe_python_library)
+        print('PYTHON_INCLUDE_DIR (Expected full path to where Python.h is found): {0:s}'.format(moe_python_include_dir))
+        print('PYTHON_LIBRARY (Expected path to Python shared object; e.g., libpython2.7.so or .dylib): {0:s}'.format(moe_python_library))
 
         # Build the full cmake command using properly tokenized options
         cmake_full_command = [

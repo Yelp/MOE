@@ -8,6 +8,8 @@ and a set of points to calculate the posterior mean and variance at.
 
 The posterior mean and variance is then printed for every point.
 """
+from __future__ import print_function
+from builtins import str
 import numpy
 
 from moe.easy_interface.simple_endpoint import gp_mean_var
@@ -32,7 +34,7 @@ def run_example(verbose=True, testapp=None, **kwargs):
     if verbose:
         # Print out the mean and variance of the GP at each point_to_evaluate
         for i, point in enumerate(points_to_evaluate):
-            print "GP({0:s}) ~ N({1:.18E}, {2:.18E})".format(str(point), mean[i], var[i][i])
+            print("GP({0:s}) ~ N({1:.18E}, {2:.18E})".format(str(point), mean[i], var[i][i]))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tests for functions in SampleArm and HistoricalData."""
+from builtins import str
 import pytest
 
 import copy
@@ -28,7 +29,7 @@ class TestDataContainers(BanditTestCase):
     def test_sample_arm_str(self):
         """Test SampleArm's __str__ overload operator."""
         for historical_info in self.historical_infos_to_test:
-            for arm in historical_info.arms_sampled.itervalues():
+            for arm in historical_info.arms_sampled.values():
                 assert str(arm) == pprint.pformat(arm.json_payload())
 
     def test_sample_arm_add(self):

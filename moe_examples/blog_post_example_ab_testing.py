@@ -4,6 +4,10 @@
 Blog post: http://engineeringblog.yelp.com/2014/10/using-moe-the-metric-optimization-engine-to-optimize-an-ab-testing-experiment-framework.html
 
 """
+from __future__ import print_function
+from __future__ import division
+from builtins import str
+from builtins import range
 import copy
 
 import numpy
@@ -91,7 +95,7 @@ def bernoulli_mean_and_var(observed_clicks, samples):
 
     """
     if samples > 0:
-        observed_success_rate = observed_clicks / float(samples)
+        observed_success_rate = observed_clicks / samples
     else:
         observed_success_rate = 0.0
 
@@ -99,7 +103,7 @@ def bernoulli_mean_and_var(observed_clicks, samples):
     # http://en.wikipedia.org/wiki/Beta_distribution
     alpha = observed_clicks + 1
     beta = samples - observed_clicks + 1
-    observed_variance = (alpha * beta) / float((alpha + beta) * (alpha + beta) * (alpha + beta + 1))
+    observed_variance = (alpha * beta) / ((alpha + beta) * (alpha + beta) * (alpha + beta + 1))
 
     return observed_success_rate, observed_variance
 
@@ -139,7 +143,7 @@ def objective_function(observed_sample_arm, observed_status_quo_sample_arm):
     # Subtract 1.0 from the mean so that it is centered at 0.0; no effect on variance
     mean_ctr_ratio = sample_ctr / status_quo_ctr - 1.0
     # Note: We take an upper bound of the variance (by ignoring the correlation between the two random variables)
-    variance_ctr_ratio = sample_ctr_var / status_quo_ctr ** 2 + status_quo_ctr_var * sample_ctr ** 2 / status_quo_ctr ** 4
+    variance_ctr_ratio = (sample_ctr_var / (status_quo_ctr ** 2)) + status_quo_ctr_var * sample_ctr ** 2 / status_quo_ctr ** 4
     return mean_ctr_ratio, variance_ctr_ratio
 
 
@@ -158,7 +162,7 @@ def find_new_points_to_sample(experiment, num_points=1, verbose=False):
 
     """
     if verbose:
-        print "Getting {0} new suggested point(s) to sample from MOE...".format(num_points)
+        print("Getting {0} new suggested point(s) to sample from MOE...".format(num_points))
 
     # Query MOE for the next points to sample
     next_points_to_sample = gp_next_points(
@@ -172,7 +176,7 @@ def find_new_points_to_sample(experiment, num_points=1, verbose=False):
             )
 
     if verbose:
-        print "Optimal points to sample next: {0}".format(next_points_to_sample)
+        print("Optimal points to sample next: {0}".format(next_points_to_sample))
 
     return next_points_to_sample
 
@@ -214,13 +218,13 @@ def get_allocations(active_arms, sample_arms, verbose=False):
             )
 
     arm_allocations = {}
-    for arm_name_as_string, allocation in bandit_allocation.iteritems():
+    for arm_name_as_string, allocation in bandit_allocation.items():
         # json produced keys as str
         # convert str back to 1D coordinate-tuple
         arm_allocations[tuple([float(arm_name_as_string)])] = allocation
 
     if verbose:
-        print "Optimal arm allocations: {0}".format(arm_allocations)
+        print("Optimal arm allocations: {0}".format(arm_allocations))
 
     return arm_allocations
 
@@ -249,7 +253,7 @@ def prune_arms(active_arms, sample_arms, verbose=False):
     # Our objective is a relative CTR, so status_quo is 0.0; we
     # know that the best arm cannot be worse than status_quo
     best_arm_val = 0.0
-    for sample_arm_point, sample_arm in active_sample_arms.iteritems():
+    for sample_arm_point, sample_arm in active_sample_arms.items():
         arm_value, arm_variance = objective_function(
                 sample_arm,
                 sample_arms[tuple(STATUS_QUO_PARAMETER)],
@@ -259,14 +263,14 @@ def prune_arms(active_arms, sample_arms, verbose=False):
 
     # Remove all arms that are more than two standard deviations worse than the best arm
     pruned_arms = copy.copy(active_arms)
-    for sample_arm_point, sample_arm in active_sample_arms.iteritems():
+    for sample_arm_point, sample_arm in active_sample_arms.items():
         arm_value, arm_variance = objective_function(
                 sample_arm,
                 sample_arms[tuple(STATUS_QUO_PARAMETER)],
                 )
         if sample_arm.total > 0 and arm_value + 2.0 * numpy.sqrt(arm_variance) < best_arm_val:
             if verbose:
-                print "Removing underperforming arm: {0}".format(sample_arm_point)
+                print("Removing underperforming arm: {0}".format(sample_arm_point))
             pruned_arms.remove(sample_arm_point)
 
     return pruned_arms
@@ -283,7 +287,7 @@ def moe_experiment_from_sample_arms(sample_arms):
 
     """
     experiment = Experiment(EXPERIMENT_DOMAIN)
-    for sample_arm_point, sample_arm in sample_arms.iteritems():
+    for sample_arm_point, sample_arm in sample_arms.items():
         arm_value, arm_variance = objective_function(
                 sample_arm,
                 sample_arms[tuple(STATUS_QUO_PARAMETER)],
@@ -548,7 +552,7 @@ def run_time_consuming_experiment(allocations, sample_arms, verbose=False):
 
     """
     arm_updates = {}
-    for arm_point, arm_allocation in allocations.iteritems():
+    for arm_point, arm_allocation in allocations.items():
         # Find the true, underlying CTR at the point
         ctr_at_point = true_click_through_rate(arm_point)
         # Calculate how much user traffic is allocated to this point
@@ -568,9 +572,9 @@ def run_time_consuming_experiment(allocations, sample_arms, verbose=False):
         sample_arms[arm_point] = sample_arms[arm_point] + sample_arm_for_day
 
     if verbose:
-        print "Updated the samples with:"
-        for arm_name, sample_arm in arm_updates.iteritems():
-            print "\t{0}: {1}".format(arm_name, sample_arm)
+        print("Updated the samples with:")
+        for arm_name, sample_arm in arm_updates.items():
+            print("\t{0}: {1}".format(arm_name, sample_arm))
 
     return sample_arms, arm_updates
 
@@ -590,10 +594,10 @@ def calculate_system_ctr(arms):
     """
     clicks = 0
     impressions = 0
-    for sample_arm in arms.itervalues():
+    for sample_arm in arms.values():
         clicks += sample_arm.win
         impressions += sample_arm.total
-    return float(clicks) / impressions
+    return clicks / impressions
 
 
 def run_example(verbose=False):

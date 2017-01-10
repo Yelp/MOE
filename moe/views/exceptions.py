@@ -52,7 +52,7 @@ def general_error(exception, request):
 
     """
     status_int = 500
-    body = '{0:d}: {1:s}\n{2:s}'.format(status_int, request.referrer, exception)
+    body = '{0:d}: {1:s}\n{2:s}'.format(status_int, str(request.referrer), str(exception))
     response = Response(body=body, status_int=status_int)
     return response
 
@@ -69,6 +69,6 @@ def failed_colander_validation(exception, request):
 
     """
     status_int = 500
-    body = '{0:d}: {1:s}\nFailed validation:\n{2:s}'.format(status_int, request.referrer, pprint.pformat(exception.asdict()))
+    body = '{0:d}: {1:s}\nFailed validation:\n{2:s}'.format(status_int, str(request.referrer), pprint.pformat(exception.asdict()))
     response = Response(body=body, status_int=status_int)
     return response

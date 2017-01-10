@@ -11,10 +11,12 @@ Python currently does not natively support interfaces, so we are commandeering A
 See package docs in :mod:`moe.optimal_learning.python.interfaces` for an introduction to Gaussian Processes.
 
 """
+from builtins import object
 from abc import ABCMeta, abstractmethod, abstractproperty
+from future.utils import with_metaclass
 
 
-class GaussianProcessDataInterface(object):
+class GaussianProcessDataInterface(with_metaclass(ABCMeta, object)):
 
     """Core data interface for constructing or manipulating a Gaussian Process Prior (GPP).
 
@@ -33,8 +35,6 @@ class GaussianProcessDataInterface(object):
     of a Gaussian Process Prior.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def get_covariance_copy(self):
@@ -61,7 +61,7 @@ class GaussianProcessDataInterface(object):
         return self.get_covariance_copy(), self.get_historical_data_copy()
 
 
-class GaussianProcessInterface(GaussianProcessDataInterface):
+class GaussianProcessInterface(with_metaclass(ABCMeta, GaussianProcessDataInterface)):
 
     r"""Interface for a GaussianProcess: mean, variance, gradients thereof, and data I/O.
 
@@ -100,8 +100,6 @@ class GaussianProcessInterface(GaussianProcessDataInterface):
     ``points_to_sample``, so users should call members functions with ``num_derivatives = num_to_sample`` in that context.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @staticmethod
     def _clamp_num_derivatives(num_points, num_derivatives):

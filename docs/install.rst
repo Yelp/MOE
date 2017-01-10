@@ -50,7 +50,7 @@ To ensure consistency, be sure to use full paths throughout the installation.
 
 Requires:
 
-1. ``python 2.6.7+`` - http://python.org/download/
+1. ``python 2.6.7+`` or ``python 3.3+`` - http://python.org/download/
 2. ``gcc 4.7.3+`` - http://gcc.gnu.org/install/
 3. ``cmake 2.8.9+`` - http://www.cmake.org/cmake/help/install.html
 4. ``boost 1.51+`` - http://www.boost.org/users/download/

@@ -6,6 +6,8 @@ This file contains a class to manipulate a Gaussian Process through numpy/scipy.
 See :mod:`moe.optimal_learning.python.interfaces.gaussian_process_interface` for more details.
 
 """
+from __future__ import division
+from builtins import range
 import copy
 
 import numpy
@@ -308,7 +310,7 @@ class GaussianProcess(GaussianProcessInterface):
         """
         num_derivatives = self._clamp_num_derivatives(points_to_sample.shape[0], num_derivatives)
         grad_var = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
-        for i in xrange(num_derivatives):
+        for i in range(num_derivatives):
             grad_var[i, ...] = self._compute_grad_variance_of_points_per_point(points_to_sample, i)
         return grad_var
 
@@ -336,20 +338,20 @@ class GaussianProcess(GaussianProcessInterface):
         # Compute grad cholesky
         # Zero out the upper half of the matrix
         grad_chol = self._compute_grad_variance_of_points_per_point(points_to_sample, var_of_grad)
-        for i in xrange(num_to_sample):
-            for j in xrange(num_to_sample):
+        for i in range(num_to_sample):
+            for j in range(num_to_sample):
                 if i < j:
                     grad_chol[i, j, ...] = numpy.zeros(self.dim)
 
         # Step 2 of Appendix 2
-        for k in xrange(num_to_sample):
+        for k in range(num_to_sample):
             L_kk = chol_var[k, k]
             if L_kk > MINIMUM_STD_DEV_GRAD_CHOLESKY:
                 grad_chol[k, k, ...] *= 0.5 / L_kk
-                for j in xrange(k + 1, num_to_sample):
+                for j in range(k + 1, num_to_sample):
                     grad_chol[j, k, ...] = (grad_chol[j, k, ...] - chol_var[j, k] * grad_chol[k, k, ...]) / L_kk
-                for j in xrange(k + 1, num_to_sample):
-                    for i in xrange(j, num_to_sample):
+                for j in range(k + 1, num_to_sample):
+                    for i in range(j, num_to_sample):
                         grad_chol[i, j, ...] += -grad_chol[i, k, ...] * chol_var[j, k] - chol_var[i, k] * grad_chol[j, k, ...]
 
         return grad_chol
@@ -394,7 +396,7 @@ class GaussianProcess(GaussianProcessInterface):
             chol_var = scipy.linalg.cho_factor(var_star, lower=True, overwrite_a=True)[0]
 
         grad_chol_decomp = numpy.empty((num_derivatives, points_to_sample.shape[0], points_to_sample.shape[0], self.dim))
-        for i in xrange(num_derivatives):
+        for i in range(num_derivatives):
             grad_chol_decomp[i, ...] = self._compute_grad_cholesky_variance_of_points_per_point(points_to_sample, chol_var, i)
         return grad_chol_decomp
 

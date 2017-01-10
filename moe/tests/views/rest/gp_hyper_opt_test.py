@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test class for gp_hyper_opt view."""
+from builtins import range
+from past.utils import old_div
 import pyramid.testing
 
 import simplejson as json
@@ -100,8 +102,8 @@ class TestGpHyperOptViews(GaussianProcessTestCase, RestTestCase):
         assert optimizer_parameters._get_member_dict() == test_param_dict
 
         # Test arbitrary parameters get passed through
-        for i, key in enumerate(test_param_dict.iterkeys()):
-            test_param_dict[key] /= 2
+        for i, key in enumerate(test_param_dict.keys()):
+            test_param_dict[key] = old_div(test_param_dict[key], 2)
         test_num_multistarts = test_param_dict.pop('num_multistarts')
 
         json_payload['optimizer_info']['num_multistarts'] = test_num_multistarts

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Test the C++ implementation of Gaussian Process properties (mean, var, gradients thereof) against the Python version."""
+from builtins import range
 import copy
 
 import numpy
@@ -40,12 +41,12 @@ class TestGaussianProcess(GaussianProcessTestCase):
 
         gaussian_process = GaussianProcess(covariance, historical_data)
         out_values = numpy.zeros(3)
-        for i in xrange(3):
+        for i in range(3):
             out_values[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
 
         gaussian_process._gaussian_process.reset_to_most_recent_seed()
         out_values_test = numpy.ones(3)
-        for i in xrange(3):
+        for i in range(3):
             out_values_test[i] = gaussian_process.sample_point_from_gp(point_two.point, 0.001)
 
         # Exact match b/c we should've run over the exact same computations
@@ -100,7 +101,7 @@ class TestGaussianProcess(GaussianProcessTestCase):
             cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
-                for _ in xrange(num_tests_per_case):
+                for _ in range(num_tests_per_case):
                     points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
 
                     cpp_mu = cpp_gp.compute_mean_of_points(points_to_sample)
@@ -125,7 +126,7 @@ class TestGaussianProcess(GaussianProcessTestCase):
             cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
-                for _ in xrange(num_tests_per_case):
+                for _ in range(num_tests_per_case):
                     points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
 
                     cpp_var = cpp_gp.compute_variance_of_points(points_to_sample)
@@ -151,7 +152,7 @@ class TestGaussianProcess(GaussianProcessTestCase):
             cpp_gp = GaussianProcess(cpp_cov, historical_data)
 
             for num_to_sample in self.num_to_sample_list:
-                for _ in xrange(num_tests_per_case):
+                for _ in range(num_tests_per_case):
                     points_to_sample = domain.generate_uniform_random_points_in_domain(num_to_sample)
 
                     cpp_var = cpp_gp.compute_cholesky_variance_of_points(points_to_sample)

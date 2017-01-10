@@ -24,10 +24,12 @@ with :mod:`moe.optimal_learning.python.interfaces.log_likelihood_interface` prov
 optimizing and evaluating model fit, respectively.
 
 """
+from builtins import object
 from abc import ABCMeta, abstractmethod, abstractproperty
+from future.utils import with_metaclass
 
 
-class CovarianceInterface(object):
+class CovarianceInterface(with_metaclass(ABCMeta, object)):
 
     r"""Interface for a covariance function: covariance of two points and spatial/hyperparameter derivatives.
 
@@ -47,8 +49,6 @@ class CovarianceInterface(object):
     TODO(GH-71): getter/setter for hyperparameters.
 
     """
-
-    __metaclass__ = ABCMeta
 
     @abstractproperty
     def num_hyperparameters(self):

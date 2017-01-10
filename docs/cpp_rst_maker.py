@@ -80,13 +80,13 @@ def create_rst_file(file_base, files):
     )
     index_count = 1
     for file_type in CPP_FILE_TYPES:
-        if files.has_key(file_type):
+        if file_type in files:
             fout.write('    {0:d}. `{1:s}`_\n'.format(index_count, files[file_type]))
             index_count += 1
     fout.write('\n')
 
     for file_type in CPP_FILE_TYPES:
-        if files.has_key(file_type):
+        if file_type in files:
             fout.write("""
 {0:s}
 {1:s}
@@ -102,7 +102,7 @@ def create_rst_files_for_cpp():
     """Generate all rst files."""
     cpp_files = get_cpp_files()
     create_cpp_tree(cpp_files)
-    for file_base, files in cpp_files.iteritems():
+    for file_base, files in cpp_files.items():
         create_rst_file(file_base, files)
 
 
