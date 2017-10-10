@@ -133,7 +133,7 @@ bool CheckIntEquals(int64_t value, int64_t truth) noexcept {
   bool passed = value == truth;
 
   if (passed == false) {
-    OL_ERROR_PRINTF("value = %lld, truth = %lld, diff = %lld\n", value, truth, truth-value);
+    OL_ERROR_PRINTF("value = %ld, truth = %ld, diff = %ld\n", value, truth, truth-value);
   }
   return passed;
 }
