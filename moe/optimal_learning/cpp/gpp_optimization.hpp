@@ -1307,7 +1307,7 @@ class MultistartOptimizer final {
           // allocated objects, bad state, etc).
 
           // Guarantee: only one exception will ever be captured; only one thread will ever execute the lambda function.
-          std::call_once(exception_capture_flag, [&captured_exception]() {
+          std::call_once(exception_capture_flag, [&captured_exception]() noexcept {
               captured_exception = std::current_exception();
             });
         }
