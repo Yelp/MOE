@@ -57,6 +57,7 @@
 #include <cmath>
 
 #include <algorithm>
+#include <numeric>
 #include <string>
 #include <vector>
 
